@@ -1,0 +1,15 @@
+{
+  "name": "Lacto Misr HR System",
+  "short_name": "LM HR",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f1f5f9",
+  "theme_color": "#0284c7",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/912/912318.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
