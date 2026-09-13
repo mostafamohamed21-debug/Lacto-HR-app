@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lacto HR Hub</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  
+  <!-- مكتبة توليد الـ QR Code -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <!-- مكتبة تحويل الـ HTML لصورة HD -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --accent: #0284c7;
+      --accent-light: #38bdf8;
+      --danger: #ef4444;
+      --success: #22c55e;
+      --muted: #94a3b8;
+    }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    .card {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 1.25rem;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    input {
+      width: 100%;
+      padding: 0.85rem;
+      margin: 1rem 0;
+      border-radius: 0.75rem;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: var(--text);
+      box-sizing: border-box;
+      font-size: 1rem;
+      text-align: center;
+      outline: none;
+    }
+    input:focus {
+      border-color: var(--accent-light);
+    }
+    button {
+      width: 100%;
+      padding: 0.85rem;
+      border-radius: 0.75rem;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+    .btn-download {
+      background: #22c55e;
+      color: #fff;
+      margin-top: 1rem;
+    }
+    .hidden { display: none; }
+
+    /* تصميم الكارت الرقمي DIGITAL ID & BUSINESS CARD */
+    .id-card {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid #334155;
+      border-radius: 1rem;
+      padding: 1.25rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+    }
+    .id-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .company-title {
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: var(--accent-light);
+      letter-spacing: 0.5px;
+    }
+    .profile-img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 3px solid var(--accent-light);
+      object-fit: cover;
+      margin: 0 auto 0.75rem auto;
+      display: block;
+      background: #334155;
+    }
+    .user-name {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 0 0 0.25rem 0;
+    }
+    .user-title {
+      color: var(--accent-light);
+      font-size: 0.9rem;
+      margin: 0 0 0.75rem 0;
+      font-weight: 500;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      text-align: right;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+    }
+    .info-label {
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+    .info-val {
+      font-weight: 600;
+      color: var(--text);
+    }
+    .qr-container {
+      background: #ffffff;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      display: inline-block;
+      margin-top: 0.25rem;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    .active-badge { background: rgba(34, 197, 94, 0.2); color: var(--success); }
+    .admin-panel {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background: rgba(2, 132, 199, 0.1);
+      border: 1px dashed var(--accent-light);
+      border-radius: 0.75rem;
+    }
+    .download-loader {
+      font-size: 1.1rem;
+      color: var(--accent-light);
+      padding: 2rem 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="app">
+    <!-- شاشة تسجيل الدخول -->
+    <div id="login-view">
+      <h2 style="margin-bottom: 0.25rem;">Lacto HR Hub</h2>
+      <p style="color: var(--muted); font-size: 0.9rem; margin-top: 0;">بوابة الموظفين الرقمية</p>
+      <input type="text" id="empCode" placeholder="أدخل كود الموظف (مثال: 102)">
+      <button onclick="login()">عرض الكارت الرقمي 💳</button>
+      <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.9rem;"></p>
+    </div>
+
+    <!-- شاشة الكارت الرقمي الخاصة بالموظف الداخلي -->
+    <div id="profile-view" class="hidden">
+      <div class="id-card" id="myCardToDownload">
+        <div class="id-card-header">
+          <span class="company-title">LACTO MISR HR</span>
+          <span style="font-size: 0.75rem; background: var(--accent); padding: 0.2rem 0.5rem; border-radius: 0.25rem;">ID OFFICIAL</span>
+        </div>
+
+        <img id="userPhoto" class="profile-img" crossorigin="anonymous" src="" alt="صورة الموظف">
+        <h3 id="userName" class="user-name">--</h3>
+        <p id="userJob" class="user-title">--</p>
+
+        <div class="info-grid">
+          <div>
+            <div class="info-label">الإدارة / القسم</div>
+            <div id="userDept" class="info-val">--</div>
+          </div>
+          <div>
+            <div class="info-label">كود الموظف</div>
+            <div id="userCodeVal" class="info-val">--</div>
+          </div>
+          <div style="grid-column: span 2;">
+            <div class="info-label">الرقم القومي</div>
+            <div id="userNID" class="info-val">--</div>
+          </div>
+        </div>
+
+        <div class="qr-container">
+          <div id="qrcode"></div>
+        </div>
+      </div>
+
+      <button onclick="downloadCard()" class="btn-download">حفظ الكارت كصورة 📥</button>
+
+      <div id="manager-section" class="admin-panel hidden">
+        <span style="color: var(--accent-light); font-weight: bold; font-size: 0.85rem;">صلاحية مدير النظام 🔐</span>
+      </div>
+
+      <button onclick="logout()" style="margin-top: 0.75rem; background: #334155; color: #fff;">خروج</button>
+    </div>
+
+    <!-- شاشة التحميل التلقائي للزائر (عند مسح الـ QR بكاميرا خارجية) -->
+    <div id="public-view" class="hidden">
+      <!-- كارت خفي يتم رسمه لتحويله لصورة فورية -->
+      <div style="position: absolute; left: -9999px; top: -9999px;">
+        <div class="id-card" id="publicCardToDownload" style="width: 350px;">
+          <div class="id-card-header">
+            <span class="company-title">LACTO MISR</span>
+            <span class="status-badge active-badge">موظف موثق ✅</span>
+          </div>
+
+          <img id="publicPhoto" class="profile-img" crossorigin="anonymous" src="" alt="صورة الموظف">
+          <h3 id="publicName" class="user-name">--</h3>
+          <p id="publicJob" class="user-title">--</p>
+
+          <div class="info-grid" style="grid-template-columns: 1fr;">
+            <div>
+              <div class="info-label">الشركة / الإدارة</div>
+              <div id="publicDept" class="info-val">--</div>
+            </div>
+          </div>
+
+          <p style="font-size: 0.8rem; color: var(--muted); margin-top: 0.5rem;">هوية رقمية معتمدة من شركة لاكتو مصر</p>
+        </div>
+      </div>
+
+      <!-- الواجهة البسيطة التي تظهر للزائر لحظات التحميل -->
+      <div id="downloadStatus" class="download-loader">
+        <p>⏳ جاري حفظ كارت الموظف على جهازك...</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Firebase CDN SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
+      authDomain: "lacto-hr-system.firebaseapp.com",
+      databaseURL: "https://lacto-hr-system-default-rtdb.firebaseio.com",
+      projectId: "lacto-hr-system",
+      storageBucket: "lacto-hr-system.firebasestorage.app",
+      messagingSenderId: "671259800401",
+      appId: "1:671259800401:web:905e1a36adba52ba2d1970"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const dbRef = ref(getDatabase(app));
+    let currentEmpCode = "";
+
+    // فحص طلب التنزيل التلقائي من الـ QR
+    async function checkDirectQR() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const empCodeParam = urlParams.get('emp');
+
+      if (empCodeParam) {
+        document.getElementById('login-view').classList.add('hidden');
+        document.getElementById('public-view').classList.remove('hidden');
+
+        try {
+          const snapshot = await get(child(dbRef, `users/${empCodeParam}`));
+          if (snapshot.exists()) {
+            const user = snapshot.val();
+            
+            if (user.status === "Resigned") {
+              document.getElementById('downloadStatus').innerHTML = "<p style='color:var(--danger)'>❌ هذا الحساب غير نشط.</p>";
+              return;
+            }
+
+            currentEmpCode = empCodeParam;
+            document.getElementById('publicName').innerText = user.name;
+            document.getElementById('publicJob').innerText = user.job;
+            document.getElementById('publicDept').innerText = `لاكتو مصر - ${user.dept}`;
+            
+            const imgEl = document.getElementById('publicPhoto');
+            imgEl.src = user.photo || "https://i.pravatar.cc/150?img=12";
+
+            // انتظار تحميل الصورة ثم التنفيذ التلقائي للتنزيل والإغلاق
+            imgEl.onload = function() {
+              setTimeout(() => {
+                silentDownloadAndClose(user.name);
+              }, 500);
+            };
+            
+            // احتياطي لو الصورة أخذت وقت
+            setTimeout(() => {
+              silentDownloadAndClose(user.name);
+            }, 1200);
+
+          } else {
+            document.getElementById('downloadStatus').innerHTML = "<p style='color:var(--danger)'>❌ الموظف غير موجود</p>";
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    }
+
+    // الدالة السحرية للتنزيل الصامت والإغلاق
+    function silentDownloadAndClose(empName) {
+      const cardElement = document.getElementById('publicCardToDownload');
+      html2canvas(cardElement, { useCORS: true, scale: 2 }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `Lacto_Card_${empName || currentEmpCode}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+
+        // تحديث الرسالة وإغلاق الصفحة تلقائياً
+        document.getElementById('downloadStatus').innerHTML = `
+          <h3 style="color:var(--success); margin-bottom: 0.5rem;">تم حفظ الكارت بنجاح ✅</h3>
+          <p style="color:var(--muted); font-size:0.85rem;">تم تنزيل كارت الموظف في الاستوديو/التحميلات عندك.</p>
+        `;
+
+        // محاولة إغلاق النافذة تلقائياً بعد ثانيتين
+        setTimeout(() => {
+          window.close();
+        }, 2000);
+      });
+    }
+
+    window.login = async function() {
+      const code = document.getElementById('empCode').value.trim();
+      const errorEl = document.getElementById('error');
+      errorEl.innerText = "جاري التحميل...";
+
+      if (!code) {
+        errorEl.innerText = "برجاء كتابة كود الموظف";
+        return;
+      }
+
+      try {
+        const snapshot = await get(child(dbRef, `users/${code}`));
+        if (snapshot.exists()) {
+          const user = snapshot.val();
+          
+          if (user.status === "Resigned") {
+            errorEl.innerText = "عفواً، هذا الحساب غير نشط (مستقيل).";
+            return;
+          }
+
+          currentEmpCode = code;
+          errorEl.innerText = "";
+          document.getElementById('login-view').classList.add('hidden');
+          document.getElementById('profile-view').classList.remove('hidden');
+
+          document.getElementById('userName').innerText = user.name;
+          document.getElementById('userJob').innerText = user.job;
+          document.getElementById('userDept').innerText = user.dept;
+          document.getElementById('userCodeVal').innerText = code;
+          document.getElementById('userNID').innerText = user.nationalId || "غير مسجل";
+          document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
+
+          const currentUrl = window.location.origin + window.location.pathname;
+          const qrLink = `${currentUrl}?emp=${code}`;
+
+          document.getElementById('qrcode').innerHTML = "";
+          new QRCode(document.getElementById("qrcode"), {
+            text: qrLink,
+            width: 85,
+            height: 85
+          });
+
+          if (user.role === "Manager") {
+            document.getElementById('manager-section').classList.remove('hidden');
+          } else {
+            document.getElementById('manager-section').classList.add('hidden');
+          }
+
+        } else {
+          errorEl.innerText = "كود الموظف غير موجود!";
+        }
+      } catch (err) {
+        console.error(err);
+        errorEl.innerText = "حدث خطأ أثناء الاتصال بقاعدة البيانات.";
+      }
+    };
+
+    window.downloadCard = function() {
+      const cardElement = document.getElementById('myCardToDownload');
+      html2canvas(cardElement, { useCORS: true, scale: 2 }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `Lacto_ID_${currentEmpCode}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    };
+
+    window.logout = function() {
+      window.location.href = window.location.pathname;
+    };
+
+    checkDirectQR();
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+</html>
