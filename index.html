@@ -312,14 +312,47 @@
     let currentEmpCode = "";
     let currentLang = localStorage.getItem('lacto_lang') || 'ar';
 
-    // القاموس العام الذكي المرن
+    // 1. قاموس الأسماء العربية الشائعة
+    const commonNames = {
+      "محمد": "Mohamed", "محمود": "Mahmoud", "أحمد": "Ahmed", "احمد": "Ahmed",
+      "مصطفى": "Mostafa", "مصطفي": "Mostafa", "علي": "Ali", "عالي": "Ali",
+      "حسن": "Hassan", "حسين": "Hussein", "إبراهيم": "Ibrahim", "ابراهيم": "Ibrahim", "عمر": "Omar",
+      "عمرو": "Amr", "عبدالله": "Abdallah", "عبد الله": "Abdallah", "عبد الرحمن": "Abdelrahman",
+      "عبدالرحمن": "Abdelrahman", "خالد": "Khaled", "طارق": "Tarek", "شريف": "Sherif",
+      "كريم": "Kareem", "سيد": "Sayed", "سامح": "Sameh", "ياسر": "Yasser",
+      "هاني": "Hany", "هانى": "Hany", "وائل": "Wael", "إيهاب": "Ehab", "ايهاب": "Ehab",
+      "عادل": "Adel", "سعید": "Saeed", "مجدي": "Magdy", "مجدى": "Magdy", "ايمن": "Ayman",
+      "أيمن": "Ayman", "اشرف": "Ashraf", "أشرف": "Ashraf", "تامر": "Tamer"
+    };
+
+    // 2. تحويل الحروف لأسماء غير المسجلة بالقاموس فورياً
+    function transliterateArabicName(arName) {
+      if (!arName) return "";
+      const words = arName.trim().split(/\s+/);
+      const translatedWords = words.map(w => {
+        if (commonNames[w]) return commonNames[w];
+
+        // تحويل حروف عام جداً
+        let res = w
+          .replace(/أ|إ|آ|ا/g, "A").replace(/ب/g, "B").replace(/ت/g, "T").replace(/ث/g, "Th")
+          .replace(/ج/g, "G").replace(/ح/g, "H").replace(/خ/g, "Kh").replace(/د/g, "D")
+          .replace(/ذ/g, "Z").replace(/ر/g, "R").replace(/ز/g, "Z").replace(/س/g, "S")
+          .replace(/ش/g, "Sh").replace(/ص/g, "S").replace(/ض/g, "D").replace(/ط/g, "T")
+          .replace(/ظ/g, "Z").replace(/ع/g, "A").replace(/غ/g, "Gh").replace(/ف/g, "F")
+          .replace(/ق/g, "Q").replace(/ك/g, "K").replace(/ل/g, "L").replace(/م/g, "M")
+          .replace(/ن/g, "N").replace(/ه/g, "H").replace(/و/g, "W").replace(/ي|ى/g, "Y");
+        return res.charAt(0).toUpperCase() + res.slice(1).toLowerCase();
+      });
+
+      return translatedWords.join(" ");
+    }
+
+    // 3. الترجمة الذكية للوظائف والأقسام
     function smartTranslate(text) {
       if (!text || text === "--") return "--";
       if (currentLang === 'ar') return text;
 
       let str = text.trim();
-      
-      // قواعد ترجمة فورية مرنة جداً لأي كلمة
       const map = [
         { ar: /تكنولوجيا والمعلومات|IT|تكنولوجيا المعلومات/gi, en: "Information Technology (IT)" },
         { ar: /الموارد البشرية|HR|موارد بشرية/gi, en: "Human Resources (HR)" },
@@ -471,8 +504,14 @@
       }
     };
 
+    function getFormattedName(user) {
+      if (currentLang === 'ar') return user.name;
+      if (user.name_en) return user.name_en; // لو مسجل بالإنجليزي في الفايربيس
+      return transliterateArabicName(user.name); // ترجمة فورية حية للاسم العربي!
+    }
+
     function renderProfileData(user) {
-      document.getElementById('userName').innerText = (currentLang === 'en' && user.name_en) ? user.name_en : user.name;
+      document.getElementById('userName').innerText = getFormattedName(user);
       document.getElementById('userJob').innerText = (currentLang === 'en' && user.job_en) ? user.job_en : smartTranslate(user.job);
       document.getElementById('userDept').innerText = (currentLang === 'en' && user.dept_en) ? user.dept_en : smartTranslate(user.dept);
       document.getElementById('userCodeVal').innerText = currentEmpCode;
@@ -670,7 +709,7 @@
               return;
             }
 
-            document.getElementById('publicName').innerText = (currentLang === 'en' && user.name_en) ? user.name_en : user.name;
+            document.getElementById('publicName').innerText = getFormattedName(user);
             document.getElementById('publicJob').innerText = (currentLang === 'en' && user.job_en) ? user.job_en : smartTranslate(user.job);
             document.getElementById('publicDept').innerText = `Lacto Misr - ${smartTranslate(user.dept)}`;
             
