@@ -29,7 +29,6 @@
       padding: 1rem;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
       min-height: 100vh;
       box-sizing: border-box;
@@ -53,21 +52,23 @@
       font-weight: bold;
       cursor: pointer;
     }
-    .lang-btn.active {
-      background: var(--accent);
-      border-color: var(--accent-light);
+    .lang-btn.active { background: var(--accent); border-color: var(--accent-light); }
+    
+    .container {
+      width: 100%;
+      max-width: 420px;
+      margin-top: 2.5rem;
     }
+
     .card {
       background: var(--card-bg);
       padding: 1.5rem;
       border-radius: 1.25rem;
       box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);
-      width: 100%;
-      max-width: 380px;
       text-align: center;
       box-sizing: border-box;
-      margin-top: 2rem;
     }
+
     input {
       width: 100%;
       padding: 0.85rem;
@@ -82,6 +83,7 @@
       outline: none;
     }
     input:focus { border-color: var(--accent-light); }
+    
     button {
       width: 100%;
       padding: 0.85rem;
@@ -93,13 +95,72 @@
       font-size: 1rem;
       cursor: pointer;
       margin-top: 0.5rem;
-      transition: background 0.2s;
     }
-    button:active { transform: scale(0.98); }
-    .btn-download { background: #22c55e; margin-top: 1rem; }
     .btn-secondary { background: #334155; }
-    .hidden { display: none; }
+    .btn-danger { background: var(--danger); }
+    .hidden { display: none !important; }
 
+    /* الهيدر المصغر للترحيب بالموظف */
+    .user-header-card {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border: 1px solid #334155;
+      padding: 1rem;
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      text-align: right;
+    }
+    [dir="ltr"] .user-header-card { text-align: left; }
+    .header-avatar {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      border: 2px solid var(--accent-light);
+      object-fit: cover;
+    }
+
+    /* شبكة الخدمات (الزراير) */
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      margin-bottom: 1rem;
+    }
+    .service-btn {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 1rem;
+      padding: 1.25rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--text);
+    }
+    .service-btn:active { transform: scale(0.95); background: #334155; }
+    .service-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .service-title { font-size: 0.85rem; font-weight: bold; }
+
+    /* شريط تنقل للرجوع */
+    .nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .back-btn {
+      background: #334155;
+      width: auto;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+      margin: 0;
+    }
+
+    /* تصميم الكارت */
     .id-card {
       background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
       border: 1px solid #334155;
@@ -116,7 +177,6 @@
       padding-bottom: 0.75rem;
       margin-bottom: 1rem;
     }
-    .company-title { font-weight: 800; font-size: 0.9rem; color: var(--accent-light); }
     .profile-img {
       width: 90px;
       height: 90px;
@@ -125,10 +185,7 @@
       object-fit: cover;
       margin: 0 auto 0.75rem auto;
       display: block;
-      background: #334155;
     }
-    .user-name { font-size: 1.2rem; font-weight: bold; margin: 0 0 0.25rem 0; }
-    .user-title { color: var(--accent-light); font-size: 0.9rem; margin: 0 0 0.75rem 0; }
     .info-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -148,35 +205,7 @@
       padding: 0.5rem;
       border-radius: 0.5rem;
       display: inline-block;
-      margin-top: 0.25rem;
     }
-    .admin-panel {
-      margin-top: 1rem;
-      padding: 0.75rem;
-      background: rgba(2, 132, 199, 0.1);
-      border: 1px dashed var(--accent-light);
-      border-radius: 0.75rem;
-    }
-    .temp-pass-box {
-      background: #0284c7;
-      color: #fff;
-      font-size: 1.8rem;
-      font-weight: bold;
-      letter-spacing: 4px;
-      padding: 1rem;
-      border-radius: 0.75rem;
-      margin: 1rem 0;
-      user-select: all;
-    }
-    .modal-box {
-      background: #0f172a;
-      border: 1px solid #334155;
-      padding: 1.25rem;
-      border-radius: 1rem;
-      margin-top: 1rem;
-      text-align: right;
-    }
-    [dir="ltr"] .modal-box { text-align: left; }
   </style>
 </head>
 <body>
@@ -186,13 +215,14 @@
     <button id="btn-en" class="lang-btn" onclick="setLanguage('en')">English</button>
   </div>
 
-  <div class="card" id="app">
+  <div class="container">
+    
     <!-- 1. شاشة تسجيل الدخول -->
-    <div id="login-view">
-      <h2 style="margin-bottom: 0.25rem;">Lacto HR Hub</h2>
-      <p id="t-subtitle" style="color: var(--muted); font-size: 0.9rem; margin-top: 0;">بوابة الموظفين والمدراء الرقمية</p>
+    <div id="view-login" class="card">
+      <h2>Lacto HR Hub</h2>
+      <p id="t-subtitle" style="color: var(--muted); font-size: 0.9rem; margin-top: -0.5rem;">بوابة الموظفين والمدراء الرقمية</p>
       
-      <input type="text" id="empCode" placeholder="كود الموظف (مثال: 102)">
+      <input type="text" id="empCode" placeholder="كود الموظف">
       <input type="password" id="empPass" placeholder="كلمة السر">
       
       <button id="t-loginBtn" onclick="login()">دخول 🔑</button>
@@ -202,91 +232,113 @@
     </div>
 
     <!-- 2. شاشة تفعيل الحساب لأول مرة -->
-    <div id="first-time-view" class="hidden">
+    <div id="view-first-time" class="card hidden">
       <h3 id="t-welcomeTitle" style="color: var(--accent-light);">مرحباً بك في نظام لاكتو! 🎉</h3>
-      <p id="t-welcomeDesc" style="color: var(--muted); font-size: 0.85rem;">احفظ كلمة السر المؤقتة التالية الخاصة بك، ولن تظهر مرة أخرى:</p>
-      
-      <div id="tempPasswordDisplay" class="temp-pass-box">------</div>
-      
-      <p id="t-welcomeWarn" style="color: #fbbf24; font-size: 0.8rem;">⚠️ قم بنسخها أو كتابتها الآن للوفود بها عند الدخول.</p>
+      <p id="t-welcomeDesc" style="color: var(--muted); font-size: 0.85rem;">احفظ كلمة السر المؤقتة التالية الخاصة بك:</p>
+      <div id="tempPasswordDisplay" style="background:#0284c7; color:#fff; font-size:1.8rem; font-weight:bold; padding:1rem; border-radius:0.75rem; margin:1rem 0;">------</div>
       <button id="t-goLoginBtn" onclick="goToLoginWithCode()">فهمت، الانتقال لتسجيل الدخول ➡️</button>
     </div>
 
-    <!-- 3. شاشة الكارت والبروفايل -->
-    <div id="profile-view" class="hidden">
-      <div class="id-card" id="myCardToDownload">
-        <div class="id-card-header">
-          <span class="company-title">LACTO MISR HR</span>
-          <span style="font-size: 0.75rem; background: var(--accent); padding: 0.2rem 0.5rem; border-radius: 0.25rem;">ID OFFICIAL</span>
-        </div>
-
-        <img id="userPhoto" class="profile-img" crossorigin="anonymous" src="" alt="صورة الموظف">
-        <h3 id="userName" class="user-name">--</h3>
-        <p id="userJob" class="user-title">--</p>
-
-        <div class="info-grid">
-          <div>
-            <div id="t-lblDept" class="info-label">الإدارة / القسم</div>
-            <div id="userDept" class="info-val">--</div>
-          </div>
-          <div>
-            <div id="t-lblCode" class="info-label">كود الموظف</div>
-            <div id="userCodeVal" class="info-val">--</div>
-          </div>
-          <div style="grid-column: span 2;">
-            <div id="t-lblNID" class="info-label">الرقم القومي</div>
-            <div id="userNID" class="info-val">--</div>
-          </div>
-        </div>
-
-        <div class="qr-container">
-          <div id="qrcode"></div>
+    <!-- 3. الصفحة الرئيسية للموظف (Dashboard) -->
+    <div id="view-dashboard" class="hidden">
+      <!-- هيدر معلومات سريع -->
+      <div class="user-header-card">
+        <img id="dash-avatar" class="header-avatar" src="" alt="">
+        <div>
+          <h3 id="dash-name" style="margin: 0; font-size: 1.1rem;">--</h3>
+          <p id="dash-job" style="margin: 0; color: var(--accent-light); font-size: 0.85rem;">--</p>
         </div>
       </div>
 
-      <button id="t-saveCardBtn" onclick="downloadCard()" class="btn-download">حفظ الكارت كصورة 📥</button>
-      <button id="t-changePassBtn" onclick="toggleChangePassModal()" class="btn-secondary">تغيير كلمة السر 🔒</button>
+      <!-- شبكة الخدمات / الزراير -->
+      <div class="services-grid">
+        <div class="service-btn" onclick="showPage('view-id-card')">
+          <span class="service-icon">🪪</span>
+          <span id="t-btnID" class="service-title">كارت الهوية الرقمي</span>
+        </div>
 
-      <!-- مودال تغيير كلمة السر -->
-      <div id="changePassModal" class="modal-box hidden">
-        <h4 id="t-changePassTitle" style="margin-top:0; color:var(--accent-light);">تغيير كلمة السر</h4>
-        <input type="password" id="oldPass" placeholder="كلمة السر الحالية">
-        <input type="password" id="newPass" placeholder="كلمة السر الجديدة">
-        <button id="t-savePassBtn" onclick="changePassword()">حفظ كلمة السر الجديدة</button>
-        <p id="passMsg" style="font-size: 0.8rem; margin-top:0.5rem;"></p>
+        <div class="service-btn" onclick="showPage('view-leaves')">
+          <span class="service-icon">🌴</span>
+          <span id="t-btnLeaves" class="service-title">طلبات الإجازات</span>
+        </div>
+
+        <div class="service-btn" onclick="showPage('view-payroll')">
+          <span class="service-icon">💰</span>
+          <span id="t-btnPay" class="service-title">مفردات المرتب</span>
+        </div>
+
+        <div class="service-btn" onclick="showPage('view-directory')">
+          <span class="service-icon">📞</span>
+          <span id="t-btnDir" class="service-title">دليل التواصل</span>
+        </div>
       </div>
 
-      <div id="manager-section" class="admin-panel hidden">
-        <span id="t-adminBadge" style="color: var(--accent-light); font-weight: bold; font-size: 0.85rem;">صلاحية مدير النظام 🔐</span>
-      </div>
-
-      <button id="t-logoutBtn" onclick="logout()" style="margin-top: 0.75rem; background: #334155;">تسجيل الخروج</button>
+      <button id="t-changePassBtn" onclick="showPage('view-change-pass')" class="btn-secondary">تغيير كلمة السر 🔒</button>
+      <button id="t-logoutBtn" onclick="logout()" class="btn-danger" style="margin-top: 0.5rem;">تسجيل الخروج 🚪</button>
     </div>
 
-    <!-- 4. شاشة التنزيل للزائر عند مسح الـ QR -->
-    <div id="public-view" class="hidden">
-      <div style="position: absolute; left: -9999px; top: -9999px;">
-        <div class="id-card" id="publicCardToDownload" style="width: 350px;">
-          <div class="id-card-header">
-            <span class="company-title">LACTO MISR</span>
-            <span id="t-verifiedBadge" style="background: rgba(34,197,94,0.2); color: var(--success); padding: 0.2rem 0.5rem; border-radius: 1rem; font-size:0.75rem; font-weight:bold;">موظف موثق ✅</span>
-          </div>
-          <img id="publicPhoto" class="profile-img" crossorigin="anonymous" src="" alt="صورة الموظف">
-          <h3 id="publicName" class="user-name">--</h3>
-          <p id="publicJob" class="user-title">--</p>
-          <div class="info-grid" style="grid-template-columns: 1fr;">
-            <div>
-              <div id="t-lblPublicDept" class="info-label">الشركة / الإدارة</div>
-              <div id="publicDept" class="info-val">--</div>
-            </div>
-          </div>
-          <p id="t-publicFooter" style="font-size: 0.8rem; color: var(--muted); margin-top: 0.5rem;">هوية رقمية معتمدة من شركة لاكتو مصر</p>
-        </div>
+    <!-- 4. صفحة كارت الهوية الرقمي -->
+    <div id="view-id-card" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-dashboard')">➡️ رجوع</button>
+        <span style="font-weight: bold; font-size: 0.9rem;">الكارت الرقمي</span>
       </div>
 
-      <div id="downloadStatus" style="color: var(--accent-light); padding: 2rem 0;">
-        <p>⏳ جاري حفظ كارت الموظف على جهازك...</p>
+      <div class="id-card" id="myCardToDownload">
+        <div class="id-card-header">
+          <span style="font-weight: 800; font-size: 0.9rem; color: var(--accent-light);">LACTO MISR HR</span>
+          <span style="font-size: 0.75rem; background: var(--accent); padding: 0.2rem 0.5rem; border-radius: 0.25rem;">OFFICIAL</span>
+        </div>
+        <img id="userPhoto" class="profile-img" crossorigin="anonymous" src="" alt="">
+        <h3 id="userName" style="margin:0 0 0.25rem 0;">--</h3>
+        <p id="userJob" style="color: var(--accent-light); font-size: 0.9rem; margin:0 0 0.75rem 0;">--</p>
+        <div class="info-grid">
+          <div><div class="info-label" id="t-lblDept">الإدارة</div><div id="userDept" class="info-val">--</div></div>
+          <div><div class="info-label" id="t-lblCode">كود الموظف</div><div id="userCodeVal" class="info-val">--</div></div>
+          <div style="grid-column: span 2;"><div class="info-label" id="t-lblNID">الرقم القومي</div><div id="userNID" class="info-val">--</div></div>
+        </div>
+        <div class="qr-container"><div id="qrcode"></div></div>
       </div>
+      <button id="t-saveCardBtn" onclick="downloadCard()" style="background: var(--success); margin-top: 1rem;">حفظ الكارت كصورة 📥</button>
+    </div>
+
+    <!-- 5. صفحة طلب الإجازات (صفحة فرعية كمثال) -->
+    <div id="view-leaves" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-dashboard')">➡️ رجوع</button>
+        <span style="font-weight: bold;">خدمة الإجازات</span>
+      </div>
+      <p style="color: var(--muted); font-size: 0.9rem;">قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.</p>
+    </div>
+
+    <!-- 6. صفحة المفردات والمرتبات (كمثال) -->
+    <div id="view-payroll" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-dashboard')">➡️ رجوع</button>
+        <span style="font-weight: bold;">مفردات المرتب</span>
+      </div>
+      <p style="color: var(--muted); font-size: 0.9rem;">قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.</p>
+    </div>
+
+    <!-- 7. صفحة دليل التواصل الداخلي -->
+    <div id="view-directory" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-dashboard')">➡️ رجوع</button>
+        <span style="font-weight: bold;">دليل التواصل</span>
+      </div>
+      <p style="color: var(--muted); font-size: 0.9rem;">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
+    </div>
+
+    <!-- 8. صفحة تغيير كلمة السر -->
+    <div id="view-change-pass" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-dashboard')">➡️ رجوع</button>
+        <span style="font-weight: bold;">تغيير كلمة السر</span>
+      </div>
+      <input type="password" id="oldPass" placeholder="كلمة السر الحالية">
+      <input type="password" id="newPass" placeholder="كلمة السر الجديدة">
+      <button id="t-savePassBtn" onclick="changePassword()">حفظ كلمة السر الجديدة</button>
+      <p id="passMsg" style="font-size: 0.8rem; margin-top:0.5rem;"></p>
     </div>
 
   </div>
@@ -312,373 +364,89 @@
     let currentEmpCode = "";
     let currentLang = localStorage.getItem('lacto_lang') || 'ar';
 
-    // 1. قاموس الأسماء العربية الشائعة
-    const commonNames = {
-      "محمد": "Mohamed", "محمود": "Mahmoud", "أحمد": "Ahmed", "احمد": "Ahmed",
-      "مصطفى": "Mostafa", "مصطفي": "Mostafa", "علي": "Ali", "عالي": "Ali",
-      "حسن": "Hassan", "حسين": "Hussein", "إبراهيم": "Ibrahim", "ابراهيم": "Ibrahim", "عمر": "Omar",
-      "عمرو": "Amr", "عبدالله": "Abdallah", "عبد الله": "Abdallah", "عبد الرحمن": "Abdelrahman",
-      "عبدالرحمن": "Abdelrahman", "خالد": "Khaled", "طارق": "Tarek", "شريف": "Sherif",
-      "كريم": "Kareem", "سيد": "Sayed", "سامح": "Sameh", "ياسر": "Yasser",
-      "هاني": "Hany", "هانى": "Hany", "وائل": "Wael", "إيهاب": "Ehab", "ايهاب": "Ehab",
-      "عادل": "Adel", "سعید": "Saeed", "مجدي": "Magdy", "مجدى": "Magdy", "ايمن": "Ayman",
-      "أيمن": "Ayman", "اشرف": "Ashraf", "أشرف": "Ashraf", "تامر": "Tamer"
-    };
+    const commonNames = { "محمد": "Mohamed", "أحمد": "Ahmed", "مصطفى": "Mostafa", "علي": "Ali", "محمود": "Mahmoud" };
 
-    // 2. تحويل الحروف لأسماء غير المسجلة بالقاموس فورياً
     function transliterateArabicName(arName) {
       if (!arName) return "";
-      const words = arName.trim().split(/\s+/);
-      const translatedWords = words.map(w => {
-        if (commonNames[w]) return commonNames[w];
-
-        // تحويل حروف عام جداً
-        let res = w
-          .replace(/أ|إ|آ|ا/g, "A").replace(/ب/g, "B").replace(/ت/g, "T").replace(/ث/g, "Th")
-          .replace(/ج/g, "G").replace(/ح/g, "H").replace(/خ/g, "Kh").replace(/د/g, "D")
-          .replace(/ذ/g, "Z").replace(/ر/g, "R").replace(/ز/g, "Z").replace(/س/g, "S")
-          .replace(/ش/g, "Sh").replace(/ص/g, "S").replace(/ض/g, "D").replace(/ط/g, "T")
-          .replace(/ظ/g, "Z").replace(/ع/g, "A").replace(/غ/g, "Gh").replace(/ف/g, "F")
-          .replace(/ق/g, "Q").replace(/ك/g, "K").replace(/ل/g, "L").replace(/م/g, "M")
-          .replace(/ن/g, "N").replace(/ه/g, "H").replace(/و/g, "W").replace(/ي|ى/g, "Y");
-        return res.charAt(0).toUpperCase() + res.slice(1).toLowerCase();
-      });
-
-      return translatedWords.join(" ");
+      return arName.trim().split(/\s+/).map(w => commonNames[w] || w).join(" ");
     }
 
-    // 3. الترجمة الذكية للوظائف والأقسام
     function smartTranslate(text) {
-      if (!text || text === "--") return "--";
-      if (currentLang === 'ar') return text;
-
+      if (!text || text === "--" || currentLang === 'ar') return text;
       let str = text.trim();
       const map = [
-        { ar: /تكنولوجيا والمعلومات|IT|تكنولوجيا المعلومات/gi, en: "Information Technology (IT)" },
-        { ar: /الموارد البشرية|HR|موارد بشرية/gi, en: "Human Resources (HR)" },
-        { ar: /الحسابات|المالية|محاسبة/gi, en: "Finance & Accounting" },
-        { ar: /المبيعات|مبيعات/gi, en: "Sales Department" },
-        { ar: /المشتريات|مشتريات/gi, en: "Procurement" },
-        { ar: /الجودة|جودة/gi, en: "Quality Control" },
-        { ar: /الإنتاج|إنتاج/gi, en: "Production Dept" },
-        { ar: /الصيانة|صيانة/gi, en: "Maintenance" },
+        { ar: /تكنولوجيا المعلومات|IT/gi, en: "Information Technology" },
+        { ar: /الموارد البشرية|HR/gi, en: "Human Resources" },
         { ar: /مدير/gi, en: "Manager" },
-        { ar: /أخصائي|اخصائي/gi, en: "Specialist" },
-        { ar: /مهندس/gi, en: "Engineer" },
-        { ar: /مشرف/gi, en: "Supervisor" },
-        { ar: /مظور|مبرمج/gi, en: "Developer" },
-        { ar: /محاسب/gi, en: "Accountant" },
-        { ar: /فني/gi, en: "Technician" },
-        { ar: /عامل/gi, en: "Worker" },
-        { ar: /غير مسجل/gi, en: "N/A" }
+        { ar: /مهندس/gi, en: "Engineer" }
       ];
-
-      for (let item of map) {
-        if (item.ar.test(str)) {
-          str = str.replace(item.ar, item.en);
-        }
-      }
-
+      for (let item of map) { if (item.ar.test(str)) str = str.replace(item.ar, item.en); }
       return str;
     }
 
-    const translations = {
-      ar: {
-        subtitle: "بوابة الموظفين والمدراء الرقمية",
-        empCodePh: "كود الموظف (مثال: 102)",
-        empPassPh: "كلمة السر",
-        loginBtn: "دخول 🔑",
-        firstTimeBtn: "أول مرة تسجل؟ تفعيل الحساب ⚡",
-        welcomeTitle: "مرحباً بك في نظام لاكتو! 🎉",
-        welcomeDesc: "احفظ كلمة السر المؤقتة التالية الخاصة بك، ولن تظهر مرة أخرى:",
-        welcomeWarn: "⚠️ قم بنسخها أو كتابتها الآن للوفود بها عند الدخول.",
-        goLoginBtn: "فهمت، الانتقال لتسجيل الدخول ➡️",
-        lblDept: "الإدارة / القسم",
-        lblCode: "كود الموظف",
-        lblNID: "الرقم القومي",
-        saveCardBtn: "حفظ الكارت كصورة 📥",
-        changePassBtn: "تغيير كلمة السر 🔒",
-        changePassTitle: "تغيير كلمة السر",
-        oldPassPh: "كلمة السر الحالية",
-        newPassPh: "كلمة السر الجديدة",
-        savePassBtn: "حفظ كلمة السر الجديدة",
-        adminBadge: "صلاحية مدير النظام 🔐",
-        logoutBtn: "تسجيل الخروج",
-        verifiedBadge: "موظف موثق ✅",
-        lblPublicDept: "الشركة / الإدارة",
-        publicFooter: "هوية رقمية معتمدة من شركة لاكتو مصر",
-        savingCard: "⏳ جاري حفظ كارت الموظف على جهازك...",
-        cardSaved: "تم حفظ الكارت بنجاح ✅",
-        cardSavedDesc: "تم تنزيل كارت الموظف في التحميلات عندك.",
-        errNoCode: "برجاء كتابة كود الموظف أولاً لتفعيل الحساب.",
-        errInactive: "عفواً، هذا الحساب غير نشط.",
-        errAlreadyActive: "حسابك مفعل بالفعل! يرجى كتابة كلمة السر والدخول.",
-        errNotReg: "كود الموظف غير مسجل بالنظام!",
-        errConnecting: "جاري الاتصال...",
-        errNeedActivation: "يرجى الضغط على (تفعيل الحساب لأول مرة) أولاً!",
-        errWrongPass: "كلمة السر غير صحيحة!",
-        errFillAll: "يرجى ملء جميع الحقول.",
-        errPassLength: "كلمة السر الجديدة يجب أن تكون 4 أرقام/حروف على الأقل.",
-        passSuccess: "تم تغيير كلمة السر بنجاح! ✅"
-      },
-      en: {
-        subtitle: "Employees & Management Portal",
-        empCodePh: "Employee ID (e.g. 102)",
-        empPassPh: "Password",
-        loginBtn: "Login 🔑",
-        firstTimeBtn: "First time? Activate Account ⚡",
-        welcomeTitle: "Welcome to Lacto System! 🎉",
-        welcomeDesc: "Save your temporary password, it won't appear again:",
-        welcomeWarn: "⚠️ Copy or write it down now to use for login.",
-        goLoginBtn: "Got it, Go to Login ➡️",
-        lblDept: "Department / Section",
-        lblCode: "Employee ID",
-        lblNID: "National ID",
-        saveCardBtn: "Save Card as Image 📥",
-        changePassBtn: "Change Password 🔒",
-        changePassTitle: "Change Password",
-        oldPassPh: "Current Password",
-        newPassPh: "New Password",
-        savePassBtn: "Save New Password",
-        adminBadge: "System Admin Access 🔐",
-        logoutBtn: "Logout",
-        verifiedBadge: "Verified Employee ✅",
-        lblPublicDept: "Company / Department",
-        publicFooter: "Official Digital ID - Lacto Misr",
-        savingCard: "⏳ Saving employee card to your device...",
-        cardSaved: "Card Saved Successfully ✅",
-        cardSavedDesc: "Employee card downloaded to your device.",
-        errNoCode: "Please enter your Employee ID first.",
-        errInactive: "Sorry, this account is inactive.",
-        errAlreadyActive: "Account already active! Please enter password and login.",
-        errNotReg: "Employee ID is not registered!",
-        errConnecting: "Connecting...",
-        errNeedActivation: "Please click (Activate Account) first!",
-        errWrongPass: "Incorrect password!",
-        errFillAll: "Please fill in all fields.",
-        errPassLength: "New password must be at least 4 characters.",
-        passSuccess: "Password changed successfully! ✅"
-      }
+    // التنقل بين الصفحات بسهولة
+    window.showPage = function(pageId) {
+      const views = ['view-login', 'view-first-time', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory', 'view-change-pass'];
+      views.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+      });
+      document.getElementById(pageId).classList.remove('hidden');
     };
-
-    window.setLanguage = function(lang) {
-      currentLang = lang;
-      localStorage.setItem('lacto_lang', lang);
-
-      document.documentElement.lang = lang;
-      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-
-      document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
-      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-
-      const t = translations[lang];
-
-      document.getElementById('t-subtitle').innerText = t.subtitle;
-      document.getElementById('empCode').placeholder = t.empCodePh;
-      document.getElementById('empPass').placeholder = t.empPassPh;
-      document.getElementById('t-loginBtn').innerText = t.loginBtn;
-      document.getElementById('t-firstTimeBtn').innerText = t.firstTimeBtn;
-      document.getElementById('t-welcomeTitle').innerText = t.welcomeTitle;
-      document.getElementById('t-welcomeDesc').innerText = t.welcomeDesc;
-      document.getElementById('t-welcomeWarn').innerText = t.welcomeWarn;
-      document.getElementById('t-goLoginBtn').innerText = t.goLoginBtn;
-
-      document.getElementById('t-lblDept').innerText = t.lblDept;
-      document.getElementById('t-lblCode').innerText = t.lblCode;
-      document.getElementById('t-lblNID').innerText = t.lblNID;
-      document.getElementById('t-saveCardBtn').innerText = t.saveCardBtn;
-      document.getElementById('t-changePassBtn').innerText = t.changePassBtn;
-      document.getElementById('t-changePassTitle').innerText = t.changePassTitle;
-      document.getElementById('oldPass').placeholder = t.oldPassPh;
-      document.getElementById('newPass').placeholder = t.newPassPh;
-      document.getElementById('t-savePassBtn').innerText = t.savePassBtn;
-      document.getElementById('t-adminBadge').innerText = t.adminBadge;
-      document.getElementById('t-logoutBtn').innerText = t.logoutBtn;
-
-      document.getElementById('t-verifiedBadge').innerText = t.verifiedBadge;
-      document.getElementById('t-lblPublicDept').innerText = t.lblPublicDept;
-      document.getElementById('t-publicFooter').innerText = t.publicFooter;
-
-      if (currentUserData) {
-        renderProfileData(currentUserData);
-      }
-    };
-
-    function getFormattedName(user) {
-      if (currentLang === 'ar') return user.name;
-      if (user.name_en) return user.name_en; // لو مسجل بالإنجليزي في الفايربيس
-      return transliterateArabicName(user.name); // ترجمة فورية حية للاسم العربي!
-    }
 
     function renderProfileData(user) {
-      document.getElementById('userName').innerText = getFormattedName(user);
-      document.getElementById('userJob').innerText = (currentLang === 'en' && user.job_en) ? user.job_en : smartTranslate(user.job);
-      document.getElementById('userDept').innerText = (currentLang === 'en' && user.dept_en) ? user.dept_en : smartTranslate(user.dept);
+      const formattedName = (currentLang === 'en') ? (user.name_en || transliterateArabicName(user.name)) : user.name;
+      const formattedJob = (currentLang === 'en' && user.job_en) ? user.job_en : smartTranslate(user.job);
+      const formattedDept = (currentLang === 'en' && user.dept_en) ? user.dept_en : smartTranslate(user.dept);
+
+      // للـ Dashboard
+      document.getElementById('dash-name').innerText = formattedName;
+      document.getElementById('dash-job').innerText = formattedJob;
+      document.getElementById('dash-avatar').src = user.photo || "https://i.pravatar.cc/150?img=12";
+
+      // لكارت ID
+      document.getElementById('userName').innerText = formattedName;
+      document.getElementById('userJob').innerText = formattedJob;
+      document.getElementById('userDept').innerText = formattedDept;
       document.getElementById('userCodeVal').innerText = currentEmpCode;
       document.getElementById('userNID').innerText = user.nationalId || "--";
       document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
     }
 
-    function generateTempPassword() {
-      return Math.floor(100000 + Math.random() * 900000).toString();
-    }
-
-    window.checkFirstTime = async function() {
-      const code = document.getElementById('empCode').value.trim();
-      const errorEl = document.getElementById('error');
-      const t = translations[currentLang];
-      errorEl.innerText = "";
-
-      if (!code) {
-        errorEl.innerText = t.errNoCode;
-        return;
-      }
-
-      try {
-        const snapshot = await get(child(dbRef, `users/${code}`));
-        if (snapshot.exists()) {
-          const user = snapshot.val();
-          
-          if (user.status === "Resigned") {
-            errorEl.innerText = t.errInactive;
-            return;
-          }
-
-          if (user.password) {
-            errorEl.innerText = t.errAlreadyActive;
-            return;
-          }
-
-          const tempPass = generateTempPassword();
-          await update(ref(db, `users/${code}`), { password: tempPass });
-
-          currentEmpCode = code;
-          document.getElementById('tempPasswordDisplay').innerText = tempPass;
-          document.getElementById('login-view').classList.add('hidden');
-          document.getElementById('first-time-view').classList.remove('hidden');
-
-        } else {
-          errorEl.innerText = t.errNotReg;
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    window.goToLoginWithCode = function() {
-      document.getElementById('first-time-view').classList.add('hidden');
-      document.getElementById('login-view').classList.remove('hidden');
-      document.getElementById('empPass').focus();
-    };
-
     window.login = async function() {
       const code = document.getElementById('empCode').value.trim();
       const pass = document.getElementById('empPass').value.trim();
       const errorEl = document.getElementById('error');
-      const t = translations[currentLang];
-      errorEl.innerText = t.errConnecting;
+      errorEl.innerText = "جاري الاتصال...";
 
-      if (!code) {
-        errorEl.innerText = t.errNoCode;
-        return;
-      }
+      if (!code) { errorEl.innerText = "يرجى إدخال الكود"; return; }
 
       try {
         const snapshot = await get(child(dbRef, `users/${code}`));
         if (snapshot.exists()) {
           const user = snapshot.val();
-          
-          if (user.status === "Resigned") {
-            errorEl.innerText = t.errInactive;
-            return;
-          }
-
-          if (!user.password) {
-            errorEl.innerText = t.errNeedActivation;
-            return;
-          }
-
-          if (user.password !== pass) {
-            errorEl.innerText = t.errWrongPass;
-            return;
-          }
+          if (user.password !== pass) { errorEl.innerText = "كلمة السر غير صحيحة!"; return; }
 
           currentUserData = user;
           currentEmpCode = code;
           errorEl.innerText = "";
           
-          document.getElementById('login-view').classList.add('hidden');
-          document.getElementById('profile-view').classList.remove('hidden');
-
           renderProfileData(user);
 
+          // توليد الـ QR
           const currentUrl = window.location.origin + window.location.pathname;
-          const qrLink = `${currentUrl}?emp=${code}`;
-
           document.getElementById('qrcode').innerHTML = "";
-          new QRCode(document.getElementById("qrcode"), {
-            text: qrLink,
-            width: 85,
-            height: 85
-          });
+          new QRCode(document.getElementById("qrcode"), { text: `${currentUrl}?emp=${code}`, width: 85, height: 85 });
 
-          if (user.role === "Manager") {
-            document.getElementById('manager-section').classList.remove('hidden');
-          } else {
-            document.getElementById('manager-section').classList.add('hidden');
-          }
-
+          showPage('view-dashboard');
         } else {
-          errorEl.innerText = t.errNotReg;
+          errorEl.innerText = "كود الموظف غير مسجل!";
         }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    window.toggleChangePassModal = function() {
-      document.getElementById('changePassModal').classList.toggle('hidden');
-    };
-
-    window.changePassword = async function() {
-      const oldPass = document.getElementById('oldPass').value.trim();
-      const newPass = document.getElementById('newPass').value.trim();
-      const msgEl = document.getElementById('passMsg');
-      const t = translations[currentLang];
-
-      if (!oldPass || !newPass) {
-        msgEl.style.color = "var(--danger)";
-        msgEl.innerText = t.errFillAll;
-        return;
-      }
-
-      if (oldPass !== currentUserData.password) {
-        msgEl.style.color = "var(--danger)";
-        msgEl.innerText = t.errWrongPass;
-        return;
-      }
-
-      if (newPass.length < 4) {
-        msgEl.style.color = "var(--danger)";
-        msgEl.innerText = t.errPassLength;
-        return;
-      }
-
-      try {
-        await update(ref(db, `users/${currentEmpCode}`), { password: newPass });
-        currentUserData.password = newPass;
-        msgEl.style.color = "var(--success)";
-        msgEl.innerText = t.passSuccess;
-        document.getElementById('oldPass').value = "";
-        document.getElementById('newPass').value = "";
-      } catch (err) {
-        console.error(err);
-      }
+      } catch (err) { console.error(err); }
     };
 
     window.downloadCard = function() {
-      const cardElement = document.getElementById('myCardToDownload');
-      html2canvas(cardElement, { useCORS: true, scale: 2 }).then(canvas => {
+      html2canvas(document.getElementById('myCardToDownload'), { useCORS: true, scale: 2 }).then(canvas => {
         const link = document.createElement('a');
         link.download = `Lacto_ID_${currentEmpCode}.png`;
         link.href = canvas.toDataURL('image/png');
@@ -686,66 +454,19 @@
       });
     };
 
-    window.logout = function() {
-      window.location.reload();
+    window.logout = function() { window.location.reload(); };
+
+    window.setLanguage = function(lang) {
+      currentLang = lang;
+      localStorage.setItem('lacto_lang', lang);
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      if (currentUserData) renderProfileData(currentUserData);
     };
 
-    async function checkDirectQR() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const empCodeParam = urlParams.get('emp');
-
-      if (empCodeParam) {
-        document.getElementById('login-view').classList.add('hidden');
-        document.getElementById('public-view').classList.remove('hidden');
-
-        try {
-          const snapshot = await get(child(dbRef, `users/${empCodeParam}`));
-          if (snapshot.exists()) {
-            const user = snapshot.val();
-            const t = translations[currentLang];
-
-            if (user.status === "Resigned") {
-              document.getElementById('downloadStatus').innerHTML = `<p style='color:var(--danger)'>❌ ${t.errInactive}</p>`;
-              return;
-            }
-
-            document.getElementById('publicName').innerText = getFormattedName(user);
-            document.getElementById('publicJob').innerText = (currentLang === 'en' && user.job_en) ? user.job_en : smartTranslate(user.job);
-            document.getElementById('publicDept').innerText = `Lacto Misr - ${smartTranslate(user.dept)}`;
-            
-            const imgEl = document.getElementById('publicPhoto');
-            imgEl.src = user.photo || "https://i.pravatar.cc/150?img=12";
-
-            const triggerDownload = () => {
-              const cardElement = document.getElementById('publicCardToDownload');
-              html2canvas(cardElement, { useCORS: true, scale: 2 }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `Lacto_Card_${user.name || empCodeParam}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-
-                document.getElementById('downloadStatus').innerHTML = `
-                  <h3 style="color:var(--success); margin-bottom: 0.5rem;">${t.cardSaved}</h3>
-                  <p style="color:var(--muted); font-size:0.85rem;">${t.cardSavedDesc}</p>
-                `;
-                setTimeout(() => { window.close(); }, 2000);
-              });
-            };
-
-            imgEl.onload = () => setTimeout(triggerDownload, 400);
-            setTimeout(triggerDownload, 1200);
-
-          } else {
-            document.getElementById('downloadStatus').innerHTML = "<p style='color:var(--danger)'>❌ Not Found</p>";
-          }
-        } catch (err) {
-          console.error(err);
-        }
-      }
-    }
-
     setLanguage(currentLang);
-    checkDirectQR();
   </script>
 </body>
 </html>
