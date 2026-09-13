@@ -184,7 +184,7 @@
 </head>
 <body>
 
-  <!-- ز أزرار اختيار اللغة -->
+  <!-- أزرار اختيار اللغة -->
   <div class="lang-switcher">
     <button id="btn-ar" class="lang-btn active" onclick="setLanguage('ar')">العربية</button>
     <button id="btn-en" class="lang-btn" onclick="setLanguage('en')">English</button>
@@ -316,7 +316,35 @@
     let currentEmpCode = "";
     let currentLang = localStorage.getItem('lacto_lang') || 'ar';
 
-    // القاموس اللغوي (النصوص بالعربي والإنجليزي)
+    // قاموس ترجمة البيانات الشائعة في الشركة تلقائياً
+    const dataTranslations = {
+      en: {
+        "تكنولوجيا المعلومات": "Information Technology (IT)",
+        "الموارد البشرية": "Human Resources (HR)",
+        "الحسابات": "Finance & Accounting",
+        "المبيعات": "Sales Department",
+        "المشتريات": "Procurement & Purchasing",
+        "الجودة": "Quality Assurance",
+        "الإنتاج": "Production Dept",
+        "الصيانة": "Maintenance Dept",
+        "مدير موارد بشرية": "HR Manager",
+        "أخصائي موارد بشرية": "HR Specialist",
+        "مهندس برمجيات": "Software Engineer",
+        "محتسب حسابات": "Accountant",
+        "مهندس جودة": "Quality Engineer",
+        "غير مسجل": "N/A"
+      }
+    };
+
+    // دالة ترجمة النص الديناميكي من قاعدة البيانات
+    function translateDynamicData(text) {
+      if (!text) return "--";
+      if (currentLang === 'en' && dataTranslations.en[text]) {
+        return dataTranslations.en[text];
+      }
+      return text;
+    }
+
     const translations = {
       ar: {
         subtitle: "بوابة الموظفين والمدراء الرقمية",
@@ -396,7 +424,6 @@
       }
     };
 
-    // تطبيق اللغة
     window.setLanguage = function(lang) {
       currentLang = lang;
       localStorage.setItem('lacto_lang', lang);
@@ -434,7 +461,22 @@
       document.getElementById('t-verifiedBadge').innerText = t.verifiedBadge;
       document.getElementById('t-lblPublicDept').innerText = t.lblPublicDept;
       document.getElementById('t-publicFooter').innerText = t.publicFooter;
+
+      // تحديث عرض البيانات الحالية إن وجدت فور تغيير اللغة
+      if (currentUserData) {
+        renderProfileData(currentUserData);
+      }
     };
+
+    function renderProfileData(user) {
+      // لو العضو مسجل بالاسم الإنجليزي في البيانات أو بنترجمها فورياً
+      document.getElementById('userName').innerText = (currentLang === 'en' && user.name_en) ? user.name_en : user.name;
+      document.getElementById('userJob').innerText = (currentLang === 'en' && user.job_en) ? user.job_en : translateDynamicData(user.job);
+      document.getElementById('userDept').innerText = (currentLang === 'en' && user.dept_en) ? user.dept_en : translateDynamicData(user.dept);
+      document.getElementById('userCodeVal').innerText = currentEmpCode;
+      document.getElementById('userNID').innerText = user.nationalId || "--";
+      document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
+    }
 
     function generateTempPassword() {
       return Math.floor(100000 + Math.random() * 900000).toString();
@@ -527,12 +569,7 @@
           document.getElementById('login-view').classList.add('hidden');
           document.getElementById('profile-view').classList.remove('hidden');
 
-          document.getElementById('userName').innerText = user.name;
-          document.getElementById('userJob').innerText = user.job;
-          document.getElementById('userDept').innerText = user.dept;
-          document.getElementById('userCodeVal').innerText = code;
-          document.getElementById('userNID').innerText = user.nationalId || "--";
-          document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
+          renderProfileData(user);
 
           const currentUrl = window.location.origin + window.location.pathname;
           const qrLink = `${currentUrl}?emp=${code}`;
@@ -631,9 +668,9 @@
               return;
             }
 
-            document.getElementById('publicName').innerText = user.name;
-            document.getElementById('publicJob').innerText = user.job;
-            document.getElementById('publicDept').innerText = `Lacto Misr - ${user.dept}`;
+            document.getElementById('publicName').innerText = (currentLang === 'en' && user.name_en) ? user.name_en : user.name;
+            document.getElementById('publicJob').innerText = (currentLang === 'en' && user.job_en) ? user.job_en : translateDynamicData(user.job);
+            document.getElementById('publicDept').innerText = `Lacto Misr - ${translateDynamicData(user.dept)}`;
             
             const imgEl = document.getElementById('publicPhoto');
             imgEl.src = user.photo || "https://i.pravatar.cc/150?img=12";
@@ -666,7 +703,6 @@
       }
     }
 
-    // تهيئة اللغة عند بداية فتح الأبليكشن
     setLanguage(currentLang);
     checkDirectQR();
   </script>
