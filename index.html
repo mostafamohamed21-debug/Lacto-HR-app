@@ -28,10 +28,37 @@
       margin: 0;
       padding: 1rem;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
       box-sizing: border-box;
+    }
+    .lang-switcher {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      z-index: 100;
+    }
+    [dir="ltr"] .lang-switcher {
+      right: auto;
+      left: 1rem;
+    }
+    .lang-btn {
+      background: #334155;
+      color: var(--text);
+      border: 1px solid #475569;
+      padding: 0.35rem 0.75rem;
+      border-radius: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .lang-btn.active {
+      background: var(--accent);
+      border-color: var(--accent-light);
     }
     .card {
       background: var(--card-bg);
@@ -42,6 +69,7 @@
       max-width: 380px;
       text-align: center;
       box-sizing: border-box;
+      margin-top: 2rem;
     }
     input {
       width: 100%;
@@ -115,6 +143,7 @@
       font-size: 0.8rem;
       margin-bottom: 1rem;
     }
+    [dir="ltr"] .info-grid { text-align: left; }
     .info-label { color: var(--muted); font-size: 0.75rem; }
     .info-val { font-weight: 600; color: var(--text); }
     .qr-container {
@@ -150,34 +179,41 @@
       margin-top: 1rem;
       text-align: right;
     }
+    [dir="ltr"] .modal-box { text-align: left; }
   </style>
 </head>
 <body>
+
+  <!-- ز أزرار اختيار اللغة -->
+  <div class="lang-switcher">
+    <button id="btn-ar" class="lang-btn active" onclick="setLanguage('ar')">العربية</button>
+    <button id="btn-en" class="lang-btn" onclick="setLanguage('en')">English</button>
+  </div>
 
   <div class="card" id="app">
     <!-- 1. شاشة تسجيل الدخول الرئيسي -->
     <div id="login-view">
       <h2 style="margin-bottom: 0.25rem;">Lacto HR Hub</h2>
-      <p style="color: var(--muted); font-size: 0.9rem; margin-top: 0;">بوابة الموظفين والمدراء الرقمية</p>
+      <p id="t-subtitle" style="color: var(--muted); font-size: 0.9rem; margin-top: 0;">بوابة الموظفين والمدراء الرقمية</p>
       
       <input type="text" id="empCode" placeholder="كود الموظف (مثال: 102)">
       <input type="password" id="empPass" placeholder="كلمة السر">
       
-      <button onclick="login()">دخول 🔑</button>
-      <button onclick="checkFirstTime()" class="btn-secondary" style="font-size: 0.85rem;">أول مرة تسجل؟ تفعيل الحساب ⚡</button>
+      <button id="t-loginBtn" onclick="login()">دخول 🔑</button>
+      <button id="t-firstTimeBtn" onclick="checkFirstTime()" class="btn-secondary" style="font-size: 0.85rem;">أول مرة تسجل؟ تفعيل الحساب ⚡</button>
 
       <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.9rem;"></p>
     </div>
 
     <!-- 2. شاشة توليد كلمة السر المؤقتة لأول مرة -->
     <div id="first-time-view" class="hidden">
-      <h3 style="color: var(--accent-light);">مرحباً بك في نظام لاكتو! 🎉</h3>
-      <p style="color: var(--muted); font-size: 0.85rem;">احفظ كلمة السر المؤقتة التالية الخاصة بك، ولن تظهر مرة أخرى:</p>
+      <h3 id="t-welcomeTitle" style="color: var(--accent-light);">مرحباً بك في نظام لاكتو! 🎉</h3>
+      <p id="t-welcomeDesc" style="color: var(--muted); font-size: 0.85rem;">احفظ كلمة السر المؤقتة التالية الخاصة بك، ولن تظهر مرة أخرى:</p>
       
       <div id="tempPasswordDisplay" class="temp-pass-box">------</div>
       
-      <p style="color: #fbbf24; font-size: 0.8rem;">⚠️ قم بنسخها أو كتابتها الآن للوفود بها عند الدخول.</p>
-      <button onclick="goToLoginWithCode()">فهمت، الانتقال لتسجيل الدخول ➡️</button>
+      <p id="t-welcomeWarn" style="color: #fbbf24; font-size: 0.8rem;">⚠️ قم بنسخها أو كتابتها الآن للوفود بها عند الدخول.</p>
+      <button id="t-goLoginBtn" onclick="goToLoginWithCode()">فهمت، الانتقال لتسجيل الدخول ➡️</button>
     </div>
 
     <!-- 3. شاشة الكارت الرقمي والملف الشخصي -->
@@ -194,15 +230,15 @@
 
         <div class="info-grid">
           <div>
-            <div class="info-label">الإدارة / القسم</div>
+            <div id="t-lblDept" class="info-label">الإدارة / القسم</div>
             <div id="userDept" class="info-val">--</div>
           </div>
           <div>
-            <div class="info-label">كود الموظف</div>
+            <div id="t-lblCode" class="info-label">كود الموظف</div>
             <div id="userCodeVal" class="info-val">--</div>
           </div>
           <div style="grid-column: span 2;">
-            <div class="info-label">الرقم القومي</div>
+            <div id="t-lblNID" class="info-label">الرقم القومي</div>
             <div id="userNID" class="info-val">--</div>
           </div>
         </div>
@@ -212,43 +248,43 @@
         </div>
       </div>
 
-      <button onclick="downloadCard()" class="btn-download">حفظ الكارت كصورة 📥</button>
-      <button onclick="toggleChangePassModal()" class="btn-secondary">تغيير كلمة السر 🔒</button>
+      <button id="t-saveCardBtn" onclick="downloadCard()" class="btn-download">حفظ الكارت كصورة 📥</button>
+      <button id="t-changePassBtn" onclick="toggleChangePassModal()" class="btn-secondary">تغيير كلمة السر 🔒</button>
 
       <!-- مودال تغيير كلمة السر -->
       <div id="changePassModal" class="modal-box hidden">
-        <h4 style="margin-top:0; color:var(--accent-light);">تغيير كلمة السر</h4>
+        <h4 id="t-changePassTitle" style="margin-top:0; color:var(--accent-light);">تغيير كلمة السر</h4>
         <input type="password" id="oldPass" placeholder="كلمة السر الحالية">
         <input type="password" id="newPass" placeholder="كلمة السر الجديدة">
-        <button onclick="changePassword()">حفظ كلمة السر الجديدة</button>
+        <button id="t-savePassBtn" onclick="changePassword()">حفظ كلمة السر الجديدة</button>
         <p id="passMsg" style="font-size: 0.8rem; margin-top:0.5rem;"></p>
       </div>
 
       <div id="manager-section" class="admin-panel hidden">
-        <span style="color: var(--accent-light); font-weight: bold; font-size: 0.85rem;">صلاحية مدير النظام 🔐</span>
+        <span id="t-adminBadge" style="color: var(--accent-light); font-weight: bold; font-size: 0.85rem;">صلاحية مدير النظام 🔐</span>
       </div>
 
-      <button onclick="logout()" style="margin-top: 0.75rem; background: #334155;">تسجيل الخروج</button>
+      <button id="t-logoutBtn" onclick="logout()" style="margin-top: 0.75rem; background: #334155;">تسجيل الخروج</button>
     </div>
 
-    <!-- 4. شاشة التنزيل الصامت للزائر (عند مسح الـ QR بكاميرا خارجية) -->
+    <!-- 4. شاشة التنزيل الصامت للزائر (عند مسح الـ QR) -->
     <div id="public-view" class="hidden">
       <div style="position: absolute; left: -9999px; top: -9999px;">
         <div class="id-card" id="publicCardToDownload" style="width: 350px;">
           <div class="id-card-header">
             <span class="company-title">LACTO MISR</span>
-            <span style="background: rgba(34,197,94,0.2); color: var(--success); padding: 0.2rem 0.5rem; border-radius: 1rem; font-size:0.75rem; font-weight:bold;">موظف موثق ✅</span>
+            <span id="t-verifiedBadge" style="background: rgba(34,197,94,0.2); color: var(--success); padding: 0.2rem 0.5rem; border-radius: 1rem; font-size:0.75rem; font-weight:bold;">موظف موثق ✅</span>
           </div>
           <img id="publicPhoto" class="profile-img" crossorigin="anonymous" src="" alt="صورة الموظف">
           <h3 id="publicName" class="user-name">--</h3>
           <p id="publicJob" class="user-title">--</p>
           <div class="info-grid" style="grid-template-columns: 1fr;">
             <div>
-              <div class="info-label">الشركة / الإدارة</div>
+              <div id="t-lblPublicDept" class="info-label">الشركة / الإدارة</div>
               <div id="publicDept" class="info-val">--</div>
             </div>
           </div>
-          <p style="font-size: 0.8rem; color: var(--muted); margin-top: 0.5rem;">هوية رقمية معتمدة من شركة لاكتو مصر</p>
+          <p id="t-publicFooter" style="font-size: 0.8rem; color: var(--muted); margin-top: 0.5rem;">هوية رقمية معتمدة من شركة لاكتو مصر</p>
         </div>
       </div>
 
@@ -278,20 +314,140 @@
     const dbRef = ref(db);
     let currentUserData = null;
     let currentEmpCode = "";
+    let currentLang = localStorage.getItem('lacto_lang') || 'ar';
 
-    // توليد باسوورد عشوائية من 6 أرقام
+    // القاموس اللغوي (النصوص بالعربي والإنجليزي)
+    const translations = {
+      ar: {
+        subtitle: "بوابة الموظفين والمدراء الرقمية",
+        empCodePh: "كود الموظف (مثال: 102)",
+        empPassPh: "كلمة السر",
+        loginBtn: "دخول 🔑",
+        firstTimeBtn: "أول مرة تسجل؟ تفعيل الحساب ⚡",
+        welcomeTitle: "مرحباً بك في نظام لاكتو! 🎉",
+        welcomeDesc: "احفظ كلمة السر المؤقتة التالية الخاصة بك، ولن تظهر مرة أخرى:",
+        welcomeWarn: "⚠️ قم بنسخها أو كتابتها الآن للوفود بها عند الدخول.",
+        goLoginBtn: "فهمت، الانتقال لتسجيل الدخول ➡️",
+        lblDept: "الإدارة / القسم",
+        lblCode: "كود الموظف",
+        lblNID: "الرقم القومي",
+        saveCardBtn: "حفظ الكارت كصورة 📥",
+        changePassBtn: "تغيير كلمة السر 🔒",
+        changePassTitle: "تغيير كلمة السر",
+        oldPassPh: "كلمة السر الحالية",
+        newPassPh: "كلمة السر الجديدة",
+        savePassBtn: "حفظ كلمة السر الجديدة",
+        adminBadge: "صلاحية مدير النظام 🔐",
+        logoutBtn: "تسجيل الخروج",
+        verifiedBadge: "موظف موثق ✅",
+        lblPublicDept: "الشركة / الإدارة",
+        publicFooter: "هوية رقمية معتمدة من شركة لاكتو مصر",
+        savingCard: "⏳ جاري حفظ كارت الموظف على جهازك...",
+        cardSaved: "تم حفظ الكارت بنجاح ✅",
+        cardSavedDesc: "تم تنزيل كارت الموظف في التحميلات عندك.",
+        errNoCode: "برجاء كتابة كود الموظف أولاً لتفعيل الحساب.",
+        errInactive: "عفواً، هذا الحساب غير نشط.",
+        errAlreadyActive: "حسابك مفعل بالفعل! يرجى كتابة كلمة السر والدخول.",
+        errNotReg: "كود الموظف غير مسجل بالنظام!",
+        errConnecting: "جاري الاتصال...",
+        errNeedActivation: "يرجى الضغط على (تفعيل الحساب لأول مرة) أولاً!",
+        errWrongPass: "كلمة السر غير صحيحة!",
+        errFillAll: "يرجى ملء جميع الحقول.",
+        errPassLength: "كلمة السر الجديدة يجب أن تكون 4 أرقام/حروف على الأقل.",
+        passSuccess: "تم تغيير كلمة السر بنجاح! ✅"
+      },
+      en: {
+        subtitle: "Employees & Management Portal",
+        empCodePh: "Employee ID (e.g. 102)",
+        empPassPh: "Password",
+        loginBtn: "Login 🔑",
+        firstTimeBtn: "First time? Activate Account ⚡",
+        welcomeTitle: "Welcome to Lacto System! 🎉",
+        welcomeDesc: "Save your temporary password, it won't appear again:",
+        welcomeWarn: "⚠️ Copy or write it down now to use for login.",
+        goLoginBtn: "Got it, Go to Login ➡️",
+        lblDept: "Department / Section",
+        lblCode: "Employee ID",
+        lblNID: "National ID",
+        saveCardBtn: "Save Card as Image 📥",
+        changePassBtn: "Change Password 🔒",
+        changePassTitle: "Change Password",
+        oldPassPh: "Current Password",
+        newPassPh: "New Password",
+        savePassBtn: "Save New Password",
+        adminBadge: "System Admin Access 🔐",
+        logoutBtn: "Logout",
+        verifiedBadge: "Verified Employee ✅",
+        lblPublicDept: "Company / Department",
+        publicFooter: "Official Digital ID - Lacto Misr",
+        savingCard: "⏳ Saving employee card to your device...",
+        cardSaved: "Card Saved Successfully ✅",
+        cardSavedDesc: "Employee card downloaded to your device.",
+        errNoCode: "Please enter your Employee ID first.",
+        errInactive: "Sorry, this account is inactive.",
+        errAlreadyActive: "Account already active! Please enter password and login.",
+        errNotReg: "Employee ID is not registered!",
+        errConnecting: "Connecting...",
+        errNeedActivation: "Please click (Activate Account) first!",
+        errWrongPass: "Incorrect password!",
+        errFillAll: "Please fill in all fields.",
+        errPassLength: "New password must be at least 4 characters.",
+        passSuccess: "Password changed successfully! ✅"
+      }
+    };
+
+    // تطبيق اللغة
+    window.setLanguage = function(lang) {
+      currentLang = lang;
+      localStorage.setItem('lacto_lang', lang);
+
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+      document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+      const t = translations[lang];
+
+      document.getElementById('t-subtitle').innerText = t.subtitle;
+      document.getElementById('empCode').placeholder = t.empCodePh;
+      document.getElementById('empPass').placeholder = t.empPassPh;
+      document.getElementById('t-loginBtn').innerText = t.loginBtn;
+      document.getElementById('t-firstTimeBtn').innerText = t.firstTimeBtn;
+      document.getElementById('t-welcomeTitle').innerText = t.welcomeTitle;
+      document.getElementById('t-welcomeDesc').innerText = t.welcomeDesc;
+      document.getElementById('t-welcomeWarn').innerText = t.welcomeWarn;
+      document.getElementById('t-goLoginBtn').innerText = t.goLoginBtn;
+
+      document.getElementById('t-lblDept').innerText = t.lblDept;
+      document.getElementById('t-lblCode').innerText = t.lblCode;
+      document.getElementById('t-lblNID').innerText = t.lblNID;
+      document.getElementById('t-saveCardBtn').innerText = t.saveCardBtn;
+      document.getElementById('t-changePassBtn').innerText = t.changePassBtn;
+      document.getElementById('t-changePassTitle').innerText = t.changePassTitle;
+      document.getElementById('oldPass').placeholder = t.oldPassPh;
+      document.getElementById('newPass').placeholder = t.newPassPh;
+      document.getElementById('t-savePassBtn').innerText = t.savePassBtn;
+      document.getElementById('t-adminBadge').innerText = t.adminBadge;
+      document.getElementById('t-logoutBtn').innerText = t.logoutBtn;
+
+      document.getElementById('t-verifiedBadge').innerText = t.verifiedBadge;
+      document.getElementById('t-lblPublicDept').innerText = t.lblPublicDept;
+      document.getElementById('t-publicFooter').innerText = t.publicFooter;
+    };
+
     function generateTempPassword() {
       return Math.floor(100000 + Math.random() * 900000).toString();
     }
 
-    // فحص الدخول عند أول مرة (تفعيل الحساب)
     window.checkFirstTime = async function() {
       const code = document.getElementById('empCode').value.trim();
       const errorEl = document.getElementById('error');
+      const t = translations[currentLang];
       errorEl.innerText = "";
 
       if (!code) {
-        errorEl.innerText = "برجاء كتابة كود الموظف أولاً لتفعيل الحساب.";
+        errorEl.innerText = t.errNoCode;
         return;
       }
 
@@ -301,17 +457,15 @@
           const user = snapshot.val();
           
           if (user.status === "Resigned") {
-            errorEl.innerText = "عفواً، هذا الحساب غير نشط.";
+            errorEl.innerText = t.errInactive;
             return;
           }
 
-          // لو كلمة السر موجودة بالفعل
           if (user.password) {
-            errorEl.innerText = "حسابك مفعل بالفعل! يرجى كتابة كلمة السر والدخول.";
+            errorEl.innerText = t.errAlreadyActive;
             return;
           }
 
-          // إنشاء كلمة سر مؤقتة وحفظها في قاعدة البيانات
           const tempPass = generateTempPassword();
           await update(ref(db, `users/${code}`), { password: tempPass });
 
@@ -321,11 +475,10 @@
           document.getElementById('first-time-view').classList.remove('hidden');
 
         } else {
-          errorEl.innerText = "كود الموظف غير مسجل بالنظام!";
+          errorEl.innerText = t.errNotReg;
         }
       } catch (err) {
         console.error(err);
-        errorEl.innerText = "حدث خطأ أثناء الاتصال بالخادم.";
       }
     };
 
@@ -335,15 +488,15 @@
       document.getElementById('empPass').focus();
     };
 
-    // تسجيل الدخول بالباسورد
     window.login = async function() {
       const code = document.getElementById('empCode').value.trim();
       const pass = document.getElementById('empPass').value.trim();
       const errorEl = document.getElementById('error');
-      errorEl.innerText = "جاري الاتصال...";
+      const t = translations[currentLang];
+      errorEl.innerText = t.errConnecting;
 
       if (!code) {
-        errorEl.innerText = "برجاء كتابة كود الموظف";
+        errorEl.innerText = t.errNoCode;
         return;
       }
 
@@ -353,23 +506,20 @@
           const user = snapshot.val();
           
           if (user.status === "Resigned") {
-            errorEl.innerText = "عفواً، هذا الحساب غير نشط.";
+            errorEl.innerText = t.errInactive;
             return;
           }
 
-          // إذا لم يقم بتفعيل حسابه بعد
           if (!user.password) {
-            errorEl.innerText = "يرجى الضغط على (تفعيل الحساب لأول مرة) أولاً!";
+            errorEl.innerText = t.errNeedActivation;
             return;
           }
 
-          // مطابقة كلمة السر
           if (user.password !== pass) {
-            errorEl.innerText = "كلمة السر غير صحيحة!";
+            errorEl.innerText = t.errWrongPass;
             return;
           }
 
-          // نجاح الدخول
           currentUserData = user;
           currentEmpCode = code;
           errorEl.innerText = "";
@@ -381,7 +531,7 @@
           document.getElementById('userJob').innerText = user.job;
           document.getElementById('userDept').innerText = user.dept;
           document.getElementById('userCodeVal').innerText = code;
-          document.getElementById('userNID').innerText = user.nationalId || "غير مسجل";
+          document.getElementById('userNID').innerText = user.nationalId || "--";
           document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
 
           const currentUrl = window.location.origin + window.location.pathname;
@@ -401,40 +551,38 @@
           }
 
         } else {
-          errorEl.innerText = "كود الموظف غير موجود!";
+          errorEl.innerText = t.errNotReg;
         }
       } catch (err) {
         console.error(err);
-        errorEl.innerText = "خطأ في الاتصال بالشبكة.";
       }
     };
 
-    // إظهار/إخفاء نافذة تغيير الباسورد
     window.toggleChangePassModal = function() {
       document.getElementById('changePassModal').classList.toggle('hidden');
     };
 
-    // دالة تغيير كلمة السر من الداخل
     window.changePassword = async function() {
       const oldPass = document.getElementById('oldPass').value.trim();
       const newPass = document.getElementById('newPass').value.trim();
       const msgEl = document.getElementById('passMsg');
+      const t = translations[currentLang];
 
       if (!oldPass || !newPass) {
         msgEl.style.color = "var(--danger)";
-        msgEl.innerText = "يرجى ملء جميع الحقول.";
+        msgEl.innerText = t.errFillAll;
         return;
       }
 
       if (oldPass !== currentUserData.password) {
         msgEl.style.color = "var(--danger)";
-        msgEl.innerText = "كلمة السر الحالية غير صحيحة.";
+        msgEl.innerText = t.errWrongPass;
         return;
       }
 
       if (newPass.length < 4) {
         msgEl.style.color = "var(--danger)";
-        msgEl.innerText = "كلمة السر الجديدة يجب أن تكون 4 أرقام/حروف على الأقل.";
+        msgEl.innerText = t.errPassLength;
         return;
       }
 
@@ -442,12 +590,11 @@
         await update(ref(db, `users/${currentEmpCode}`), { password: newPass });
         currentUserData.password = newPass;
         msgEl.style.color = "var(--success)";
-        msgEl.innerText = "تم تغيير كلمة السر بنجاح! ✅";
+        msgEl.innerText = t.passSuccess;
         document.getElementById('oldPass').value = "";
         document.getElementById('newPass').value = "";
       } catch (err) {
-        msgEl.style.color = "var(--danger)";
-        msgEl.innerText = "حدث خطأ أثناء التحديث.";
+        console.error(err);
       }
     };
 
@@ -465,7 +612,6 @@
       window.location.reload();
     };
 
-    // مسح الـ QR للزائر الخارجي
     async function checkDirectQR() {
       const urlParams = new URLSearchParams(window.location.search);
       const empCodeParam = urlParams.get('emp');
@@ -478,14 +624,16 @@
           const snapshot = await get(child(dbRef, `users/${empCodeParam}`));
           if (snapshot.exists()) {
             const user = snapshot.val();
+            const t = translations[currentLang];
+
             if (user.status === "Resigned") {
-              document.getElementById('downloadStatus').innerHTML = "<p style='color:var(--danger)'>❌ هذا الحساب غير نشط.</p>";
+              document.getElementById('downloadStatus').innerHTML = `<p style='color:var(--danger)'>❌ ${t.errInactive}</p>`;
               return;
             }
 
             document.getElementById('publicName').innerText = user.name;
             document.getElementById('publicJob').innerText = user.job;
-            document.getElementById('publicDept').innerText = `لاكتو مصر - ${user.dept}`;
+            document.getElementById('publicDept').innerText = `Lacto Misr - ${user.dept}`;
             
             const imgEl = document.getElementById('publicPhoto');
             imgEl.src = user.photo || "https://i.pravatar.cc/150?img=12";
@@ -499,8 +647,8 @@
                 link.click();
 
                 document.getElementById('downloadStatus').innerHTML = `
-                  <h3 style="color:var(--success); margin-bottom: 0.5rem;">تم حفظ الكارت بنجاح ✅</h3>
-                  <p style="color:var(--muted); font-size:0.85rem;">تم تنزيل كارت الموظف في التحميلات عندك.</p>
+                  <h3 style="color:var(--success); margin-bottom: 0.5rem;">${t.cardSaved}</h3>
+                  <p style="color:var(--muted); font-size:0.85rem;">${t.cardSavedDesc}</p>
                 `;
                 setTimeout(() => { window.close(); }, 2000);
               });
@@ -510,7 +658,7 @@
             setTimeout(triggerDownload, 1200);
 
           } else {
-            document.getElementById('downloadStatus').innerHTML = "<p style='color:var(--danger)'>❌ الموظف غير موجود</p>";
+            document.getElementById('downloadStatus').innerHTML = "<p style='color:var(--danger)'>❌ Not Found</p>";
           }
         } catch (err) {
           console.error(err);
@@ -518,6 +666,8 @@
       }
     }
 
+    // تهيئة اللغة عند بداية فتح الأبليكشن
+    setLanguage(currentLang);
     checkDirectQR();
   </script>
 </body>
