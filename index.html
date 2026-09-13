@@ -7,6 +7,8 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
   
+  <!-- GSAP Library for Smooth Tornado Physics -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -54,7 +56,7 @@
     }
 
     /* ----------------------------------
-       Intro / Splash Screen Styling 
+       Tornado / Cyclone Intro Styling 
     ---------------------------------- */
     #intro-screen {
       position: fixed;
@@ -62,74 +64,53 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      /* خلفية نفس صورة الأبليكشن الأساسية مع طبقة إعتام وبلور */
-      background: linear-gradient(rgba(11, 15, 25, 0.88), rgba(11, 15, 25, 0.92)), url('background.jpg');
+      background: linear-gradient(rgba(11, 15, 25, 0.92), rgba(11, 15, 25, 0.96)), url('background.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 9999;
-      transition: opacity 1.2s ease, visibility 1.2s ease, transform 1.2s ease;
+      perspective: 1200px;
+      overflow: hidden;
+      transition: opacity 1.2s ease, visibility 1.2s ease;
     }
 
     #intro-screen.fade-out {
       opacity: 0;
       visibility: hidden;
-      transform: scale(1.05);
     }
 
     .intro-title-container {
       display: flex;
-      gap: 0.2rem;
-      flex-wrap: wrap;
+      gap: 0.25rem;
+      flex-wrap: nowrap;
       justify-content: center;
       align-items: center;
       direction: ltr;
       padding: 0 1rem;
+      transform-style: preserve-3d;
     }
 
     .intro-char {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 2.1rem;
+      font-size: 2.2rem;
       font-weight: 800;
       letter-spacing: 2px;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 25px rgba(56, 189, 248, 0.7);
-      opacity: 0;
+      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
       display: inline-block;
-      /* تم إبطاء مدة الدخول إلى 1.1 ثانية لكل حرف */
-      animation: charAssemble 1.1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-
-    /* دخول الحروف ببطء من الاتجاهات الأربعة */
-    .intro-char:nth-child(4n+1) { transform: translateY(-100px); }
-    .intro-char:nth-child(4n+2) { transform: translateY(100px); }
-    .intro-char:nth-child(4n+3) { transform: translateX(-100px); }
-    .intro-char:nth-child(4n+4) { transform: translateX(100px); }
-
-    /* كلاس الاختفاء ببطء لكل حرف */
-    .intro-char.fade-char {
-      opacity: 0 !important;
-      transform: scale(0.6) translateY(-15px) !important;
+      transform-style: preserve-3d;
+      will-change: transform, opacity;
     }
 
     .intro-space {
-      width: 0.7rem;
-    }
-
-    @keyframes charAssemble {
-      to {
-        opacity: 1;
-        transform: translate(0, 0);
-      }
+      width: 0.8rem;
     }
 
     /* ----------------------------------
@@ -461,7 +442,7 @@
 </head>
 <body>
 
-  <!-- Intro Screen with App Background -->
+  <!-- Intro Screen with Gentle Tornado Effect -->
   <div id="intro-screen">
     <div class="intro-title-container" id="introTitle"></div>
   </div>
@@ -548,7 +529,7 @@
 
       <div class="id-card" id="myCardToDownload">
         <div class="id-card-header">
-          <span style="font-weight: 800; font-size: 0.85rem; color: #38bdf8; letter-spacing: 1px;">LACTO MISR</span>
+          <span style="font-weight: 800; font-size: 0.85rem; color: #38bdf8; letter-spacing: 1px;">LACTO MISR S.A.E</span>
           <span style="font-size: 0.65rem; background: rgba(2, 132, 199, 0.4); border: 1px solid var(--accent); color: #38bdf8; padding: 0.15rem 0.5rem; border-radius: 0.5rem; font-weight: 600;">VERIFIED</span>
         </div>
         <img id="userPhoto" class="profile-img" crossorigin="anonymous" src="" alt="User">
@@ -598,16 +579,16 @@
 
   <script>
     // ----------------------------------------------------
-    // SMOOTH & SLOW INTRO ANIMATION (SLOW IN / STAGGER FADE OUT)
+    // GENTLE & SLOW TORNADO INTRO ANIMATION
     // ----------------------------------------------------
-    function buildIntroAnimation() {
-      const text = "LACTO MISR L.L.C";
+    function runTornadoIntro() {
+      const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
       container.innerHTML = "";
 
-      let delay = 0.12; // تباطؤ تتابع ظهور الحروف
       const charElements = [];
 
+      // 1. Build DOM Elements
       for (let char of text) {
         if (char === ' ') {
           const space = document.createElement('span');
@@ -617,34 +598,92 @@
           const span = document.createElement('span');
           span.className = 'intro-char';
           span.innerText = char;
-          span.style.animationDelay = delay + 's';
           container.appendChild(span);
           charElements.push(span);
-          delay += 0.12;
         }
       }
 
-      // الوقت الكلي لاكتمال التجميع
-      const totalAssembleTime = (delay * 1000) + 1200;
+      // Direction vectors for scattering each character gently to different screen edges
+      const directions = [
+        { x: -900, y: -700 }, // Top-Left
+        { x: 0,    y: -900 }, // Top
+        { x: 900,  y: -700 }, // Top-Right
+        { x: 900,  y: 0 },    // Right
+        { x: 900,  y: 700 },  // Bottom-Right
+        { x: 0,    y: 900 },  // Bottom
+        { x: -900, y: 700 },  // Bottom-Left
+        { x: -900, y: 0 }     // Left
+      ];
 
-      // 1. بدء اختفاء الحروف حرفاً حرفاً ببطء شياكة بعد ثبات الكلمة لحظياً
-      setTimeout(() => {
-        charElements.forEach((el, index) => {
-          setTimeout(() => {
-            el.classList.add('fade-char');
-          }, index * 80); // يتلاشى كل حرف بفارق 80 ملي ثانية
+      // 2. Timeline GSAP Animation (Slow & Cinematic)
+      const tl = gsap.timeline({
+        onComplete: () => {
+          const introScreen = document.getElementById('intro-screen');
+          introScreen.classList.add('fade-out');
+        }
+      });
+
+      // Step A: Set initial positions high up in a cyclone spin
+      charElements.forEach((el, index) => {
+        const randomAngle = (index / charElements.length) * Math.PI * 4;
+        const radius = 180 + Math.random() * 80;
+        
+        gsap.set(el, {
+          y: -500 - (index * 30),
+          x: Math.cos(randomAngle) * radius,
+          z: Math.sin(randomAngle) * radius,
+          rotationX: Math.random() * 360 - 180,
+          rotationY: Math.random() * 360 - 180,
+          rotationZ: Math.random() * 360 - 180,
+          opacity: 0,
+          scale: 0.2
         });
-      }, totalAssembleTime);
+      });
 
-      // 2. تلاشي الشاشة بالكامل بانسيابية بعد اختفاء الحروف
-      const fadeOutStartTime = totalAssembleTime + (charElements.length * 80) + 400;
-      setTimeout(() => {
-        const introScreen = document.getElementById('intro-screen');
-        introScreen.classList.add('fade-out');
-      }, fadeOutStartTime);
+      // Step B: Cyclone Whirlwind Assemble (Slow, smooth, and majestic down into line)
+      tl.to(charElements, {
+        duration: 2.8,
+        x: 0,
+        y: 0,
+        z: 0,
+        rotationX: 0,
+        rotationY: 0,
+        rotationZ: 0,
+        opacity: 1,
+        scale: 1,
+        stagger: 0.09,
+        ease: "power2.out"
+      });
+
+      // Step C: Hold position clearly with gentle glowing pulse
+      tl.to(charElements, {
+        duration: 1.2,
+        textShadow: "0 0 35px rgba(56, 189, 248, 1)",
+        scale: 1.06,
+        yoyo: true,
+        repeat: 1,
+        ease: "sine.inOut"
+      });
+
+      // Step D: Slow & Smooth Scatter - letter by letter drifting away gracefully
+      charElements.forEach((el, index) => {
+        const dir = directions[index % directions.length];
+        tl.to(el, {
+          duration: 1.5, // بطء التشتت وزدنا وقت الحركة
+          x: dir.x,
+          y: dir.y,
+          z: Math.random() * 400 - 200,
+          rotationX: Math.random() * 180 - 90,
+          rotationY: Math.random() * 180 - 90,
+          rotationZ: Math.random() * 180 - 90,
+          opacity: 0,
+          scale: 0.5,
+          ease: "power1.inOut" // حركة بطيئة ناعمة ومش مفاجئة
+        }, `-=${index === 0 ? 0 : 1.35}`); 
+      });
     }
 
-    window.addEventListener('DOMContentLoaded', buildIntroAnimation);
+    window.addEventListener('DOMContentLoaded', runTornadoIntro);
 
     // ----------------------------------------------------
     // Firebase Config & App Logic
