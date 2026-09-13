@@ -19,7 +19,7 @@
 
     :root {
       --bg: #0b0f19;
-      --card-bg: rgba(15, 23, 42, 0.7);
+      --card-bg: rgba(15, 23, 42, 0.75);
       --border-color: rgba(255, 255, 255, 0.18);
       --text: #f8fafc;
       --accent: #0284c7;
@@ -62,53 +62,67 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: #0b0f19;
+      /* خلفية نفس صورة الأبليكشن الأساسية مع طبقة إعتام وبلور */
+      background: linear-gradient(rgba(11, 15, 25, 0.88), rgba(11, 15, 25, 0.92)), url('background.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 9999;
-      transition: opacity 0.8s ease, visibility 0.8s ease, transform 0.8s ease;
+      transition: opacity 1.2s ease, visibility 1.2s ease, transform 1.2s ease;
     }
 
     #intro-screen.fade-out {
       opacity: 0;
       visibility: hidden;
-      transform: scale(1.1);
+      transform: scale(1.05);
     }
 
     .intro-title-container {
       display: flex;
-      gap: 0.15rem;
+      gap: 0.2rem;
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-      direction: ltr; /* الحروف الإنجليزية تنطق وتتحرك من اليسار لليمين */
+      direction: ltr;
       padding: 0 1rem;
     }
 
     .intro-char {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 1.8rem;
+      font-size: 2.1rem;
       font-weight: 800;
       letter-spacing: 2px;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+      text-shadow: 0 0 25px rgba(56, 189, 248, 0.7);
       opacity: 0;
       display: inline-block;
-      animation: charAssemble 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      /* تم إبطاء مدة الدخول إلى 1.1 ثانية لكل حرف */
+      animation: charAssemble 1.1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      transition: opacity 0.8s ease, transform 0.8s ease;
     }
 
-    /* اتجاهات دخول الحروف بالتبادل (فوق - تحت - شمال - يمين) */
-    .intro-char:nth-child(4n+1) { transform: translateY(-80px); }
-    .intro-char:nth-child(4n+2) { transform: translateY(80px); }
-    .intro-char:nth-child(4n+3) { transform: translateX(-80px); }
-    .intro-char:nth-child(4n+4) { transform: translateX(80px); }
+    /* دخول الحروف ببطء من الاتجاهات الأربعة */
+    .intro-char:nth-child(4n+1) { transform: translateY(-100px); }
+    .intro-char:nth-child(4n+2) { transform: translateY(100px); }
+    .intro-char:nth-child(4n+3) { transform: translateX(-100px); }
+    .intro-char:nth-child(4n+4) { transform: translateX(100px); }
+
+    /* كلاس الاختفاء ببطء لكل حرف */
+    .intro-char.fade-char {
+      opacity: 0 !important;
+      transform: scale(0.6) translateY(-15px) !important;
+    }
 
     .intro-space {
-      width: 0.6rem;
+      width: 0.7rem;
     }
 
     @keyframes charAssemble {
@@ -447,7 +461,7 @@
 </head>
 <body>
 
-  <!-- 0. Intro Animation Screen -->
+  <!-- Intro Screen with App Background -->
   <div id="intro-screen">
     <div class="intro-title-container" id="introTitle"></div>
   </div>
@@ -456,7 +470,6 @@
   <div class="app-header">
     <div class="brand-title">LACTO MISR</div>
     
-    <!-- Language Dropdown -->
     <div class="lang-dropdown-container">
       <button class="lang-dropdown-btn" onclick="toggleLangMenu()">
         🌐 <span id="current-lang-text">العربية</span> ▼
@@ -485,7 +498,6 @@
 
     <!-- 2. Dashboard View -->
     <div id="view-dashboard" class="hidden">
-      <!-- User Header -->
       <div class="user-header-card">
         <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
         <div>
@@ -494,10 +506,7 @@
         </div>
       </div>
 
-      <!-- Services Grid -->
       <div class="services-grid">
-        
-        <!-- ID Card Service -->
         <div class="service-btn" onclick="showPage('view-id-card')">
           <div class="service-icon-box">
             <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .89-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1z"/></svg>
@@ -505,7 +514,6 @@
           <span id="t-btnID" class="service-title">كارت الهوية</span>
         </div>
 
-        <!-- Leaves Service -->
         <div class="service-btn" onclick="showPage('view-leaves')">
           <div class="service-icon-box">
             <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
@@ -513,7 +521,6 @@
           <span id="t-btnLeaves" class="service-title">طلبات الإجازات</span>
         </div>
 
-        <!-- Payroll Service -->
         <div class="service-btn" onclick="showPage('view-payroll')">
           <div class="service-icon-box">
             <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
@@ -521,14 +528,12 @@
           <span id="t-btnPay" class="service-title">مفردات المرتب</span>
         </div>
 
-        <!-- Directory Service -->
         <div class="service-btn" onclick="showPage('view-directory')">
           <div class="service-icon-box">
             <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
           </div>
           <span id="t-btnDir" class="service-title">دليل التواصل</span>
         </div>
-
       </div>
 
       <button id="t-logoutBtn" onclick="logout()" class="btn-danger">تسجيل الخروج</button>
@@ -593,14 +598,16 @@
 
   <script>
     // ----------------------------------------------------
-    // INTRO ANIMATION BUILDER
+    // SMOOTH & SLOW INTRO ANIMATION (SLOW IN / STAGGER FADE OUT)
     // ----------------------------------------------------
     function buildIntroAnimation() {
       const text = "LACTO MISR L.L.C";
       const container = document.getElementById('introTitle');
       container.innerHTML = "";
 
-      let delay = 0.05;
+      let delay = 0.12; // تباطؤ تتابع ظهور الحروف
+      const charElements = [];
+
       for (let char of text) {
         if (char === ' ') {
           const space = document.createElement('span');
@@ -612,18 +619,31 @@
           span.innerText = char;
           span.style.animationDelay = delay + 's';
           container.appendChild(span);
-          delay += 0.07; // توقيت تتابع ظهور الحروف
+          charElements.push(span);
+          delay += 0.12;
         }
       }
 
-      // إخفاء الـ Splash Screen بعد انتهاء الحركة بالكامل
+      // الوقت الكلي لاكتمال التجميع
+      const totalAssembleTime = (delay * 1000) + 1200;
+
+      // 1. بدء اختفاء الحروف حرفاً حرفاً ببطء شياكة بعد ثبات الكلمة لحظياً
+      setTimeout(() => {
+        charElements.forEach((el, index) => {
+          setTimeout(() => {
+            el.classList.add('fade-char');
+          }, index * 80); // يتلاشى كل حرف بفارق 80 ملي ثانية
+        });
+      }, totalAssembleTime);
+
+      // 2. تلاشي الشاشة بالكامل بانسيابية بعد اختفاء الحروف
+      const fadeOutStartTime = totalAssembleTime + (charElements.length * 80) + 400;
       setTimeout(() => {
         const introScreen = document.getElementById('intro-screen');
         introScreen.classList.add('fade-out');
-      }, (delay * 1000) + 700);
+      }, fadeOutStartTime);
     }
 
-    // Run Intro right at start
     window.addEventListener('DOMContentLoaded', buildIntroAnimation);
 
     // ----------------------------------------------------
