@@ -24,7 +24,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&display=swap');
 
     :root {
       --bg: #0b0f19;
@@ -78,6 +78,7 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 9999;
@@ -89,6 +90,14 @@
     #intro-screen.fade-out {
       opacity: 0;
       visibility: hidden;
+    }
+
+    .intro-content-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      text-align: center;
     }
 
     .intro-title-container {
@@ -120,6 +129,16 @@
 
     .intro-space {
       width: 0.5rem;
+    }
+
+    .intro-subtitle {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      color: #38bdf8;
+      text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+      opacity: 0;
+      letter-spacing: 1.5px;
+      will-change: opacity, transform;
     }
 
     /* ----------------------------------
@@ -466,7 +485,10 @@
 
   <!-- Intro Screen with Gentle Tornado Effect -->
   <div id="intro-screen">
-    <div class="intro-title-container" id="introTitle"></div>
+    <div class="intro-content-wrapper">
+      <div class="intro-title-container" id="introTitle"></div>
+      <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
+    </div>
   </div>
 
   <!-- App Header -->
@@ -609,11 +631,12 @@
     function runTornadoIntro() {
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
+      const subtitle = document.getElementById('introSubtitle');
       container.innerHTML = "";
 
       const charElements = [];
 
-      // 1. Build DOM Elements
+      // 1. Build DOM Elements for Title
       for (let char of text) {
         if (char === ' ') {
           const space = document.createElement('span');
@@ -630,14 +653,14 @@
 
       // Direction vectors for scattering each character gently to different screen edges
       const directions = [
-        { x: -900, y: -700 }, // Top-Left
-        { x: 0,    y: -900 }, // Top
-        { x: 900,  y: -700 }, // Top-Right
-        { x: 900,  y: 0 },    // Right
-        { x: 900,  y: 700 },  // Bottom-Right
-        { x: 0,    y: 900 },  // Bottom
-        { x: -900, y: 700 },  // Bottom-Left
-        { x: -900, y: 0 }     // Left
+        { x: -900, y: -700 },
+        { x: 0,    y: -900 },
+        { x: 900,  y: -700 },
+        { x: 900,  y: 0 },    
+        { x: 900,  y: 700 },  
+        { x: 0,    y: 900 },  
+        { x: -900, y: 700 },  
+        { x: -900, y: 0 }     
       ];
 
       // 2. Timeline GSAP Animation (Slow & Cinematic)
@@ -665,6 +688,9 @@
         });
       });
 
+      // Set initial state for subtitle
+      gsap.set(subtitle, { opacity: 0, y: 20 });
+
       // Step B: Cyclone Whirlwind Assemble (Slow, smooth, and majestic down into line)
       tl.to(charElements, {
         duration: 2.8,
@@ -680,7 +706,15 @@
         ease: "power2.out"
       });
 
-      // Step C: Hold position clearly with gentle glowing pulse
+      // Step C: Fade in subtitle smoothly right after company title settles
+      tl.to(subtitle, {
+        duration: 1.2,
+        opacity: 1,
+        y: 0,
+        ease: "power2.out"
+      });
+
+      // Step D: Hold position clearly with gentle glowing pulse for 5 seconds
       tl.to(charElements, {
         duration: 1.2,
         textShadow: "0 0 35px rgba(56, 189, 248, 1)",
@@ -688,9 +722,16 @@
         yoyo: true,
         repeat: 1,
         ease: "sine.inOut"
-      });
+      }, "+=3.8"); // Keeps it steady and visible for ~5 seconds total in this phase
 
-      // Step D: Slow & Smooth Scatter - letter by letter drifting away gracefully
+      // Step E: Slow & Smooth Scatter - letter by letter drifting away gracefully along with subtitle fading out
+      tl.to(subtitle, {
+        duration: 1.2,
+        opacity: 0,
+        y: -20,
+        ease: "power1.in"
+      }, "scatter");
+
       charElements.forEach((el, index) => {
         const dir = directions[index % directions.length];
         tl.to(el, {
@@ -704,7 +745,7 @@
           opacity: 0,
           scale: 0.5,
           ease: "power1.inOut"
-        }, `-=${index === 0 ? 0 : 1.35}`); 
+        }, index === 0 ? "scatter" : `-=1.35`); 
       });
     }
 
@@ -923,7 +964,7 @@
       document.getElementById('t-dirTitle').innerText = t.dirTitle;
       document.getElementById('t-dirMsg').innerText = t.dirMsg;
 
-      renderProfileDate();
+      renderProfileData();
     }
 
     setLanguage(currentLang);
