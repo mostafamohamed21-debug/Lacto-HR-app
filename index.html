@@ -1084,6 +1084,7 @@
     let currentUserData = null;
     let currentEmpCode = "";
     let currentLang = localStorage.getItem('lacto_lang') || 'ar';
+    let activeChatRef = null;
 
     const translations = {
       ar: {
@@ -1260,6 +1261,9 @@
       if (modal.classList.contains('show')) {
         const chatBody = document.getElementById('chatBody');
         chatBody.scrollTop = chatBody.scrollHeight;
+        if (!currentEmpCode && !localStorage.getItem('guest_chat_id')) {
+          initGuestChat();
+        }
       }
     }
 
@@ -1269,31 +1273,80 @@
       }
     }
 
+    function getOrCreateGuestId() {
+      let guestId = localStorage.getItem('guest_chat_id');
+      if (!guestId) {
+        guestId = "guest_" + Date.now() + "_" + Math.floor(Math.random() * 1000);
+        localStorage.setItem('guest_chat_id', guestId);
+      }
+      return guestId;
+    }
+
+    function initGuestChat() {
+      const guestId = getOrCreateGuestId();
+      listenToChatMessages(guestId);
+    }
+
     function sendChatMessage() {
       const input = document.getElementById('chatInput');
       const text = input.value.trim();
       if (!text) return;
 
-      // التأكد من استخدام كود الموظف الحالي إذا كان مسجلاً، أو معرف زائر مؤقت لمنع ظهور undefined
-      const senderId = (currentEmpCode && currentEmpCode !== "") ? currentEmpCode : ("guest_" + Math.floor(Math.random() * 10000));
+      const codeInput = document.getElementById('empCode') ? document.getElementById('empCode').value.trim() : "";
 
+      // التحقق من كود الموظف المكتوب أو المسجل، وإذا لم يوجد يتحول لزائر مباشرة
+      if (currentEmpCode && currentEmpCode !== "") {
+        postMessageToFirebase(currentEmpCode, currentUserData ? currentUserData.name : "موظف", text);
+        input.value = "";
+      } else if (codeInput !== "") {
+        db.ref('users/' + codeInput).once('value').then((snapshot) => {
+          if (snapshot.exists()) {
+            const user = snapshot.val();
+            postMessageToFirebase(codeInput, user.name || "موظف", text);
+            listenToChatMessages(codeInput);
+          } else {
+            const guestId = getOrCreateGuestId();
+            postMessageToFirebase(guestId, "زائر", text);
+            listenToChatMessages(guestId);
+          }
+          input.value = "";
+        }).catch(() => {
+          const guestId = getOrCreateGuestId();
+          postMessageToFirebase(guestId, "زائر", text);
+          listenToChatMessages(guestId);
+          input.value = "";
+        });
+      } else {
+        const guestId = getOrCreateGuestId();
+        postMessageToFirebase(guestId, "زائر", text);
+        listenToChatMessages(guestId);
+        input.value = "";
+      }
+    }
+
+    function postMessageToFirebase(senderId, senderName, text) {
       const msgData = {
         sender: senderId,
-        senderName: currentUserData ? currentUserData.name : "زائر",
+        senderName: senderName,
         text: text,
         timestamp: Date.now(),
         isAdmin: false
       };
-
       db.ref('chats/' + senderId).push(msgData);
-      input.value = "";
     }
 
-    function listenToChatMessages(empCode) {
-      if (!empCode) return;
-      const chatBody = document.getElementById('chatBody');
+    function listenToChatMessages(chatTargetId) {
+      if (!chatTargetId) return;
       
-      db.ref('chats/' + empCode).on('child_added', (snapshot) => {
+      if (activeChatRef) {
+        activeChatRef.off();
+      }
+
+      const chatBody = document.getElementById('chatBody');
+      chatBody.innerHTML = '<div class="chat-msg hr" id="t-welcomeChat">' + translations[currentLang].welcomeChat + '</div>';
+
+      activeChatRef = db.ref('chats/' + chatTargetId);
+      activeChatRef.on('child_added', (snapshot) => {
         const msg = snapshot.val();
         
         const welcomeEl = document.getElementById('t-welcomeChat');
@@ -1352,6 +1405,7 @@
     }
 
     setLanguage(currentLang);
+    initGuestChat();
   </script>
 </body>
 </html>
