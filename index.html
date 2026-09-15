@@ -7,7 +7,144 @@
   
   <!-- App Manifest & Branding (LM HR & Logo) -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0f172a">
+  <meta name="theme-color" content<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام تسجيل الدخول والبروفايل</title>
+  <style>
+    body { font-family: sans-serif; direction: rtl; text-align: right; margin: 20px; background-color: #f4f4f9; }
+    .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); max-width: 400px; margin: auto; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; }
+    input { width: 100%; padding: 8px; box-sizing: border-box; }
+    button { background: #007bff; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; width: 100%; }
+    button:hover { background: #0056b3; }
+    .hidden { display: none; }
+    .avatar { width: 80px; height: 80px; border-radius: 50%; display: block; margin: 10px auto; }
+    .info-item { margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+  </style>
+</head>
+<body>
+
+  <!-- شاشة تسجيل الدخول -->
+  <div id="loginSection" class="card">
+    <h2>تسجيل الدخول</h2>
+    <div class="form-group">
+      <label for="empCodeInput">كود الموظف (مثال: 1, 2, 102 أو visitor):</label>
+      <input type="text" id="empCodeInput" placeholder="أدخل الكود هنا...">
+    </div>
+    <button onclick="handleLogin()">دخول</button>
+  </div>
+
+  <!-- شاشة لوحة التحكم والبروفايل -->
+  <div id="profileSection" class="card hidden">
+    <h2>مرحباً بك</h2>
+    <img id="userPhoto" src="" alt="الصورة الشخصية" class="avatar">
+    
+    <div class="info-item"><strong>الاسم:</strong> <span id="userName">--</span></div>
+    <div class="info-item"><strong>الوظيفة:</strong> <span id="userJob">--</span></div>
+    <div class="info-item"><strong>الإدارة:</strong> <span id="userDept">--</span></div>
+    <div class="info-item"><strong>الكود:</strong> <span id="userCodeVal">--</span></div>
+    <div class="info-item"><strong>الرقم القومي:</strong> <span id="userNID">--</span></div>
+
+    <button onclick="logout()" style="background: #dc3545; margin-top: 15px;">تسجيل الخروج</button>
+  </div>
+
+  <script>
+    let allUsers = {};
+    let currentUserData = null;
+    let currentEmpCode = "";
+    let currentLang = "ar"; // اللغة الافتراضية
+
+    // 1. تحميل ملف users.json عند فتح الصفحة
+    async function loadUsersData() {
+      try {
+        const response = await fetch('users.json');
+        allUsers = await response.json();
+        console.log("تم تحميل بيانات المستخدمين بنجاح");
+      } catch (error) {
+        console.error("خطأ في تحميل ملف users.json:", error);
+      }
+    }
+
+    // تشغيل جلب البيانات فور تحميل الصفحة
+    window.onload = loadUsersData;
+
+    // 2. معالجة تسجيل الدخول والبحث برقم الموظف
+    function handleLogin() {
+      const inputVal = document.getElementById('empCodeInput').value.trim();
+      if (!inputVal) {
+        alert("برجاء إدخال كود الموظف");
+        return;
+      }
+
+      currentEmpCode = inputVal;
+
+      // البحث في users.json باستخدام الرقم المطلوب تماماً
+      if (allUsers[currentEmpCode]) {
+        currentUserData = allUsers[currentEmpCode];
+      } else {
+        // لو الرقم مش موجود في الملف أو كان visitor بيعتبره زائر تلقائياً
+        currentUserData = { isVisitor: true };
+      }
+
+      // إخفاء تسجيل الدخول وإظهار البروفايل
+      document.getElementById('loginSection').classList.add('hidden');
+      document.getElementById('profileSection').classList.remove('hidden');
+
+      renderProfileData();
+    }
+
+    // 3. عرض البيانات بدون أي undefined نهائياً
+    function renderProfileData() {
+      if (!currentUserData) return;
+      const user = currentUserData;
+      const isEn = (currentLang === 'en');
+
+      // فحص إذا كان الحساب زائر أو كود visitor
+      const isVisitor = user.isVisitor || currentEmpCode.toLowerCase() === 'visitor';
+
+      if (isVisitor) {
+        const visitorName = isEn ? "Visitor" : "زائر";
+        const visitorJob = isEn ? "Guest" : "زائر كريم";
+        const visitorDept = isEn ? "General" : "عام";
+
+        document.getElementById('userName').innerText = visitorName;
+        document.getElementById('userJob').innerText = visitorJob;
+        document.getElementById('userDept').innerText = visitorDept;
+        document.getElementById('userCodeVal').innerText = currentEmpCode;
+        document.getElementById('userNID').innerText = "--";
+        document.getElementById('userPhoto').src = "https://i.pravatar.cc/150?img=12";
+        return;
+      }
+
+      // في حالة الموظف: البحث عن القيم واستبدال المفقود بـ "--"
+      const name = isEn ? (user.name_en || user.name || user.name_ar) : (user.name_ar || user.name);
+      const job = isEn ? (user.job_en || user.job || user.job_ar) : (user.job_ar || user.job);
+      const dept = isEn ? (user.dept_en || user.dept || user.dept_ar) : (user.dept_ar || user.dept);
+      const nid = user.nationalId || user.national_id || user.nid;
+
+      document.getElementById('userName').innerText = name || "--";
+      document.getElementById('userJob').innerText = job || "--";
+      document.getElementById('userDept').innerText = dept || "--";
+      document.getElementById('userCodeVal').innerText = currentEmpCode;
+      document.getElementById('userNID').innerText = nid || "--";
+      document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
+    }
+
+    // 4. تسجيل الخروج
+    function logout() {
+      currentUserData = null;
+      currentEmpCode = "";
+      document.getElementById('empCodeInput').value = "";
+      document.getElementById('profileSection').classList.add('hidden');
+      document.getElementById('loginSection').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>="#0f172a">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="LM HR">
