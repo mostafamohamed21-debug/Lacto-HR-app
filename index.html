@@ -533,7 +533,7 @@
     }
 
     /* ----------------------------------
-       Floating Chat Widget Styling (Global)
+       Floating Chat Widget Styling (Global Fixed)
     ---------------------------------- */
     .floating-chat-btn {
       position: fixed;
@@ -568,7 +568,7 @@
       fill: #ffffff;
     }
 
-    /* Chat Modal Box (Global) */
+    /* Chat Modal Box (Global Fixed) */
     .chat-modal {
       position: fixed;
       bottom: 95px;
@@ -1225,7 +1225,7 @@
             height: 85 
           });
 
-          // تفعيل الاستماع للرسائل الخاصة بالشات لهذا الموظف
+          // الاستماع للرسائل باستخدام كود الموظف
           listenToChatMessages(code);
 
           showPage('view-dashboard');
@@ -1274,7 +1274,8 @@
       const text = input.value.trim();
       if (!text) return;
 
-      const senderId = currentEmpCode || "guest_" + Math.floor(Math.random() * 10000);
+      // التأكد من استخدام كود الموظف الحالي إذا كان مسجلاً، أو معرف زائر مؤقت لمنع ظهور undefined
+      const senderId = (currentEmpCode && currentEmpCode !== "") ? currentEmpCode : ("guest_" + Math.floor(Math.random() * 10000));
 
       const msgData = {
         sender: senderId,
@@ -1289,6 +1290,7 @@
     }
 
     function listenToChatMessages(empCode) {
+      if (!empCode) return;
       const chatBody = document.getElementById('chatBody');
       
       db.ref('chats/' + empCode).on('child_added', (snapshot) => {
@@ -1321,7 +1323,7 @@
       document.getElementById('t-btnID').innerText = t.btnID;
       document.getElementById('t-btnLeaves').innerText = t.btnLeaves;
       document.getElementById('t-btnPay').innerText = t.btnPay;
-      document.getElementById('t-btnDir').innerText = t.btnDir; /* تم تصليح الخطأ هنا */
+      document.getElementById('t-btnDir').innerText = t.btnDir;
       document.getElementById('t-logoutBtn').innerText = t.logoutBtn;
 
       document.getElementById('t-backBtn1').innerText = t.backBtn;
