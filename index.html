@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LM HR - Lacto HR Hub</title>
   
-  <!-- App Manifest & Branding -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0b0f19">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -14,12 +13,10 @@
   <link rel="apple-touch-icon" href="logo.png">
   <link rel="icon" type="image/png" href="logo.png">
 
-  <!-- GSAP Library & Libraries -->
+  <!-- GSAP & 3D Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -28,439 +25,249 @@
 
     :root {
       --bg: #0b0f19;
-      --card-bg: rgba(15, 23, 42, 0.85);
-      --border-color: rgba(255, 255, 255, 0.12);
+      --card-bg: rgba(15, 23, 42, 0.82);
+      --border-color: rgba(255, 255, 255, 0.1);
       --text: #f8fafc;
       --accent: #0284c7;
       --accent-glow: rgba(56, 189, 248, 0.35);
       --danger: #ef4444;
       --success: #10b981;
-      --muted: #cbd5e1;
+      --muted: #94a3b8;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Cairo', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      font-family: 'Cairo', 'Plus Jakarta Sans', system-ui, sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background: linear-gradient(rgba(11, 15, 25, 0.85), rgba(11, 15, 25, 0.92)), url('background.jpg');
+      background: linear-gradient(135deg, rgba(11, 15, 25, 0.9), rgba(5, 8, 15, 0.95)), url('background.jpg');
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
       background-attachment: fixed;
       color: var(--text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      padding: 1rem 1rem 5.5rem 1rem;
+      padding: 1rem 1rem 6rem 1rem;
       overflow-x: hidden;
+      perspective: 1200px;
     }
 
     /* ----------------------------------
-       Intro Screen (Slow & Elegant) 
+       True Tornado 3D Intro Screen 
     ---------------------------------- */
     #intro-screen {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: linear-gradient(rgba(11, 15, 25, 0.96), rgba(11, 15, 25, 0.99)), url('background.jpg');
-      background-size: cover;
-      background-position: center;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      padding: 1.5rem;
-      transition: opacity 1.5s ease, visibility 1.5s ease;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: radial-gradient(circle, rgba(15,23,42,0.98) 0%, rgba(5,8,15,1) 100%);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      z-index: 9999; padding: 1rem;
+      transition: opacity 1.2s ease, visibility 1.2s ease;
     }
+    #intro-screen.fade-out { opacity: 0; visibility: hidden; }
 
-    #intro-screen.fade-out {
-      opacity: 0;
-      visibility: hidden;
-    }
-
-    .intro-title-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      width: 100%;
-      max-width: 480px;
-    }
-
-    .intro-title-container {
-      width: 100%;
-      display: flex;
-      gap: 0.12rem;
-      flex-wrap: nowrap;
-      justify-content: center;
-      align-items: center;
-      direction: ltr;
-    }
-
+    .intro-wrapper { display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .intro-title-container { display: flex; gap: 0.15rem; direction: ltr; flex-wrap: nowrap; }
     .intro-char {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: clamp(1.5rem, 5vw, 2.2rem);
+      font-size: clamp(1.8rem, 6vw, 2.5rem);
       font-weight: 800;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       display: inline-block;
+      opacity: 0;
     }
-
-    .intro-space { width: 0.4rem; }
-
+    .intro-space { width: 0.5rem; }
     .intro-slogan {
       font-family: 'Great Vibes', cursive;
-      font-size: clamp(1.6rem, 4.2vw, 2.3rem);
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
       color: #38bdf8;
-      text-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
-      margin-top: 1.2rem;
+      margin-top: 1rem;
       opacity: 0;
-      transform: translateY(15px);
+      transform: translateY(20px);
       letter-spacing: 1px;
-      direction: ltr;
-      text-align: center;
-      line-height: 1.4;
     }
 
     /* ----------------------------------
-       App Header & Centered Layout 
+       App Header 
     ---------------------------------- */
     .app-header {
-      width: 100%;
-      max-width: 420px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 0 auto 1.2rem auto;
-      padding: 0 0.2rem;
+      width: 100%; max-width: 420px;
+      display: flex; justify-content: space-between; align-items: center;
+      margin: 0 auto 1.2rem auto; padding: 0 0.3rem;
     }
-
-    .brand-container {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .brand-logo {
-      width: 32px;
-      height: 32px;
-      object-fit: contain;
-      border-radius: 8px;
-    }
-
+    .brand-container { display: flex; align-items: center; gap: 0.6rem; }
+    .brand-logo { width: 34px; height: 34px; object-fit: contain; border-radius: 9px; }
     .brand-title {
-      font-size: 1.15rem;
-      font-weight: 800;
+      font-size: 1.2rem; font-weight: 800;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    /* Dropdown Language Switcher */
+    .header-actions { display: flex; align-items: center; gap: 0.5rem; }
     .lang-dropdown {
-      background: rgba(30, 41, 59, 0.85);
-      border: 1px solid var(--border-color);
-      color: #38bdf8;
-      padding: 0.35rem 0.6rem;
-      border-radius: 0.8rem;
-      font-size: 0.75rem;
-      font-weight: 700;
-      outline: none;
-      cursor: pointer;
-      backdrop-filter: blur(8px);
+      background: rgba(30, 41, 59, 0.85); border: 1px solid var(--border-color);
+      color: #38bdf8; padding: 0.35rem 0.6rem; border-radius: 0.8rem;
+      font-size: 0.75rem; font-weight: 700; outline: none; cursor: pointer;
     }
-
     .notif-btn {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: rgba(30, 41, 59, 0.85);
-      border: 1px solid var(--border-color);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #38bdf8;
-      cursor: pointer;
-      position: relative;
-      backdrop-filter: blur(8px);
+      width: 34px; height: 34px; border-radius: 50%;
+      background: rgba(30, 41, 59, 0.85); border: 1px solid var(--border-color);
+      display: flex; align-items: center; justify-content: center;
+      color: #38bdf8; cursor: pointer; position: relative;
     }
-
     .notif-badge {
-      position: absolute;
-      top: -2px;
-      right: -2px;
-      background: var(--danger);
-      color: white;
-      font-size: 0.6rem;
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
+      position: absolute; top: -2px; right: -2px; background: var(--danger);
+      color: white; font-size: 0.6rem; width: 15px; height: 15px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-weight: bold;
     }
 
-    .container {
-      width: 100%;
-      max-width: 420px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+    /* ----------------------------------
+       Container & 3D Page Flip View 
+    ---------------------------------- */
+    .container { width: 100%; max-width: 420px; margin: 0 auto; position: relative; }
 
     .card {
       width: 100%;
       background: var(--card-bg);
       border: 1px solid var(--border-color);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      padding: 1.3rem;
-      border-radius: 1.4rem;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      padding: 1.4rem; border-radius: 1.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
       text-align: center;
-      transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
     }
 
-    .page-turn {
-      animation: pageTurnAnim 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    /* 3D Book Flip Animation */
+    .page-turn-3d {
+      animation: bookFlip3D 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-
-    @keyframes pageTurnAnim {
-      0% { opacity: 0; transform: scale(0.96) translateY(10px); }
-      100% { opacity: 1; transform: scale(1) translateY(0); }
+    @keyframes bookFlip3D {
+      0% { opacity: 0; transform: rotateY(-35deg) scale(0.92) translateZ(-50px); }
+      100% { opacity: 1; transform: rotateY(0deg) scale(1) translateZ(0); }
     }
 
     input, textarea {
-      width: 100%;
-      padding: 0.8rem 1rem;
-      margin: 0.35rem 0;
-      border-radius: 0.9rem;
-      border: 1px solid var(--border-color);
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--text);
-      font-size: 0.9rem;
-      text-align: center;
-      outline: none;
+      width: 100%; padding: 0.85rem 1rem; margin: 0.4rem 0;
+      border-radius: 1rem; border: 1px solid var(--border-color);
+      background: rgba(15, 23, 42, 0.95); color: var(--text);
+      font-size: 0.9rem; text-align: center; outline: none;
       transition: all 0.3s;
     }
-
     input:focus, textarea:focus {
-      border-color: #38bdf8;
-      box-shadow: 0 0 10px var(--accent-glow);
+      border-color: #38bdf8; box-shadow: 0 0 12px var(--accent-glow);
     }
 
     button {
-      width: 100%;
-      padding: 0.85rem;
-      border-radius: 1.1rem;
-      border: none;
+      width: 100%; padding: 0.9rem; border-radius: 1.1rem; border: none;
       background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.95rem;
-      cursor: pointer;
-      margin-top: 0.7rem;
-      box-shadow: 0 5px 0 #024e77, 0 8px 15px rgba(0, 0, 0, 0.35);
+      color: #fff; font-weight: 700; font-size: 0.95rem; cursor: pointer;
+      margin-top: 0.8rem; box-shadow: 0 6px 0 #024e77, 0 10px 20px rgba(0, 0, 0, 0.4);
       transition: all 0.12s ease;
     }
-
-    button:active {
-      transform: translateY(3px);
-      box-shadow: 0 2px 0 #024e77;
-    }
-
-    .btn-danger {
-      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-      box-shadow: 0 5px 0 #991b1b, 0 8px 15px rgba(220, 38, 38, 0.25);
-    }
-    .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
+    button:active { transform: translateY(3px); box-shadow: 0 3px 0 #024e77; }
+    .btn-danger { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 6px 0 #991b1b; }
+    .btn-danger:active { box-shadow: 0 3px 0 #991b1b; }
 
     .hidden { display: none !important; }
 
     /* ----------------------------------
-       Dashboard & Modules 
+       Dynamic Dashboard & Dynamic Cards 
     ---------------------------------- */
     .user-header-card {
-      background: rgba(30, 41, 59, 0.65);
+      background: rgba(30, 41, 59, 0.7);
       border: 1px solid var(--border-color);
-      padding: 1rem;
-      border-radius: 1.2rem;
-      display: flex;
-      align-items: center;
-      gap: 0.9rem;
-      margin-bottom: 1rem;
-      text-align: right;
+      padding: 1rem; border-radius: 1.2rem;
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1.1rem; text-align: right;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.08);
     }
+    .header-avatar { width: 52px; height: 52px; border-radius: 50%; border: 2px solid #38bdf8; object-fit: cover; }
 
-    .header-avatar {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      border: 2px solid #38bdf8;
-      object-fit: cover;
-    }
-
+    /* Modules & Widgets Dynamic Grid */
     .modules-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.8rem;
-      margin-bottom: 1rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 1.1rem;
     }
-
     .module-card {
-      background: linear-gradient(145deg, rgba(30, 41, 59, 0.75), rgba(15, 23, 42, 0.9));
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.92));
       border: 1px solid var(--border-color);
-      border-radius: 1.1rem;
-      padding: 0.9rem;
-      text-align: right;
-      cursor: pointer;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.25);
-      transition: all 0.2s ease;
+      border-radius: 1.2rem; padding: 1rem 0.9rem; text-align: right; cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3); transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
+    .module-card:hover { border-color: #38bdf8; transform: translateY(-3px); box-shadow: 0 12px 25px rgba(56, 189, 248, 0.2); }
+    .module-title { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.3rem; font-weight: 600; }
+    .module-value { font-size: 1.1rem; font-weight: 800; color: #38bdf8; }
 
-    .module-card:hover {
-      border-color: #38bdf8;
-      transform: translateY(-2px);
+    /* Separated Sections: Company News & Internal Career Opportunities */
+    .section-box {
+      background: rgba(30, 41, 59, 0.45);
+      border: 1px solid var(--border-color);
+      padding: 0.9rem 1rem; border-radius: 1.2rem;
+      margin-bottom: 0.9rem; text-align: right;
     }
-
-    .module-title { font-size: 0.73rem; color: var(--muted); margin-bottom: 0.25rem; }
-    .module-value { font-size: 1.05rem; font-weight: 800; color: #38bdf8; }
-
-    .company-news-box {
-      background: rgba(2, 132, 199, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      padding: 0.75rem 0.9rem;
-      border-radius: 1.1rem;
-      margin-bottom: 1rem;
-      text-align: right;
+    .section-box-title {
+      font-size: 0.8rem; font-weight: 800; color: #38bdf8;
+      display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem;
     }
+    .section-box-text { font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
 
     /* ----------------------------------
-       Bottom Navigation Tabs 
+       Bottom Navigation Bar 
     ---------------------------------- */
     .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 420px;
-      background: rgba(15, 23, 42, 0.9);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 420px;
+      background: rgba(11, 15, 25, 0.92); backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
       border-top: 1px solid rgba(255, 255, 255, 0.1);
-      display: flex;
-      justify-content: space-around;
-      padding: 0.5rem 0.4rem;
-      z-index: 1000;
-      box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.5);
+      display: flex; justify-content: space-around; padding: 0.6rem 0.4rem;
+      z-index: 1000; box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6);
     }
-
     .nav-tab {
-      background: rgba(30, 41, 59, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 0.9rem;
-      padding: 0.4rem 0.6rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.15rem;
-      cursor: pointer;
-      color: var(--muted);
-      font-size: 0.68rem;
-      font-weight: 700;
-      transition: all 0.2s ease;
+      background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 1rem; padding: 0.45rem 0.65rem; display: flex; flex-direction: column;
+      align-items: center; gap: 0.15rem; cursor: pointer; color: var(--muted);
+      font-size: 0.68rem; font-weight: 700; transition: all 0.25s ease;
     }
-
     .nav-tab svg { width: 18px; height: 18px; fill: currentColor; }
-    
     .nav-tab.active {
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(2, 132, 199, 0.28));
-      border-color: #38bdf8;
-      color: #38bdf8;
-      transform: translateY(-2px);
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(2, 132, 199, 0.35));
+      border-color: #38bdf8; color: #38bdf8; transform: translateY(-3px);
     }
 
-    /* Chat & Policies */
+    /* Chat & Policies Items */
     .chat-box {
-      height: 240px;
-      background: rgba(11, 15, 25, 0.6);
-      border: 1px solid var(--border-color);
-      border-radius: 0.9rem;
-      padding: 0.7rem;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin-bottom: 0.7rem;
-      text-align: right;
+      height: 250px; background: rgba(11, 15, 25, 0.65);
+      border: 1px solid var(--border-color); border-radius: 1rem;
+      padding: 0.8rem; overflow-y: auto; display: flex; flex-direction: column;
+      gap: 0.6rem; margin-bottom: 0.8rem; text-align: right;
     }
-
-    .chat-msg {
-      max-width: 80%;
-      padding: 0.55rem 0.8rem;
-      border-radius: 0.8rem;
-      font-size: 0.78rem;
-      line-height: 1.35;
-    }
-
-    .chat-msg.me { background: rgba(2, 132, 199, 0.35); border: 1px solid var(--accent); align-self: flex-start; color: #fff; }
-    .chat-msg.hr { background: rgba(30, 41, 59, 0.75); border: 1px solid var(--border-color); align-self: flex-end; color: #cbd5e1; }
+    .chat-msg { max-width: 82%; padding: 0.6rem 0.85rem; border-radius: 0.9rem; font-size: 0.8rem; line-height: 1.4; }
+    .chat-msg.me { background: rgba(2, 132, 199, 0.4); border: 1px solid var(--accent); align-self: flex-start; color: #fff; }
+    .chat-msg.hr { background: rgba(30, 41, 59, 0.8); border: 1px solid var(--border-color); align-self: flex-end; color: #cbd5e1; }
 
     .policy-item {
-      background: rgba(30, 41, 59, 0.6);
-      border: 1px solid var(--border-color);
-      padding: 0.75rem 0.9rem;
-      border-radius: 0.9rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.5rem;
-      text-align: right;
+      background: rgba(30, 41, 59, 0.6); border: 1px solid var(--border-color);
+      padding: 0.8rem 1rem; border-radius: 1rem; display: flex;
+      justify-content: space-between; align-items: center; margin-bottom: 0.6rem; text-align: right;
     }
-
     .pdf-btn {
-      background: rgba(16, 185, 129, 0.18);
-      border: 1px solid var(--success);
-      color: var(--success);
-      padding: 0.35rem 0.7rem;
-      border-radius: 0.6rem;
-      font-size: 0.7rem;
-      font-weight: 700;
-      cursor: pointer;
-      width: auto;
-      margin: 0;
-      box-shadow: none;
+      background: rgba(16, 185, 129, 0.2); border: 1px solid var(--success);
+      color: var(--success); padding: 0.4rem 0.8rem; border-radius: 0.7rem;
+      font-size: 0.72rem; font-weight: 700; cursor: pointer; width: auto; margin: 0; box-shadow: none;
     }
   </style>
 </head>
 <body>
 
-  <!-- Slow Elegant Intro Screen -->
+  <!-- True Tornado 3D Intro Screen -->
   <div id="intro-screen">
-    <div class="intro-title-wrapper">
+    <div class="intro-wrapper">
       <div class="intro-title-container" id="introTitle"></div>
       <div class="intro-slogan" id="introSlogan">Partners in your child's growth journey.</div>
     </div>
@@ -472,14 +279,11 @@
       <img src="logo.png" alt="Logo" class="brand-logo" onerror="this.style.display='none'">
       <div class="brand-title">LM HR</div>
     </div>
-    
     <div class="header-actions">
-      <!-- Dropdown Language Switcher -->
       <select class="lang-dropdown" id="langSelect" onchange="changeLanguage()">
         <option value="AR">العربية 🇪🇬</option>
         <option value="EN">English 🇺🇸</option>
       </select>
-
       <div class="notif-btn" onclick="openNotifications()">
         🔔
         <span class="notif-badge" id="notifCount">1</span>
@@ -491,14 +295,14 @@
     
     <!-- 1. Login View -->
     <div id="view-login" class="card">
-      <h2 style="font-size: 1.3rem; margin-bottom: 0.2rem;" id="txt-login-title">LM HR Hub</h2>
-      <p style="color: var(--muted); font-size: 0.78rem; margin-bottom: 1.3rem;" id="txt-login-sub">بوابة الموظفين والمدراء الرقمية</p>
+      <h2 style="font-size: 1.35rem; margin-bottom: 0.3rem;" id="txt-login-title">LM HR Hub</h2>
+      <p style="color: var(--muted); font-size: 0.8rem; margin-bottom: 1.4rem;" id="txt-login-sub">بوابة الموظفين والمدراء الرقمية</p>
       
       <input type="text" id="empCode" placeholder="كود الموظف">
       <input type="password" id="empPass" placeholder="كلمة السر">
       
       <button onclick="login()" id="txt-login-btn">دخول الحساب</button>
-      <p id="error" style="color: var(--danger); margin-top: 0.7rem; font-size: 0.78rem; font-weight: bold;"></p>
+      <p id="error" style="color: var(--danger); margin-top: 0.8rem; font-size: 0.8rem; font-weight: bold;"></p>
     </div>
 
     <!-- 2. Dashboard View -->
@@ -506,71 +310,77 @@
       <div class="user-header-card">
         <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
         <div>
-          <h3 id="dash-name" style="margin: 0; font-size: 1rem; font-weight: 700;">--</h3>
-          <p id="dash-job" style="margin: 0; color: #38bdf8; font-size: 0.75rem;">--</p>
+          <h3 id="dash-name" style="margin: 0; font-size: 1.05rem; font-weight: 700;">--</h3>
+          <p id="dash-job" style="margin: 0; color: #38bdf8; font-size: 0.78rem;">--</p>
         </div>
       </div>
 
-      <!-- Company News & Internal Career Opportunities -->
-      <div class="company-news-box">
-        <div style="font-size: 0.78rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.2rem;" id="txt-news-title">📢 لوحة إعلانات وأخبار الشركة</div>
-        <div style="font-size: 0.73rem; color: var(--muted);" id="txt-news-body">فرص توظيف داخلية شاغرة بقسم الإنتاج. يرجى التقديم عبر الـ HR قبل الخميس القادم.</div>
+      <!-- Separated Section 1: Company News -->
+      <div class="section-box">
+        <div class="section-box-title" id="txt-news-header">📢 أخبار وإعلانات الشركة</div>
+        <div class="section-box-text" id="txt-news-content">تم اعتماد الهيكل التنظيمي الجديد للشركة وتفعيل نظام حضور الموظفين المحدث عبر البوابة الرقمية.</div>
+      </div>
+
+      <!-- Separated Section 2: Internal Career Opportunities -->
+      <div class="section-box" style="border-color: rgba(56, 189, 248, 0.35); background: rgba(2, 132, 199, 0.1);">
+        <div class="section-box-title" id="txt-careers-header">💼 فرص التوظيف الداخلية</div>
+        <div class="section-box-text" id="txt-careers-content">فرصة شاغرة لمشرف بقسم الإنتاج. يرجى التقديم عبر الـ HR قبل الخميس القادم.</div>
       </div>
 
       <div class="modules-grid">
         <div class="module-card" onclick="switchTab('id')">
-          <div class="module-title">رصيد الإجازات</div>
+          <div class="module-title" id="m-title-1">رصيد الإجازات</div>
           <div class="module-value">18 يوم</div>
         </div>
         <div class="module-card" onclick="switchTab('id')">
-          <div class="module-title">الأذونات المتاحة</div>
+          <div class="module-title" id="m-title-2">الأذونات المتاحة</div>
           <div class="module-value">2 / 3 أذونات</div>
         </div>
         <div class="module-card" onclick="switchTab('id')">
-          <div class="module-title">آخر صافي مرتب</div>
+          <div class="module-title" id="m-title-3">آخر صافي مرتب</div>
           <div class="module-value">12,450 ج.م</div>
         </div>
         <div class="module-card" onclick="switchTab('chat')">
-          <div class="module-title">تواصل مع الـ HR</div>
+          <div class="module-title" id="m-title-4">تواصل مع الـ HR</div>
           <div class="module-value" style="color: var(--success);">متاح الآن</div>
         </div>
       </div>
 
-      <button onclick="logout()" class="btn-danger">تسجيل الخروج</button>
+      <button onclick="logout()" class="btn-danger" id="txt-logout-btn">تسجيل الخروج</button>
     </div>
 
     <!-- 3. ID Card View -->
     <div id="view-id" class="card hidden">
-      <h3 style="margin-bottom: 0.9rem; color: #38bdf8; font-size: 1.05rem;">الكارت الرقمي وهوية الموظف</h3>
-      <div style="background: linear-gradient(145deg, rgba(30,41,59,0.9), rgba(15,23,42,0.95)); border: 1px solid rgba(56,189,248,0.3); border-radius: 1.1rem; padding: 1.1rem;" id="myCardToDownload">
-        <div style="display:flex; justify-content:space-between; font-size:0.72rem; color:#38bdf8; font-weight:bold; margin-bottom:0.7rem;">
+      <h3 style="margin-bottom: 1rem; color: #38bdf8; font-size: 1.1rem;" id="txt-id-title">الكارت الرقمي وهوية الموظف</h3>
+      <div style="background: linear-gradient(145deg, rgba(30,41,59,0.95), rgba(15,23,42,0.98)); border: 1px solid rgba(56,189,248,0.35); border-radius: 1.2rem; padding: 1.2rem;" id="myCardToDownload">
+        <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#38bdf8; font-weight:bold; margin-bottom:0.8rem;">
           <span>LACTO MISR S.A.E</span>
           <span>VERIFIED</span>
         </div>
-        <img id="userPhoto" style="width:80px; height:80px; border-radius:50%; border:2px solid #38bdf8; object-fit:cover; margin:0 auto 0.5rem auto; display:block;" src="" alt="User">
-        <h4 id="userName" style="margin:0; font-size:0.95rem;">--</h4>
-        <p id="userJob" style="color:#38bdf8; font-size:0.72rem; margin:0 0 0.7rem 0;">--</p>
-        <div id="qrcode" style="background:#fff; padding:0.4rem; border-radius:0.7rem; display:inline-block;"></div>
+        <img id="userPhoto" style="width:85px; height:85px; border-radius:50%; border:2px solid #38bdf8; object-fit:cover; margin:0 auto 0.6rem auto; display:block;" src="" alt="User">
+        <h4 id="userName" style="margin:0; font-size:1rem;">--</h4>
+        <p id="userJob" style="color:#38bdf8; font-size:0.75rem; margin:0 0 0.8rem 0;">--</p>
+        <div id="qrcode" style="background:#fff; padding:0.45rem; border-radius:0.75rem; display:inline-block;"></div>
       </div>
-      <button onclick="downloadCard()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); margin-top: 0.9rem;">حفظ الكارت كصورة</button>
+      <button onclick="downloadCard()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); margin-top: 1rem;" id="txt-download-btn">حفظ الكارت كصورة</button>
     </div>
 
     <!-- 4. Policies View (PDFs) -->
     <div id="view-policies" class="card hidden">
-      <h3 style="margin-bottom: 0.9rem; color: #38bdf8; font-size: 1.05rem;">السياسات واللوائح الداخلية</h3>
+      <h3 style="margin-bottom: 1rem; color: #38bdf8; font-size: 1.1rem;" id="txt-pol-title">السياسات واللوائح الداخلية</h3>
       
       <div class="policy-item">
         <div>
-          <div style="font-weight:700; font-size:0.82rem;">لائحة العمل الداخلية 2026</div>
-          <div style="font-size:0.68rem; color:var(--muted);">نسخة معتمدة (PDF)</div>
+          <div style="font-weight:700; font-size:0.85rem;" id="txt-pol-1-title">لائحة العمل الداخلية 2026</div>
+          <div style="font-size:0.7rem; color:var(--muted);">نسخة معتمدة (PDF)</div>
         </div>
         <button class="pdf-btn" onclick="alert('جاري تحميل لائحة العمل...')">تحميل PDF</button>
       </div>
 
       <div class="policy-item">
         <div>
-          <div style="font-weight:700; font-size:0.82rem;">سياسة الإجازات والأذونات</div>
-          <div style="font-size:0.68rem; color:var(--muted);">دليل الموظف الشامل</div>
+          <div style="font-weight:700; font-size:0.85rem;" id="txt-pol-2-title">سياسة الإجازات والأذونات</div>
+          <div style="font-size:0.7rem; color:var(--muted);">دليل الموظف الشامل</div>
         </div>
         <button class="pdf-btn" onclick="alert('جاري تحميل سياسة الإجازات...')">تحميل PDF</button>
       </div>
@@ -578,13 +388,13 @@
 
     <!-- 5. Chat View -->
     <div id="view-chat" class="card hidden">
-      <h3 style="margin-bottom: 0.7rem; color: #38bdf8; font-size: 1.05rem;">محادثة الموارد البشرية (HR)</h3>
+      <h3 style="margin-bottom: 0.8rem; color: #38bdf8; font-size: 1.1rem;" id="txt-chat-title">محادثة الموارد البشرية (HR)</h3>
       <div class="chat-box" id="chatBox">
-        <div class="chat-msg hr">أهلاً بك يا فنان في دعم الموارد البشرية. كيف يمكننا مساعدتك اليوم؟</div>
+        <div class="chat-msg hr" id="txt-welcome-msg">أهلاً بك يا فنان في دعم الموارد البشرية. كيف يمكننا مساعدتك اليوم؟</div>
       </div>
-      <div style="display:flex; gap:0.4rem;">
+      <div style="display:flex; gap:0.5rem;">
         <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا..." style="margin:0;">
-        <button onclick="sendChatMessage()" style="width: auto; margin:0; padding: 0.6rem 0.9rem;">إرسال</button>
+        <button onclick="sendChatMessage()" style="width: auto; margin:0; padding: 0.7rem 1rem;" id="txt-send-btn">إرسال</button>
       </div>
     </div>
 
@@ -612,7 +422,7 @@
 
   <script>
     // ----------------------------------------------------
-    // SLOW & ELEGANT TORNADO INTRO SCRIPT
+    // True Tornado 3D Intro Script (GSAP)
     // ----------------------------------------------------
     function runTornadoIntro() {
       const text = "LACTO MISR S.A.E";
@@ -634,59 +444,70 @@
         }
       }
 
-      const directions = [
-        { x: -700, y: -500 }, { x: 0, y: -700 }, { x: 700, y: -500 },
-        { x: 700, y: 0 }, { x: 700, y: 500 }, { x: 0, y: 700 },
-        { x: -700, y: 500 }, { x: -700, y: 0 }
-      ];
-
       const tl = gsap.timeline({
         onComplete: () => {
           document.getElementById('intro-screen').classList.add('fade-out');
         }
       });
 
-      gsap.set(charElements, { y: -300, opacity: 0, scale: 0.3 });
-
-      tl.to(charElements, {
-        duration: 2.5,
-        x: 0, y: 0,
-        opacity: 1, scale: 1,
-        stagger: 0.08,
-        ease: "power2.out"
+      // Scatter characters in 3D space for tornado vortex
+      gsap.set(charElements, {
+        x: () => (Math.random() - 0.5) * 800,
+        y: () => (Math.random() - 0.5) * 800,
+        z: () => (Math.random() - 0.5) * 1000,
+        rotationX: () => Math.random() * 360,
+        rotationY: () => Math.random() * 360,
+        opacity: 0,
+        scale: 0.2
       });
 
+      // Tornado assemble animation
+      tl.to(charElements, {
+        duration: 2.5,
+        x: 0,
+        y: 0,
+        z: 0,
+        rotationX: 0,
+        rotationY: 0,
+        opacity: 1,
+        scale: 1,
+        stagger: 0.04,
+        ease: "expo.out"
+      });
+
+      // Reveal Slogan gracefully
       tl.to("#introSlogan", {
-        duration: 1.8,
+        duration: 1.5,
         opacity: 1,
         y: 0,
         ease: "power2.out"
-      }, "-=1.0");
+      }, "-=1.2");
 
-      tl.to({}, { duration: 4.0 });
+      // Hold readable screen time
+      tl.to({}, { duration: 3.5 });
 
-      charElements.forEach((el, index) => {
-        const dir = directions[index % directions.length];
-        tl.to(el, {
-          duration: 1.5,
-          x: dir.x, y: dir.y,
-          opacity: 0, scale: 0.6,
-          ease: "power1.inOut"
-        }, index === 0 ? "-=1.5" : "<");
-      });
-
-      tl.to("#introSlogan", {
+      // Gentle fade out
+      tl.to(charElements, {
         duration: 1.2,
         opacity: 0,
-        y: -10,
-        ease: "power1.inOut"
+        scale: 1.5,
+        filter: "blur(10px)",
+        stagger: 0.02,
+        ease: "power2.in"
+      }, "+=0.2");
+
+      tl.to("#introSlogan", {
+        duration: 0.8,
+        opacity: 0,
+        y: -20,
+        ease: "power1.in"
       }, "<");
     }
 
     window.addEventListener('DOMContentLoaded', runTornadoIntro);
 
     // ----------------------------------------------------
-    // Firebase & App Logic
+    // Firebase Config & App Logic
     // ----------------------------------------------------
     const firebaseConfig = {
       apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
@@ -713,6 +534,24 @@
         document.getElementById('empCode').placeholder = "Employee Code";
         document.getElementById('empPass').placeholder = "Password";
         document.getElementById('txt-login-btn').innerText = "Sign In";
+        document.getElementById('txt-news-header').innerText = "📢 Company News & Announcements";
+        document.getElementById('txt-news-content').innerText = "The new company organizational structure has been approved and active.";
+        document.getElementById('txt-careers-header').innerText = "💼 Internal Career Opportunities";
+        document.getElementById('txt-careers-content').innerText = "Supervisor vacancy in Production. Apply through HR before next Thursday.";
+        document.getElementById('m-title-1').innerText = "Leave Balance";
+        document.getElementById('m-title-2').innerText = "Available Permissions";
+        document.getElementById('m-title-3').innerText = "Last Net Salary";
+        document.getElementById('m-title-4').innerText = "HR Support Chat";
+        document.getElementById('txt-logout-btn').innerText = "Sign Out";
+        document.getElementById('txt-id-title').innerText = "Digital Employee ID Card";
+        document.getElementById('txt-download-btn').innerText = "Save Card as Image";
+        document.getElementById('txt-pol-title').innerText = "Company Policies & Regulations";
+        document.getElementById('txt-pol-1-title').innerText = "Internal Labor Law 2026";
+        document.getElementById('txt-pol-2-title').innerText = "Leave & Permission Policy";
+        document.getElementById('txt-chat-title').innerText = "Human Resources Chat";
+        document.getElementById('txt-welcome-msg').innerText = "Welcome to HR support. How can we help you today?";
+        document.getElementById('chatInput').placeholder = "Type your message here...";
+        document.getElementById('txt-send-btn').innerText = "Send";
         document.getElementById('tab-lbl-home').innerText = "Home";
         document.getElementById('tab-lbl-id').innerText = "ID Card";
         document.getElementById('tab-lbl-policies').innerText = "Policies";
@@ -724,6 +563,24 @@
         document.getElementById('empCode').placeholder = "كود الموظف";
         document.getElementById('empPass').placeholder = "كلمة السر";
         document.getElementById('txt-login-btn').innerText = "دخول الحساب";
+        document.getElementById('txt-news-header').innerText = "📢 أخبار وإعلانات الشركة";
+        document.getElementById('txt-news-content').innerText = "تم اعتماد الهيكل التنظيمي الجديد للشركة وتفعيل نظام حضور الموظفين المحدث عبر البوابة الرقمية.";
+        document.getElementById('txt-careers-header').innerText = "💼 فرص التوظيف الداخلية";
+        document.getElementById('txt-careers-content').innerText = "فرصة شاغرة لمشرف بقسم الإنتاج. يرجى التقديم عبر الـ HR قبل الخميس القادم.";
+        document.getElementById('m-title-1').innerText = "رصيد الإجازات";
+        document.getElementById('m-title-2').innerText = "الأذونات المتاحة";
+        document.getElementById('m-title-3').innerText = "آخر صافي مرتب";
+        document.getElementById('m-title-4').innerText = "تواصل مع الـ HR";
+        document.getElementById('txt-logout-btn').innerText = "تسجيل الخروج";
+        document.getElementById('txt-id-title').innerText = "الكارت الرقمي وهوية الموظف";
+        document.getElementById('txt-download-btn').innerText = "حفظ الكارت كصورة";
+        document.getElementById('txt-pol-title').innerText = "السياسات واللوائح الداخلية";
+        document.getElementById('txt-pol-1-title').innerText = "لائحة العمل الداخلية 2026";
+        document.getElementById('txt-pol-2-title').innerText = "سياسة الإجازات والأذونات";
+        document.getElementById('txt-chat-title').innerText = "محادثة الموارد البشرية (HR)";
+        document.getElementById('txt-welcome-msg').innerText = "أهلاً بك يا فنان في دعم الموارد البشرية. كيف يمكننا مساعدتك اليوم؟";
+        document.getElementById('chatInput').placeholder = "اكتب رسالتك هنا...";
+        document.getElementById('txt-send-btn').innerText = "إرسال";
         document.getElementById('tab-lbl-home').innerText = "الرئيسية";
         document.getElementById('tab-lbl-id').innerText = "الهوية";
         document.getElementById('tab-lbl-policies').innerText = "السياسات";
@@ -741,8 +598,9 @@
       const targetView = document.getElementById('view-' + tabId);
       if (targetView) {
         targetView.classList.remove('hidden');
-        targetView.classList.add('page-turn');
-        setTimeout(() => targetView.classList.remove('page-turn'), 400);
+        // Apply 3D book flip transition effect
+        targetView.classList.add('page-turn-3d');
+        setTimeout(() => targetView.classList.remove('page-turn-3d'), 600);
       }
 
       document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
@@ -755,7 +613,7 @@
       const pass = document.getElementById('empPass').value.trim();
       const errorEl = document.getElementById('error');
 
-      if (!code) { errorEl.innerText = "يرجى إدخال الكود"; return; }
+      if (!code) { errorEl.innerText = "يرجى إدخال كود الموظف"; return; }
 
       db.ref('users/' + code).once('value').then((snapshot) => {
         if (snapshot.exists()) {
@@ -786,10 +644,10 @@
           document.getElementById('bottomNav').classList.remove('hidden');
           switchTab('dashboard');
         } else {
-          errorEl.innerText = "كود الموظف غير مسجل!";
+          errorEl.innerText = "كود الموظف غير مسجل بقاعدة البيانات!";
         }
       }).catch(() => {
-        errorEl.innerText = "حدث خطأ في الاتصال!";
+        errorEl.innerText = "حدث خطأ في الاتصال بالخادم!";
       });
     }
 
