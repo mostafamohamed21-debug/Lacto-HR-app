@@ -272,7 +272,7 @@
       box-shadow: 0 0 15px var(--accent-glow), inset 0 1px 3px rgba(0,0,0,0.5);
     }
 
-    /* Password Input with Toggle Eye Button */
+    /* Password Input with Optimized Toggle Eye Button */
     .password-container {
       position: relative;
       width: 100%;
@@ -281,36 +281,37 @@
 
     .password-container input {
       margin: 0;
-      padding-left: 2.8rem;
+      padding-left: 3rem;
     }
 
     [dir="rtl"] .password-container input {
       padding-left: 1rem;
-      padding-right: 2.8rem;
+      padding-right: 3rem;
     }
 
     .toggle-password {
       position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      left: 0.8rem;
+      top: 0;
+      bottom: 0;
+      left: 0.2rem;
+      width: 40px;
       background: none;
       border: none;
       box-shadow: none !important;
       cursor: pointer;
       color: var(--muted);
-      width: auto;
       padding: 0;
-      margin: 0;
+      margin: auto 0;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: color 0.2s;
+      z-index: 10;
     }
 
     [dir="rtl"] .toggle-password {
       left: auto;
-      right: 0.8rem;
+      right: 0.2rem;
     }
 
     .toggle-password:hover {
@@ -318,9 +319,10 @@
     }
 
     .toggle-password svg {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       fill: currentColor;
+      pointer-events: none; /* تمنع أي تداخل للأحداث مع الـ SVG */
     }
 
     button {
@@ -803,7 +805,7 @@
     window.addEventListener('DOMContentLoaded', runTornadoIntro);
 
     // ----------------------------------------------------
-    // Toggle Password Visibility Function
+    // Toggle Password Visibility Function (Optimized)
     // ----------------------------------------------------
     function togglePasswordVisibility() {
       const passInput = document.getElementById('empPass');
