@@ -3,218 +3,487 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LACTO MISR - HR Nexus</title>
+  <title>LM HR - Lacto HR Hub</title>
   
-  <!-- GSAP for 3D Intro Animation -->
+  <!-- App Manifest & Branding (LM HR & Logo) -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="LM HR">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="icon" type="image/png" href="logo.png">
+
+  <!-- GSAP Library for Smooth Tornado Physics -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <!-- QRCode Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <!-- html2canvas Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <!-- Firebase SDKs -->
+
+  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Outfit:wght@400;600;800&family=Great+Vibes&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&display=swap');
 
     :root {
-      --bg: #030712;
-      --card-bg: rgba(17, 24, 39, 0.85);
-      --border: rgba(56, 189, 248, 0.2);
-      --text: #f9fafb;
-      --accent: #38bdf8;
-      --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
-      --danger: #f43f5e;
+      --bg: #0b0f19;
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --border-color: rgba(255, 255, 255, 0.18);
+      --text: #f8fafc;
+      --accent: #0284c7;
+      --accent-glow: rgba(56, 189, 248, 0.4);
+      --danger: #ef4444;
       --success: #10b981;
-      --muted: #94a3b8;
+      --muted: #cbd5e1;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Cairo', sans-serif;
+      font-family: 'Cairo', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
-    html, body {
-      width: 100%;
-      min-height: 100vh;
-      background-color: var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-    }
-
     body {
-      background-image: 
-        radial-gradient(circle at 10% 20%, rgba(2, 132, 199, 0.1) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
+      background: linear-gradient(rgba(11, 15, 25, 0.75), rgba(11, 15, 25, 0.85)), url('background.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: var(--text);
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 1rem 1rem 6rem 1rem;
+      padding: 1.5rem 1rem;
+      perspective: 1000px;
+      overflow-x: hidden;
     }
 
-    /* 3D Intro Screen */
+    /* ----------------------------------
+       Tornado / Cyclone Intro Styling 
+    ---------------------------------- */
     #intro-screen {
       position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background: #020408;
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      z-index: 9999; padding: 1rem;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(rgba(11, 15, 25, 0.92), rgba(11, 15, 25, 0.96)), url('background.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      perspective: 1200px;
+      overflow: hidden;
+      transition: opacity 1.2s ease, visibility 1.2s ease;
     }
-    #intro-screen.fade-out { opacity: 0; visibility: hidden; }
 
-    .intro-wrapper { display: flex; flex-direction: column; align-items: center; text-align: center; }
-    .intro-title-container { display: flex; gap: 0.1rem; direction: ltr; }
-    .intro-char {
-      font-family: 'Outfit', sans-serif;
-      font-size: clamp(2.2rem, 8vw, 3rem);
-      font-weight: 800;
-      background: var(--accent-gradient);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      display: inline-block; opacity: 0;
-    }
-    .intro-space { width: 0.6rem; }
-    .intro-slogan {
-      font-family: 'Great Vibes', cursive;
-      font-size: clamp(1.6rem, 4vw, 2.3rem);
-      color: var(--accent);
-      margin-top: 1rem;
+    #intro-screen.fade-out {
       opacity: 0;
-      transform: translateY(20px);
+      visibility: hidden;
     }
 
-    /* App Header */
+    .intro-title-container {
+      width: 100%;
+      display: flex;
+      gap: 0.15rem;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      direction: ltr;
+      padding: 0 0.5rem;
+      transform-style: preserve-3d;
+      text-align: center;
+    }
+
+    .intro-char {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.5rem, 5.5vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: 1px;
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+      display: inline-block;
+      transform-style: preserve-3d;
+      will-change: transform, opacity;
+    }
+
+    .intro-space {
+      width: 0.5rem;
+    }
+
+    /* ----------------------------------
+       Main App Layout 
+    ---------------------------------- */
     .app-header {
-      width: 100%; max-width: 400px;
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 1rem; padding: 0 0.5rem;
-    }
-    .brand-title {
-      font-size: 1.1rem; font-weight: 800;
-      background: var(--accent-gradient);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .lang-btn {
-      background: var(--card-bg); border: 1px solid var(--border);
-      color: var(--accent); padding: 0.3rem 0.7rem; border-radius: 0.7rem;
-      font-size: 0.75rem; font-weight: 700; cursor: pointer;
-    }
-
-    .container {
-      width: 100%; max-width: 400px;
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
       position: relative;
     }
 
-    .card {
+    .brand-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .brand-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+    }
+
+    .lang-dropdown-container {
+      position: relative;
+    }
+
+    .lang-dropdown-btn {
+      background: rgba(30, 41, 59, 0.75);
+      border: 1px solid var(--border-color);
+      color: var(--text);
+      padding: 0.5rem 0.9rem;
+      border-radius: 1rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .lang-dropdown-btn:active {
+      transform: scale(0.92) translateZ(-5px);
+    }
+
+    .lang-dropdown-menu {
+      position: absolute;
+      top: 115%;
+      left: 0;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+      display: none;
+      z-index: 200;
+      min-width: 130px;
+      backdrop-filter: blur(16px);
+    }
+
+    [dir="rtl"] .lang-dropdown-menu { left: auto; right: 0; }
+    .lang-dropdown-menu.show { display: block; }
+
+    .lang-option {
+      padding: 0.7rem 1rem;
+      font-size: 0.85rem;
+      color: var(--text);
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .lang-option:hover {
+      background: rgba(2, 132, 199, 0.3);
+      color: #38bdf8;
+    }
+
+    .container {
       width: 100%;
+      max-width: 420px;
+    }
+
+    .card {
       background: var(--card-bg);
-      border: 1px solid var(--border);
-      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-      padding: 1.5rem; border-radius: 1.2rem;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 1.75rem 1.5rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
       text-align: center;
-      margin-bottom: 1rem;
     }
 
     input {
-      width: 100%; padding: 0.85rem 1rem; margin: 0.5rem 0;
-      border-radius: 0.8rem; border: 1px solid var(--border);
-      background: #030712; color: var(--text);
-      font-size: 0.9rem; text-align: right; outline: none;
+      width: 100%;
+      padding: 0.9rem 1rem;
+      margin: 0.5rem 0;
+      border-radius: 1rem;
+      border: 1px solid var(--border-color);
+      background: rgba(15, 23, 42, 0.85);
+      color: var(--text);
+      font-size: 0.95rem;
+      text-align: center;
+      outline: none;
+      transition: all 0.3s;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
     }
-    [dir="ltr"] input { text-align: left; }
-    input:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
+
+    input:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 15px var(--accent-glow), inset 0 1px 3px rgba(0,0,0,0.5);
+    }
 
     button {
-      width: 100%; padding: 0.85rem; border-radius: 0.8rem; border: none;
-      background: var(--accent-gradient); color: #fff; font-weight: 700;
-      font-size: 0.95rem; cursor: pointer; margin-top: 0.6rem;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+      width: 100%;
+      padding: 0.95rem;
+      border-radius: 1.25rem;
+      border: none;
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 0.85rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 0 #024e77, 0 12px 20px rgba(0, 0, 0, 0.4), inset 0 2px 2px rgba(255, 255, 255, 0.3);
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
     }
-    button:active { transform: scale(0.98); }
-    .btn-danger { background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%); }
+
+    button:active {
+      transform: translateY(6px);
+      box-shadow: 0 2px 0 #024e77, 0 5px 10px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      box-shadow: 0 8px 0 #991b1b, 0 12px 20px rgba(220, 38, 38, 0.3), inset 0 2px 2px rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-danger:active {
+      box-shadow: 0 2px 0 #991b1b, 0 5px 10px rgba(220, 38, 38, 0.3);
+    }
 
     .hidden { display: none !important; }
 
-    /* Dashboard UI */
-    .profile-box {
-      display: flex; align-items: center; gap: 0.8rem;
-      background: rgba(31, 41, 55, 0.6); padding: 0.9rem;
-      border-radius: 1rem; margin-bottom: 1rem; text-align: right;
-      border: 1px solid var(--border);
+    .user-header-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 1.25rem;
+      border-radius: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      text-align: right;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15);
     }
-    [dir="ltr"] .profile-box { text-align: left; }
-    .avatar { width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--accent); object-fit: cover; }
 
-    .stats-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-bottom: 1rem;
-    }
-    .stat-card {
-      background: rgba(31, 41, 55, 0.6); border: 1px solid var(--border);
-      padding: 0.8rem; border-radius: 1rem; text-align: center;
-    }
-    .stat-label { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem; }
-    .stat-val { font-size: 1.05rem; font-weight: 800; color: var(--accent); }
+    [dir="ltr"] .user-header-card { text-align: left; }
 
-    /* Bottom Navigation */
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-      width: 100%; max-width: 400px;
-      background: rgba(3, 7, 18, 0.95); backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      border-top: 1px solid var(--border);
-      display: flex; justify-content: space-around; padding: 0.5rem;
-      z-index: 1000; box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.6);
+    .header-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid #38bdf8;
+      object-fit: cover;
+      box-shadow: 0 0 15px var(--accent-glow);
     }
-    .nav-tab {
-      background: transparent; border: none; border-radius: 0.7rem;
-      padding: 0.4rem 0.8rem; display: flex; flex-direction: column;
-      align-items: center; gap: 0.2rem; cursor: pointer; color: var(--muted);
-      font-size: 0.7rem; font-weight: 600; transition: all 0.2s;
-    }
-    .nav-tab svg { width: 20px; height: 20px; fill: currentColor; }
-    .nav-tab.active { color: var(--accent); background: rgba(56, 189, 248, 0.12); }
 
-    /* Chat UI */
-    .chat-box {
-      height: 200px; background: #030712; border: 1px solid var(--border);
-      border-radius: 0.8rem; padding: 0.8rem; overflow-y: auto;
-      display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.8rem; text-align: right;
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+      perspective: 1000px;
     }
-    [dir="ltr"] .chat-box { text-align: left; }
-    .chat-msg { max-width: 80%; padding: 0.5rem 0.8rem; border-radius: 0.7rem; font-size: 0.8rem; }
-    .chat-msg.me { background: rgba(2, 132, 199, 0.5); align-self: flex-start; color: #fff; }
-    [dir="ltr"] .chat-msg.me { align-self: flex-end; }
-    .chat-msg.hr { background: rgba(31, 41, 55, 0.8); align-self: flex-end; color: var(--muted); }
-    [dir="ltr"] .chat-msg.hr { align-self: flex-start; }
 
-    .policy-row {
-      background: rgba(31, 41, 55, 0.6); border: 1px solid var(--border);
-      padding: 0.8rem; border-radius: 0.8rem; display: flex;
-      justify-content: space-between; align-items: center; margin-bottom: 0.6rem; text-align: right;
+    .service-btn {
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.85));
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 1.5rem;
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 4px 0 rgba(2, 132, 199, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-style: preserve-3d;
     }
-    [dir="ltr"] .policy-row { text-align: left; }
+
+    .service-btn:hover {
+      border-color: #38bdf8;
+      transform: translateY(-6px) rotateX(8deg) scale(1.02);
+      box-shadow: 0 18px 30px rgba(2, 132, 199, 0.35), 0 8px 0 rgba(2, 132, 199, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+    }
+
+    .service-btn:active {
+      transform: translateY(4px) rotateX(-5deg) scale(0.96);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5), 0 1px 0 rgba(2, 132, 199, 0.5);
+    }
+
+    .service-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 1.2rem;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(2, 132, 199, 0.1));
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.85rem;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .service-btn:hover .service-icon-box {
+      transform: scale(1.15) rotate(5deg);
+      background: rgba(56, 189, 248, 0.3);
+    }
+
+    .service-icon-box svg {
+      width: 26px;
+      height: 26px;
+      fill: currentColor;
+    }
+
+    .service-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .back-btn {
+      background: rgba(51, 65, 85, 0.8);
+      border: 1px solid var(--border-color);
+      width: auto;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      margin: 0;
+      box-shadow: 0 4px 0 #1e293b, 0 6px 10px rgba(0,0,0,0.3);
+      border-radius: 0.85rem;
+    }
+
+    .back-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #1e293b;
+    }
+
+    .id-card {
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      position: relative;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.2);
+    }
+
+    .id-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .profile-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid #38bdf8;
+      object-fit: cover;
+      margin: 0 auto 0.75rem auto;
+      display: block;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      text-align: right;
+      background: rgba(11, 15, 25, 0.7);
+      padding: 0.85rem;
+      border-radius: 1rem;
+      font-size: 0.8rem;
+      margin-bottom: 1.25rem;
+      border: 1px solid var(--border-color);
+    }
+
+    [dir="ltr"] .info-grid { text-align: left; }
+
+    .info-label { color: var(--muted); font-size: 0.75rem; margin-bottom: 0.1rem; }
+    .info-val { font-weight: 700; color: var(--text); }
+
+    .qr-container {
+      background: #ffffff;
+      padding: 0.65rem;
+      border-radius: 1rem;
+      display: inline-block;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+    }
   </style>
 </head>
 <body>
 
-  <!-- 3D Intro Screen -->
+  <!-- Intro Screen with Gentle Tornado Effect -->
   <div id="intro-screen">
-    <div class="intro-wrapper">
-      <div class="intro-title-container" id="introTitle"></div>
-      <div class="intro-slogan" id="introSlogan">Elite Next-Gen HR Hub</div>
-    </div>
+    <div class="intro-title-container" id="introTitle"></div>
   </div>
 
   <!-- App Header -->
   <div class="app-header">
-    <div class="brand-title" id="brandTitle">LACTO MISR HR</div>
-    <div class="header-actions">
-      <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">EN / عربي</button>
+    <div class="brand-container">
+      <img src="logo.png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
+      <div class="brand-title">LM HR</div>
+    </div>
+    
+    <div class="lang-dropdown-container">
+      <button class="lang-dropdown-btn" onclick="toggleLangMenu()">
+        🌐 <span id="current-lang-text">العربية</span> ▼
+      </button>
+      <div class="lang-dropdown-menu" id="langMenu">
+        <div class="lang-option" onclick="selectLanguage('ar')">🇪🇬 العربية</div>
+        <div class="lang-option" onclick="selectLanguage('en')">🇬🇧 English</div>
+      </div>
     </div>
   </div>
 
@@ -222,268 +491,442 @@
     
     <!-- 1. Login View -->
     <div id="view-login" class="card">
-      <h2 style="font-size: 1.2rem; margin-bottom: 0.3rem;" id="l-title">تسجيل الدخول</h2>
-      <p style="color: var(--muted); font-size: 0.8rem; margin-bottom: 1rem;" id="l-sub">أدخل بيانات الموظف للمتابعة</p>
+      <h2 style="font-size: 1.5rem; margin-bottom: 0.2rem;">LM HR Hub</h2>
+      <p id="t-subtitle" style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem;">بوابة الموظفين الرقمية</p>
       
       <input type="text" id="empCode" placeholder="كود الموظف">
       <input type="password" id="empPass" placeholder="كلمة السر">
       
-      <button onclick="login()" id="l-btn">دخول</button>
-      <p id="error" style="color: var(--danger); margin-top: 0.5rem; font-size: 0.8rem; font-weight: bold;"></p>
+      <button id="t-loginBtn" onclick="login()">دخول الحساب</button>
+
+      <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.85rem; font-weight: bold;"></p>
     </div>
 
     <!-- 2. Dashboard View -->
-    <div id="view-dashboard" class="card hidden">
-      <div class="profile-box">
-        <img id="dash-avatar" class="avatar" src="" alt="Profile">
+    <div id="view-dashboard" class="hidden">
+      <div class="user-header-card">
+        <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
         <div>
-          <h3 id="dash-name" style="font-size: 0.95rem; font-weight: 700;">--</h3>
-          <p id="dash-job" style="color: var(--accent); font-size: 0.75rem;">--</p>
+          <h3 id="dash-name" style="margin: 0; font-size: 1.1rem; font-weight: 700;">--</h3>
+          <p id="dash-job" style="margin: 0; color: #38bdf8; font-size: 0.85rem;">--</p>
         </div>
       </div>
 
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label" id="s-leave">رصيد الإجازات</div>
-          <div class="stat-val" id="val-leave">21 يوم</div>
+      <div class="services-grid">
+        <div class="service-btn" onclick="showPage('view-id-card')">
+          <div class="service-icon-box">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .89-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1z"/></svg>
+          </div>
+          <span id="t-btnID" class="service-title">كارت الهوية</span>
         </div>
-        <div class="stat-card">
-          <div class="stat-label" id="s-perm">الأذونات</div>
-          <div class="stat-val" id="val-perm">3 / 3</div>
+
+        <div class="service-btn" onclick="showPage('view-leaves')">
+          <div class="service-icon-box">
+            <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+          </div>
+          <span id="t-btnLeaves" class="service-title">طلبات الإجازات</span>
+        </div>
+
+        <div class="service-btn" onclick="showPage('view-payroll')">
+          <div class="service-icon-box">
+            <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+          </div>
+          <span id="t-btnPay" class="service-title">مفردات المرتب</span>
+        </div>
+
+        <div class="service-btn" onclick="showPage('view-directory')">
+          <div class="service-icon-box">
+            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          </div>
+          <span id="t-btnDir" class="service-title">دليل التواصل</span>
         </div>
       </div>
 
-      <button onclick="logout()" class="btn-danger" id="l-out">تسجيل الخروج</button>
+      <button id="t-logoutBtn" onclick="logout()" class="btn-danger">تسجيل الخروج</button>
     </div>
 
     <!-- 3. ID Card View -->
-    <div id="view-id" class="card hidden">
-      <h3 style="margin-bottom: 0.8rem; color: var(--accent); font-size: 1rem;" id="id-head">هوية الموظف</h3>
-      <div style="background: #030712; border: 1px solid var(--border); border-radius: 0.9rem; padding: 1rem;" id="idCardBox">
-        <div style="font-size:0.75rem; color:var(--accent); font-weight:bold; margin-bottom:0.5rem;">LACTO MISR S.A.E</div>
-        <img id="idPhoto" style="width:70px; height:70px; border-radius:50%; border:2px solid var(--accent); object-fit:cover; margin:0 auto 0.5rem auto; display:block;" src="" alt="User">
-        <h4 id="idName" style="margin:0; font-size:0.9rem;">--</h4>
-        <p id="idJob" style="color:var(--accent); font-size:0.75rem; margin:0 0 0.5rem 0;">--</p>
-        <div id="qrcode" style="background:#fff; padding:0.3rem; border-radius:0.4rem; display:inline-block;"></div>
+    <div id="view-id-card" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" id="t-backBtn1" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span id="t-cardTitle" style="font-weight: 700; font-size: 0.9rem;">الكارت الرقمي</span>
       </div>
-      <button onclick="downloadCard()" style="background: var(--success); margin-top: 0.8rem;" id="id-save">حفظ الهوية كصورة</button>
-    </div>
 
-    <!-- 4. Policies View -->
-    <div id="view-policies" class="card hidden">
-      <h3 style="margin-bottom: 0.8rem; color: var(--accent); font-size: 1rem;" id="p-head">لوائح الشركة</h3>
-      
-      <div class="policy-row">
-        <div>
-          <div style="font-weight:700; font-size:0.8rem;" id="p-1-t">لائحة العمل الداخلية</div>
-          <div style="font-size:0.7rem; color:var(--muted);" id="p-1-s">نسخة معتمدة (PDF)</div>
+      <div class="id-card" id="myCardToDownload">
+        <div class="id-card-header">
+          <span style="font-weight: 800; font-size: 0.85rem; color: #38bdf8; letter-spacing: 1px;">LACTO MISR S.A.E</span>
+          <span style="font-size: 0.65rem; background: rgba(2, 132, 199, 0.4); border: 1px solid var(--accent); color: #38bdf8; padding: 0.15rem 0.5rem; border-radius: 0.5rem; font-weight: 600;">VERIFIED</span>
         </div>
-        <button style="width:auto; padding:0.4rem 0.8rem; font-size:0.75rem; margin:0;" onclick="alert('Downloading...')">PDF</button>
-      </div>
-
-      <div class="policy-row">
-        <div>
-          <div style="font-weight:700; font-size:0.8rem;" id="p-2-t">سياسة الإجازات</div>
-          <div style="font-size:0.7rem; color:var(--muted);" id="p-2-s">دليل الموظف الشامل</div>
+        <img id="userPhoto" class="profile-img" crossorigin="anonymous" src="" alt="User">
+        <h3 id="userName" style="margin:0 0 0.2rem 0; font-size: 1.1rem;">--</h3>
+        <p id="userJob" style="color: #38bdf8; font-size: 0.85rem; margin:0 0 0.85rem 0;">--</p>
+        
+        <div class="info-grid">
+          <div><div class="info-label" id="t-lblDept">الإدارة</div><div id="userDept" class="info-val">--</div></div>
+          <div><div class="info-label" id="t-lblCode">كود الموظف</div><div id="userCodeVal" class="info-val">--</div></div>
+          <div style="grid-column: span 2;"><div class="info-label" id="t-lblNID">الرقم القومي</div><div id="userNID" class="info-val">--</div></div>
         </div>
-        <button style="width:auto; padding:0.4rem 0.8rem; font-size:0.75rem; margin:0;" onclick="alert('Downloading...')">PDF</button>
+
+        <div class="qr-container"><div id="qrcode"></div></div>
       </div>
+
+      <button id="t-saveCardBtn" onclick="downloadCard()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 8px 0 #047857, 0 12px 20px rgba(16, 185, 129, 0.3), inset 0 2px 2px rgba(255, 255, 255, 0.3);">حفظ الكارت كصورة</button>
     </div>
 
-    <!-- 5. Chat View -->
-    <div id="view-chat" class="card hidden">
-      <h3 style="margin-bottom: 0.6rem; color: var(--accent); font-size: 1rem;" id="c-head">محادثة الـ HR</h3>
-      <div class="chat-box" id="chatBox">
-        <div class="chat-msg hr" id="c-wel">أهلاً بك، كيف يمكننا مساعدتك اليوم؟</div>
+    <!-- 4. Leaves View -->
+    <div id="view-leaves" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" id="t-backBtn2" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span id="t-leaveTitle" style="font-weight: 700;">خدمة الإجازات</span>
       </div>
-      <div style="display:flex; gap:0.4rem;">
-        <input type="text" id="chatInput" placeholder="اكتب رسالتك..." style="margin:0;">
-        <button onclick="sendMsg()" style="width: auto; margin:0; padding: 0 1rem;" id="c-send">إرسال</button>
-      </div>
+      <p id="t-leaveMsg" style="color: var(--muted); font-size: 0.85rem; line-height: 1.6; padding: 1rem 0;">قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.</p>
     </div>
 
-  </div>
+    <!-- 5. Payroll View -->
+    <div id="view-payroll" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" id="t-backBtn3" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span id="t-payTitle" style="font-weight: 700;">مفردات المرتب</span>
+      </div>
+      <p id="t-payMsg" style="color: var(--muted); font-size: 0.85rem; line-height: 1.6; padding: 1rem 0;">قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.</p>
+    </div>
 
-  <!-- Bottom Nav Tabs -->
-  <div class="bottom-nav hidden" id="bottomNav">
-    <button class="nav-tab active" id="tab-btn-dashboard" onclick="switchTab('dashboard')">
-      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      <span id="t-home">الرئيسية</span>
-    </button>
-    <button class="nav-tab" id="tab-btn-id" onclick="switchTab('id')">
-      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1z"/></svg>
-      <span id="t-id">الهوية</span>
-    </button>
-    <button class="nav-tab" id="tab-btn-policies" onclick="switchTab('policies')">
-      <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-      <span id="t-pol">السياسات</span>
-    </button>
-    <button class="nav-tab" id="tab-btn-chat" onclick="switchTab('chat')">
-      <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
-      <span id="t-chat">الدعم</span>
-    </button>
+    <!-- 6. Directory View -->
+    <div id="view-directory" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" id="t-backBtn4" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span id="t-dirTitle" style="font-weight: 700;">دليل التواصل</span>
+      </div>
+      <p id="t-dirMsg" style="color: var(--muted); font-size: 0.85rem; line-height: 1.6; padding: 1rem 0;">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
+    </div>
+
   </div>
 
   <script>
-    // Intro Animation (GSAP)
-    window.addEventListener('DOMContentLoaded', () => {
-      const text = "LACTO MISR";
+    // ----------------------------------------------------
+    // GENTLE & SLOW TORNADO INTRO ANIMATION
+    // ----------------------------------------------------
+    function runTornadoIntro() {
+      const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
-      const chars = [];
+      container.innerHTML = "";
+
+      const charElements = [];
+
+      // 1. Build DOM Elements
       for (let char of text) {
         if (char === ' ') {
-          const sp = document.createElement('span'); sp.className = 'intro-space'; container.appendChild(sp);
+          const space = document.createElement('span');
+          space.className = 'intro-space';
+          container.appendChild(space);
         } else {
-          const span = document.createElement('span'); span.className = 'intro-char'; span.innerText = char;
-          container.appendChild(span); chars.push(span);
+          const span = document.createElement('span');
+          span.className = 'intro-char';
+          span.innerText = char;
+          container.appendChild(span);
+          charElements.push(span);
         }
       }
-      const tl = gsap.timeline({ onComplete: () => document.getElementById('intro-screen').classList.add('fade-out') });
-      gsap.set(chars, { y: -300, opacity: 0, scale: 0.1 });
-      tl.to(chars, { duration: 1.6, y: 0, opacity: 1, scale: 1, stagger: 0.04, ease: "back.out(1.7)" })
-        .to("#introSlogan", { duration: 0.8, opacity: 1, y: 0 }, "-=0.4")
-        .to({}, { duration: 1.2 })
-        .to(chars, { duration: 0.7, opacity: 0, scale: 1.2, stagger: 0.02, ease: "power2.in" });
-    });
 
-    // Firebase Setup
+      // Direction vectors for scattering each character gently to different screen edges
+      const directions = [
+        { x: -900, y: -700 }, // Top-Left
+        { x: 0,    y: -900 }, // Top
+        { x: 900,  y: -700 }, // Top-Right
+        { x: 900,  y: 0 },    // Right
+        { x: 900,  y: 700 },  // Bottom-Right
+        { x: 0,    y: 900 },  // Bottom
+        { x: -900, y: 700 },  // Bottom-Left
+        { x: -900, y: 0 }     // Left
+      ];
+
+      // 2. Timeline GSAP Animation (Slow & Cinematic)
+      const tl = gsap.timeline({
+        onComplete: () => {
+          const introScreen = document.getElementById('intro-screen');
+          introScreen.classList.add('fade-out');
+        }
+      });
+
+      // Step A: Set initial positions high up in a cyclone spin
+      charElements.forEach((el, index) => {
+        const randomAngle = (index / charElements.length) * Math.PI * 4;
+        const radius = 180 + Math.random() * 80;
+        
+        gsap.set(el, {
+          y: -500 - (index * 30),
+          x: Math.cos(randomAngle) * radius,
+          z: Math.sin(randomAngle) * radius,
+          rotationX: Math.random() * 360 - 180,
+          rotationY: Math.random() * 360 - 180,
+          rotationZ: Math.random() * 360 - 180,
+          opacity: 0,
+          scale: 0.2
+        });
+      });
+
+      // Step B: Cyclone Whirlwind Assemble (Slow, smooth, and majestic down into line)
+      tl.to(charElements, {
+        duration: 2.8,
+        x: 0,
+        y: 0,
+        z: 0,
+        rotationX: 0,
+        rotationY: 0,
+        rotationZ: 0,
+        opacity: 1,
+        scale: 1,
+        stagger: 0.09,
+        ease: "power2.out"
+      });
+
+      // Step C: Hold position clearly with gentle glowing pulse
+      tl.to(charElements, {
+        duration: 1.2,
+        textShadow: "0 0 35px rgba(56, 189, 248, 1)",
+        scale: 1.06,
+        yoyo: true,
+        repeat: 1,
+        ease: "sine.inOut"
+      });
+
+      // Step D: Slow & Smooth Scatter - letter by letter drifting away gracefully
+      charElements.forEach((el, index) => {
+        const dir = directions[index % directions.length];
+        tl.to(el, {
+          duration: 1.5,
+          x: dir.x,
+          y: dir.y,
+          z: Math.random() * 400 - 200,
+          rotationX: Math.random() * 180 - 90,
+          rotationY: Math.random() * 180 - 90,
+          rotationZ: Math.random() * 180 - 90,
+          opacity: 0,
+          scale: 0.5,
+          ease: "power1.inOut"
+        }, `-=${index === 0 ? 0 : 1.35}`); 
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', runTornadoIntro);
+
+    // ----------------------------------------------------
+    // Firebase Config & App Logic
+    // ----------------------------------------------------
     const firebaseConfig = {
       apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
       authDomain: "lacto-hr-system.firebaseapp.com",
       databaseURL: "https://lacto-hr-system-default-rtdb.firebaseio.com",
-      projectId: "lacto-hr-system"
+      projectId: "lacto-hr-system",
+      storageBucket: "lacto-hr-system.firebasestorage.app",
+      messagingSenderId: "671259800401",
+      appId: "1:671259800401:web:905e1a36adba52ba2d1970"
     };
+
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-    let currentEmpCode = "";
-    let isArabic = true;
 
-    function toggleLanguage() {
-      isArabic = !isArabic;
-      if (!isArabic) {
-        document.documentElement.setAttribute('dir', 'ltr');
-        document.getElementById('brandTitle').innerText = "LACTO MISR HR";
-        document.getElementById('l-title').innerText = "Sign In";
-        document.getElementById('l-sub').innerText = "Enter employee details to continue";
-        document.getElementById('empCode').placeholder = "Employee Code";
-        document.getElementById('empPass').placeholder = "Password";
-        document.getElementById('l-btn').innerText = "Sign In";
-        document.getElementById('s-leave').innerText = "Leave Balance";
-        document.getElementById('s-perm').innerText = "Permissions";
-        document.getElementById('l-out').innerText = "Sign Out";
-        document.getElementById('id-head').innerText = "Employee ID Card";
-        document.getElementById('id-save').innerText = "Save ID as Image";
-        document.getElementById('p-head').innerText = "Company Policies";
-        document.getElementById('p-1-t').innerText = "Internal Labor Law";
-        document.getElementById('p-1-s').innerText = "Certified Copy (PDF)";
-        document.getElementById('p-2-t').innerText = "Leave Policy";
-        document.getElementById('p-2-s').innerText = "Comprehensive Guide";
-        document.getElementById('c-head').innerText = "HR Support";
-        document.getElementById('c-wel').innerText = "Welcome! How can we assist you today?";
-        document.getElementById('chatInput').placeholder = "Type a message...";
-        document.getElementById('c-send').innerText = "Send";
-        document.getElementById('t-home').innerText = "Home";
-        document.getElementById('t-id').innerText = "ID Card";
-        document.getElementById('t-pol').innerText = "Policies";
-        document.getElementById('t-chat').innerText = "Support";
-      } else {
-        document.documentElement.setAttribute('dir', 'rtl');
-        document.getElementById('brandTitle').innerText = "LACTO MISR HR";
-        document.getElementById('l-title').innerText = "تسجيل الدخول";
-        document.getElementById('l-sub').innerText = "أدخل بيانات الموظف للمتابعة";
-        document.getElementById('empCode').placeholder = "كود الموظف";
-        document.getElementById('empPass').placeholder = "كلمة السر";
-        document.getElementById('l-btn').innerText = "دخول";
-        document.getElementById('s-leave').innerText = "رصيد الإجازات";
-        document.getElementById('s-perm').innerText = "الأذونات";
-        document.getElementById('l-out').innerText = "تسجيل الخروج";
-        document.getElementById('id-head').innerText = "هوية الموظف";
-        document.getElementById('id-save').innerText = "حفظ الهوية كصورة";
-        document.getElementById('p-head').innerText = "لوائح الشركة";
-        document.getElementById('p-1-t').innerText = "لائحة العمل الداخلية";
-        document.getElementById('p-1-s').innerText = "نسخة معتمدة (PDF)";
-        document.getElementById('p-2-t').innerText = "سياسة الإجازات";
-        document.getElementById('p-2-s').innerText = "دليل الموظف الشامل";
-        document.getElementById('c-head').innerText = "محادثة الـ HR";
-        document.getElementById('c-wel').innerText = "أهلاً بك، كيف يمكننا مساعدتك اليوم؟";
-        document.getElementById('chatInput').placeholder = "اكتب رسالتك...";
-        document.getElementById('c-send').innerText = "إرسال";
-        document.getElementById('t-home').innerText = "الرئيسية";
-        document.getElementById('t-id').innerText = "الهوية";
-        document.getElementById('t-pol').innerText = "السياسات";
-        document.getElementById('t-chat').innerText = "الدعم";
+    let currentUserData = null;
+    let currentEmpCode = "";
+    let currentLang = localStorage.getItem('lacto_lang') || 'ar';
+
+    const translations = {
+      ar: {
+        langText: "العربية",
+        subtitle: "بوابة الموظفين والمدراء الرقمية",
+        codeHolder: "كود الموظف",
+        passHolder: "كلمة السر",
+        loginBtn: "دخول الحساب",
+        btnID: "كارت الهوية",
+        btnLeaves: "طلبات الإجازات",
+        btnPay: "مفردات المرتب",
+        btnDir: "دليل التواصل",
+        logoutBtn: "تسجيل الخروج",
+        backBtn: "← رجوع",
+        cardTitle: "الكارت الرقمي",
+        lblDept: "الإدارة",
+        lblCode: "كود الموظف",
+        lblNID: "الرقم القومي",
+        saveCardBtn: "حفظ الكارت كصورة",
+        leaveTitle: "خدمة الإجازات",
+        leaveMsg: "قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.",
+        payTitle: "مفردات المرتب",
+        payMsg: "قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.",
+        dirTitle: "دليل التواصل",
+        dirMsg: "أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية."
+      },
+      en: {
+        langText: "English",
+        subtitle: "Digital Employee Portal",
+        codeHolder: "Employee Code",
+        passHolder: "Password",
+        loginBtn: "Sign In",
+        btnID: "ID Card",
+        btnLeaves: "Leave Requests",
+        btnPay: "Pay Slip",
+        btnDir: "Directory",
+        logoutBtn: "Sign Out",
+        backBtn: "Back →",
+        cardTitle: "Digital ID",
+        lblDept: "Department",
+        lblCode: "Emp Code",
+        lblNID: "National ID",
+        saveCardBtn: "Save Card Image",
+        leaveTitle: "Leave Requests",
+        leaveMsg: "Coming Soon: Submit your leave and permission requests directly.",
+        payTitle: "Pay Slip",
+        payMsg: "Coming Soon: Access your monthly salary slips easily.",
+        dirTitle: "Directory",
+        dirMsg: "Emergency numbers, medical clinic, and HR contact list."
+      }
+    };
+
+    function toggleLangMenu() {
+      const menu = document.getElementById('langMenu');
+      menu.classList.toggle('show');
+    }
+
+    function selectLanguage(lang) {
+      toggleLangMenu();
+      setLanguage(lang);
+    }
+
+    window.onclick = function(event) {
+      if (!event.target.matches('.lang-dropdown-btn') && !event.target.matches('#current-lang-text')) {
+        const dropdown = document.getElementById('langMenu');
+        if (dropdown && dropdown.classList.contains('show')) {
+          dropdown.classList.remove('show');
+        }
       }
     }
 
-    function switchTab(tabId) {
-      const views = ['dashboard', 'id', 'policies', 'chat'];
+    function showPage(pageId) {
+      const views = ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory'];
       views.forEach(id => {
-        const el = document.getElementById('view-' + id);
+        const el = document.getElementById(id);
         if (el) el.classList.add('hidden');
       });
+      document.getElementById(pageId).classList.remove('hidden');
+    }
 
-      const target = document.getElementById('view-' + tabId);
-      if (target) target.classList.remove('hidden');
+    function renderProfileData() {
+      if (!currentUserData) return;
+      const user = currentUserData;
+      const isEn = (currentLang === 'en');
 
-      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-      const activeBtn = document.getElementById('tab-btn-' + tabId);
-      if (activeBtn) activeBtn.classList.add('active');
+      const name = isEn ? (user.name_en || user.name) : user.name;
+      const job = isEn ? (user.job_en || user.job) : user.job;
+      const dept = isEn ? (user.dept_en || user.dept) : user.dept;
+
+      document.getElementById('dash-name').innerText = name || "--";
+      document.getElementById('dash-job').innerText = job || "--";
+      document.getElementById('dash-avatar').src = user.photo || "https://i.pravatar.cc/150?img=12";
+
+      document.getElementById('userName').innerText = name || "--";
+      document.getElementById('userJob').innerText = job || "--";
+      document.getElementById('userDept').innerText = dept || "--";
+      document.getElementById('userCodeVal').innerText = currentEmpCode;
+      document.getElementById('userNID').innerText = user.nationalId || "--";
+      document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
     }
 
     function login() {
       const code = document.getElementById('empCode').value.trim();
       const pass = document.getElementById('empPass').value.trim();
-      const err = document.getElementById('error');
-      if (!code) { err.innerText = isArabic ? "أدخل كود الموظف" : "Enter employee code"; return; }
+      const errorEl = document.getElementById('error');
+      
+      errorEl.innerText = (currentLang === 'en') ? "Connecting..." : "جاري الاتصال...";
 
-      db.ref('users/' + code).once('value').then(snap => {
-        if (snap.exists()) {
-          const user = snap.val();
-          if (user.password !== pass) { err.innerText = isArabic ? "كلمة السر خطأ!" : "Incorrect password!"; return; }
+      if (!code) { 
+        errorEl.innerText = (currentLang === 'en') ? "Please enter employee code" : "يرجى إدخال الكود"; 
+        return; 
+      }
+
+      db.ref('users/' + code).once('value').then((snapshot) => {
+        if (snapshot.exists()) {
+          const user = snapshot.val();
+          if (user.password !== pass) {
+            errorEl.innerText = (currentLang === 'en') ? "Incorrect Password!" : "كلمة السر غير صحيحة!";
+            return;
+          }
+
+          currentUserData = user;
           currentEmpCode = code;
+          errorEl.innerText = "";
 
-          document.getElementById('dash-name').innerText = user.name || "Employee";
-          document.getElementById('dash-job').innerText = user.job || "System Specialist";
-          document.getElementById('dash-avatar').src = user.photo || "https://i.pravatar.cc/150?img=11";
+          renderProfileData();
 
-          document.getElementById('idName').innerText = user.name || "Employee";
-          document.getElementById('idJob').innerText = user.job || "System Specialist";
-          document.getElementById('idPhoto').src = user.photo || "https://i.pravatar.cc/150?img=11";
-
+          const currentUrl = window.location.origin + window.location.pathname;
           document.getElementById('qrcode').innerHTML = "";
-          new QRCode(document.getElementById("qrcode"), { text: "LM-ID-" + code, width: 70, height: 70 });
+          new QRCode(document.getElementById("qrcode"), { 
+            text: currentUrl + "?emp=" + code, 
+            width: 85, 
+            height: 85 
+          });
 
-          document.getElementById('view-login').classList.add('hidden');
-          document.getElementById('bottomNav').classList.remove('hidden');
-          switchTab('dashboard');
+          showPage('view-dashboard');
         } else {
-          err.innerText = isArabic ? "الكود غير موجود!" : "Code not found!";
+          errorEl.innerText = (currentLang === 'en') ? "Employee code not found!" : "كود الموظف غير مسجل!";
         }
+      }).catch((err) => {
+        console.error(err);
+        errorEl.innerText = (currentLang === 'en') ? "Connection Error!" : "حدث خطأ في الاتصال!";
       });
     }
 
     function downloadCard() {
-      html2canvas(document.getElementById('idCardBox'), { scale: 2 }).then(canvas => {
+      html2canvas(document.getElementById('myCardToDownload'), { useCORS: true, scale: 2 }).then(canvas => {
         const link = document.createElement('a');
-        link.download = 'ID_' + currentEmpCode + '.png';
-        link.href = canvas.toDataURL();
+        link.download = 'Lacto_ID_' + currentEmpCode + '.png';
+        link.href = canvas.toDataURL('image/png');
         link.click();
       });
-    }
-
-    function sendMsg() {
-      const input = document.getElementById('chatInput');
-      const text = input.value.trim();
-      if (!text) return;
-      const box = document.getElementById('chatBox');
-      box.innerHTML += `<div class="chat-msg me">${text}</div>`;
-      input.value = "";
-      box.scrollTop = box.scrollHeight;
     }
 
     function logout() {
       window.location.reload();
     }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lacto_lang', lang);
+      document.documentElement.lang = lang;
+      document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+
+      const t = translations[lang];
+      document.getElementById('current-lang-text').innerText = t.langText;
+      document.getElementById('t-subtitle').innerText = t.subtitle;
+      document.getElementById('empCode').placeholder = t.codeHolder;
+      document.getElementById('empPass').placeholder = t.passHolder;
+      document.getElementById('t-loginBtn').innerText = t.loginBtn;
+      document.getElementById('t-btnID').innerText = t.btnID;
+      document.getElementById('t-btnLeaves').innerText = t.btnLeaves;
+      document.getElementById('t-btnPay').innerText = t.btnPay;
+      document.getElementById('t-btnDir').innerText = t.btnDir;
+      document.getElementById('t-logoutBtn').innerText = t.logoutBtn;
+
+      document.getElementById('t-backBtn1').innerText = t.backBtn;
+      document.getElementById('t-backBtn2').innerText = t.backBtn;
+      document.getElementById('t-backBtn3').innerText = t.backBtn;
+      document.getElementById('t-backBtn4').innerText = t.backBtn;
+
+      document.getElementById('t-cardTitle').innerText = t.cardTitle;
+      document.getElementById('t-lblDept').innerText = t.lblDept;
+      document.getElementById('t-lblCode').innerText = t.lblCode;
+      document.getElementById('t-lblNID').innerText = t.lblNID;
+      document.getElementById('t-saveCardBtn').innerText = t.saveCardBtn;
+
+      document.getElementById('t-leaveTitle').innerText = t.leaveTitle;
+      document.getElementById('t-leaveMsg').innerText = t.leaveMsg;
+      document.getElementById('t-payTitle').innerText = t.payTitle;
+      document.getElementById('t-payMsg').innerText = t.payMsg;
+      document.getElementById('t-dirTitle').innerText = t.dirTitle;
+      document.getElementById('t-dirMsg').innerText = t.dirMsg;
+
+      renderProfileDate();
+    }
+
+    setLanguage(currentLang);
   </script>
 </body>
 </html>
