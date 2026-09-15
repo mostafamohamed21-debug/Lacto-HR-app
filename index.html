@@ -180,6 +180,8 @@
       backdrop-filter: blur(12px);
       box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
       transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      width: auto;
+      margin-top: 0;
     }
 
     .lang-dropdown-menu {
@@ -295,7 +297,7 @@
       fill: currentColor;
     }
 
-    button {
+    button.btn-main {
       width: 100%;
       padding: 0.95rem;
       border-radius: 1.25rem;
@@ -312,14 +314,14 @@
       transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    button:active {
+    button.btn-main:active {
       transform: translateY(6px);
       box-shadow: 0 2px 0 #024e77, 0 5px 10px rgba(0, 0, 0, 0.4);
     }
 
     .btn-danger {
-      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-      box-shadow: 0 8px 0 #991b1b, 0 12px 20px rgba(220, 38, 38, 0.3);
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+      box-shadow: 0 8px 0 #991b1b, 0 12px 20px rgba(220, 38, 38, 0.3) !important;
     }
 
     .hidden { display: none !important; }
@@ -394,6 +396,9 @@
       font-size: 0.85rem;
       margin: 0;
       border-radius: 0.85rem;
+      border: none;
+      color: #fff;
+      cursor: pointer;
     }
 
     .id-card {
@@ -446,7 +451,6 @@
       display: inline-block;
     }
 
-    /* Floating Chat Button */
     .floating-chat-btn {
       position: fixed;
       bottom: 25px;
@@ -546,6 +550,7 @@
       align-items: center;
       justify-content: center;
       margin: 0;
+      cursor: pointer;
     }
 
     .chat-send-btn svg { width: 18px; height: 18px; fill: #fff; }
@@ -594,7 +599,7 @@
         </button>
       </div>
       
-      <button id="t-loginBtn" onclick="login()">دخول الحساب</button>
+      <button class="btn-main" id="t-loginBtn" onclick="login()">دخول الحساب</button>
       <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.85rem; font-weight: bold;"></p>
     </div>
 
@@ -637,7 +642,7 @@
         </div>
       </div>
 
-      <button id="t-logoutBtn" onclick="logout()" class="btn-danger">تسجيل الخروج</button>
+      <button id="t-logoutBtn" onclick="logout()" class="btn-main btn-danger">تسجيل الخروج</button>
     </div>
 
     <div id="view-id-card" class="card hidden">
@@ -664,7 +669,7 @@
         <div class="qr-container"><div id="qrcode"></div></div>
       </div>
 
-      <button id="t-saveCardBtn" onclick="downloadCard()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">حفظ الكارت كصورة</button>
+      <button class="btn-main" id="t-saveCardBtn" onclick="downloadCard()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">حفظ الكارت كصورة</button>
     </div>
 
     <div id="view-leaves" class="card hidden">
@@ -741,7 +746,7 @@
         }
       });
 
-      charElements.forEach((el, index) => {
+      charElements.forEach((el) => {
         gsap.set(el, { y: -200, opacity: 0, scale: 0.2 });
       });
 
@@ -770,9 +775,7 @@
     let currentUserData = null;
     let currentEmpCode = "";
     let currentLang = localStorage.getItem('lacto_lang') || 'ar';
-    let chatMessages = [];
 
-    // جلب ملف users.json فقط بدون الاعتماد على أي سيرفر خارجي
     async function fetchUsersJson() {
       try {
         const res = await fetch('users.json');
@@ -871,11 +874,9 @@
 
       currentEmpCode = code;
 
-      // الربط التام بـ users.json بدون أي سيرفرات أبدًا
       if (localUsersData && localUsersData[code]) {
         currentUserData = localUsersData[code];
       } else {
-        // لو الرقم مش متسجل جوه users.json يتحول تلقائياً لزائر!
         currentUserData = { isVisitor: true };
       }
 
