@@ -322,7 +322,7 @@
       width: 22px;
       height: 22px;
       fill: currentColor;
-      pointer-events: none; /* تمنع أي تداخل للأحداث مع الـ SVG */
+      pointer-events: none;
     }
 
     button {
@@ -533,6 +533,38 @@
       box-shadow: 0 8px 16px rgba(0,0,0,0.4);
     }
   </style>
+
+  <!-- Screen Wake Lock API (Executed instantly on head load) -->
+  <script>
+    let wakeLock = null;
+
+    async function requestWakeLock() {
+      if ('wakeLock' in navigator) {
+        try {
+          if (wakeLock === null) {
+            wakeLock = await navigator.wakeLock.request('screen');
+            console.log('Screen Wake Lock active from absolute startup!');
+          }
+        } catch (err) {
+          console.error(`Wake Lock error: ${err.name}, ${err.message}`);
+        }
+      }
+    }
+
+    // تفعيل فوري مع فتح الصفحة وبداية تحميل الأبليكشن
+    requestWakeLock();
+
+    // إعادة التفعيل عند أي تفاعل أو رجوع للتطبيق
+    document.addEventListener('visibilitychange', async () => {
+      if (document.visibilityState === 'visible') {
+        await requestWakeLock();
+      }
+    });
+
+    document.addEventListener('touchstart', () => {
+      requestWakeLock();
+    }, { passive: true, once: false });
+  </script>
 </head>
 <body>
 
@@ -1026,7 +1058,7 @@
       document.getElementById('t-lblDept').innerText = t.lblDept;
       document.getElementById('t-lblCode').innerText = t.lblCode;
       document.getElementById('t-lblNID').innerText = t.lblNID;
-      document.getElementById('t-saveCardBtn').innerText = t.saveCardBtn;
+      document.getElementById('t-saveCardBtn').innerText, t.saveCardBtn;
 
       document.getElementById('t-leaveTitle').innerText = t.leaveTitle;
       document.getElementById('t-leaveMsg').innerText = t.leaveMsg;
