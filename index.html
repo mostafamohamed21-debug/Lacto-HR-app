@@ -272,7 +272,6 @@
       box-shadow: 0 0 15px var(--accent-glow), inset 0 1px 3px rgba(0,0,0,0.5);
     }
 
-    /* Password Input with Optimized Toggle Eye Button */
     .password-container {
       position: relative;
       width: 100%;
@@ -532,9 +531,201 @@
       display: inline-block;
       box-shadow: 0 8px 16px rgba(0,0,0,0.4);
     }
+
+    /* ----------------------------------
+       Floating Chat Widget Styling (Global)
+    ---------------------------------- */
+    .floating-chat-btn {
+      position: fixed;
+      bottom: 25px;
+      left: 20px;
+      width: 58px;
+      height: 58px;
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.5), 0 4px 10px rgba(0,0,0,0.4);
+      cursor: pointer;
+      z-index: 99999;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    [dir="ltr"] .floating-chat-btn {
+      left: auto;
+      right: 20px;
+    }
+
+    .floating-chat-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .floating-chat-btn svg {
+      width: 28px;
+      height: 28px;
+      fill: #ffffff;
+    }
+
+    /* Chat Modal Box (Global) */
+    .chat-modal {
+      position: fixed;
+      bottom: 95px;
+      left: 20px;
+      width: 330px;
+      max-width: calc(100vw - 40px);
+      height: 430px;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 1.5rem;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+      display: flex;
+      flex-direction: column;
+      z-index: 100000;
+      overflow: hidden;
+      transform: scale(0.9);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-origin: bottom left;
+    }
+
+    [dir="ltr"] .chat-modal {
+      left: auto;
+      right: 20px;
+      transform-origin: bottom right;
+    }
+
+    .chat-modal.show {
+      transform: scale(1);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .chat-header {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.8), rgba(3, 105, 161, 0.9));
+      padding: 0.85rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .chat-header-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .chat-close-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      box-shadow: none !important;
+      margin: 0;
+      padding: 0;
+    }
+
+    .chat-close-btn:hover {
+      background: rgba(0,0,0,0.2);
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      background: rgba(11, 15, 25, 0.5);
+    }
+
+    .chat-msg {
+      max-width: 80%;
+      padding: 0.65rem 0.85rem;
+      border-radius: 1rem;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .chat-msg.employee {
+      background: #0284c7;
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 0.25rem;
+    }
+
+    .chat-msg.hr {
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid var(--border-color);
+      color: var(--text);
+      align-self: flex-start;
+      border-bottom-left-radius: 0.25rem;
+    }
+
+    .chat-footer {
+      padding: 0.75rem;
+      background: rgba(15, 23, 42, 0.98);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .chat-footer input {
+      margin: 0;
+      padding: 0.65rem 0.85rem;
+      font-size: 0.85rem;
+      text-align: right;
+    }
+
+    [dir="ltr"] .chat-footer input {
+      text-align: left;
+    }
+
+    .chat-send-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #0284c7;
+      border: none;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin: 0;
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.4);
+      flex-shrink: 0;
+    }
+
+    .chat-send-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: #fff;
+      transform: rotate(180deg);
+    }
+
+    [dir="ltr"] .chat-send-btn svg {
+      transform: none;
+    }
   </style>
 
-  <!-- Screen Wake Lock API (Executed instantly on head load) -->
+  <!-- Screen Wake Lock API -->
   <script>
     let wakeLock = null;
 
@@ -543,7 +734,6 @@
         try {
           if (wakeLock === null) {
             wakeLock = await navigator.wakeLock.request('screen');
-            console.log('Screen Wake Lock active from absolute startup!');
           }
         } catch (err) {
           console.error(`Wake Lock error: ${err.name}, ${err.message}`);
@@ -551,10 +741,8 @@
       }
     }
 
-    // تفعيل فوري مع فتح الصفحة وبداية تحميل الأبليكشن
     requestWakeLock();
 
-    // إعادة التفعيل عند أي تفاعل أو رجوع للتطبيق
     document.addEventListener('visibilitychange', async () => {
       if (document.visibilityState === 'visible') {
         await requestWakeLock();
@@ -606,7 +794,6 @@
       <div class="password-container">
         <input type="password" id="empPass" placeholder="كلمة السر">
         <button type="button" class="toggle-password" id="togglePassBtn" onclick="togglePasswordVisibility()">
-          <!-- Eye Open Icon (Default) -->
           <svg id="eyeIcon" viewBox="0 0 24 24">
             <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
           </svg>
@@ -716,6 +903,32 @@
       <p id="t-dirMsg" style="color: var(--muted); font-size: 0.85rem; line-height: 1.6; padding: 1rem 0;">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
     </div>
 
+  </div>
+
+  <!-- Global Floating Chat Widget Button (Visible on ALL Pages) -->
+  <div class="floating-chat-btn" id="chatFloatingBtn" onclick="toggleChatModal()">
+    <svg viewBox="0 0 24 24">
+      <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
+    </svg>
+  </div>
+
+  <!-- Global Chat Modal Window (Visible on ALL Pages) -->
+  <div class="chat-modal" id="chatModal">
+    <div class="chat-header">
+      <div class="chat-header-title">
+        💬 <span id="t-chatHeader">محادثة دعم الـ HR</span>
+      </div>
+      <button class="chat-close-btn" onclick="toggleChatModal()">×</button>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <div class="chat-msg hr" id="t-welcomeChat">مرحباً بك! اكتب استفسارك وسيقوم فريق الموارد البشرية بالرد عليك قريباً.</div>
+    </div>
+    <div class="chat-footer">
+      <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا..." onkeypress="handleChatKeyPress(event)">
+      <button class="chat-send-btn" onclick="sendChatMessage()">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
   </div>
 
   <script>
@@ -837,7 +1050,7 @@
     window.addEventListener('DOMContentLoaded', runTornadoIntro);
 
     // ----------------------------------------------------
-    // Toggle Password Visibility Function (Optimized)
+    // Toggle Password Visibility Function
     // ----------------------------------------------------
     function togglePasswordVisibility() {
       const passInput = document.getElementById('empPass');
@@ -845,11 +1058,9 @@
       
       if (passInput.type === 'password') {
         passInput.type = 'text';
-        // Eye Off Icon
         eyeIcon.innerHTML = '<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.12c0-1.66-1.34-3-3-3l-.17.02z"/>';
       } else {
         passInput.type = 'password';
-        // Eye Open Icon
         eyeIcon.innerHTML = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>';
       }
     }
@@ -897,7 +1108,10 @@
         payTitle: "مفردات المرتب",
         payMsg: "قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.",
         dirTitle: "دليل التواصل",
-        dirMsg: "أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية."
+        dirMsg: "أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.",
+        chatHeader: "محادثة دعم الـ HR",
+        welcomeChat: "مرحباً بك! اكتب استفسارك وسيقوم فريق الموارد البشرية بالرد عليك قريباً.",
+        chatPlaceholder: "اكتب رسالتك هنا..."
       },
       en: {
         langText: "English",
@@ -921,7 +1135,10 @@
         payTitle: "Pay Slip",
         payMsg: "Coming Soon: Access your monthly salary slips easily.",
         dirTitle: "Directory",
-        dirMsg: "Emergency numbers, medical clinic, and HR contact list."
+        dirMsg: "Emergency numbers, medical clinic, and HR contact list.",
+        chatHeader: "HR Support Chat",
+        welcomeChat: "Welcome! Type your inquiry and our HR team will reply shortly.",
+        chatPlaceholder: "Type your message here..."
       }
     };
 
@@ -1008,6 +1225,9 @@
             height: 85 
           });
 
+          // تفعيل الاستماع للرسائل الخاصة بالشات لهذا الموظف
+          listenToChatMessages(code);
+
           showPage('view-dashboard');
         } else {
           errorEl.innerText = (currentLang === 'en') ? "Employee code not found!" : "كود الموظف غير مسجل!";
@@ -1031,6 +1251,61 @@
       window.location.reload();
     }
 
+    // ----------------------------------------------------
+    // Embedded Chat Functions (Firebase Realtime)
+    // ----------------------------------------------------
+    function toggleChatModal() {
+      const modal = document.getElementById('chatModal');
+      modal.classList.toggle('show');
+      if (modal.classList.contains('show')) {
+        const chatBody = document.getElementById('chatBody');
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+    }
+
+    function handleChatKeyPress(e) {
+      if (e.key === 'Enter') {
+        sendChatMessage();
+      }
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const senderId = currentEmpCode || "guest_" + Math.floor(Math.random() * 10000);
+
+      const msgData = {
+        sender: senderId,
+        senderName: currentUserData ? currentUserData.name : "زائر",
+        text: text,
+        timestamp: Date.now(),
+        isAdmin: false
+      };
+
+      db.ref('chats/' + senderId).push(msgData);
+      input.value = "";
+    }
+
+    function listenToChatMessages(empCode) {
+      const chatBody = document.getElementById('chatBody');
+      
+      db.ref('chats/' + empCode).on('child_added', (snapshot) => {
+        const msg = snapshot.val();
+        
+        const welcomeEl = document.getElementById('t-welcomeChat');
+        if (welcomeEl) welcomeEl.style.display = 'none';
+
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'chat-msg ' + (msg.isAdmin ? 'hr' : 'employee');
+        msgDiv.innerText = msg.text;
+
+        chatBody.appendChild(msgDiv);
+        chatBody.scrollTop = chatBody.scrollHeight;
+      });
+    }
+
     function setLanguage(lang) {
       currentLang = lang;
       localStorage.setItem('lacto_lang', lang);
@@ -1046,7 +1321,7 @@
       document.getElementById('t-btnID').innerText = t.btnID;
       document.getElementById('t-btnLeaves').innerText = t.btnLeaves;
       document.getElementById('t-btnPay').innerText = t.btnPay;
-      document.getElementById('t-btnDir').innerText = t.btnDir;
+      document.getElementById('t-btnDir').innerText, t.btnDir;
       document.getElementById('t-logoutBtn').innerText = t.logoutBtn;
 
       document.getElementById('t-backBtn1').innerText = t.backBtn;
@@ -1058,7 +1333,7 @@
       document.getElementById('t-lblDept').innerText = t.lblDept;
       document.getElementById('t-lblCode').innerText = t.lblCode;
       document.getElementById('t-lblNID').innerText = t.lblNID;
-      document.getElementById('t-saveCardBtn').innerText, t.saveCardBtn;
+      document.getElementById('t-saveCardBtn').innerText = t.saveCardBtn;
 
       document.getElementById('t-leaveTitle').innerText = t.leaveTitle;
       document.getElementById('t-leaveMsg').innerText = t.leaveMsg;
@@ -1066,6 +1341,10 @@
       document.getElementById('t-payMsg').innerText = t.payMsg;
       document.getElementById('t-dirTitle').innerText = t.dirTitle;
       document.getElementById('t-dirMsg').innerText = t.dirMsg;
+
+      document.getElementById('t-chatHeader').innerText = t.chatHeader;
+      document.getElementById('t-welcomeChat').innerText = t.welcomeChat;
+      document.getElementById('chatInput').placeholder = t.chatPlaceholder;
 
       renderProfileData();
     }
