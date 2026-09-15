@@ -281,6 +281,7 @@
     .password-container input {
       margin: 0;
       padding-left: 3rem;
+      padding-right: 1rem;
     }
 
     [dir="rtl"] .password-container input {
@@ -294,18 +295,20 @@
       bottom: 0;
       left: 0.2rem;
       width: 40px;
-      background: none;
-      border: none;
+      height: 100%;
+      background: none !important;
+      border: none !important;
       box-shadow: none !important;
       cursor: pointer;
       color: var(--muted);
       padding: 0;
-      margin: auto 0;
+      margin: 0;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: color 0.2s;
       z-index: 10;
+      transform: none !important;
     }
 
     [dir="rtl"] .toggle-password {
@@ -867,7 +870,8 @@
         <div class="info-grid">
           <div><div class="info-label" id="t-lblDept">الإدارة</div><div id="userDept" class="info-val">--</div></div>
           <div><div class="info-label" id="t-lblCode">كود الموظف</div><div id="userCodeVal" class="info-val">--</div></div>
-          <div style="grid-column: span 2;"><div class="info-label" id="t-lblNID">الرقم القومي</div><div id="userNID" class="info-val">--</div></div>
+          <div><div class="info-label" id="t-lblNID">الرقم القومي</div><div id="userNID" class="info-val">--</div></div>
+          <div><div class="info-label" id="t-lblRemarks">ملاحظات</div><div id="userRemarks" class="info-val">--</div></div>
         </div>
 
         <div class="qr-container"><div id="qrcode"></div></div>
@@ -1084,7 +1088,6 @@
     let currentUserData = null;
     let currentEmpCode = "";
     let currentLang = localStorage.getItem('lacto_lang') || 'ar';
-    let activeChatRef = null;
 
     const translations = {
       ar: {
@@ -1103,6 +1106,7 @@
         lblDept: "الإدارة",
         lblCode: "كود الموظف",
         lblNID: "الرقم القومي",
+        lblRemarks: "ملاحظات",
         saveCardBtn: "حفظ الكارت كصورة",
         leaveTitle: "خدمة الإجازات",
         leaveMsg: "قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.",
@@ -1130,6 +1134,7 @@
         lblDept: "Department",
         lblCode: "Emp Code",
         lblNID: "National ID",
+        lblRemarks: "Remarks",
         saveCardBtn: "Save Card Image",
         leaveTitle: "Leave Requests",
         leaveMsg: "Coming Soon: Submit your leave and permission requests directly.",
@@ -1179,6 +1184,7 @@
       const name = isEn ? (user.name_en || user.name) : user.name;
       const job = isEn ? (user.job_en || user.job) : user.job;
       const dept = isEn ? (user.dept_en || user.dept) : user.dept;
+      const remarks = isEn ? (user.remarks_en || user.remarks) : user.remarks;
 
       document.getElementById('dash-name').innerText = name || "--";
       document.getElementById('dash-job').innerText = job || "--";
@@ -1189,6 +1195,7 @@
       document.getElementById('userDept').innerText = dept || "--";
       document.getElementById('userCodeVal').innerText = currentEmpCode;
       document.getElementById('userNID').innerText = user.nationalId || "--";
+      document.getElementById('userRemarks').innerText = remarks || "--";
       document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
     }
 
@@ -1261,9 +1268,6 @@
       if (modal.classList.contains('show')) {
         const chatBody = document.getElementById('chatBody');
         chatBody.scrollTop = chatBody.scrollHeight;
-        if (!currentEmpCode && !localStorage.getItem('guest_chat_id')) {
-          initGuestChat();
-        }
       }
     }
 
@@ -1273,80 +1277,34 @@
       }
     }
 
-    function getOrCreateGuestId() {
-      let guestId = localStorage.getItem('guest_chat_id');
-      if (!guestId) {
-        guestId = "guest_" + Date.now() + "_" + Math.floor(Math.random() * 1000);
-        localStorage.setItem('guest_chat_id', guestId);
-      }
-      return guestId;
-    }
-
-    function initGuestChat() {
-      const guestId = getOrCreateGuestId();
-      listenToChatMessages(guestId);
-    }
-
     function sendChatMessage() {
       const input = document.getElementById('chatInput');
       const text = input.value.trim();
       if (!text) return;
 
-      const codeInput = document.getElementById('empCode') ? document.getElementById('empCode').value.trim() : "";
+      const senderId = (currentEmpCode && currentEmpCode !== "") ? currentEmpCode : ("guest_" + Math.floor(Math.random() * 10000));
 
-      // التحقق من كود الموظف المكتوب أو المسجل، وإذا لم يوجد يتحول لزائر مباشرة
-      if (currentEmpCode && currentEmpCode !== "") {
-        postMessageToFirebase(currentEmpCode, currentUserData ? currentUserData.name : "موظف", text);
-        input.value = "";
-      } else if (codeInput !== "") {
-        db.ref('users/' + codeInput).once('value').then((snapshot) => {
-          if (snapshot.exists()) {
-            const user = snapshot.val();
-            postMessageToFirebase(codeInput, user.name || "موظف", text);
-            listenToChatMessages(codeInput);
-          } else {
-            const guestId = getOrCreateGuestId();
-            postMessageToFirebase(guestId, "زائر", text);
-            listenToChatMessages(guestId);
-          }
-          input.value = "";
-        }).catch(() => {
-          const guestId = getOrCreateGuestId();
-          postMessageToFirebase(guestId, "زائر", text);
-          listenToChatMessages(guestId);
-          input.value = "";
-        });
-      } else {
-        const guestId = getOrCreateGuestId();
-        postMessageToFirebase(guestId, "زائر", text);
-        listenToChatMessages(guestId);
-        input.value = "";
-      }
-    }
-
-    function postMessageToFirebase(senderId, senderName, text) {
       const msgData = {
         sender: senderId,
-        senderName: senderName,
+        senderName: currentUserData ? currentUserData.name : "زائر",
         text: text,
         timestamp: Date.now(),
         isAdmin: false
       };
+
       db.ref('chats/' + senderId).push(msgData);
+      input.value = "";
     }
 
-    function listenToChatMessages(chatTargetId) {
-      if (!chatTargetId) return;
-      
-      if (activeChatRef) {
-        activeChatRef.off();
-      }
-
+    function listenToChatMessages(empCode) {
+      if (!empCode) return;
       const chatBody = document.getElementById('chatBody');
+      
+      // إزالة أي مستمع قديم وتفريغ الحاوية لتجنب تكرار الرسائل
+      db.ref('chats/' + empCode).off();
       chatBody.innerHTML = '<div class="chat-msg hr" id="t-welcomeChat">' + translations[currentLang].welcomeChat + '</div>';
 
-      activeChatRef = db.ref('chats/' + chatTargetId);
-      activeChatRef.on('child_added', (snapshot) => {
+      db.ref('chats/' + empCode).on('child_added', (snapshot) => {
         const msg = snapshot.val();
         
         const welcomeEl = document.getElementById('t-welcomeChat');
@@ -1388,6 +1346,7 @@
       document.getElementById('t-lblDept').innerText = t.lblDept;
       document.getElementById('t-lblCode').innerText = t.lblCode;
       document.getElementById('t-lblNID').innerText = t.lblNID;
+      document.getElementById('t-lblRemarks').innerText = t.lblRemarks;
       document.getElementById('t-saveCardBtn').innerText = t.saveCardBtn;
 
       document.getElementById('t-leaveTitle').innerText = t.leaveTitle;
@@ -1405,7 +1364,6 @@
     }
 
     setLanguage(currentLang);
-    initGuestChat();
   </script>
 </body>
 </html>
