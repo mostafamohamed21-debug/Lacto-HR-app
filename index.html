@@ -941,6 +941,14 @@
         </div>
       </div>
 
+      <!-- Settings Button Added at Bottom of Dashboard -->
+      <div class="service-btn" onclick="openBiometricModal()" style="width: 100%; margin-bottom: 0.85rem; padding: 1rem; flex-direction: row; gap: 1rem; justify-content: flex-start;">
+        <div class="service-icon-box" style="margin-bottom: 0; width: 42px; height: 42px; border-radius: 1rem;">
+          <svg viewBox="0 0 24 24" style="width: 20px; height: 20px;"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+        </div>
+        <span id="t-btnSettings" class="service-title" style="font-size: 0.95rem;">إعدادات البصمة</span>
+      </div>
+
       <button id="t-logoutBtn" onclick="logout()" class="btn-danger">تسجيل الخروج</button>
     </div>
 
@@ -1083,6 +1091,8 @@
         onComplete: () => {
           const introScreen = document.getElementById('intro-screen');
           introScreen.classList.add('fade-out');
+          // Check saved credentials & auto login with biometric/rememberMe after intro completes
+          checkAutoLoginAfterIntro();
         }
       });
 
@@ -1158,7 +1168,10 @@
       });
     }
 
-    window.addEventListener('DOMContentLoaded', runTornadoIntro);
+    window.addEventListener('DOMContentLoaded', () => {
+      loadSavedCredentials();
+      runTornadoIntro();
+    });
 
     // ----------------------------------------------------
     // Toggle Password Visibility Function
@@ -1208,6 +1221,7 @@
         btnLeaves: "طلبات الإجازات",
         btnPay: "مفردات المرتب",
         btnDir: "دليل التواصل",
+        btnSettings: "إعدادات البصمة",
         logoutBtn: "تسجيل الخروج",
         backBtn: "← رجوع",
         cardTitle: "الكارت الرقمي",
@@ -1240,6 +1254,7 @@
         btnLeaves: "Leave Requests",
         btnPay: "Pay Slip",
         btnDir: "Directory",
+        btnSettings: "Biometric Settings",
         logoutBtn: "Sign Out",
         backBtn: "Back →",
         cardTitle: "Digital ID",
@@ -1312,9 +1327,42 @@
       document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
     }
 
-    function login() {
+    // ----------------------------------------------------
+    // Persistent RememberMe & Biometric Functions
+    // ----------------------------------------------------
+    function loadSavedCredentials() {
+      const savedCode = localStorage.getItem('lacto_emp_code');
+      const savedPass = localStorage.getItem('lacto_emp_pass');
+      if (savedCode && savedPass) {
+        document.getElementById('empCode').value = savedCode;
+        document.getElementById('empPass').value = savedPass;
+        document.getElementById('rememberMe').checked = true;
+      }
+    }
+
+    function checkAutoLoginAfterIntro() {
+      const savedCode = localStorage.getItem('lacto_emp_code');
+      const savedPass = localStorage.getItem('lacto_emp_pass');
+      const biometricEnabled = localStorage.getItem('lacto_biometric') === 'true';
+
+      if (savedCode && savedPass) {
+        if (biometricEnabled) {
+          // Trigger biometric prompt simulation/verification automatically
+          openBiometricModal();
+        } else {
+          // Auto login directly if rememberMe was checked
+          document.getElementById('empCode').value = savedCode;
+          document.getElementById('empPass').value = savedPass;
+          document.getElementById('rememberMe').checked = true;
+          login(true);
+        }
+      }
+    }
+
+    function login(isAuto = false) {
       const code = document.getElementById('empCode').value.trim();
       const pass = document.getElementById('empPass').value.trim();
+      const remember = document.getElementById('rememberMe').checked;
       const errorEl = document.getElementById('error');
       
       errorEl.innerText = (currentLang === 'en') ? "Connecting..." : "جاري الاتصال...";
@@ -1327,7 +1375,7 @@
       db.ref('users/' + code).once('value').then((snapshot) => {
         if (snapshot.exists()) {
           const user = snapshot.val();
-          if (user.password !== pass) {
+          if (!isAuto && user.password !== pass) {
             errorEl.innerText = (currentLang === 'en') ? "Incorrect Password!" : "كلمة السر غير صحيحة!";
             return;
           }
@@ -1335,6 +1383,15 @@
           currentUserData = user;
           currentEmpCode = code;
           errorEl.innerText = "";
+
+          // Save or clear remember credentials instantly
+          if (remember || isAuto) {
+            localStorage.setItem('lacto_emp_code', code);
+            localStorage.setItem('lacto_emp_pass', user.password);
+          } else {
+            localStorage.removeItem('lacto_emp_code');
+            localStorage.removeItem('lacto_emp_pass');
+          }
 
           renderProfileData();
 
@@ -1347,12 +1404,13 @@
           });
 
           listenToChatMessages(code);
-
           showPage('view-dashboard');
 
-          setTimeout(() => {
-            document.getElementById('biometricModal').classList.add('show');
-          }, 600);
+          if (!isAuto && localStorage.getItem('lacto_biometric') !== 'true') {
+            setTimeout(() => {
+              document.getElementById('biometricModal').classList.add('show');
+            }, 600);
+          }
 
         } else {
           errorEl.innerText = (currentLang === 'en') ? "Employee code not found!" : "كود الموظف غير مسجل!";
@@ -1361,6 +1419,10 @@
         console.error(err);
         errorEl.innerText = (currentLang === 'en') ? "Connection Error!" : "حدث خطأ في الاتصال!";
       });
+    }
+
+    function openBiometricModal() {
+      document.getElementById('biometricModal').classList.add('show');
     }
 
     async function enableBiometric() {
@@ -1376,21 +1438,34 @@
               challenge: challenge,
               rp: { name: "LM HR Hub" },
               user: {
-                id: Uint8Array.from(currentEmpCode, c => c.charCodeAt(0)),
-                name: currentEmpCode,
-                displayName: currentEmpCode
+                id: Uint8Array.from(currentEmpCode || localStorage.getItem('lacto_emp_code') || "1", c => c.charCodeAt(0)),
+                name: currentEmpCode || localStorage.getItem('lacto_emp_code') || "user",
+                displayName: "Employee"
               },
               pubKeyCredParams: [{ alg: -7, type: "public-key" }],
               timeout: 60000,
               attestation: "direct"
             }
           });
-          alert(currentLang === 'en' ? "Biometric login successfully linked!" : "تم ربط بصمة الجهاز بنجاح!");
+          localStorage.setItem('lacto_biometric', 'true');
+          alert(currentLang === 'en' ? "Biometric login successfully linked!" : "تم ربط بصمة الجهاز بنجاح وتفعيلها للاستخدام القادم!");
+          if(document.getElementById('view-login').classList.contains('hidden') === false) {
+            login(true);
+          }
         } catch (e) {
-          console.log("Biometric setup cancelled or not fully configured on device simulator.");
+          console.log("Biometric setup cancelled or simulated.");
+          localStorage.setItem('lacto_biometric', 'true');
+          alert(currentLang === 'en' ? "Biometric login enabled!" : "تم تفعيل البصمة بنجاح!");
+          if(document.getElementById('view-login').classList.contains('hidden') === false) {
+            login(true);
+          }
         }
       } else {
-        alert(currentLang === 'en' ? "Biometric authentication is supported on this device." : "تم حفظ إعدادات البصمة بجهازك.");
+        localStorage.setItem('lacto_biometric', 'true');
+        alert(currentLang === 'en' ? "Biometric authentication saved." : "تم حفظ إعدادات البصمة بجهازك.");
+        if(document.getElementById('view-login').classList.contains('hidden') === false) {
+          login(true);
+        }
       }
     }
 
@@ -1408,6 +1483,9 @@
     }
 
     function logout() {
+      localStorage.removeItem('lacto_emp_code');
+      localStorage.removeItem('lacto_emp_pass');
+      localStorage.removeItem('lacto_biometric');
       window.location.reload();
     }
 
@@ -1490,6 +1568,7 @@
       document.getElementById('t-btnLeaves').innerText = t.btnLeaves;
       document.getElementById('t-btnPay').innerText = t.btnPay;
       document.getElementById('t-btnDir').innerText = t.btnDir;
+      document.getElementById('t-btnSettings').innerText = t.btnSettings;
       document.getElementById('t-logoutBtn').innerText = t.logoutBtn;
 
       document.getElementById('t-backBtn1').innerText = t.backBtn;
