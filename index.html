@@ -170,7 +170,7 @@
     .lang-option { padding: 0.5rem 0.8rem; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; }
     .lang-option:hover { background: rgba(56, 189, 248, 0.2); }
 
-    /* Password Input & Eye Switch */
+    /* تم ضبط محاذاة حقل الباسورد وأيقونة العين بدقة متناهية لتجنب أي ترحيل */
     .password-wrapper {
       position: relative;
       width: 100%;
@@ -180,8 +180,8 @@
     }
 
     .password-wrapper input {
-      width: 100%;
-      margin: 0;
+      width: 100% !important;
+      margin: 0 !important;
       padding: 0.85rem 3.2rem 0.85rem 1rem !important;
     }
     [dir="ltr"] .password-wrapper input {
@@ -190,7 +190,7 @@
 
     .toggle-eye-btn {
       position: absolute;
-      right: 14px;
+      left: 14px; /* في العربية تكون العين على اليسار داخل الحقل أو العكس حسب الرغبة، تم ضبطها هنا بدقة */
       top: 50%;
       transform: translateY(-50%);
       background: transparent;
@@ -206,7 +206,9 @@
       margin: 0;
       padding: 0;
     }
-    [dir="ltr"] .toggle-eye-btn { right: auto; left: 14px; }
+    [dir="rtl"] .toggle-eye-btn { left: 14px; right: auto; }
+    [dir="ltr"] .toggle-eye-btn { right: 14px; left: auto; }
+    
     .toggle-eye-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; pointer-events: none; }
 
     /* Profile Header */
@@ -378,7 +380,7 @@
     }
     button:active { transform: translateY(4px); box-shadow: 0 2px 0 #024e77; }
     .btn-danger { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 6px 0 #991b1b; }
-    .btn-secondary { background: rgba(51, 65, 85, 0.8); box-shadow: none; border: 1px solid var(--border-color); margin-top: 0.5rem; }
+    .btn-secondary { background: linear-gradient(135deg, #334155 0%, #1e293b 100%); box-shadow: 0 6px 0 #0f172a; border: 1px solid var(--border-color); margin-top: 0.5rem; color: var(--neon-blue); }
 
     .hidden { display: none !important; }
 
@@ -541,6 +543,7 @@
       
       <input type="text" id="empCode" placeholder="كود الموظف">
       
+      <!-- تم ضبط حقل كلمة المرور وزر إظهار الكلمة بداخل الـ Wrapper بدقة -->
       <div class="password-wrapper">
         <input type="password" id="empPass" placeholder="كلمة السر">
         <button type="button" class="toggle-eye-btn" onclick="togglePasswordVisibility(event)" tabIndex="-1">
@@ -557,7 +560,7 @@
       </div>
       
       <button id="t-loginBtn" onclick="login()">دخول الحساب</button>
-      <button id="t-bioLoginBtn" class="btn-secondary hidden" onclick="loginWithDeviceBiometrics()">تسجيل الدخول ببصمة الهاتف 👆</button>
+      <button id="t-bioLoginBtn" class="btn-secondary" onclick="loginWithDeviceBiometrics()">تسجيل الدخول ببصمة الهاتف 👆</button>
       <p id="error" style="color: var(--danger); margin-top: 0.8rem; font-size: 0.85rem; font-weight: bold;"></p>
     </div>
 
@@ -755,7 +758,6 @@
     window.addEventListener('DOMContentLoaded', () => {
       runTornadoIntro();
       checkSavedLogin();
-      checkDeviceBiometricSupport();
       initSlides();
       requestWakeLock();
     });
@@ -942,18 +944,12 @@
       document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
     }
 
-    function checkDeviceBiometricSupport() {
-      if (window.PublicKeyCredential && localStorage.getItem('biometrics_enabled_code')) {
-        document.getElementById('t-bioLoginBtn').classList.remove('hidden');
-      }
-    }
-
     function loginWithDeviceBiometrics() {
-      const savedCode = localStorage.getItem('biometrics_enabled_code');
+      const savedCode = localStorage.getItem('remembered_empCode') || localStorage.getItem('biometrics_enabled_code');
       const savedPass = localStorage.getItem('remembered_empPass');
 
       if (!savedCode || !savedPass) {
-        document.getElementById('error').innerText = "قم بتسجيل الدخول التقليدي وتأكيد البصمة أولاً.";
+        document.getElementById('error').innerText = currentLang === 'ar' ? "من فضلك سجل دخولك مرة واحدة تقليدياً واضغط 'تذكرني' لربط البصمة." : "Please login once traditionally and check 'Remember Me'.";
         return;
       }
 
@@ -1015,13 +1011,12 @@
       }
     }
 
-    // Geolocation Check with 50 meters Radius Limit
-    const COMPANY_LAT = 30.3000; // إحداثيات مقر الشركة (يمكنك ضبطها بدقة)
+    const COMPANY_LAT = 30.3000; 
     const COMPANY_LNG = 31.5000;
     const ALLOWED_RADIUS_METERS = 50;
 
     function calculateDistance(lat1, lon1, lat2, lon2) {
-      const R = 6371e3; // metres
+      const R = 6371e3;
       const φ1 = lat1 * Math.PI/180;
       const φ2 = lat2 * Math.PI/180;
       const Δφ = (lat2-lat1) * Math.PI/180;
@@ -1032,7 +1027,7 @@
                 Math.sin(Δλ/2) * Math.sin(Δλ/2);
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
-      return R * c; // Distance in meters
+      return R * c;
     }
 
     function verifyAndCheckIn() {
