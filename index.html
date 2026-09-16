@@ -172,7 +172,7 @@
     .lang-option { padding: 0.5rem 0.8rem; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; }
     .lang-option:hover { background: rgba(56, 189, 248, 0.2); }
 
-    /* Password Input Eye Switch */
+    /* Fixed Password Input & Aligned Eye Switch */
     .password-wrapper {
       position: relative;
       width: 100%;
@@ -182,25 +182,23 @@
     }
 
     .password-wrapper input {
+      width: 100%;
       margin: 0;
-      padding-left: 3rem !important;
-      padding-right: 1rem !important;
+      padding: 0.85rem 3.2rem 0.85rem 1rem !important; /* مساحة مناسبة على اليمين للعين في وضع RTL */
     }
-    [dir="rtl"] .password-wrapper input {
-      padding-right: 3rem !important;
-      padding-left: 1rem !important;
+    [dir="ltr"] .password-wrapper input {
+      padding: 0.85rem 1rem 0.85rem 3.2rem !important;
     }
 
     .toggle-eye-btn {
       position: absolute;
-      left: 0.5rem;
+      right: 12px; /* تم الضبط بدقة داخل حدود الحقل */
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 0.6rem;
-      width: 36px;
-      height: 36px;
+      background: transparent;
+      border: none;
+      width: 32px;
+      height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -210,8 +208,8 @@
       margin: 0;
       padding: 0;
     }
-    [dir="rtl"] .toggle-eye-btn { left: auto; right: 0.5rem; }
-    .toggle-eye-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; pointer-events: none; }
+    [dir="ltr"] .toggle-eye-btn { right: auto; left: 12px; }
+    .toggle-eye-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; pointer-events: none; }
 
     /* Profile Header & Real Fingerprint Icon */
     .emp-profile-header {
@@ -496,7 +494,6 @@
   <!-- Real Fingerprint Biometric Check-In Card -->
   <div id="top-bio-card" class="biometric-card hidden">
     <div class="bio-btn" onclick="triggerBiometricCheckIn()">
-      <!-- Updated Precise Fingerprint SVG Icon -->
       <svg viewBox="0 0 24 24">
         <path d="M12 2a10 10 0 0 0-7.5 16.5"/>
         <path d="M12 5a7 7 0 0 1 5.25 11.6"/>
@@ -540,7 +537,6 @@
     <!-- Dashboard View -->
     <div id="view-dashboard" class="hidden">
       
-      <!-- Interactive Slides Carousel (Auto Looping + Manual Swipe + Click) -->
       <div class="slides-container" id="slidesContainer">
         <div class="slides-wrapper" id="slidesWrapper">
           
@@ -669,7 +665,6 @@
   </div>
 
   <script>
-    // إحداثيات مصنع لاكتو مصر بمدينة العاشر من رمضان
     const COMPANY_LAT = 30.2974;
     const COMPANY_LNG = 31.7455;
     const MAX_DISTANCE_METERS = 500;
@@ -688,7 +683,6 @@
       return R * c;
     }
 
-    // Wake Lock API Management (منع إيقاف الشاشة وإعادتها لوضعها الطبيعي عند الخروج)
     let wakeLock = null;
     async function requestWakeLock() {
       try {
@@ -711,7 +705,6 @@
       }
     }
 
-    // 1. Tornado / Whirlwind Intro Animation (Exactly 1 second)
     function runTornadoIntro() {
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
@@ -744,33 +737,15 @@
         }
       });
 
-      // حركة دوامية سريعة ومنضبطة تستغرق ثانية واحدة إجمالاً
       chars.forEach((char, index) => {
         tl.fromTo(char, 
-          {
-            rotation: 360,
-            scale: 0.1,
-            opacity: 0,
-            y: -50
-          },
-          {
-            duration: 0.7,
-            rotation: 0,
-            scale: 1,
-            opacity: 1,
-            y: 0,
-            ease: "back.out(1.7)"
-          },
+          { rotation: 360, scale: 0.1, opacity: 0, y: -50 },
+          { duration: 0.7, rotation: 0, scale: 1, opacity: 1, y: 0, ease: "back.out(1.7)" },
           index * 0.03
         );
       });
 
-      tl.to(subtitle, { 
-        duration: 0.4, 
-        opacity: 1, 
-        y: 0, 
-        ease: "power2.out" 
-      }, "-=0.4");
+      tl.to(subtitle, { duration: 0.4, opacity: 1, y: 0, ease: "power2.out" }, "-=0.4");
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -778,7 +753,7 @@
       checkSavedLogin();
       checkDeviceBiometricSupport();
       initSlides();
-      requestWakeLock(); // تفعيل منع قفل الشاشة عند فتح التطبيق
+      requestWakeLock();
     });
 
     document.addEventListener('visibilitychange', async () => {
@@ -805,7 +780,6 @@
       }
     }
 
-    // Firebase Initialization
     const firebaseConfig = {
       apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
       authDomain: "lacto-hr-system.firebaseapp.com",
@@ -1072,7 +1046,6 @@
       );
     }
 
-    // 4. Interactive Slides Carousel (Auto Looping + Manual Swipe + Click)
     let slideIndex = 0;
     let slideInterval = null;
     let startX = 0;
@@ -1093,7 +1066,6 @@
 
       startSlideTimer();
 
-      // دعم السحب اليدوي (Manual Swipe)
       container.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; clearInterval(slideInterval); });
       container.addEventListener('touchend', (e) => {
         const diff = startX - e.changedTouches[0].clientX;
@@ -1154,7 +1126,7 @@
     }
 
     function logout() {
-      releaseWakeLock(); // إعادة الموبايل لوضعه الطبيعي وقفل الـ Wake Lock فور الخروج
+      releaseWakeLock();
       sessionStorage.clear();
       localStorage.removeItem('remembered_empCode');
       localStorage.removeItem('remembered_empPass');
