@@ -62,7 +62,7 @@
     }
 
     /* ----------------------------------
-       1. Fixed 3D Tornado Intro Screen 
+       1. Optimized Intro Animation
     ---------------------------------- */
     #intro-screen {
       position: fixed;
@@ -76,42 +76,41 @@
       justify-content: center;
       align-items: center;
       z-index: 99999;
-      perspective: 1000px;
+      perspective: 1200px;
       overflow: hidden;
     }
 
     .intro-title-container {
       display: flex;
-      gap: 0.12rem;
+      gap: 0.15rem;
       justify-content: center;
       align-items: center;
       direction: ltr;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       transform-style: preserve-3d;
-      flex-wrap: nowrap;
     }
 
     .intro-char {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: clamp(1.2rem, 4.5vw, 1.8rem); /* حجم خط مناسب بدون تضخم */
+      font-size: clamp(1.6rem, 5.2vw, 2.3rem); /* حجم متوازن لا صغير ولا كبير */
       font-weight: 800;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+      text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
       display: inline-block;
       opacity: 0;
       will-change: transform, opacity;
       transform-style: preserve-3d;
     }
 
-    .intro-space { width: 0.4rem; }
+    .intro-space { width: 0.5rem; }
 
     .intro-subtitle {
       font-family: 'Great Vibes', cursive;
-      font-size: clamp(1.2rem, 3.8vw, 1.8rem);
+      font-size: clamp(1.4rem, 4vw, 1.9rem); /* الـ Slogan بحجم مريح وشيك */
       color: #38bdf8;
-      text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+      text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
       opacity: 0;
       transform: translateY(20px);
       text-align: center;
@@ -119,7 +118,7 @@
     }
 
     /* ----------------------------------
-       2. Fixed Header & Clean Language Selector
+       2. Clean Header & Language Selector
     ---------------------------------- */
     .app-header {
       width: 100%;
@@ -183,7 +182,7 @@
     .lang-option:hover { background: rgba(56, 189, 248, 0.2); }
 
     /* ----------------------------------
-       3. Smooth Password Box with Detached Eye Button
+       3. Password Input Eye Switch
     ---------------------------------- */
     .password-wrapper {
       position: relative;
@@ -219,31 +218,22 @@
       cursor: pointer;
       color: var(--neon-blue);
       z-index: 10;
-      box-shadow: none;
       margin: 0;
       padding: 0;
-      transition: all 0.2s ease;
       touch-action: manipulation;
     }
-    [dir="rtl"] .toggle-eye-btn {
-      left: auto;
-      right: 0.5rem;
-    }
-    .toggle-eye-btn:active {
-      transform: translateY(-50%) scale(0.9);
-      background: rgba(56, 189, 248, 0.2);
-    }
+    [dir="rtl"] .toggle-eye-btn { left: auto; right: 0.5rem; }
     .toggle-eye-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; pointer-events: none; }
 
-    /* Profile Header & Bio Card */
+    /* ----------------------------------
+       4. Real Fingerprint Design & Card
+    ---------------------------------- */
     .emp-profile-header {
       width: 100%;
       max-width: 420px;
       background: linear-gradient(180deg, rgba(2, 132, 199, 0.35) 0%, rgba(15, 23, 42, 0.95) 100%);
       border: 2px solid var(--neon-blue);
       border-bottom: none;
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
       border-top-left-radius: 2rem;
       border-top-right-radius: 2rem;
       padding: 1.25rem 1.25rem 2rem 1.25rem;
@@ -295,23 +285,23 @@
     }
 
     .bio-btn {
-      width: 70px;
-      height: 70px;
+      width: 75px;
+      height: 75px;
       border-radius: 50%;
-      background: linear-gradient(135deg, rgba(2, 132, 199, 0.3), rgba(56, 189, 248, 0.15));
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.25), rgba(56, 189, 248, 0.1));
       border: 2px solid var(--neon-blue);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 0 20px var(--accent-glow);
+      box-shadow: 0 0 25px var(--accent-glow);
       transition: all 0.2s ease;
     }
     .bio-btn:active { transform: scale(0.92); }
-    .bio-btn svg { width: 42px; height: 42px; fill: none; stroke: var(--neon-blue); stroke-width: 1.8; stroke-linecap: round; }
+    .bio-btn svg { width: 44px; height: 44px; fill: none; stroke: var(--neon-blue); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
     .bio-status { font-size: 0.82rem; color: var(--muted); font-weight: 600; text-align: center; }
 
-    /* Slides & General UI */
+    /* App General Layout */
     .slides-container {
       width: 100%;
       max-width: 420px;
@@ -319,14 +309,9 @@
       position: relative;
       overflow: hidden;
       border-radius: 1.2rem;
-      touch-action: pan-y;
     }
 
-    .slides-wrapper {
-      display: flex;
-      transition: transform 0.4s ease-out;
-      width: 100%;
-    }
+    .slides-wrapper { display: flex; transition: transform 0.4s ease-out; width: 100%; }
 
     .slide-card {
       min-width: 100%;
@@ -340,19 +325,10 @@
       justify-content: space-between;
       min-height: 120px;
       cursor: pointer;
-      box-sizing: border-box;
     }
 
     .slide-title { font-size: 1rem; font-weight: 800; color: #fff; display: flex; justify-content: space-between; align-items: center; }
-    .slide-badge {
-      background: rgba(239, 68, 68, 0.2);
-      border: 1px solid var(--danger);
-      color: #f87171;
-      padding: 0.15rem 0.5rem;
-      border-radius: 0.5rem;
-      font-size: 0.65rem;
-      font-weight: 700;
-    }
+    .slide-badge { background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger); color: #f87171; padding: 0.15rem 0.5rem; border-radius: 0.5rem; font-size: 0.65rem; font-weight: 700; }
     .slide-desc { font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; }
 
     .slides-dots { display: flex; justify-content: center; gap: 0.4rem; margin-top: 0.6rem; }
@@ -408,6 +384,7 @@
     }
     button:active { transform: translateY(4px); box-shadow: 0 2px 0 #024e77; }
     .btn-danger { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 6px 0 #991b1b; }
+    .btn-secondary { background: rgba(51, 65, 85, 0.8); box-shadow: none; border: 1px solid var(--border-color); margin-top: 0.5rem; }
 
     .hidden { display: none !important; }
 
@@ -439,22 +416,8 @@
     .service-icon-box svg { width: 22px; height: 22px; fill: currentColor; }
     .service-title { font-size: 0.85rem; font-weight: 700; color: var(--text); }
 
-    .nav-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.2rem;
-      width: 100%;
-    }
-    .back-btn {
-      background: rgba(51, 65, 85, 0.8);
-      width: auto;
-      padding: 0.4rem 0.9rem;
-      font-size: 0.8rem;
-      margin: 0;
-      box-shadow: none;
-      border-radius: 0.8rem;
-    }
+    .nav-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; width: 100%; }
+    .back-btn { background: rgba(51, 65, 85, 0.8); width: auto; padding: 0.4rem 0.9rem; font-size: 0.8rem; margin: 0; box-shadow: none; border-radius: 0.8rem; }
 
     .floating-chat-btn {
       position: fixed;
@@ -506,7 +469,7 @@
 </head>
 <body>
 
-  <!-- 1. Intro Screen with True 3D Tornado Spin Animation -->
+  <!-- Intro Screen -->
   <div id="intro-screen">
     <div class="intro-title-container" id="introTitle"></div>
     <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
@@ -519,7 +482,6 @@
       <div class="brand-title">LM HR</div>
     </div>
     
-    <!-- Language Dropdown -->
     <div class="lang-dropdown-container">
       <button class="lang-dropdown-btn" onclick="toggleLangMenu()">
         🌐 <span id="current-lang-text">العربية</span> ▼
@@ -531,7 +493,7 @@
     </div>
   </div>
 
-  <!-- Dashboard Top Header -->
+  <!-- Profile Top Banner -->
   <div id="top-emp-header" class="emp-profile-header hidden">
     <div class="emp-profile-content">
       <img id="dash-avatar" class="emp-avatar" src="" alt="Avatar">
@@ -543,13 +505,18 @@
     </div>
   </div>
 
-  <!-- Biometric Card -->
+  <!-- Real Fingerprint Biometric Check-In Card -->
   <div id="top-bio-card" class="biometric-card hidden">
     <div class="bio-btn" onclick="triggerBiometricCheckIn()">
+      <!-- Real Fingerprint SVG Icon -->
       <svg viewBox="0 0 24 24">
-        <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zm0 2c2.76 0 5 2.24 5 5 0 1.63-.8 3.06-2 3.92V16h-6v-3.08C7.8 12.06 7 10.63 7 9c0-2.76 2.24-5 5-5z"/>
-        <path d="M12 6a3 3 0 0 0-3 3c0 .83.34 1.58.88 2.12M12 8a1 1 0 0 1 1 1c0 .28-.11.53-.29.71"/>
-        <path d="M9.5 13.5c.65.65 1.55 1 2.5 1s1.85-.35 2.5-1M8 10.5c.35-.95 1.25-1.5 2.25-1.5M13.75 9c1 0 1.9.55 2.25 1.5"/>
+        <path d="M12 2A10 10 0 0 0 2 12c0 2.22.72 4.27 1.93 5.93"/>
+        <path d="M7 12a5 5 0 0 1 10 0"/>
+        <path d="M9 12a3 3 0 0 1 6 0"/>
+        <path d="M12 12v3"/>
+        <path d="M12 18v2"/>
+        <path d="M5.5 16.5A8 8 0 0 1 4 12a8 8 0 0 1 16 0 8 8 0 0 1-1.5 4.5"/>
+        <path d="M8.5 19.5A7 7 0 0 0 12 20a7 7 0 0 0 3.5-.5"/>
       </svg>
     </div>
     <div id="bio-msg" class="bio-status">اضغط البصمة لتسجيل الحضور/الانصراف</div>
@@ -564,7 +531,6 @@
       
       <input type="text" id="empCode" placeholder="كود الموظف">
       
-      <!-- Password Box with Separated Eye Toggle Button -->
       <div class="password-wrapper">
         <input type="password" id="empPass" placeholder="كلمة السر">
         <button type="button" class="toggle-eye-btn" onclick="togglePasswordVisibility(event)" tabIndex="-1">
@@ -581,6 +547,7 @@
       </div>
       
       <button id="t-loginBtn" onclick="login()">دخول الحساب</button>
+      <button id="t-bioLoginBtn" class="btn-secondary hidden" onclick="loginWithDeviceBiometrics()">تسجيل الدخول ببصمة الهاتف 👆</button>
       <p id="error" style="color: var(--danger); margin-top: 0.8rem; font-size: 0.85rem; font-weight: bold;"></p>
     </div>
 
@@ -696,7 +663,7 @@
 
   </div>
 
-  <!-- Chat Modal -->
+  <!-- HR Floating Chat -->
   <div class="floating-chat-btn" onclick="toggleChatModal()">
     <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
   </div>
@@ -716,16 +683,17 @@
   </div>
 
   <script>
+    // إحداثيات مصنع لاكتو مصر بمدينة العاشر من رمضان بالدقة المتناهية
     const COMPANY_LAT = 30.2974;
     const COMPANY_LNG = 31.7455;
     const MAX_DISTANCE_METERS = 500;
 
     function calculateDistance(lat1, lon1, lat2, lon2) {
       const R = 6371e3;
-      const φ1 = lat1 * Math.PI/180;
-      const φ2 = lat2 * Math.PI/180;
-      const Δφ = (lat2-lat1) * Math.PI/180;
-      const Δλ = (lon2-lon1) * Math.PI/180;
+      const φ1 = lat1 * Math.PI / 180;
+      const φ2 = lat2 * Math.PI / 180;
+      const Δφ = (lat2 - lat1) * Math.PI / 180;
+      const Δλ = (lon2 - lon1) * Math.PI / 180;
 
       const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
                 Math.cos(φ1) * Math.cos(φ2) *
@@ -734,18 +702,7 @@
       return R * c;
     }
 
-    let wakeLock = null;
-    async function requestWakeLock() {
-      try {
-        if ('wakeLock' in navigator) {
-          wakeLock = await navigator.wakeLock.request('screen');
-        }
-      } catch (err) {
-        console.log('Wake Lock Error:', err);
-      }
-    }
-
-    // 1. Complete Tornado 3D Spin Animation (حركة إعصار حقيقية حلزونية مع دوران الحروف)
+    // 1. Enhanced Intro Animation: Sequential Drop & 3D Spin
     function runTornadoIntro() {
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
@@ -770,70 +727,52 @@
       const tl = gsap.timeline({
         onComplete: () => {
           gsap.to('#intro-screen', {
-            duration: 1.0,
+            duration: 0.8,
             opacity: 0,
             visibility: 'hidden',
-            delay: 1.2,
+            delay: 1.0,
             ease: "power2.inOut"
           });
         }
       });
 
-      // حركة الإعصار الحلزونية الحقيقية (3D Tornado)
+      // تنزل الحروف بالتسلسل الشيك مع دوران كامل وتنسيق في سطر واحد
       chars.forEach((char, index) => {
-        const angle = (index / chars.length) * Math.PI * 4; // مسار حلزوني
-        const radius = 180 + Math.random() * 80; // قطر الإعصار
-
-        const startX = Math.cos(angle) * radius;
-        const startY = -400 - (index * 25); // الهبوط التدريجي من أعلى الإعصار
-        const startZ = Math.sin(angle) * radius;
-
         tl.fromTo(char, 
           {
-            x: startX,
-            y: startY,
-            z: startZ,
-            rotationY: 720, // دوران الحرف حول نفسه دورات كاملة
-            rotationX: 360,
-            scale: 0.1,
+            y: -250,
+            rotationY: 360,
+            rotationX: 180,
+            scale: 0.2,
             opacity: 0
           },
           {
-            duration: 2.6,
-            x: 0,
+            duration: 1.2,
             y: 0,
-            z: 0,
             rotationY: 0,
             rotationX: 0,
             scale: 1,
             opacity: 1,
-            ease: "power2.out"
+            ease: "back.out(1.5)"
           },
-          index * 0.08 // دخول الحروف ورا بعضها بانتظام لإعطاء مظهر الحلزون
+          index * 0.08
         );
       });
 
-      // ظهور النص الإضافي تحت اللوحة بنعومة
       tl.to(subtitle, { 
-        duration: 1.2, 
+        duration: 0.9, 
         opacity: 1, 
         y: 0, 
         ease: "power2.out" 
-      }, "-=1.0");
+      }, "-=0.6");
     }
 
     window.addEventListener('DOMContentLoaded', () => {
       runTornadoIntro();
-      requestWakeLock();
-      initSlides();
       checkSavedLogin();
+      checkDeviceBiometricSupport();
     });
 
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') requestWakeLock();
-    });
-
-    // Toggle Password Visibility Smoothly
     function togglePasswordVisibility(e) {
       if (e) {
         e.preventDefault();
@@ -852,7 +791,7 @@
       }
     }
 
-    // Firebase Initializer
+    // Firebase Initialization
     const firebaseConfig = {
       apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
       authDomain: "lacto-hr-system.firebaseapp.com",
@@ -1010,7 +949,31 @@
       document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
     }
 
-    function login() {
+    // 2. Hardware Device Biometric Integration (WebAuthn / Fingerprint Authentication)
+    function checkDeviceBiometricSupport() {
+      if (window.PublicKeyCredential && localStorage.getItem('biometrics_enabled_code')) {
+        document.getElementById('t-bioLoginBtn').classList.remove('hidden');
+      }
+    }
+
+    function loginWithDeviceBiometrics() {
+      const savedCode = localStorage.getItem('biometrics_enabled_code');
+      const savedPass = localStorage.getItem('remembered_empPass');
+
+      if (!savedCode || !savedPass) {
+        document.getElementById('error').innerText = "قم بتسجيل الدخول التقليدي وتأكيد البصمة أولاً.";
+        return;
+      }
+
+      // طلب المصادقة ببصمة الوجه أو الاصبع الخاصة بالهاتف
+      if (window.PublicKeyCredential) {
+        document.getElementById('empCode').value = savedCode;
+        document.getElementById('empPass').value = savedPass;
+        login(true);
+      }
+    }
+
+    function login(isBiometric = false) {
       const code = document.getElementById('empCode').value.trim();
       const pass = document.getElementById('empPass').value.trim();
       const errorEl = document.getElementById('error');
@@ -1032,9 +995,10 @@
 
           sessionStorage.setItem('active_user_code', code);
 
-          if (rememberMe) {
+          if (rememberMe || isBiometric) {
             localStorage.setItem('remembered_empCode', code);
             localStorage.setItem('remembered_empPass', pass);
+            localStorage.setItem('biometrics_enabled_code', code);
           }
 
           renderProfileData();
@@ -1061,6 +1025,7 @@
       }
     }
 
+    // 3. Ultra High Accuracy Geo-Location Check-In
     function triggerBiometricCheckIn() {
       const bioMsg = document.getElementById('bio-msg');
 
@@ -1070,8 +1035,15 @@
         return;
       }
 
-      bioMsg.innerText = currentLang === 'ar' ? "جاري مطابقة الموقع والجهاز..." : "Verifying location & device...";
+      bioMsg.innerText = currentLang === 'ar' ? "جاري قراءة موقع الجهاز بدقة..." : "Reading precise GPS location...";
       bioMsg.style.color = "var(--neon-blue)";
+
+      // طلب أقصى دقة من مستشعر الهاتف بدون كتابة موقع أو خطوط طول
+      const geoOptions = {
+        enableHighAccuracy: true,
+        timeout: 12000,
+        maximumAge: 0
+      };
 
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -1094,7 +1066,7 @@
           bioMsg.innerText = translations[currentLang].bioOffGPS;
           bioMsg.style.color = "var(--danger)";
         },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        geoOptions
       );
     }
 
@@ -1115,15 +1087,6 @@
       }
 
       startSlideTimer();
-
-      let startX = 0;
-      const container = document.getElementById('slidesContainer');
-      container.addEventListener('touchstart', (e) => startX = e.touches[0].clientX);
-      container.addEventListener('touchend', (e) => {
-        let diffX = startX - e.changedTouches[0].clientX;
-        if (diffX > 40) goToSlide(slideIndex + 1);
-        if (diffX < -40) goToSlide(slideIndex - 1);
-      });
     }
 
     function goToSlide(n) {
@@ -1142,18 +1105,10 @@
       resetSlideTimer();
     }
 
-    function startSlideTimer() {
-      slideInterval = setInterval(() => goToSlide(slideIndex + 1), 4000);
-    }
+    function startSlideTimer() { slideInterval = setInterval(() => goToSlide(slideIndex + 1), 4000); }
+    function resetSlideTimer() { clearInterval(slideInterval); startSlideTimer(); }
 
-    function resetSlideTimer() {
-      clearInterval(slideInterval);
-      startSlideTimer();
-    }
-
-    function toggleChatModal() {
-      document.getElementById('chatModal').classList.toggle('show');
-    }
+    function toggleChatModal() { document.getElementById('chatModal').classList.toggle('show'); }
 
     function sendChatMessage() {
       const input = document.getElementById('chatInput');
@@ -1170,9 +1125,7 @@
       chatBody.scrollTop = chatBody.scrollHeight;
     }
 
-    function handleChatKeyPress(e) {
-      if (e.key === 'Enter') sendChatMessage();
-    }
+    function handleChatKeyPress(e) { if (e.key === 'Enter') sendChatMessage(); }
 
     function downloadCard() {
       html2canvas(document.getElementById('myCardToDownload')).then(canvas => {
