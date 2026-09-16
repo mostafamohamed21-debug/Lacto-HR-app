@@ -28,7 +28,7 @@
 
     :root {
       --bg: #0b0f19;
-      --card-bg: rgba(15, 23, 42, 0.75);
+      --card-bg: rgba(15, 23, 42, 0.85);
       --border-color: rgba(56, 189, 248, 0.3);
       --text: #f8fafc;
       --accent: #0284c7;
@@ -58,59 +58,69 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0 0 1.5rem 0;
-      perspective: 1000px;
+      padding-bottom: 2rem;
       overflow-x: hidden;
     }
 
     /* ----------------------------------
-       Tornado Intro Styling 
+       1. Tornado Intro Styling
     ---------------------------------- */
     #intro-screen {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: linear-gradient(rgba(11, 15, 25, 0.92), rgba(11, 15, 25, 0.96)), url('background.jpg');
+      inset: 0;
+      background: linear-gradient(rgba(11, 15, 25, 0.95), rgba(11, 15, 25, 0.98)), url('background.jpg');
       background-size: cover;
       background-position: center;
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(15px);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      z-index: 9999;
-      perspective: 1200px;
+      z-index: 99999;
+      perspective: 1000px;
       overflow: hidden;
-      transition: opacity 1.2s ease, visibility 1.2s ease;
     }
 
-    #intro-screen.fade-out { opacity: 0; visibility: hidden; }
+    #intro-screen.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
 
-    .intro-content-wrapper { display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center; }
-    .intro-title-container { width: 100%; display: flex; gap: 0.15rem; justify-content: center; align-items: center; direction: ltr; }
+    .intro-title-container {
+      display: flex;
+      gap: 0.2rem;
+      justify-content: center;
+      align-items: center;
+      direction: ltr;
+      margin-bottom: 1.5rem;
+    }
+
     .intro-char {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: clamp(1.5rem, 5.5vw, 2.2rem);
+      font-size: clamp(1.8rem, 6vw, 2.5rem);
       font-weight: 800;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
       display: inline-block;
-    }
-    .intro-space { width: 0.5rem; }
-    .intro-subtitle {
-      font-family: 'Great Vibes', cursive;
-      font-size: clamp(1.4rem, 4vw, 2rem);
-      color: #38bdf8;
-      text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
       opacity: 0;
     }
 
+    .intro-space { width: 0.6rem; }
+
+    .intro-subtitle {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(1.5rem, 4.5vw, 2.2rem);
+      color: #38bdf8;
+      text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
     /* ----------------------------------
-       Header & Custom Employee Profile (Item 1)
+       2. Header & Language Fixed Position
     ---------------------------------- */
     .app-header {
       width: 100%;
@@ -118,13 +128,14 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 1rem 0.5rem 1rem;
+      padding: 1rem 1.25rem;
+      z-index: 50;
     }
 
-    .brand-container { display: flex; align-items: center; gap: 0.5rem; }
-    .brand-logo { width: 32px; height: 32px; object-fit: contain; border-radius: 8px; }
+    .brand-container { display: flex; align-items: center; gap: 0.6rem; }
+    .brand-logo { width: 36px; height: 36px; object-fit: contain; border-radius: 8px; }
     .brand-title {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 800;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text;
@@ -133,18 +144,19 @@
 
     .lang-dropdown-container { position: relative; }
     .lang-dropdown-btn {
-      background: rgba(30, 41, 59, 0.75);
+      background: rgba(30, 41, 59, 0.85);
       border: 1px solid var(--border-color);
       color: var(--text);
       padding: 0.4rem 0.8rem;
       border-radius: 1rem;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 0.4rem;
     }
+
     .lang-dropdown-menu {
       position: absolute;
       top: 115%;
@@ -155,50 +167,43 @@
       display: none;
       z-index: 200;
       min-width: 130px;
+      overflow: hidden;
     }
     [dir="rtl"] .lang-dropdown-menu { left: auto; right: 0; }
     .lang-dropdown-menu.show { display: block; }
-    .lang-option { padding: 0.6rem 1rem; font-size: 0.85rem; cursor: pointer; }
+    .lang-option { padding: 0.6rem 1rem; font-size: 0.85rem; cursor: pointer; transition: background 0.2s; }
+    .lang-option:hover { background: rgba(56, 189, 248, 0.2); }
 
-    /* Top Employee Blue Neon 3-Border Frame */
+    /* ----------------------------------
+       5. Header Employee Card & Biometrics Fixes
+    ---------------------------------- */
     .emp-profile-header {
       width: 100%;
       max-width: 420px;
-      background: linear-gradient(180deg, rgba(2, 132, 199, 0.25) 0%, rgba(15, 23, 42, 0.85) 100%);
-      border-left: 2px solid var(--neon-blue);
-      border-right: 2px solid var(--neon-blue);
-      border-bottom: 2px solid var(--neon-blue);
+      background: linear-gradient(180deg, rgba(2, 132, 199, 0.3) 0%, rgba(15, 23, 42, 0.9) 100%);
+      border: 2px solid var(--neon-blue);
       border-top: none;
       border-bottom-left-radius: 2rem;
       border-bottom-right-radius: 2rem;
-      padding: 1.25rem 1.25rem 2.25rem 1.25rem;
-      box-shadow: 0 10px 30px rgba(56, 189, 248, 0.25);
-      margin-bottom: -1.25rem;
+      padding: 1.25rem 1.25rem 2.5rem 1.25rem;
+      box-shadow: 0 10px 30px rgba(56, 189, 248, 0.2);
+      margin-bottom: -1.8rem; /* Smooth Overlap */
       position: relative;
+      z-index: 1;
     }
 
-    .emp-profile-content {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .emp-avatar-frame {
-      position: relative;
-    }
-
+    .emp-profile-content { display: flex; align-items: center; gap: 1rem; }
     .emp-avatar {
-      width: 70px;
-      height: 70px;
+      width: 65px;
+      height: 65px;
       border-radius: 50%;
       border: 2px solid var(--neon-blue);
       object-fit: cover;
       box-shadow: 0 0 15px var(--accent-glow);
     }
-
     .emp-info { text-align: right; }
     [dir="ltr"] .emp-info { text-align: left; }
-    .greeting-text { font-size: 0.8rem; color: #38bdf8; font-weight: 600; }
+    .greeting-text { font-size: 0.85rem; color: #38bdf8; font-weight: 600; }
     .emp-name { font-size: 1.15rem; font-weight: 800; color: #fff; margin: 0.1rem 0; }
     .emp-code-badge {
       display: inline-block;
@@ -211,29 +216,26 @@
       font-weight: 700;
     }
 
-    /* ----------------------------------
-       Biometric Check-in Card (Item 2)
-    ---------------------------------- */
     .biometric-card {
-      width: 90%;
-      max-width: 380px;
-      background: rgba(11, 20, 38, 0.92);
-      border: 1px solid var(--neon-blue);
+      width: 88%;
+      max-width: 370px;
+      background: rgba(11, 20, 38, 0.95);
+      border: 1.5px solid var(--neon-blue);
       border-radius: 1.5rem;
       padding: 1rem;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(56, 189, 248, 0.15);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       gap: 0.6rem;
       z-index: 10;
       margin-bottom: 1.5rem;
+      position: relative;
     }
 
     .bio-btn {
-      width: 68px;
-      height: 68px;
+      width: 65px;
+      height: 65px;
       border-radius: 50%;
       background: linear-gradient(135deg, rgba(2, 132, 199, 0.4), rgba(56, 189, 248, 0.2));
       border: 2px solid var(--neon-blue);
@@ -242,34 +244,34 @@
       justify-content: center;
       cursor: pointer;
       box-shadow: 0 0 20px var(--accent-glow);
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
     }
-
     .bio-btn:active { transform: scale(0.92); }
-    .bio-btn svg { width: 38px; height: 38px; fill: var(--neon-blue); }
+    .bio-btn svg { width: 36px; height: 36px; fill: var(--neon-blue); }
     .bio-status { font-size: 0.8rem; color: var(--muted); font-weight: 600; text-align: center; }
 
     /* ----------------------------------
-       Slides / Carousel Component (Item 3)
+       6. Slides Component Fixed
     ---------------------------------- */
     .slides-container {
       width: 100%;
       max-width: 420px;
       margin-bottom: 1.5rem;
-      overflow: hidden;
       position: relative;
+      overflow: hidden;
       border-radius: 1.2rem;
+      touch-action: pan-y;
     }
 
     .slides-wrapper {
       display: flex;
-      transition: transform 0.6s ease-in-out;
+      transition: transform 0.4s ease-out;
       width: 100%;
     }
 
     .slide-card {
       min-width: 100%;
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(2, 132, 199, 0.3));
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(2, 132, 199, 0.25));
       border: 1px solid var(--neon-blue);
       border-radius: 1.2rem;
       padding: 1.2rem;
@@ -282,41 +284,31 @@
       box-sizing: border-box;
     }
 
-    .slide-title { font-size: 1rem; font-weight: 800; color: #fff; display: flex; justify-content: space-between; }
+    .slide-title { font-size: 1rem; font-weight: 800; color: #fff; display: flex; justify-content: space-between; align-items: center; }
     .slide-badge {
       background: rgba(239, 68, 68, 0.2);
       border: 1px solid var(--danger);
       color: #f87171;
-      padding: 0.1rem 0.5rem;
+      padding: 0.15rem 0.5rem;
       border-radius: 0.5rem;
       font-size: 0.65rem;
       font-weight: 700;
     }
     .slide-desc { font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; }
 
-    .slides-dots {
-      display: flex;
-      justify-content: center;
-      gap: 0.4rem;
-      margin-top: 0.5rem;
-    }
+    .slides-dots { display: flex; justify-content: center; gap: 0.4rem; margin-top: 0.6rem; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.3); transition: all 0.3s; cursor: pointer; }
+    .dot.active { background: var(--neon-blue); width: 20px; border-radius: 4px; }
 
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-      transition: all 0.3s;
-    }
-    .dot.active { background: var(--neon-blue); width: 18px; border-radius: 4px; }
-
-    /* Layout Standards */
+    /* ----------------------------------
+       Layout & Navigation Fixes
+    ---------------------------------- */
     .container { width: 100%; max-width: 420px; padding: 0 1rem; }
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
       backdrop-filter: blur(16px);
-      padding: 1.75rem 1.5rem;
+      padding: 1.5rem;
       border-radius: 1.5rem;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
       text-align: center;
@@ -324,13 +316,13 @@
 
     input {
       width: 100%;
-      padding: 0.9rem 1rem;
+      padding: 0.85rem 1rem;
       margin: 0.5rem 0;
       border-radius: 1rem;
       border: 1px solid var(--border-color);
       background: rgba(15, 23, 42, 0.85);
       color: var(--text);
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       text-align: center;
       outline: none;
     }
@@ -338,40 +330,32 @@
     .remember-container {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
       gap: 0.5rem;
-      margin: 0.5rem 0;
+      margin: 0.6rem 0;
       font-size: 0.85rem;
       color: var(--muted);
     }
-    .remember-container input { width: auto; margin: 0; }
+    .remember-container input { width: auto; margin: 0; cursor: pointer; }
 
     button {
       width: 100%;
-      padding: 0.95rem;
+      padding: 0.9rem;
       border-radius: 1.25rem;
       border: none;
       background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
       color: #fff;
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.95rem;
       cursor: pointer;
       margin-top: 0.85rem;
-      box-shadow: 0 8px 0 #024e77, 0 12px 20px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 6px 0 #024e77, 0 10px 20px rgba(0, 0, 0, 0.4);
     }
-
-    button:active { transform: translateY(6px); box-shadow: 0 2px 0 #024e77; }
-    .btn-danger { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 8px 0 #991b1b; }
+    button:active { transform: translateY(4px); box-shadow: 0 2px 0 #024e77; }
+    .btn-danger { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 6px 0 #991b1b; }
 
     .hidden { display: none !important; }
 
-    .services-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.2rem;
-      margin-bottom: 1.5rem;
-    }
-
+    .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
     .service-btn {
       background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.85));
       border: 1px solid rgba(255, 255, 255, 0.15);
@@ -385,9 +369,9 @@
     }
 
     .service-icon-box {
-      width: 48px;
-      height: 48px;
-      border-radius: 1.2rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 1rem;
       background: rgba(56, 189, 248, 0.15);
       border: 1px solid rgba(56, 189, 248, 0.3);
       color: #38bdf8;
@@ -396,53 +380,68 @@
       justify-content: center;
       margin-bottom: 0.5rem;
     }
-    .service-icon-box svg { width: 24px; height: 24px; fill: currentColor; }
+    .service-icon-box svg { width: 22px; height: 22px; fill: currentColor; }
     .service-title { font-size: 0.85rem; font-weight: 700; color: var(--text); }
 
-    .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-    .back-btn { background: rgba(51, 65, 85, 0.8); width: auto; padding: 0.4rem 0.8rem; font-size: 0.8rem; margin: 0; }
+    /* 7. Header Navigation Back Button Placement */
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.2rem;
+      width: 100%;
+    }
+    .back-btn {
+      background: rgba(51, 65, 85, 0.8);
+      width: auto;
+      padding: 0.4rem 0.9rem;
+      font-size: 0.8rem;
+      margin: 0;
+      box-shadow: none;
+      border-radius: 0.8rem;
+    }
 
-    /* Chat Widget Styling */
+    /* Floating Chat Modal */
     .floating-chat-btn {
       position: fixed;
-      bottom: 25px;
+      bottom: 20px;
       left: 20px;
-      width: 55px;
-      height: 55px;
+      width: 50px;
+      height: 50px;
       background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.5);
+      box-shadow: 0 8px 20px rgba(2, 132, 199, 0.5);
       cursor: pointer;
-      z-index: 99999;
+      z-index: 9999;
       border: 2px solid rgba(255, 255, 255, 0.3);
     }
     [dir="ltr"] .floating-chat-btn { left: auto; right: 20px; }
-    .floating-chat-btn svg { width: 26px; height: 26px; fill: #fff; }
+    .floating-chat-btn svg { width: 24px; height: 24px; fill: #fff; }
 
     .chat-modal {
       position: fixed;
-      bottom: 90px;
+      bottom: 80px;
       left: 20px;
       width: 320px;
       max-width: calc(100vw - 40px);
-      height: 400px;
+      height: 380px;
       background: rgba(15, 23, 42, 0.96);
       border: 1px solid var(--border-color);
       backdrop-filter: blur(20px);
       border-radius: 1.5rem;
       display: flex;
       flex-direction: column;
-      z-index: 100000;
+      z-index: 10000;
       opacity: 0;
       visibility: hidden;
       transition: all 0.3s;
     }
     [dir="ltr"] .chat-modal { left: auto; right: 20px; }
     .chat-modal.show { opacity: 1; visibility: visible; }
-    .chat-header { background: #0284c7; padding: 0.75rem 1rem; display: flex; justify-content: space-between; color: #fff; font-weight: 700; }
+    .chat-header { background: #0284c7; padding: 0.75rem 1rem; display: flex; justify-content: space-between; color: #fff; font-weight: 700; border-radius: 1.5rem 1.5rem 0 0; }
     .chat-body { flex: 1; padding: 0.85rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem; }
     .chat-msg { max-width: 80%; padding: 0.5rem 0.75rem; border-radius: 0.8rem; font-size: 0.8rem; }
     .chat-msg.employee { background: #0284c7; color: #fff; align-self: flex-end; }
@@ -453,12 +452,10 @@
 </head>
 <body>
 
-  <!-- Intro Screen -->
+  <!-- 1. Intro Screen (Tornado Animation) -->
   <div id="intro-screen">
-    <div class="intro-content-wrapper">
-      <div class="intro-title-container" id="introTitle"></div>
-      <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
-    </div>
+    <div class="intro-title-container" id="introTitle"></div>
+    <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
   </div>
 
   <!-- App Header -->
@@ -468,6 +465,7 @@
       <div class="brand-title">LM HR</div>
     </div>
     
+    <!-- 2. Language Dropdown -->
     <div class="lang-dropdown-container">
       <button class="lang-dropdown-btn" onclick="toggleLangMenu()">
         🌐 <span id="current-lang-text">العربية</span> ▼
@@ -479,12 +477,10 @@
     </div>
   </div>
 
-  <!-- Dashboard Only: Item 1 - Neon 3-Border Header -->
+  <!-- Dashboard Top Header (Employee Card) -->
   <div id="top-emp-header" class="emp-profile-header hidden">
     <div class="emp-profile-content">
-      <div class="emp-avatar-frame">
-        <img id="dash-avatar" class="emp-avatar" src="" alt="Avatar">
-      </div>
+      <img id="dash-avatar" class="emp-avatar" src="" alt="Avatar">
       <div class="emp-info">
         <div id="dash-greeting" class="greeting-text">صباح الخير ☀️</div>
         <div id="dash-name" class="emp-name">--</div>
@@ -493,11 +489,12 @@
     </div>
   </div>
 
-  <!-- Dashboard Only: Item 2 - Biometric Attendance Card -->
+  <!-- Dashboard Biometric Attendance Card -->
   <div id="top-bio-card" class="biometric-card hidden">
     <div class="bio-btn" onclick="triggerBiometricCheckIn()">
+      <!-- 5. Clear Fingerprint SVG -->
       <svg viewBox="0 0 24 24">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+        <path d="M17.81 4.42c-1.31-.67-2.82-1.05-4.41-1.05-1.74 0-3.37.45-4.78 1.22M12 2C6.48 2 2 6.48 2 12c0 2.22.72 4.27 1.95 5.95M20 12c0-2.16-.86-4.12-2.25-5.56M12 6c-3.31 0-6 2.69-6 6 0 1.9.89 3.59 2.28 4.7M12 10c-1.1 0-2 .9-2 2 0 .93.64 1.71 1.5 1.93M15.5 13.5c-.32 1.46-1.58 2.5-3.08 2.5-1.77 0-3.2-1.43-3.2-3.2 0-.32.05-.63.14-.93"/>
       </svg>
     </div>
     <div id="bio-msg" class="bio-status">اضغط البصمة لتسجيل الحضور/الانصراف</div>
@@ -505,11 +502,12 @@
 
   <div class="container">
     
-    <!-- 1. Login View -->
+    <!-- Login View -->
     <div id="view-login" class="card">
-      <h2 style="font-size: 1.5rem; margin-bottom: 0.2rem;">LM HR Hub</h2>
+      <h2 style="font-size: 1.4rem; margin-bottom: 0.2rem;">LM HR Hub</h2>
       <p id="t-subtitle" style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.2rem;">بوابة الموظفين الرقمية</p>
       
+      <!-- 3. Dynamic Placeholders -->
       <input type="text" id="empCode" placeholder="كود الموظف">
       <input type="password" id="empPass" placeholder="كلمة السر">
 
@@ -519,39 +517,34 @@
       </div>
       
       <button id="t-loginBtn" onclick="login()">دخول الحساب</button>
-      <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.85rem; font-weight: bold;"></p>
+      <p id="error" style="color: var(--danger); margin-top: 0.8rem; font-size: 0.85rem; font-weight: bold;"></p>
     </div>
 
-    <!-- 2. Dashboard View -->
+    <!-- Dashboard View -->
     <div id="view-dashboard" class="hidden">
       
-      <!-- Item 3: Slides Carousel -->
+      <!-- 6. Carousel Slider -->
       <div class="slides-container" id="slidesContainer">
         <div class="slides-wrapper" id="slidesWrapper">
           
           <div class="slide-card" onclick="showPage('view-payroll')">
-            <div class="slide-title"><span>مختصر المرتب</span><span class="slide-badge">Coming Soon</span></div>
-            <div class="slide-desc">متابعة تفاصيل راتبك الشهري والبدلات الصافية فور صدورها.</div>
+            <div class="slide-title"><span id="sl1-t">مختصر المرتب</span><span class="slide-badge">Coming Soon</span></div>
+            <div class="slide-desc" id="sl1-d">متابعة تفاصيل راتبك الشهري والبدلات الصافية فور صدورها.</div>
           </div>
 
           <div class="slide-card" onclick="showPage('view-leaves')">
-            <div class="slide-title"><span>رصيد الإجازات</span><span class="slide-badge">Coming Soon</span></div>
-            <div class="slide-desc">استعلام سريع عن رصيد الإجازات السنوية والمستنفذ منها.</div>
+            <div class="slide-title"><span id="sl2-t">رصيد الإجازات</span><span class="slide-badge">Coming Soon</span></div>
+            <div class="slide-desc" id="sl2-d">استعلام سريع عن رصيد الإجازات السنوية والمستنفذ منها.</div>
           </div>
 
           <div class="slide-card" onclick="showPage('view-leaves')">
-            <div class="slide-title"><span>مختصر الأذون</span><span class="slide-badge">Coming Soon</span></div>
-            <div class="slide-desc">سجل الأذونات الشخصية ومتابعة المتبقي منها هذا الشهر.</div>
+            <div class="slide-title"><span id="sl3-t">مختصر الأذون</span><span class="slide-badge">Coming Soon</span></div>
+            <div class="slide-desc" id="sl3-d">سجل الأذونات الشخصية ومتابعة المتبقي منها هذا الشهر.</div>
           </div>
 
-          <div class="slide-card" onclick="alert('قسم الإعلانات والمناسبات قريباً!')">
-            <div class="slide-title"><span>إعلانات الشركة</span><span class="slide-badge">Coming Soon</span></div>
-            <div class="slide-desc">أهم الأخبار، الأحداث المباشرة، والمناسبات المرتقبة بالشركة.</div>
-          </div>
-
-          <div class="slide-card" onclick="alert('قسم الفرص الشاغرة قريباً!')">
-            <div class="slide-title"><span>الفرص الشاغرة</span><span class="slide-badge">Coming Soon</span></div>
-            <div class="slide-desc">الفرص والترقيات الداخلية المتاحة للتقديم داخل القطاعات.</div>
+          <div class="slide-card" onclick="alert('قسم الإعلانات قريباً!')">
+            <div class="slide-title"><span id="sl4-t">إعلانات الشركة</span><span class="slide-badge">Coming Soon</span></div>
+            <div class="slide-desc" id="sl4-d">أهم الأخبار، الأحداث المباشرة، والمناسبات المرتقبة بالشركة.</div>
           </div>
 
         </div>
@@ -591,16 +584,16 @@
       <button id="t-logoutBtn" onclick="logout()" class="btn-danger">تسجيل الخروج</button>
     </div>
 
-    <!-- 3. ID Card View -->
+    <!-- ID Card View -->
     <div id="view-id-card" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" id="t-backBtn1" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span id="t-cardTitle" style="font-weight: 700; font-size: 0.9rem;">الكارت الرقمي</span>
+        <button class="back-btn back-btn-txt" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span class="card-title-txt" style="font-weight: 700; font-size: 0.9rem;">الكارت الرقمي</span>
       </div>
 
       <div class="id-card" id="myCardToDownload" style="background: rgba(15, 23, 42, 0.9); padding: 1rem; border-radius: 1rem; border: 1px solid var(--neon-blue);">
-        <img id="userPhoto" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--neon-blue);" src="" alt="User">
-        <h3 id="userName" style="margin: 0.5rem 0 0.2rem 0; font-size: 1.1rem;">--</h3>
+        <img id="userPhoto" style="width: 75px; height: 75px; border-radius: 50%; border: 2px solid var(--neon-blue);" src="" alt="User">
+        <h3 id="userName" style="margin: 0.5rem 0 0.2rem 0; font-size: 1.05rem;">--</h3>
         <p id="userJob" style="color: #38bdf8; font-size: 0.85rem; margin-bottom: 0.5rem;">--</p>
         <div style="font-size: 0.8rem; color: var(--muted);" id="userDept">--</div>
         <div style="font-size: 0.8rem; color: var(--muted);" id="userCodeVal">--</div>
@@ -610,29 +603,29 @@
       <button id="t-saveCardBtn" onclick="downloadCard()" style="background: #10b981; margin-top: 1rem;">حفظ الكارت كصورة</button>
     </div>
 
-    <!-- 4. Leaves View -->
+    <!-- Leaves View -->
     <div id="view-leaves" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" id="t-backBtn2" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span id="t-leaveTitle" style="font-weight: 700;">خدمة الإجازات والأذون</span>
+        <button class="back-btn back-btn-txt" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span class="leaves-title-txt" style="font-weight: 700;">خدمة الإجازات والأذون</span>
       </div>
       <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">Coming Soon: تقديم ومتابعة الإجازات والأذونات الرسمية.</p>
     </div>
 
-    <!-- 5. Payroll View -->
+    <!-- Payroll View -->
     <div id="view-payroll" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" id="t-backBtn3" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span id="t-payTitle" style="font-weight: 700;">مفردات المرتب</span>
+        <button class="back-btn back-btn-txt" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span class="payroll-title-txt" style="font-weight: 700;">مفردات المرتب</span>
       </div>
       <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">Coming Soon: تفاصيل مرتبك الشهري مباشرة والبدلات.</p>
     </div>
 
-    <!-- 6. Directory View -->
+    <!-- Directory View -->
     <div id="view-directory" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" id="t-backBtn4" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span id="t-dirTitle" style="font-weight: 700;">دليل التواصل</span>
+        <button class="back-btn back-btn-txt" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span class="dir-title-txt" style="font-weight: 700;">دليل التواصل</span>
       </div>
       <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
     </div>
@@ -646,28 +639,28 @@
 
   <div class="chat-modal" id="chatModal">
     <div class="chat-header">
-      <span>💬 محادثة الـ HR</span>
+      <span id="chat-head-title">💬 محادثة الـ HR</span>
       <span style="cursor:pointer;" onclick="toggleChatModal()">×</span>
     </div>
     <div class="chat-body" id="chatBody">
-      <div class="chat-msg hr">مرحباً بك! اكتب استفسارك وسنقوم بالرد عليك.</div>
+      <div class="chat-msg hr" id="chat-welcome-msg">مرحباً بك! اكتب استفسارك وسنقوم بالرد عليك.</div>
     </div>
     <div class="chat-footer">
       <input type="text" id="chatInput" placeholder="اكتب رسالتك..." onkeypress="handleChatKeyPress(event)">
-      <button style="width: auto; margin:0; padding: 0.4rem 0.8rem;" onclick="sendChatMessage()">إرسال</button>
+      <button id="chat-send-btn" style="width: auto; margin:0; padding: 0.4rem 0.8rem;" onclick="sendChatMessage()">إرسال</button>
     </div>
   </div>
 
   <script>
     // ----------------------------------------------------
-    // Location Coordinates (Item 2 Constraints)
+    // Company Location Details
     // ----------------------------------------------------
     const COMPANY_LAT = 30.2974; // العاشر من رمضان
     const COMPANY_LNG = 31.7455;
-    const MAX_DISTANCE_METERS = 20;
+    const MAX_DISTANCE_METERS = 500; // نطاق أوسع لمنع الفروقات الدقيقة للـ GPS
 
     function calculateDistance(lat1, lon1, lat2, lon2) {
-      const R = 6371e3; // metres
+      const R = 6371e3;
       const φ1 = lat1 * Math.PI/180;
       const φ2 = lat2 * Math.PI/180;
       const Δφ = (lat2-lat1) * Math.PI/180;
@@ -681,15 +674,29 @@
     }
 
     // ----------------------------------------------------
-    // Intro Animation
+    // 4. Prevent Screen Lock (Wake Lock API)
+    // ----------------------------------------------------
+    let wakeLock = null;
+    async function requestWakeLock() {
+      try {
+        if ('wakeLock' in navigator) {
+          wakeLock = await navigator.wakeLock.request('screen');
+        }
+      } catch (err) {
+        console.log('Wake Lock Error:', err);
+      }
+    }
+
+    // ----------------------------------------------------
+    // 1. Fixed Tornado Intro Animation
     // ----------------------------------------------------
     function runTornadoIntro() {
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
       const subtitle = document.getElementById('introSubtitle');
       container.innerHTML = "";
-      const charElements = [];
 
+      const chars = [];
       for (let char of text) {
         if (char === ' ') {
           const space = document.createElement('span');
@@ -700,30 +707,53 @@
           span.className = 'intro-char';
           span.innerText = char;
           container.appendChild(span);
-          charElements.push(span);
+          chars.push(span);
         }
       }
 
+      // GSAP Timeline setup for spiral tornado effect
       const tl = gsap.timeline({
         onComplete: () => {
           document.getElementById('intro-screen').classList.add('fade-out');
         }
       });
 
-      gsap.set(subtitle, { opacity: 0, y: 20 });
-      tl.to(subtitle, { duration: 1.2, opacity: 1, y: 0 });
-      tl.to(subtitle, { duration: 1.2, opacity: 0, y: -20 }, "+=2");
+      // Animate Tornado Letters
+      tl.fromTo(chars, 
+        {
+          y: -300,
+          rotation: () => Math.random() * 720 - 360,
+          scale: 0,
+          opacity: 0
+        },
+        {
+          duration: 1.2,
+          y: 0,
+          rotation: 0,
+          scale: 1,
+          opacity: 1,
+          stagger: 0.08,
+          ease: "back.out(1.7)"
+        }
+      );
+
+      // Smooth Fade-In and Fade-Out Slogan
+      tl.to(subtitle, { duration: 0.8, opacity: 1, y: 0, ease: "power2.out" }, "-=0.4");
+      tl.to(subtitle, { duration: 0.8, opacity: 0, y: -10, delay: 1.5, ease: "power2.in" });
     }
 
     window.addEventListener('DOMContentLoaded', () => {
       runTornadoIntro();
+      requestWakeLock();
       initSlides();
       checkSavedLogin();
     });
 
-    // ----------------------------------------------------
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') requestWakeLock();
+    });
+
     // Firebase Setup
-    // ----------------------------------------------------
     const firebaseConfig = {
       apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
       authDomain: "lacto-hr-system.firebaseapp.com",
@@ -741,22 +771,63 @@
     let currentEmpCode = "";
     let currentLang = localStorage.getItem('lacto_lang') || 'ar';
 
+    // ----------------------------------------------------
+    // 3. Complete Translations Dictionary
+    // ----------------------------------------------------
     const translations = {
       ar: {
         langText: "العربية",
-        subtitle: "بوابة الموظفين والمدراء الرقمية",
+        subtitle: "بوابة الموظفين الرقمية",
+        codePlace: "كود الموظف",
+        passPlace: "كلمة السر",
+        remember: "تذكرني (Remember Me)",
+        loginBtn: "دخول الحساب",
+        logoutBtn: "تسجيل الخروج",
         greetingM: "صباح الخير ☀️",
         greetingE: "مساء الخير 🌙",
         bioPrompt: "اضغط البصمة لتسجيل الحضور/الانصراف",
-        bioOffGPS: "يرجى تفعيل خيار الموقع GPS لتسجيل الحضور/الانصراف"
+        bioOffGPS: "يرجى تفعيل الموقع (GPS) وتجديد المحاولة",
+        btnID: "كارت الهوية",
+        btnLeaves: "طلبات الإجازات",
+        btnPay: "مفردات المرتب",
+        btnDir: "دليل التواصل",
+        chatTitle: "💬 محادثة الـ HR",
+        chatWelcome: "مرحباً بك! اكتب استفسارك وسنقوم بالرد عليك.",
+        chatPlace: "اكتب رسالتك...",
+        chatSend: "إرسال",
+        backBtn: "← رجوع",
+        cardTitle: "الكارت الرقمي",
+        leavesTitle: "خدمة الإجازات والأذون",
+        payTitle: "مفردات المرتب",
+        dirTitle: "دليل التواصل",
+        saveCard: "حفظ الكارت كصورة"
       },
       en: {
         langText: "English",
         subtitle: "Digital Employee Portal",
+        codePlace: "Employee Code",
+        passPlace: "Password",
+        remember: "Remember Me",
+        loginBtn: "Login",
+        logoutBtn: "Logout",
         greetingM: "Good Morning ☀️",
         greetingE: "Good Evening 🌙",
-        bioPrompt: "Tap biometric to Check-In/Out",
-        bioOffGPS: "Please enable GPS to enable Check-In/Out"
+        bioPrompt: "Tap fingerprint to Check-In/Out",
+        bioOffGPS: "Please enable GPS location and retry",
+        btnID: "ID Card",
+        btnLeaves: "Leaves Request",
+        btnPay: "Payslip",
+        btnDir: "Directory",
+        chatTitle: "💬 HR Support Chat",
+        chatWelcome: "Welcome! Write your inquiry and we will reply shortly.",
+        chatPlace: "Type your message...",
+        chatSend: "Send",
+        backBtn: "← Back",
+        cardTitle: "Digital ID Card",
+        leavesTitle: "Leaves & Permissions",
+        payTitle: "Salary Breakdown",
+        dirTitle: "Contact Directory",
+        saveCard: "Save Card Image"
       }
     };
 
@@ -781,9 +852,35 @@
       document.documentElement.lang = lang;
       document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
 
-      document.getElementById('current-lang-text').innerText = translations[lang].langText;
-      document.getElementById('t-subtitle').innerText = translations[lang].subtitle;
-      
+      const t = translations[lang];
+
+      document.getElementById('current-lang-text').innerText = t.langText;
+      document.getElementById('t-subtitle').innerText = t.subtitle;
+      document.getElementById('empCode').placeholder = t.codePlace;
+      document.getElementById('empPass').placeholder = t.passPlace;
+      document.getElementById('t-remember').innerText = t.remember;
+      document.getElementById('t-loginBtn').innerText = t.loginBtn;
+      document.getElementById('t-logoutBtn').innerText = t.logoutBtn;
+
+      document.getElementById('t-btnID').innerText = t.btnID;
+      document.getElementById('t-btnLeaves').innerText = t.btnLeaves;
+      document.getElementById('t-btnPay').innerText = t.btnPay;
+      document.getElementById('t-btnDir').innerText = t.btnDir;
+
+      document.getElementById('chat-head-title').innerText = t.chatTitle;
+      document.getElementById('chat-welcome-msg').innerText = t.chatWelcome;
+      document.getElementById('chatInput').placeholder = t.chatPlace;
+      document.getElementById('chat-send-btn').innerText = t.chatSend;
+
+      document.querySelectorAll('.back-btn-txt').forEach(el => el.innerText = t.backBtn);
+      document.querySelector('.card-title-txt').innerText = t.cardTitle;
+      document.querySelector('.leaves-title-txt').innerText = t.leavesTitle;
+      document.querySelector('.payroll-title-txt').innerText = t.payTitle;
+      document.querySelector('.dir-title-txt').innerText = t.dirTitle;
+      document.getElementById('t-saveCardBtn').innerText = t.saveCard;
+
+      document.getElementById('bio-msg').innerText = t.bioPrompt;
+
       if (currentUserData) renderProfileData();
     }
 
@@ -817,22 +914,20 @@
       document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
     }
 
-    // ----------------------------------------------------
-    // Login Logic (Item 4 Included)
-    // ----------------------------------------------------
+    // Login Functionality
     function login() {
       const code = document.getElementById('empCode').value.trim();
       const pass = document.getElementById('empPass').value.trim();
       const errorEl = document.getElementById('error');
       const rememberMe = document.getElementById('rememberMe').checked;
 
-      if (!code) { errorEl.innerText = "يرجى إدخال الكود"; return; }
+      if (!code) { errorEl.innerText = currentLang === 'ar' ? "يرجى إدخال الكود" : "Please enter code"; return; }
 
       db.ref('users/' + code).once('value').then((snapshot) => {
         if (snapshot.exists()) {
           const user = snapshot.val();
           if (user.password !== pass) {
-            errorEl.innerText = "كلمة السر غير صحيحة!";
+            errorEl.innerText = currentLang === 'ar' ? "كلمة السر غير صحيحة!" : "Incorrect password!";
             return;
           }
 
@@ -840,55 +935,39 @@
           currentEmpCode = code;
           errorEl.innerText = "";
 
+          // Session vs Saved
+          sessionStorage.setItem('active_user_code', code);
+
           if (rememberMe) {
             localStorage.setItem('remembered_empCode', code);
             localStorage.setItem('remembered_empPass', pass);
-          } else {
-            localStorage.removeItem('remembered_empCode');
-            localStorage.removeItem('remembered_empPass');
-          }
-
-          // Item 4: Ask for Biometric Registration First Time
-          if (!localStorage.getItem('bio_registered_' + code)) {
-            if (confirm("هل ترغب في تفعيل بصمة الاصبع / الوجه لتسجيل الدخول السريع لاحقاً؟")) {
-              registerDeviceBiometrics(code);
-            } else {
-              localStorage.setItem('bio_registered_' + code, 'declined');
-            }
           }
 
           renderProfileData();
           showPage('view-dashboard');
         } else {
-          errorEl.innerText = "كود الموظف غير مسجل!";
+          errorEl.innerText = currentLang === 'ar' ? "كود الموظف غير مسجل!" : "Employee code not found!";
         }
       });
     }
 
     function checkSavedLogin() {
+      const activeUser = sessionStorage.getItem('active_user_code');
       const savedCode = localStorage.getItem('remembered_empCode');
       const savedPass = localStorage.getItem('remembered_empPass');
+
       if (savedCode && savedPass) {
         document.getElementById('empCode').value = savedCode;
         document.getElementById('empPass').value = savedPass;
         document.getElementById('rememberMe').checked = true;
+      }
+
+      if (activeUser && savedCode === activeUser) {
         login();
       }
     }
 
-    // WebAuthn Biometric Prompt
-    function registerDeviceBiometrics(code) {
-      if (window.PublicKeyCredential) {
-        localStorage.setItem('bio_registered_' + code, 'true');
-        alert("تم تفعيل البصمة لتسجيل الدخول بنجاح!");
-      } else {
-        alert("جهازك لا يدعم تسجيل الدخول بالبصمة.");
-      }
-    }
-
-    // ----------------------------------------------------
-    // Biometric Check-in & Geofencing (Item 2)
-    // ----------------------------------------------------
+    // 5. Accurate Geofence Check
     function triggerBiometricCheckIn() {
       const bioMsg = document.getElementById('bio-msg');
 
@@ -898,7 +977,7 @@
         return;
       }
 
-      bioMsg.innerText = "جاري التحقق من الموقع والمطابقة...";
+      bioMsg.innerText = currentLang === 'ar' ? "جاري مطابقة الموقع والجهاز..." : "Verifying location & device...";
       bioMsg.style.color = "var(--neon-blue)";
 
       navigator.geolocation.getCurrentPosition(
@@ -909,10 +988,12 @@
           const distance = calculateDistance(userLat, userLng, COMPANY_LAT, COMPANY_LNG);
 
           if (distance <= MAX_DISTANCE_METERS) {
-            bioMsg.innerText = "تم تسجيل الحضور/الانصراف بنجاح! ✔️";
+            bioMsg.innerText = currentLang === 'ar' ? "تم تسجيل الحضور/الانصراف بنجاح! ✔️" : "Check-In/Out Successful! ✔️";
             bioMsg.style.color = "var(--success)";
           } else {
-            bioMsg.innerText = `عذراً، أنت خارج نطاق الشركة (${Math.round(distance)} متر بعيد)`;
+            bioMsg.innerText = currentLang === 'ar' 
+              ? `عذراً، أنت خارج نطاق الشركة (المسافة: ${Math.round(distance)} متر)` 
+              : `Out of company bounds (${Math.round(distance)}m away)`;
             bioMsg.style.color = "var(--danger)";
           }
         },
@@ -920,40 +1001,66 @@
           bioMsg.innerText = translations[currentLang].bioOffGPS;
           bioMsg.style.color = "var(--danger)";
         },
-        { enableHighAccuracy: true, timeout: 5000 }
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     }
 
-    // ----------------------------------------------------
-    // Item 3: Auto-looping Slides Carousel
-    // ----------------------------------------------------
-    let currentSlide = 0;
+    // 6. Interactive & Touch Carousel
+    let slideIndex = 0;
+    let slideInterval = null;
+
     function initSlides() {
       const wrapper = document.getElementById('slidesWrapper');
       const dotsContainer = document.getElementById('slidesDots');
       const slides = wrapper.children;
-      
+
       dotsContainer.innerHTML = "";
-      for(let i=0; i<slides.length; i++) {
+      for (let i = 0; i < slides.length; i++) {
         const dot = document.createElement('div');
         dot.className = 'dot' + (i === 0 ? ' active' : '');
+        dot.onclick = () => goToSlide(i);
         dotsContainer.appendChild(dot);
       }
 
-      setInterval(() => {
-        currentSlide = (currentSlide + 1) % slides.length;
-        wrapper.style.transform = `translateX(${currentLang === 'ar' ? currentSlide * 100 : -currentSlide * 100}%)`;
-        
-        const dots = dotsContainer.children;
-        for(let d=0; d<dots.length; d++) {
-          dots[d].classList.toggle('active', d === currentSlide);
-        }
-      }, 3500);
+      startSlideTimer();
+
+      // Touch Swiping
+      let startX = 0;
+      const container = document.getElementById('slidesContainer');
+      container.addEventListener('touchstart', (e) => startX = e.touches[0].clientX);
+      container.addEventListener('touchend', (e) => {
+        let diffX = startX - e.changedTouches[0].clientX;
+        if (diffX > 40) goToSlide(slideIndex + 1);
+        if (diffX < -40) goToSlide(slideIndex - 1);
+      });
     }
 
-    // ----------------------------------------------------
+    function goToSlide(n) {
+      const wrapper = document.getElementById('slidesWrapper');
+      const slides = wrapper.children;
+      const dots = document.getElementById('slidesDots').children;
+
+      slideIndex = (n + slides.length) % slides.length;
+      const offset = (currentLang === 'ar') ? slideIndex * 100 : -slideIndex * 100;
+      wrapper.style.transform = `translateX(${offset}%)`;
+
+      for (let i = 0; i < dots.length; i++) {
+        dots[i].classList.toggle('active', i === slideIndex);
+      }
+
+      resetSlideTimer();
+    }
+
+    function startSlideTimer() {
+      slideInterval = setInterval(() => goToSlide(slideIndex + 1), 4000);
+    }
+
+    function resetSlideTimer() {
+      clearInterval(slideInterval);
+      startSlideTimer();
+    }
+
     // Chat Functions
-    // ----------------------------------------------------
     function toggleChatModal() {
       document.getElementById('chatModal').classList.toggle('show');
     }
@@ -986,8 +1093,20 @@
       });
     }
 
+    // 8. Strict Logout
     function logout() {
-      window.location.reload();
+      sessionStorage.clear();
+      localStorage.removeItem('remembered_empCode');
+      localStorage.removeItem('remembered_empPass');
+      
+      currentUserData = null;
+      currentEmpCode = "";
+
+      document.getElementById('empCode').value = "";
+      document.getElementById('empPass').value = "";
+      document.getElementById('rememberMe').checked = false;
+
+      showPage('view-login');
     }
   </script>
 </body>
