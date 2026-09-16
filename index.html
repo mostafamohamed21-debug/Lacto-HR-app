@@ -61,9 +61,7 @@
       overflow-x: hidden;
     }
 
-    /* ----------------------------------
-       1. Optimized Intro Animation
-    ---------------------------------- */
+    /* Intro Tornado Animation (1s Duration) */
     #intro-screen {
       position: fixed;
       inset: 0;
@@ -92,7 +90,7 @@
 
     .intro-char {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: clamp(1.6rem, 5.2vw, 2.3rem); /* حجم متوازن لا صغير ولا كبير */
+      font-size: clamp(1.6rem, 5.2vw, 2.3rem);
       font-weight: 800;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text;
@@ -108,7 +106,7 @@
 
     .intro-subtitle {
       font-family: 'Great Vibes', cursive;
-      font-size: clamp(1.4rem, 4vw, 1.9rem); /* الـ Slogan بحجم مريح وشيك */
+      font-size: clamp(1.4rem, 4vw, 1.9rem);
       color: #38bdf8;
       text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
       opacity: 0;
@@ -117,9 +115,7 @@
       padding: 0 1rem;
     }
 
-    /* ----------------------------------
-       2. Clean Header & Language Selector
-    ---------------------------------- */
+    /* Header */
     .app-header {
       width: 100%;
       max-width: 420px;
@@ -141,10 +137,7 @@
       -webkit-text-fill-color: transparent;
     }
 
-    .lang-dropdown-container {
-      position: relative;
-      display: inline-block;
-    }
+    .lang-dropdown-container { position: relative; display: inline-block; }
 
     .lang-dropdown-btn {
       background: rgba(30, 41, 59, 0.85);
@@ -159,8 +152,6 @@
       align-items: center;
       gap: 0.3rem;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      width: auto;
-      margin: 0;
     }
 
     .lang-dropdown-menu {
@@ -181,9 +172,7 @@
     .lang-option { padding: 0.5rem 0.8rem; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; }
     .lang-option:hover { background: rgba(56, 189, 248, 0.2); }
 
-    /* ----------------------------------
-       3. Password Input Eye Switch
-    ---------------------------------- */
+    /* Password Input Eye Switch */
     .password-wrapper {
       position: relative;
       width: 100%;
@@ -220,14 +209,11 @@
       z-index: 10;
       margin: 0;
       padding: 0;
-      touch-action: manipulation;
     }
     [dir="rtl"] .toggle-eye-btn { left: auto; right: 0.5rem; }
     .toggle-eye-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; pointer-events: none; }
 
-    /* ----------------------------------
-       4. Real Fingerprint Design & Card
-    ---------------------------------- */
+    /* Profile Header & Real Fingerprint Icon */
     .emp-profile-header {
       width: 100%;
       max-width: 420px;
@@ -284,24 +270,25 @@
       position: relative;
     }
 
+    /* Fixed Fingerprint Button Styling matching user reference image */
     .bio-btn {
-      width: 75px;
-      height: 75px;
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
-      background: linear-gradient(135deg, rgba(2, 132, 199, 0.25), rgba(56, 189, 248, 0.1));
-      border: 2px solid var(--neon-blue);
+      background: linear-gradient(145deg, #0f172a, #1e293b);
+      border: 2.5px solid var(--neon-blue);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 0 25px var(--accent-glow);
+      box-shadow: 0 0 20px var(--accent-glow), inset 0 0 10px rgba(56, 189, 248, 0.3);
       transition: all 0.2s ease;
     }
     .bio-btn:active { transform: scale(0.92); }
-    .bio-btn svg { width: 44px; height: 44px; fill: none; stroke: var(--neon-blue); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .bio-btn svg { width: 40px; height: 40px; fill: none; stroke: var(--neon-blue); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
     .bio-status { font-size: 0.82rem; color: var(--muted); font-weight: 600; text-align: center; }
 
-    /* App General Layout */
+    /* Interactive Slides Carousel */
     .slides-container {
       width: 100%;
       max-width: 420px;
@@ -309,6 +296,7 @@
       position: relative;
       overflow: hidden;
       border-radius: 1.2rem;
+      touch-action: pan-y;
     }
 
     .slides-wrapper { display: flex; transition: transform 0.4s ease-out; width: 100%; }
@@ -469,7 +457,7 @@
 </head>
 <body>
 
-  <!-- Intro Screen -->
+  <!-- Intro Screen (Tornado Animation - exactly 1 second) -->
   <div id="intro-screen">
     <div class="intro-title-container" id="introTitle"></div>
     <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
@@ -508,15 +496,13 @@
   <!-- Real Fingerprint Biometric Check-In Card -->
   <div id="top-bio-card" class="biometric-card hidden">
     <div class="bio-btn" onclick="triggerBiometricCheckIn()">
-      <!-- Real Fingerprint SVG Icon -->
+      <!-- Updated Precise Fingerprint SVG Icon -->
       <svg viewBox="0 0 24 24">
-        <path d="M12 2A10 10 0 0 0 2 12c0 2.22.72 4.27 1.93 5.93"/>
-        <path d="M7 12a5 5 0 0 1 10 0"/>
-        <path d="M9 12a3 3 0 0 1 6 0"/>
-        <path d="M12 12v3"/>
-        <path d="M12 18v2"/>
-        <path d="M5.5 16.5A8 8 0 0 1 4 12a8 8 0 0 1 16 0 8 8 0 0 1-1.5 4.5"/>
-        <path d="M8.5 19.5A7 7 0 0 0 12 20a7 7 0 0 0 3.5-.5"/>
+        <path d="M12 2a10 10 0 0 0-7.5 16.5"/>
+        <path d="M12 5a7 7 0 0 1 5.25 11.6"/>
+        <path d="M12 8a4 4 0 0 0-3 6.6"/>
+        <path d="M12 11v6"/>
+        <path d="M9 18h6"/>
       </svg>
     </div>
     <div id="bio-msg" class="bio-status">اضغط البصمة لتسجيل الحضور/الانصراف</div>
@@ -554,7 +540,7 @@
     <!-- Dashboard View -->
     <div id="view-dashboard" class="hidden">
       
-      <!-- Slides Carousel -->
+      <!-- Interactive Slides Carousel (Auto Looping + Manual Swipe + Click) -->
       <div class="slides-container" id="slidesContainer">
         <div class="slides-wrapper" id="slidesWrapper">
           
@@ -683,7 +669,7 @@
   </div>
 
   <script>
-    // إحداثيات مصنع لاكتو مصر بمدينة العاشر من رمضان بالدقة المتناهية
+    // إحداثيات مصنع لاكتو مصر بمدينة العاشر من رمضان
     const COMPANY_LAT = 30.2974;
     const COMPANY_LNG = 31.7455;
     const MAX_DISTANCE_METERS = 500;
@@ -702,7 +688,30 @@
       return R * c;
     }
 
-    // 1. Enhanced Intro Animation: Sequential Drop & 3D Spin
+    // Wake Lock API Management (منع إيقاف الشاشة وإعادتها لوضعها الطبيعي عند الخروج)
+    let wakeLock = null;
+    async function requestWakeLock() {
+      try {
+        if ('wakeLock' in navigator) {
+          wakeLock = await navigator.wakeLock.request('screen');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function releaseWakeLock() {
+      if (wakeLock !== null) {
+        try {
+          await wakeLock.release();
+          wakeLock = null;
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    }
+
+    // 1. Tornado / Whirlwind Intro Animation (Exactly 1 second)
     function runTornadoIntro() {
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
@@ -727,50 +736,55 @@
       const tl = gsap.timeline({
         onComplete: () => {
           gsap.to('#intro-screen', {
-            duration: 0.8,
+            duration: 0.3,
             opacity: 0,
             visibility: 'hidden',
-            delay: 1.0,
             ease: "power2.inOut"
           });
         }
       });
 
-      // تنزل الحروف بالتسلسل الشيك مع دوران كامل وتنسيق في سطر واحد
+      // حركة دوامية سريعة ومنضبطة تستغرق ثانية واحدة إجمالاً
       chars.forEach((char, index) => {
         tl.fromTo(char, 
           {
-            y: -250,
-            rotationY: 360,
-            rotationX: 180,
-            scale: 0.2,
-            opacity: 0
+            rotation: 360,
+            scale: 0.1,
+            opacity: 0,
+            y: -50
           },
           {
-            duration: 1.2,
-            y: 0,
-            rotationY: 0,
-            rotationX: 0,
+            duration: 0.7,
+            rotation: 0,
             scale: 1,
             opacity: 1,
-            ease: "back.out(1.5)"
+            y: 0,
+            ease: "back.out(1.7)"
           },
-          index * 0.08
+          index * 0.03
         );
       });
 
       tl.to(subtitle, { 
-        duration: 0.9, 
+        duration: 0.4, 
         opacity: 1, 
         y: 0, 
         ease: "power2.out" 
-      }, "-=0.6");
+      }, "-=0.4");
     }
 
     window.addEventListener('DOMContentLoaded', () => {
       runTornadoIntro();
       checkSavedLogin();
       checkDeviceBiometricSupport();
+      initSlides();
+      requestWakeLock(); // تفعيل منع قفل الشاشة عند فتح التطبيق
+    });
+
+    document.addEventListener('visibilitychange', async () => {
+      if (document.visibilityState === 'visible' && sessionStorage.getItem('active_user_code')) {
+        await requestWakeLock();
+      }
     });
 
     function togglePasswordVisibility(e) {
@@ -949,7 +963,6 @@
       document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
     }
 
-    // 2. Hardware Device Biometric Integration (WebAuthn / Fingerprint Authentication)
     function checkDeviceBiometricSupport() {
       if (window.PublicKeyCredential && localStorage.getItem('biometrics_enabled_code')) {
         document.getElementById('t-bioLoginBtn').classList.remove('hidden');
@@ -965,12 +978,9 @@
         return;
       }
 
-      // طلب المصادقة ببصمة الوجه أو الاصبع الخاصة بالهاتف
-      if (window.PublicKeyCredential) {
-        document.getElementById('empCode').value = savedCode;
-        document.getElementById('empPass').value = savedPass;
-        login(true);
-      }
+      document.getElementById('empCode').value = savedCode;
+      document.getElementById('empPass').value = savedPass;
+      login(true);
     }
 
     function login(isBiometric = false) {
@@ -994,6 +1004,7 @@
           errorEl.innerText = "";
 
           sessionStorage.setItem('active_user_code', code);
+          requestWakeLock();
 
           if (rememberMe || isBiometric) {
             localStorage.setItem('remembered_empCode', code);
@@ -1025,7 +1036,6 @@
       }
     }
 
-    // 3. Ultra High Accuracy Geo-Location Check-In
     function triggerBiometricCheckIn() {
       const bioMsg = document.getElementById('bio-msg');
 
@@ -1038,31 +1048,23 @@
       bioMsg.innerText = currentLang === 'ar' ? "جاري قراءة موقع الجهاز بدقة..." : "Reading precise GPS location...";
       bioMsg.style.color = "var(--neon-blue)";
 
-      // طلب أقصى دقة من مستشعر الهاتف بدون كتابة موقع أو خطوط طول
-      const geoOptions = {
-        enableHighAccuracy: true,
-        timeout: 12000,
-        maximumAge: 0
-      };
+      const geoOptions = { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 };
 
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
-
-          const distance = calculateDistance(userLat, userLng, COMPANY_LAT, COMPANY_LNG);
+          const distance = calculateDistance(position.coords.latitude, position.coords.longitude, COMPANY_LAT, COMPANY_LNG);
 
           if (distance <= MAX_DISTANCE_METERS) {
             bioMsg.innerText = currentLang === 'ar' ? "تم تسجيل الحضور/الانصراف بنجاح! ✔️" : "Check-In/Out Successful! ✔️";
             bioMsg.style.color = "var(--success)";
           } else {
             bioMsg.innerText = currentLang === 'ar' 
-              ? `عذراً، أنت خارج نطاق الشركة (المسافة: ${Math.round(distance)} متر)` 
+              ? `عذراً، أنت خارج نطاق الشركة (${Math.round(distance)} متر)` 
               : `Out of company bounds (${Math.round(distance)}m away)`;
             bioMsg.style.color = "var(--danger)";
           }
         },
-        (error) => {
+        () => {
           bioMsg.innerText = translations[currentLang].bioOffGPS;
           bioMsg.style.color = "var(--danger)";
         },
@@ -1070,10 +1072,13 @@
       );
     }
 
+    // 4. Interactive Slides Carousel (Auto Looping + Manual Swipe + Click)
     let slideIndex = 0;
     let slideInterval = null;
+    let startX = 0;
 
     function initSlides() {
+      const container = document.getElementById('slidesContainer');
       const wrapper = document.getElementById('slidesWrapper');
       const dotsContainer = document.getElementById('slidesDots');
       const slides = wrapper.children;
@@ -1087,6 +1092,18 @@
       }
 
       startSlideTimer();
+
+      // دعم السحب اليدوي (Manual Swipe)
+      container.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; clearInterval(slideInterval); });
+      container.addEventListener('touchend', (e) => {
+        const diff = startX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) {
+          if (diff > 0) goToSlide(slideIndex + 1);
+          else goToSlide(slideIndex - 1);
+        } else {
+          startSlideTimer();
+        }
+      });
     }
 
     function goToSlide(n) {
@@ -1137,6 +1154,7 @@
     }
 
     function logout() {
+      releaseWakeLock(); // إعادة الموبايل لوضعه الطبيعي وقفل الـ Wake Lock فور الخروج
       sessionStorage.clear();
       localStorage.removeItem('remembered_empCode');
       localStorage.removeItem('remembered_empPass');
