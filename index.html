@@ -1226,33 +1226,17 @@
           });
 
           // الاستماع للرسائل باستخدام كود الموظف
-         function listenToChatMessages(empCode) {
-  if (!empCode) return;
-  const chatBody = document.getElementById('chatBody');
-  
-  // إيقاف المستمع القديم
-  db.ref('chats/' + empCode).off();
-  
-  // إعادة وضع رسالة الترحيب المظبوطة حسب اللغة الحالية
-  const t = translations[currentLang];
-  chatBody.innerHTML = `<div class="chat-msg hr" id="t-welcomeChat">${t.welcomeChat}</div>`;
+          listenToChatMessages(code);
 
-  // الاستماع للرسائل الجديدة فقط
-  db.ref('chats/' + empCode).on('child_added', (snapshot) => {
-    const msg = snapshot.val();
-    if (!msg) return;
-
-    const messageContent = (typeof msg === 'string') ? msg : (msg.text || msg.message || '');
-    if (!messageContent) return;
-
-    const msgDiv = document.createElement('div');
-    msgDiv.className = 'chat-msg ' + (msg.isAdmin ? 'hr' : 'employee');
-    msgDiv.innerText = messageContent;
-
-    chatBody.appendChild(msgDiv);
-    chatBody.scrollTop = chatBody.scrollHeight;
-  });
-}
+          showPage('view-dashboard');
+        } else {
+          errorEl.innerText = (currentLang === 'en') ? "Employee code not found!" : "كود الموظف غير مسجل!";
+        }
+      }).catch((err) => {
+        console.error(err);
+        errorEl.innerText = (currentLang === 'en') ? "Connection Error!" : "حدث خطأ في الاتصال!";
+      });
+    }
 
     function downloadCard() {
       html2canvas(document.getElementById('myCardToDownload'), { useCORS: true, scale: 2 }).then(canvas => {
