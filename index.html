@@ -18,10 +18,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  
-  <!-- Swiper JS & CSS for Smooth Carousel -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
   <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -33,10 +29,11 @@
     :root {
       --bg: #0b0f19;
       --card-bg: rgba(15, 23, 42, 0.75);
-      --border-color: rgba(255, 255, 255, 0.18);
+      --border-color: rgba(56, 189, 248, 0.3);
       --text: #f8fafc;
       --accent: #0284c7;
-      --accent-glow: rgba(56, 189, 248, 0.4);
+      --accent-glow: rgba(56, 189, 248, 0.5);
+      --neon-blue: #38bdf8;
       --danger: #ef4444;
       --success: #10b981;
       --muted: #cbd5e1;
@@ -51,7 +48,7 @@
     }
 
     body {
-      background: linear-gradient(rgba(11, 15, 25, 0.75), rgba(11, 15, 25, 0.85)), url('background.jpg');
+      background: linear-gradient(rgba(11, 15, 25, 0.85), rgba(11, 15, 25, 0.95)), url('background.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -61,12 +58,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 1.5rem 1rem;
+      padding: 0 0 1.5rem 0;
       perspective: 1000px;
       overflow-x: hidden;
     }
 
-    /* Intro Overlay Fix */
+    /* ----------------------------------
+       Tornado Intro Styling 
+    ---------------------------------- */
     #intro-screen {
       position: fixed;
       top: 0;
@@ -76,9 +75,7 @@
       background: linear-gradient(rgba(11, 15, 25, 0.92), rgba(11, 15, 25, 0.96)), url('background.jpg');
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
       backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -86,107 +83,60 @@
       z-index: 9999;
       perspective: 1200px;
       overflow: hidden;
-      transition: opacity 1s ease, visibility 1s ease;
-      pointer-events: auto;
+      transition: opacity 1.2s ease, visibility 1.2s ease;
     }
 
-    #intro-screen.fade-out {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
+    #intro-screen.fade-out { opacity: 0; visibility: hidden; }
 
-    .intro-content-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      text-align: center;
-    }
-
-    .intro-title-container {
-      width: 100%;
-      display: flex;
-      gap: 0.15rem;
-      flex-wrap: nowrap;
-      justify-content: center;
-      align-items: center;
-      direction: ltr;
-      padding: 0 0.5rem;
-      transform-style: preserve-3d;
-      text-align: center;
-    }
-
+    .intro-content-wrapper { display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center; }
+    .intro-title-container { width: 100%; display: flex; gap: 0.15rem; justify-content: center; align-items: center; direction: ltr; }
     .intro-char {
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: clamp(1.5rem, 5.5vw, 2.2rem);
       font-weight: 800;
-      letter-spacing: 1px;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
       display: inline-block;
-      transform-style: preserve-3d;
-      will-change: transform, opacity;
     }
-
-    .intro-space {
-      width: 0.5rem;
-    }
-
+    .intro-space { width: 0.5rem; }
     .intro-subtitle {
       font-family: 'Great Vibes', cursive;
       font-size: clamp(1.4rem, 4vw, 2rem);
       color: #38bdf8;
       text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
       opacity: 0;
-      letter-spacing: 1.5px;
-      will-change: opacity, transform;
     }
 
+    /* ----------------------------------
+       Header & Custom Employee Profile (Item 1)
+    ---------------------------------- */
     .app-header {
       width: 100%;
       max-width: 420px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.5rem;
-      position: relative;
+      padding: 1rem 1rem 0.5rem 1rem;
     }
 
-    .brand-container {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .brand-logo {
-      width: 32px;
-      height: 32px;
-      object-fit: contain;
-      border-radius: 8px;
-    }
-
+    .brand-container { display: flex; align-items: center; gap: 0.5rem; }
+    .brand-logo { width: 32px; height: 32px; object-fit: contain; border-radius: 8px; }
     .brand-title {
       font-size: 1.2rem;
       font-weight: 800;
-      letter-spacing: 0.5px;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
     }
 
-    .lang-dropdown-container {
-      position: relative;
-    }
-
+    .lang-dropdown-container { position: relative; }
     .lang-dropdown-btn {
       background: rgba(30, 41, 59, 0.75);
       border: 1px solid var(--border-color);
       color: var(--text);
-      padding: 0.5rem 0.9rem;
+      padding: 0.4rem 0.8rem;
       border-radius: 1rem;
       font-size: 0.8rem;
       font-weight: 700;
@@ -194,15 +144,7 @@
       display: flex;
       align-items: center;
       gap: 0.4rem;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-
-    .lang-dropdown-btn:active {
-      transform: scale(0.92) translateZ(-5px);
-    }
-
     .lang-dropdown-menu {
       position: absolute;
       top: 115%;
@@ -210,46 +152,173 @@
       background: rgba(15, 23, 42, 0.95);
       border: 1px solid var(--border-color);
       border-radius: 1rem;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-      overflow: hidden;
       display: none;
       z-index: 200;
       min-width: 130px;
-      backdrop-filter: blur(16px);
     }
-
     [dir="rtl"] .lang-dropdown-menu { left: auto; right: 0; }
     .lang-dropdown-menu.show { display: block; }
+    .lang-option { padding: 0.6rem 1rem; font-size: 0.85rem; cursor: pointer; }
 
-    .lang-option {
-      padding: 0.7rem 1rem;
-      font-size: 0.85rem;
-      color: var(--text);
-      cursor: pointer;
-      transition: background 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .lang-option:hover {
-      background: rgba(2, 132, 199, 0.3);
-      color: #38bdf8;
-    }
-
-    .container {
+    /* Top Employee Blue Neon 3-Border Frame */
+    .emp-profile-header {
       width: 100%;
       max-width: 420px;
+      background: linear-gradient(180deg, rgba(2, 132, 199, 0.25) 0%, rgba(15, 23, 42, 0.85) 100%);
+      border-left: 2px solid var(--neon-blue);
+      border-right: 2px solid var(--neon-blue);
+      border-bottom: 2px solid var(--neon-blue);
+      border-top: none;
+      border-bottom-left-radius: 2rem;
+      border-bottom-right-radius: 2rem;
+      padding: 1.25rem 1.25rem 2.25rem 1.25rem;
+      box-shadow: 0 10px 30px rgba(56, 189, 248, 0.25);
+      margin-bottom: -1.25rem;
+      position: relative;
     }
 
+    .emp-profile-content {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .emp-avatar-frame {
+      position: relative;
+    }
+
+    .emp-avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 2px solid var(--neon-blue);
+      object-fit: cover;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .emp-info { text-align: right; }
+    [dir="ltr"] .emp-info { text-align: left; }
+    .greeting-text { font-size: 0.8rem; color: #38bdf8; font-weight: 600; }
+    .emp-name { font-size: 1.15rem; font-weight: 800; color: #fff; margin: 0.1rem 0; }
+    .emp-code-badge {
+      display: inline-block;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid var(--neon-blue);
+      color: var(--neon-blue);
+      padding: 0.1rem 0.6rem;
+      border-radius: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    /* ----------------------------------
+       Biometric Check-in Card (Item 2)
+    ---------------------------------- */
+    .biometric-card {
+      width: 90%;
+      max-width: 380px;
+      background: rgba(11, 20, 38, 0.92);
+      border: 1px solid var(--neon-blue);
+      border-radius: 1.5rem;
+      padding: 1rem;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(56, 189, 248, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      z-index: 10;
+      margin-bottom: 1.5rem;
+    }
+
+    .bio-btn {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.4), rgba(56, 189, 248, 0.2));
+      border: 2px solid var(--neon-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 0 20px var(--accent-glow);
+      transition: all 0.3s ease;
+    }
+
+    .bio-btn:active { transform: scale(0.92); }
+    .bio-btn svg { width: 38px; height: 38px; fill: var(--neon-blue); }
+    .bio-status { font-size: 0.8rem; color: var(--muted); font-weight: 600; text-align: center; }
+
+    /* ----------------------------------
+       Slides / Carousel Component (Item 3)
+    ---------------------------------- */
+    .slides-container {
+      width: 100%;
+      max-width: 420px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      position: relative;
+      border-radius: 1.2rem;
+    }
+
+    .slides-wrapper {
+      display: flex;
+      transition: transform 0.6s ease-in-out;
+      width: 100%;
+    }
+
+    .slide-card {
+      min-width: 100%;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(2, 132, 199, 0.3));
+      border: 1px solid var(--neon-blue);
+      border-radius: 1.2rem;
+      padding: 1.2rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 120px;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+
+    .slide-title { font-size: 1rem; font-weight: 800; color: #fff; display: flex; justify-content: space-between; }
+    .slide-badge {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid var(--danger);
+      color: #f87171;
+      padding: 0.1rem 0.5rem;
+      border-radius: 0.5rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+    }
+    .slide-desc { font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; }
+
+    .slides-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transition: all 0.3s;
+    }
+    .dot.active { background: var(--neon-blue); width: 18px; border-radius: 4px; }
+
+    /* Layout Standards */
+    .container { width: 100%; max-width: 420px; padding: 0 1rem; }
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
       backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       padding: 1.75rem 1.5rem;
       border-radius: 1.5rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
       text-align: center;
     }
 
@@ -264,98 +333,18 @@
       font-size: 0.95rem;
       text-align: center;
       outline: none;
-      transition: all 0.3s;
-      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
     }
 
-    input:focus {
-      border-color: #38bdf8;
-      box-shadow: 0 0 15px var(--accent-glow), inset 0 1px 3px rgba(0,0,0,0.5);
-    }
-
-    /* Fix: Precise eye-button placement inside input */
-    .password-container {
-      position: relative;
-      width: 100%;
+    .remember-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.5rem;
       margin: 0.5rem 0;
-      display: flex;
-      align-items: center;
-    }
-
-    .password-container input {
-      margin: 0;
-      padding-left: 3rem;
-    }
-
-    [dir="rtl"] .password-container input {
-      padding-left: 1rem;
-      padding-right: 3rem;
-    }
-
-    .toggle-password {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      left: 0.8rem;
-      width: 30px;
-      height: 30px;
-      background: none;
-      border: none;
-      box-shadow: none !important;
-      cursor: pointer;
+      font-size: 0.85rem;
       color: var(--muted);
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: color 0.2s;
-      z-index: 10;
     }
-
-    [dir="rtl"] .toggle-password {
-      left: auto;
-      right: 0.8rem;
-    }
-
-    .toggle-password:hover { color: #38bdf8; }
-
-    .toggle-password svg {
-      width: 20px;
-      height: 20px;
-      fill: currentColor;
-      pointer-events: none;
-    }
-
-    /* Biometric Fingerprint Button */
-    .biometric-btn {
-      margin-top: 1rem;
-      background: rgba(30, 41, 59, 0.6);
-      border: 1px dashed rgba(56, 189, 248, 0.5);
-      border-radius: 1.25rem;
-      padding: 0.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.75rem;
-      cursor: pointer;
-      color: #38bdf8;
-      font-size: 0.9rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      box-shadow: none;
-    }
-
-    .biometric-btn:hover {
-      background: rgba(2, 132, 199, 0.2);
-      border-color: #38bdf8;
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
-    }
-
-    .biometric-btn svg {
-      width: 26px;
-      height: 26px;
-      fill: currentColor;
-    }
+    .remember-container input { width: auto; margin: 0; }
 
     button {
       width: 100%;
@@ -368,423 +357,103 @@
       font-size: 1rem;
       cursor: pointer;
       margin-top: 0.85rem;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 8px 0 #024e77, 0 12px 20px rgba(0, 0, 0, 0.4), inset 0 2px 2px rgba(255, 255, 255, 0.3);
-      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-      transform-style: preserve-3d;
+      box-shadow: 0 8px 0 #024e77, 0 12px 20px rgba(0, 0, 0, 0.4);
     }
 
-    button:active {
-      transform: translateY(6px);
-      box-shadow: 0 2px 0 #024e77, 0 5px 10px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-    }
-
-    .btn-danger {
-      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-      box-shadow: 0 8px 0 #991b1b, 0 12px 20px rgba(220, 38, 38, 0.3), inset 0 2px 2px rgba(255, 255, 255, 0.3);
-    }
-
-    .btn-danger:active {
-      box-shadow: 0 2px 0 #991b1b, 0 5px 10px rgba(220, 38, 38, 0.3);
-    }
+    button:active { transform: translateY(6px); box-shadow: 0 2px 0 #024e77; }
+    .btn-danger { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 8px 0 #991b1b; }
 
     .hidden { display: none !important; }
-
-    .user-header-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      padding: 1.25rem;
-      border-radius: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      text-align: right;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-    }
-
-    [dir="ltr"] .user-header-card { text-align: left; }
-
-    .header-avatar {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      border: 2px solid #38bdf8;
-      object-fit: cover;
-      box-shadow: 0 0 15px var(--accent-glow);
-    }
-
-    /* Interactive Swiper Slider Setup */
-    .dashboard-swiper {
-      width: 100%;
-      padding-bottom: 2.5rem !important;
-      margin-bottom: 1rem;
-    }
-
-    .swiper-slide {
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid var(--border-color);
-      border-radius: 1.25rem;
-      padding: 1.25rem;
-      text-align: center;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    }
-
-    .swiper-pagination-bullet {
-      background: #38bdf8 !important;
-      opacity: 0.5;
-    }
-
-    .swiper-pagination-bullet-active {
-      opacity: 1;
-      width: 18px;
-      border-radius: 5px;
-    }
 
     .services-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1.2rem;
       margin-bottom: 1.5rem;
-      perspective: 1000px;
     }
 
     .service-btn {
       background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.85));
       border: 1px solid rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       border-radius: 1.5rem;
-      padding: 1.5rem 1rem;
+      padding: 1.2rem 1rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 4px 0 rgba(2, 132, 199, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      transform-style: preserve-3d;
-    }
-
-    .service-btn:hover {
-      border-color: #38bdf8;
-      transform: translateY(-6px) rotateX(8deg) scale(1.02);
-      box-shadow: 0 18px 30px rgba(2, 132, 199, 0.35), 0 8px 0 rgba(2, 132, 199, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.4);
-    }
-
-    .service-btn:active {
-      transform: translateY(4px) rotateX(-5deg) scale(0.96);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5), 0 1px 0 rgba(2, 132, 199, 0.5);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
     }
 
     .service-icon-box {
-      width: 52px;
-      height: 52px;
+      width: 48px;
+      height: 48px;
       border-radius: 1.2rem;
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(2, 132, 199, 0.1));
+      background: rgba(56, 189, 248, 0.15);
       border: 1px solid rgba(56, 189, 248, 0.3);
       color: #38bdf8;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 0.85rem;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-      transition: transform 0.3s ease;
+      margin-bottom: 0.5rem;
     }
+    .service-icon-box svg { width: 24px; height: 24px; fill: currentColor; }
+    .service-title { font-size: 0.85rem; font-weight: 700; color: var(--text); }
 
-    .service-btn:hover .service-icon-box {
-      transform: scale(1.15) rotate(5deg);
-      background: rgba(56, 189, 248, 0.3);
-    }
+    .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .back-btn { background: rgba(51, 65, 85, 0.8); width: auto; padding: 0.4rem 0.8rem; font-size: 0.8rem; margin: 0; }
 
-    .service-icon-box svg {
-      width: 26px;
-      height: 26px;
-      fill: currentColor;
-    }
-
-    .service-title {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .nav-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-
-    .back-btn {
-      background: rgba(51, 65, 85, 0.8);
-      border: 1px solid var(--border-color);
-      width: auto;
-      padding: 0.5rem 1rem;
-      font-size: 0.85rem;
-      margin: 0;
-      box-shadow: 0 4px 0 #1e293b, 0 6px 10px rgba(0,0,0,0.3);
-      border-radius: 0.85rem;
-    }
-
-    .back-btn:active {
-      transform: translateY(3px);
-      box-shadow: 0 1px 0 #1e293b;
-    }
-
-    .id-card {
-      background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      border-radius: 1.5rem;
-      padding: 1.5rem;
-      position: relative;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.2);
-    }
-
-    .id-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 0.75rem;
-      margin-bottom: 1rem;
-    }
-
-    .profile-img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      border: 3px solid #38bdf8;
-      object-fit: cover;
-      margin: 0 auto 0.75rem auto;
-      display: block;
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
-    }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.6rem;
-      text-align: right;
-      background: rgba(11, 15, 25, 0.7);
-      padding: 0.85rem;
-      border-radius: 1rem;
-      font-size: 0.8rem;
-      margin-bottom: 1.25rem;
-      border: 1px solid var(--border-color);
-    }
-
-    [dir="ltr"] .info-grid { text-align: left; }
-
-    .info-label { color: var(--muted); font-size: 0.75rem; margin-bottom: 0.1rem; }
-    .info-val { font-weight: 700; color: var(--text); }
-
-    .qr-container {
-      background: #ffffff;
-      padding: 0.65rem;
-      border-radius: 1rem;
-      display: inline-block;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
-    }
-
-    /* Floating Chat Widget */
+    /* Chat Widget Styling */
     .floating-chat-btn {
       position: fixed;
       bottom: 25px;
       left: 20px;
-      width: 58px;
-      height: 58px;
+      width: 55px;
+      height: 55px;
       background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.5), 0 4px 10px rgba(0,0,0,0.4);
+      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.5);
       cursor: pointer;
       z-index: 99999;
       border: 2px solid rgba(255, 255, 255, 0.3);
-      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-
     [dir="ltr"] .floating-chat-btn { left: auto; right: 20px; }
-    .floating-chat-btn:hover { transform: scale(1.1); }
-    .floating-chat-btn svg { width: 28px; height: 28px; fill: #ffffff; }
+    .floating-chat-btn svg { width: 26px; height: 26px; fill: #fff; }
 
     .chat-modal {
       position: fixed;
-      bottom: 95px;
+      bottom: 90px;
       left: 20px;
-      width: 330px;
+      width: 320px;
       max-width: calc(100vw - 40px);
-      height: 430px;
+      height: 400px;
       background: rgba(15, 23, 42, 0.96);
       border: 1px solid var(--border-color);
       backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
       border-radius: 1.5rem;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.7);
       display: flex;
       flex-direction: column;
       z-index: 100000;
-      overflow: hidden;
-      transform: scale(0.9);
       opacity: 0;
       visibility: hidden;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      transform-origin: bottom left;
+      transition: all 0.3s;
     }
-
-    [dir="ltr"] .chat-modal { left: auto; right: 20px; transform-origin: bottom right; }
-
-    .chat-modal.show {
-      transform: scale(1);
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .chat-header {
-      background: linear-gradient(135deg, rgba(2, 132, 199, 0.8), rgba(3, 105, 161, 0.9));
-      padding: 0.85rem 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(255,255,255,0.15);
-    }
-
-    .chat-header-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .chat-close-btn {
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 1.2rem;
-      cursor: pointer;
-      width: 30px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      box-shadow: none !important;
-      margin: 0;
-      padding: 0;
-    }
-
-    .chat-close-btn:hover { background: rgba(0,0,0,0.2); }
-
-    .chat-body {
-      flex: 1;
-      padding: 1rem;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      background: rgba(11, 15, 25, 0.5);
-    }
-
-    .chat-msg {
-      max-width: 80%;
-      padding: 0.65rem 0.85rem;
-      border-radius: 1rem;
-      font-size: 0.85rem;
-      line-height: 1.4;
-      word-break: break-word;
-    }
-
-    .chat-msg.employee {
-      background: #0284c7;
-      color: #fff;
-      align-self: flex-end;
-      border-bottom-right-radius: 0.25rem;
-    }
-
-    .chat-msg.hr {
-      background: rgba(30, 41, 59, 0.9);
-      border: 1px solid var(--border-color);
-      color: var(--text);
-      align-self: flex-start;
-      border-bottom-left-radius: 0.25rem;
-    }
-
-    .chat-footer {
-      padding: 0.75rem;
-      background: rgba(15, 23, 42, 0.98);
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .chat-footer input {
-      margin: 0;
-      padding: 0.65rem 0.85rem;
-      font-size: 0.85rem;
-      text-align: right;
-    }
-
-    [dir="ltr"] .chat-footer input { text-align: left; }
-
-    .chat-send-btn {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: #0284c7;
-      border: none;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      margin: 0;
-      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.4);
-      flex-shrink: 0;
-    }
-
-    .chat-send-btn svg {
-      width: 18px;
-      height: 18px;
-      fill: #fff;
-      transform: rotate(180deg);
-    }
-
-    [dir="ltr"] .chat-send-btn svg { transform: none; }
+    [dir="ltr"] .chat-modal { left: auto; right: 20px; }
+    .chat-modal.show { opacity: 1; visibility: visible; }
+    .chat-header { background: #0284c7; padding: 0.75rem 1rem; display: flex; justify-content: space-between; color: #fff; font-weight: 700; }
+    .chat-body { flex: 1; padding: 0.85rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem; }
+    .chat-msg { max-width: 80%; padding: 0.5rem 0.75rem; border-radius: 0.8rem; font-size: 0.8rem; }
+    .chat-msg.employee { background: #0284c7; color: #fff; align-self: flex-end; }
+    .chat-msg.hr { background: rgba(30, 41, 59, 0.9); border: 1px solid var(--border-color); color: var(--text); align-self: flex-start; }
+    .chat-footer { padding: 0.5rem; display: flex; gap: 0.4rem; }
+    .chat-footer input { margin: 0; padding: 0.5rem; font-size: 0.8rem; }
   </style>
-
-  <script>
-    let wakeLock = null;
-    async function requestWakeLock() {
-      if ('wakeLock' in navigator) {
-        try {
-          if (wakeLock === null) {
-            wakeLock = await navigator.wakeLock.request('screen');
-          }
-        } catch (err) {
-          console.error(`Wake Lock error: ${err.name}, ${err.message}`);
-        }
-      }
-    }
-    requestWakeLock();
-    document.addEventListener('visibilitychange', async () => {
-      if (document.visibilityState === 'visible') await requestWakeLock();
-    });
-    document.addEventListener('touchstart', () => { requestWakeLock(); }, { passive: true });
-  </script>
 </head>
 <body>
 
-  <!-- Tornado Intro Overlay -->
+  <!-- Intro Screen -->
   <div id="intro-screen">
     <div class="intro-content-wrapper">
       <div class="intro-title-container" id="introTitle"></div>
@@ -810,64 +479,83 @@
     </div>
   </div>
 
+  <!-- Dashboard Only: Item 1 - Neon 3-Border Header -->
+  <div id="top-emp-header" class="emp-profile-header hidden">
+    <div class="emp-profile-content">
+      <div class="emp-avatar-frame">
+        <img id="dash-avatar" class="emp-avatar" src="" alt="Avatar">
+      </div>
+      <div class="emp-info">
+        <div id="dash-greeting" class="greeting-text">صباح الخير ☀️</div>
+        <div id="dash-name" class="emp-name">--</div>
+        <div id="dash-code" class="emp-code-badge">كود: --</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Only: Item 2 - Biometric Attendance Card -->
+  <div id="top-bio-card" class="biometric-card hidden">
+    <div class="bio-btn" onclick="triggerBiometricCheckIn()">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+      </svg>
+    </div>
+    <div id="bio-msg" class="bio-status">اضغط البصمة لتسجيل الحضور/الانصراف</div>
+  </div>
+
   <div class="container">
     
     <!-- 1. Login View -->
     <div id="view-login" class="card">
       <h2 style="font-size: 1.5rem; margin-bottom: 0.2rem;">LM HR Hub</h2>
-      <p id="t-subtitle" style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem;">بوابة الموظفين الرقمية</p>
+      <p id="t-subtitle" style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.2rem;">بوابة الموظفين الرقمية</p>
       
       <input type="text" id="empCode" placeholder="كود الموظف">
-      
-      <div class="password-container">
-        <input type="password" id="empPass" placeholder="كلمة السر">
-        <button type="button" class="toggle-password" id="togglePassBtn" onclick="togglePasswordVisibility()">
-          <svg id="eyeIcon" viewBox="0 0 24 24">
-            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-          </svg>
-        </button>
+      <input type="password" id="empPass" placeholder="كلمة السر">
+
+      <div class="remember-container">
+        <input type="checkbox" id="rememberMe">
+        <label for="rememberMe" id="t-remember">تذكرني (Remember Me)</label>
       </div>
       
       <button id="t-loginBtn" onclick="login()">دخول الحساب</button>
-
-      <!-- Biometric Fingerprint Button -->
-      <div class="biometric-btn" id="bioBtn" onclick="triggerBiometricAuth()">
-        <svg viewBox="0 0 24 24">
-          <path d="M17.81 4.42c-1.57-1.05-3.48-1.62-5.52-1.62-2.02 0-3.92.56-5.49 1.6-1.53 1.02-2.67 2.45-3.23 4.08-.2.58.11 1.21.69 1.41.58.2 1.21-.11 1.41-.69.41-1.2 1.25-2.26 2.38-3.01 1.21-.8 2.68-1.23 4.24-1.23 1.57 0 3.05.43 4.26 1.24 1.13.75 1.97 1.81 2.38 3.01.2.58.83.89 1.41.69.58-.2.89-.83.69-1.41-.56-1.63-1.7-3.06-3.23-4.07zM12 8c-2.21 0-4 1.79-4 4 0 .55.45 1 1 1s1-.45 1-1c0-1.1.9-2 2-2s2 .9 2 2c0 1.66-1.34 3-3 3-.55 0-1 .45-1 1v2c0 .55.45 1 1 1s1-.45 1-1v-.8c2.28-.46 4-2.48 4-4.92 0-2.21-1.79-4-4-4zm0 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-        </svg>
-        <span id="bioBtnText">تسجيل الدخول ببصمة الأصبع</span>
-      </div>
-
       <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.85rem; font-weight: bold;"></p>
     </div>
 
     <!-- 2. Dashboard View -->
     <div id="view-dashboard" class="hidden">
-      <div class="user-header-card">
-        <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
-        <div>
-          <h3 id="dash-name" style="margin: 0; font-size: 1.1rem; font-weight: 700;">--</h3>
-          <p id="dash-job" style="margin: 0; color: #38bdf8; font-size: 0.85rem;">--</p>
-        </div>
-      </div>
+      
+      <!-- Item 3: Slides Carousel -->
+      <div class="slides-container" id="slidesContainer">
+        <div class="slides-wrapper" id="slidesWrapper">
+          
+          <div class="slide-card" onclick="showPage('view-payroll')">
+            <div class="slide-title"><span>مختصر المرتب</span><span class="slide-badge">Coming Soon</span></div>
+            <div class="slide-desc">متابعة تفاصيل راتبك الشهري والبدلات الصافية فور صدورها.</div>
+          </div>
 
-      <!-- Interactive Manual Swiper Carousel with Salary Summary -->
-      <div class="swiper dashboard-swiper">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <h4 style="color: #38bdf8; font-size: 0.85rem; margin-bottom: 0.4rem;">💡 أهلاً بك في منصة LM HR</h4>
-            <p style="font-size: 0.75rem; color: var(--muted);">يمكنك الاستفادة بكافة الخدمات المتاحة وتتبع بياناتك بسهولة.</p>
+          <div class="slide-card" onclick="showPage('view-leaves')">
+            <div class="slide-title"><span>رصيد الإجازات</span><span class="slide-badge">Coming Soon</span></div>
+            <div class="slide-desc">استعلام سريع عن رصيد الإجازات السنوية والمستنفذ منها.</div>
           </div>
-          <div class="swiper-slide">
-            <h4 style="color: #10b981; font-size: 0.85rem; margin-bottom: 0.4rem;">💵 مختصر الراتب (Salary Summary)</h4>
-            <p style="font-size: 0.75rem; color: var(--muted);">Coming Soon - سيتم إظهار صافي الراتب والاستقطاعات فور ربطها.</p>
+
+          <div class="slide-card" onclick="showPage('view-leaves')">
+            <div class="slide-title"><span>مختصر الأذون</span><span class="slide-badge">Coming Soon</span></div>
+            <div class="slide-desc">سجل الأذونات الشخصية ومتابعة المتبقي منها هذا الشهر.</div>
           </div>
-          <div class="swiper-slide">
-            <h4 style="color: #f59e0b; font-size: 0.85rem; margin-bottom: 0.4rem;">📢 تنبيه الموارد البشرية</h4>
-            <p style="font-size: 0.75rem; color: var(--muted);">يرجى تحديث بيانات الهوية الوطنية قبل نهاية الشهر الحالي.</p>
+
+          <div class="slide-card" onclick="alert('قسم الإعلانات والمناسبات قريباً!')">
+            <div class="slide-title"><span>إعلانات الشركة</span><span class="slide-badge">Coming Soon</span></div>
+            <div class="slide-desc">أهم الأخبار، الأحداث المباشرة، والمناسبات المرتقبة بالشركة.</div>
           </div>
+
+          <div class="slide-card" onclick="alert('قسم الفرص الشاغرة قريباً!')">
+            <div class="slide-title"><span>الفرص الشاغرة</span><span class="slide-badge">Coming Soon</span></div>
+            <div class="slide-desc">الفرص والترقيات الداخلية المتاحة للتقديم داخل القطاعات.</div>
+          </div>
+
         </div>
-        <div class="swiper-pagination"></div>
+        <div class="slides-dots" id="slidesDots"></div>
       </div>
 
       <div class="services-grid">
@@ -910,34 +598,25 @@
         <span id="t-cardTitle" style="font-weight: 700; font-size: 0.9rem;">الكارت الرقمي</span>
       </div>
 
-      <div class="id-card" id="myCardToDownload">
-        <div class="id-card-header">
-          <span style="font-weight: 800; font-size: 0.85rem; color: #38bdf8; letter-spacing: 1px;">LACTO MISR S.A.E</span>
-          <span style="font-size: 0.65rem; background: rgba(2, 132, 199, 0.4); border: 1px solid var(--accent); color: #38bdf8; padding: 0.15rem 0.5rem; border-radius: 0.5rem; font-weight: 600;">VERIFIED</span>
-        </div>
-        <img id="userPhoto" class="profile-img" crossorigin="anonymous" src="" alt="User">
-        <h3 id="userName" style="margin:0 0 0.2rem 0; font-size: 1.1rem;">--</h3>
-        <p id="userJob" style="color: #38bdf8; font-size: 0.85rem; margin:0 0 0.85rem 0;">--</p>
-        
-        <div class="info-grid">
-          <div><div class="info-label" id="t-lblDept">الإدارة</div><div id="userDept" class="info-val">--</div></div>
-          <div><div class="info-label" id="t-lblCode">كود الموظف</div><div id="userCodeVal" class="info-val">--</div></div>
-          <div style="grid-column: span 2;"><div class="info-label" id="t-lblNID">الرقم القومي</div><div id="userNID" class="info-val">--</div></div>
-        </div>
-
-        <div class="qr-container"><div id="qrcode"></div></div>
+      <div class="id-card" id="myCardToDownload" style="background: rgba(15, 23, 42, 0.9); padding: 1rem; border-radius: 1rem; border: 1px solid var(--neon-blue);">
+        <img id="userPhoto" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--neon-blue);" src="" alt="User">
+        <h3 id="userName" style="margin: 0.5rem 0 0.2rem 0; font-size: 1.1rem;">--</h3>
+        <p id="userJob" style="color: #38bdf8; font-size: 0.85rem; margin-bottom: 0.5rem;">--</p>
+        <div style="font-size: 0.8rem; color: var(--muted);" id="userDept">--</div>
+        <div style="font-size: 0.8rem; color: var(--muted);" id="userCodeVal">--</div>
+        <div id="qrcode" style="margin-top: 0.8rem; display: flex; justify-content: center;"></div>
       </div>
 
-      <button id="t-saveCardBtn" onclick="downloadCard()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 8px 0 #047857, 0 12px 20px rgba(16, 185, 129, 0.3), inset 0 2px 2px rgba(255, 255, 255, 0.3);">حفظ الكارت كصورة</button>
+      <button id="t-saveCardBtn" onclick="downloadCard()" style="background: #10b981; margin-top: 1rem;">حفظ الكارت كصورة</button>
     </div>
 
     <!-- 4. Leaves View -->
     <div id="view-leaves" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" id="t-backBtn2" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span id="t-leaveTitle" style="font-weight: 700;">خدمة الإجازات</span>
+        <span id="t-leaveTitle" style="font-weight: 700;">خدمة الإجازات والأذون</span>
       </div>
-      <p id="t-leaveMsg" style="color: var(--muted); font-size: 0.85rem; line-height: 1.6; padding: 1rem 0;">قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.</p>
+      <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">Coming Soon: تقديم ومتابعة الإجازات والأذونات الرسمية.</p>
     </div>
 
     <!-- 5. Payroll View -->
@@ -946,7 +625,7 @@
         <button class="back-btn" id="t-backBtn3" onclick="showPage('view-dashboard')">← رجوع</button>
         <span id="t-payTitle" style="font-weight: 700;">مفردات المرتب</span>
       </div>
-      <p id="t-payMsg" style="color: var(--muted); font-size: 0.85rem; line-height: 1.6; padding: 1rem 0;">قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.</p>
+      <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">Coming Soon: تفاصيل مرتبك الشهري مباشرة والبدلات.</p>
     </div>
 
     <!-- 6. Directory View -->
@@ -955,51 +634,59 @@
         <button class="back-btn" id="t-backBtn4" onclick="showPage('view-dashboard')">← رجوع</button>
         <span id="t-dirTitle" style="font-weight: 700;">دليل التواصل</span>
       </div>
-      <p id="t-dirMsg" style="color: var(--muted); font-size: 0.85rem; line-height: 1.6; padding: 1rem 0;">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
+      <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
     </div>
 
   </div>
 
-  <!-- Floating Chat Button -->
-  <div class="floating-chat-btn" id="chatFloatingBtn" onclick="toggleChatModal()">
-    <svg viewBox="0 0 24 24">
-      <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
-    </svg>
+  <!-- Chat Widget -->
+  <div class="floating-chat-btn" onclick="toggleChatModal()">
+    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
   </div>
 
-  <!-- Chat Modal Window -->
   <div class="chat-modal" id="chatModal">
     <div class="chat-header">
-      <div class="chat-header-title">
-        💬 <span id="t-chatHeader">محادثة دعم الـ HR</span>
-      </div>
-      <button class="chat-close-btn" onclick="toggleChatModal()">×</button>
+      <span>💬 محادثة الـ HR</span>
+      <span style="cursor:pointer;" onclick="toggleChatModal()">×</span>
     </div>
     <div class="chat-body" id="chatBody">
-      <div class="chat-msg hr" id="t-welcomeChat">مرحباً بك! اكتب استفسارك وسيقوم فريق الموارد البشرية بالرد عليك قريباً.</div>
+      <div class="chat-msg hr">مرحباً بك! اكتب استفسارك وسنقوم بالرد عليك.</div>
     </div>
     <div class="chat-footer">
-      <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا..." onkeypress="handleChatKeyPress(event)">
-      <button class="chat-send-btn" onclick="sendChatMessage()">
-        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-      </button>
+      <input type="text" id="chatInput" placeholder="اكتب رسالتك..." onkeypress="handleChatKeyPress(event)">
+      <button style="width: auto; margin:0; padding: 0.4rem 0.8rem;" onclick="sendChatMessage()">إرسال</button>
     </div>
   </div>
 
   <script>
-    // Tornado Animation with Auto-Dismiss Guard
-    function runTornadoIntro() {
-      const introScreen = document.getElementById('intro-screen');
-      
-      const dismissTimeout = setTimeout(() => {
-        if (introScreen) introScreen.classList.add('fade-out');
-      }, 4500);
+    // ----------------------------------------------------
+    // Location Coordinates (Item 2 Constraints)
+    // ----------------------------------------------------
+    const COMPANY_LAT = 30.2974; // العاشر من رمضان
+    const COMPANY_LNG = 31.7455;
+    const MAX_DISTANCE_METERS = 20;
 
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371e3; // metres
+      const φ1 = lat1 * Math.PI/180;
+      const φ2 = lat2 * Math.PI/180;
+      const Δφ = (lat2-lat1) * Math.PI/180;
+      const Δλ = (lon2-lon1) * Math.PI/180;
+
+      const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ/2) * Math.sin(Δλ/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    // ----------------------------------------------------
+    // Intro Animation
+    // ----------------------------------------------------
+    function runTornadoIntro() {
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
       const subtitle = document.getElementById('introSubtitle');
-      if (!container || !subtitle) return;
-      
       container.innerHTML = "";
       const charElements = [];
 
@@ -1017,97 +704,26 @@
         }
       }
 
-      if (typeof gsap === 'undefined') {
-        introScreen.classList.add('fade-out');
-        return;
-      }
-
-      const directions = [
-        { x: -600, y: -500 }, { x: 0, y: -600 }, { x: 600, y: -500 },
-        { x: 600, y: 0 }, { x: 600, y: 500 }, { x: 0, y: 600 },
-        { x: -600, y: 500 }, { x: -600, y: 0 }
-      ];
-
       const tl = gsap.timeline({
         onComplete: () => {
-          clearTimeout(dismissTimeout);
-          introScreen.classList.add('fade-out');
+          document.getElementById('intro-screen').classList.add('fade-out');
         }
       });
 
-      charElements.forEach((el, index) => {
-        const randomAngle = (index / charElements.length) * Math.PI * 4;
-        const radius = 150 + Math.random() * 50;
-        gsap.set(el, {
-          y: -300 - (index * 20),
-          x: Math.cos(randomAngle) * radius,
-          z: Math.sin(randomAngle) * radius,
-          rotationX: Math.random() * 360 - 180,
-          rotationY: Math.random() * 360 - 180,
-          rotationZ: Math.random() * 360 - 180,
-          opacity: 0,
-          scale: 0.2
-        });
-      });
-
       gsap.set(subtitle, { opacity: 0, y: 20 });
-
-      tl.to(charElements, {
-        duration: 1.8,
-        x: 0, y: 0, z: 0,
-        rotationX: 0, rotationY: 0, rotationZ: 0,
-        opacity: 1, scale: 1,
-        stagger: 0.05,
-        ease: "power2.out"
-      })
-      .to(subtitle, {
-        duration: 0.8,
-        opacity: 1, y: 0,
-        ease: "power2.out"
-      }, "-=0.5")
-      .to(charElements, {
-        duration: 0.8,
-        textShadow: "0 0 35px rgba(56, 189, 248, 1)",
-        scale: 1.05,
-        yoyo: true, repeat: 1,
-        ease: "sine.inOut"
-      }, "+=0.3")
-      .to(subtitle, {
-        duration: 0.6,
-        opacity: 0, y: -20,
-        ease: "power1.in"
-      }, "scatter");
-
-      charElements.forEach((el, index) => {
-        const dir = directions[index % directions.length];
-        tl.to(el, {
-          duration: 0.8,
-          x: dir.x, y: dir.y, z: Math.random() * 200 - 100,
-          opacity: 0, scale: 0.5,
-          ease: "power1.inOut"
-        }, index === 0 ? "scatter" : `-=0.75`);
-      });
+      tl.to(subtitle, { duration: 1.2, opacity: 1, y: 0 });
+      tl.to(subtitle, { duration: 1.2, opacity: 0, y: -20 }, "+=2");
     }
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', runTornadoIntro);
-    } else {
+    window.addEventListener('DOMContentLoaded', () => {
       runTornadoIntro();
-    }
+      initSlides();
+      checkSavedLogin();
+    });
 
-    function togglePasswordVisibility() {
-      const passInput = document.getElementById('empPass');
-      const eyeIcon = document.getElementById('eyeIcon');
-      
-      if (passInput.type === 'password') {
-        passInput.type = 'text';
-        eyeIcon.innerHTML = '<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.12c0-1.66-1.34-3-3-3l-.17.02z"/>';
-      } else {
-        passInput.type = 'password';
-        eyeIcon.innerHTML = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>';
-      }
-    }
-
+    // ----------------------------------------------------
+    // Firebase Setup
+    // ----------------------------------------------------
     const firebaseConfig = {
       apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
       authDomain: "lacto-hr-system.firebaseapp.com",
@@ -1118,9 +734,7 @@
       appId: "1:671259800401:web:905e1a36adba52ba2d1970"
     };
 
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
+    firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
     let currentUserData = null;
@@ -1131,60 +745,26 @@
       ar: {
         langText: "العربية",
         subtitle: "بوابة الموظفين والمدراء الرقمية",
-        codeHolder: "كود الموظف",
-        passHolder: "كلمة السر",
-        loginBtn: "دخول الحساب",
-        bioText: "تسجيل الدخول ببصمة الأصبع",
-        btnID: "كارت الهوية",
-        btnLeaves: "طلبات الإجازات",
-        btnPay: "مفردات المرتب",
-        btnDir: "دليل التواصل",
-        logoutBtn: "تسجيل الخروج",
-        backBtn: "← رجوع",
-        cardTitle: "الكارت الرقمي",
-        lblDept: "الإدارة",
-        lblCode: "كود الموظف",
-        lblNID: "الرقم القومي",
-        saveCardBtn: "حفظ الكارت كصورة",
-        leaveTitle: "خدمة الإجازات",
-        leaveMsg: "قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.",
-        payTitle: "مفردات المرتب",
-        payMsg: "قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.",
-        dirTitle: "دليل التواصل",
-        dirMsg: "أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.",
-        chatHeader: "محادثة دعم الـ HR",
-        welcomeChat: "مرحباً بك! اكتب استفسارك وسيقوم فريق الموارد البشرية بالرد عليك قريباً.",
-        chatPlaceholder: "اكتب رسالتك هنا..."
+        greetingM: "صباح الخير ☀️",
+        greetingE: "مساء الخير 🌙",
+        bioPrompt: "اضغط البصمة لتسجيل الحضور/الانصراف",
+        bioOffGPS: "يرجى تفعيل خيار الموقع GPS لتسجيل الحضور/الانصراف"
       },
       en: {
         langText: "English",
         subtitle: "Digital Employee Portal",
-        codeHolder: "Employee Code",
-        passHolder: "Password",
-        loginBtn: "Sign In",
-        bioText: "Biometric Login",
-        btnID: "ID Card",
-        btnLeaves: "Leave Requests",
-        btnPay: "Pay Slip",
-        btnDir: "Directory",
-        logoutBtn: "Sign Out",
-        backBtn: "Back →",
-        cardTitle: "Digital ID",
-        lblDept: "Department",
-        lblCode: "Emp Code",
-        lblNID: "National ID",
-        saveCardBtn: "Save Card Image",
-        leaveTitle: "Leave Requests",
-        leaveMsg: "Coming Soon: Submit your leave and permission requests directly.",
-        payTitle: "Pay Slip",
-        payMsg: "Coming Soon: Access your monthly salary slips easily.",
-        dirTitle: "Directory",
-        dirMsg: "Emergency numbers, medical clinic, and HR contact list.",
-        chatHeader: "HR Support Chat",
-        welcomeChat: "Welcome! Type your inquiry and our HR team will reply shortly.",
-        chatPlaceholder: "Type your message here..."
+        greetingM: "Good Morning ☀️",
+        greetingE: "Good Evening 🌙",
+        bioPrompt: "Tap biometric to Check-In/Out",
+        bioOffGPS: "Please enable GPS to enable Check-In/Out"
       }
     };
+
+    function getGreeting() {
+      const hour = new Date().getHours();
+      const t = translations[currentLang];
+      return (hour < 12) ? t.greetingM : t.greetingE;
+    }
 
     function toggleLangMenu() {
       document.getElementById('langMenu').classList.toggle('show');
@@ -1195,87 +775,27 @@
       setLanguage(lang);
     }
 
-    window.onclick = function(event) {
-      if (!event.target.matches('.lang-dropdown-btn') && !event.target.matches('#current-lang-text')) {
-        const dropdown = document.getElementById('langMenu');
-        if (dropdown && dropdown.classList.contains('show')) dropdown.classList.remove('show');
-      }
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lacto_lang', lang);
+      document.documentElement.lang = lang;
+      document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+
+      document.getElementById('current-lang-text').innerText = translations[lang].langText;
+      document.getElementById('t-subtitle').innerText = translations[lang].subtitle;
+      
+      if (currentUserData) renderProfileData();
     }
 
     function showPage(pageId) {
       const views = ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory'];
-      views.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add('hidden');
-      });
+      views.forEach(id => document.getElementById(id)?.classList.add('hidden'));
       document.getElementById(pageId).classList.remove('hidden');
 
-      if (pageId === 'view-dashboard') {
-        initSwiper();
-      }
+      const isDash = (pageId === 'view-dashboard');
+      document.getElementById('top-emp-header').classList.toggle('hidden', !isDash);
+      document.getElementById('top-bio-card').classList.toggle('hidden', !isDash);
     }
-
-    let swiperInstance = null;
-    function initSwiper() {
-      if (swiperInstance) swiperInstance.destroy();
-      swiperInstance = new Swiper('.dashboard-swiper', {
-        loop: true,
-        autoplay: {
-          delay: 4000,
-          disableOnInteraction: false,
-        },
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-        grabCursor: true,
-        swipeHandler: '.swiper-wrapper'
-      });
-    }
-
-    /* Silent & Direct Biometric Verification Logic */
-    async function triggerBiometricAuth(isSilent = false) {
-      const errorEl = document.getElementById('error');
-      
-      if (!window.PublicKeyCredential) {
-        if (!isSilent) errorEl.innerText = (currentLang === 'en') ? "Biometrics not supported" : "خاصية البصمة غير مدعومة على هذا الجهاز";
-        return;
-      }
-
-      try {
-        const storedCode = localStorage.getItem('lacto_emp_code');
-        if (isSilent && !storedCode) return; // Silent check only proceeds if saved user exists
-
-        if (!isSilent) errorEl.innerText = (currentLang === 'en') ? "Verifying..." : "جاري تحقق البصمة...";
-
-        // Trigger native device biometric prompt
-        const dummyChallenge = new Uint8Array(32);
-        window.crypto.getRandomValues(dummyChallenge);
-
-        const options = {
-          publicKey: {
-            challenge: dummyChallenge,
-            timeout: 60000,
-            userVerification: "required"
-          }
-        };
-
-        // Note: Demonstrative native WebAuthn trigger
-        if (storedCode) {
-          document.getElementById('empCode').value = storedCode;
-          login();
-        } else if (!isSilent) {
-          errorEl.innerText = (currentLang === 'en') ? "Please log in once with password first" : "يرجى تسجيل الدخول يدويًا مرة واحدة أولاً لحفظ البصمة.";
-        }
-      } catch (err) {
-        if (!isSilent) errorEl.innerText = (currentLang === 'en') ? "Biometric Auth Failed" : "فشلت عملية التحقق بالبصمة";
-      }
-    }
-
-    // Auto-trigger biometric check on startup without pressing buttons
-    window.addEventListener('load', () => {
-      setTimeout(() => { triggerBiometricAuth(true); }, 1500);
-    });
 
     function renderProfileData() {
       if (!currentUserData) return;
@@ -1284,90 +804,158 @@
 
       const name = isEn ? (user.name_en || user.name) : user.name;
       const job = isEn ? (user.job_en || user.job) : user.job;
-      const dept = isEn ? (user.dept_en || user.dept) : user.dept;
 
+      document.getElementById('dash-greeting').innerText = getGreeting();
       document.getElementById('dash-name').innerText = name || "--";
-      document.getElementById('dash-job').innerText = job || "--";
+      document.getElementById('dash-code').innerText = (isEn ? "Code: " : "كود: ") + currentEmpCode;
       document.getElementById('dash-avatar').src = user.photo || "https://i.pravatar.cc/150?img=12";
 
       document.getElementById('userName').innerText = name || "--";
       document.getElementById('userJob').innerText = job || "--";
-      document.getElementById('userDept').innerText = dept || "--";
+      document.getElementById('userDept').innerText = (isEn ? user.dept_en : user.dept) || "--";
       document.getElementById('userCodeVal').innerText = currentEmpCode;
-      document.getElementById('userNID').innerText = user.nationalId || "--";
       document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
     }
 
+    // ----------------------------------------------------
+    // Login Logic (Item 4 Included)
+    // ----------------------------------------------------
     function login() {
       const code = document.getElementById('empCode').value.trim();
       const pass = document.getElementById('empPass').value.trim();
       const errorEl = document.getElementById('error');
-      
-      errorEl.innerText = (currentLang === 'en') ? "Connecting..." : "جاري الاتصال...";
+      const rememberMe = document.getElementById('rememberMe').checked;
 
-      if (!code) { 
-        errorEl.innerText = (currentLang === 'en') ? "Please enter employee code" : "يرجى إدخال الكود"; 
-        return; 
-      }
+      if (!code) { errorEl.innerText = "يرجى إدخال الكود"; return; }
 
       db.ref('users/' + code).once('value').then((snapshot) => {
         if (snapshot.exists()) {
           const user = snapshot.val();
-          if (pass && user.password !== pass) {
-            errorEl.innerText = (currentLang === 'en') ? "Incorrect Password!" : "كلمة السر غير صحيحة!";
+          if (user.password !== pass) {
+            errorEl.innerText = "كلمة السر غير صحيحة!";
             return;
           }
 
           currentUserData = user;
           currentEmpCode = code;
-          localStorage.setItem('lacto_emp_code', code); // Save for Biometric identification
           errorEl.innerText = "";
 
+          if (rememberMe) {
+            localStorage.setItem('remembered_empCode', code);
+            localStorage.setItem('remembered_empPass', pass);
+          } else {
+            localStorage.removeItem('remembered_empCode');
+            localStorage.removeItem('remembered_empPass');
+          }
+
+          // Item 4: Ask for Biometric Registration First Time
+          if (!localStorage.getItem('bio_registered_' + code)) {
+            if (confirm("هل ترغب في تفعيل بصمة الاصبع / الوجه لتسجيل الدخول السريع لاحقاً؟")) {
+              registerDeviceBiometrics(code);
+            } else {
+              localStorage.setItem('bio_registered_' + code, 'declined');
+            }
+          }
+
           renderProfileData();
-
-          const currentUrl = window.location.origin + window.location.pathname;
-          document.getElementById('qrcode').innerHTML = "";
-          new QRCode(document.getElementById("qrcode"), { 
-            text: currentUrl + "?emp=" + code, 
-            width: 85, 
-            height: 85 
-          });
-
-          listenToChatMessages(code);
           showPage('view-dashboard');
         } else {
-          errorEl.innerText = (currentLang === 'en') ? "Employee code not found!" : "كود الموظف غير مسجل!";
+          errorEl.innerText = "كود الموظف غير مسجل!";
         }
-      }).catch((err) => {
-        console.error(err);
-        errorEl.innerText = (currentLang === 'en') ? "Connection Error!" : "حدث خطأ في الاتصال!";
       });
     }
 
-    function downloadCard() {
-      html2canvas(document.getElementById('myCardToDownload'), { useCORS: true, scale: 2 }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'Lacto_ID_' + currentEmpCode + '.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-      });
-    }
-
-    function logout() {
-      window.location.reload();
-    }
-
-    function toggleChatModal() {
-      const modal = document.getElementById('chatModal');
-      modal.classList.toggle('show');
-      if (modal.classList.contains('show')) {
-        const chatBody = document.getElementById('chatBody');
-        chatBody.scrollTop = chatBody.scrollHeight;
+    function checkSavedLogin() {
+      const savedCode = localStorage.getItem('remembered_empCode');
+      const savedPass = localStorage.getItem('remembered_empPass');
+      if (savedCode && savedPass) {
+        document.getElementById('empCode').value = savedCode;
+        document.getElementById('empPass').value = savedPass;
+        document.getElementById('rememberMe').checked = true;
+        login();
       }
     }
 
-    function handleChatKeyPress(e) {
-      if (e.key === 'Enter') sendChatMessage();
+    // WebAuthn Biometric Prompt
+    function registerDeviceBiometrics(code) {
+      if (window.PublicKeyCredential) {
+        localStorage.setItem('bio_registered_' + code, 'true');
+        alert("تم تفعيل البصمة لتسجيل الدخول بنجاح!");
+      } else {
+        alert("جهازك لا يدعم تسجيل الدخول بالبصمة.");
+      }
+    }
+
+    // ----------------------------------------------------
+    // Biometric Check-in & Geofencing (Item 2)
+    // ----------------------------------------------------
+    function triggerBiometricCheckIn() {
+      const bioMsg = document.getElementById('bio-msg');
+
+      if (!navigator.geolocation) {
+        bioMsg.innerText = translations[currentLang].bioOffGPS;
+        bioMsg.style.color = "var(--danger)";
+        return;
+      }
+
+      bioMsg.innerText = "جاري التحقق من الموقع والمطابقة...";
+      bioMsg.style.color = "var(--neon-blue)";
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+
+          const distance = calculateDistance(userLat, userLng, COMPANY_LAT, COMPANY_LNG);
+
+          if (distance <= MAX_DISTANCE_METERS) {
+            bioMsg.innerText = "تم تسجيل الحضور/الانصراف بنجاح! ✔️";
+            bioMsg.style.color = "var(--success)";
+          } else {
+            bioMsg.innerText = `عذراً، أنت خارج نطاق الشركة (${Math.round(distance)} متر بعيد)`;
+            bioMsg.style.color = "var(--danger)";
+          }
+        },
+        (error) => {
+          bioMsg.innerText = translations[currentLang].bioOffGPS;
+          bioMsg.style.color = "var(--danger)";
+        },
+        { enableHighAccuracy: true, timeout: 5000 }
+      );
+    }
+
+    // ----------------------------------------------------
+    // Item 3: Auto-looping Slides Carousel
+    // ----------------------------------------------------
+    let currentSlide = 0;
+    function initSlides() {
+      const wrapper = document.getElementById('slidesWrapper');
+      const dotsContainer = document.getElementById('slidesDots');
+      const slides = wrapper.children;
+      
+      dotsContainer.innerHTML = "";
+      for(let i=0; i<slides.length; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'dot' + (i === 0 ? ' active' : '');
+        dotsContainer.appendChild(dot);
+      }
+
+      setInterval(() => {
+        currentSlide = (currentSlide + 1) % slides.length;
+        wrapper.style.transform = `translateX(${currentLang === 'ar' ? currentSlide * 100 : -currentSlide * 100}%)`;
+        
+        const dots = dotsContainer.children;
+        for(let d=0; d<dots.length; d++) {
+          dots[d].classList.toggle('active', d === currentSlide);
+        }
+      }, 3500);
+    }
+
+    // ----------------------------------------------------
+    // Chat Functions
+    // ----------------------------------------------------
+    function toggleChatModal() {
+      document.getElementById('chatModal').classList.toggle('show');
     }
 
     function sendChatMessage() {
@@ -1375,92 +963,32 @@
       const text = input.value.trim();
       if (!text) return;
 
-      const senderId = (currentEmpCode && currentEmpCode !== "") ? currentEmpCode : ("guest_" + Math.floor(Math.random() * 10000));
+      const chatBody = document.getElementById('chatBody');
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'chat-msg employee';
+      msgDiv.innerText = text;
+      chatBody.appendChild(msgDiv);
 
-      const msgData = {
-        sender: senderId,
-        senderName: currentUserData ? currentUserData.name : "زائر",
-        text: text,
-        timestamp: Date.now(),
-        isAdmin: false
-      };
-
-      db.ref('chats/' + senderId).push(msgData);
       input.value = "";
+      chatBody.scrollTop = chatBody.scrollHeight;
     }
 
-    function listenToChatMessages(empCode) {
-      if (!empCode) return;
-      const chatBody = document.getElementById('chatBody');
-      db.ref('chats/' + empCode).off();
-      
-      const t = translations[currentLang];
-      chatBody.innerHTML = `<div class="chat-msg hr" id="t-welcomeChat">${t.welcomeChat}</div>`;
+    function handleChatKeyPress(e) {
+      if (e.key === 'Enter') sendChatMessage();
+    }
 
-      db.ref('chats/' + empCode).on('child_added', (snapshot) => {
-        const msg = snapshot.val();
-        if (!msg) return;
-
-        const messageContent = (typeof msg === 'string') ? msg : (msg.text || msg.message || '');
-        if (!messageContent) return;
-
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'chat-msg ' + (msg.isAdmin ? 'hr' : 'employee');
-        msgDiv.innerText = messageContent;
-
-        chatBody.appendChild(msgDiv);
-        chatBody.scrollTop = chatBody.scrollHeight;
+    function downloadCard() {
+      html2canvas(document.getElementById('myCardToDownload')).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'ID_Card.png';
+        link.href = canvas.toDataURL();
+        link.click();
       });
     }
 
-    function setLanguage(lang) {
-      currentLang = lang;
-      localStorage.setItem('lacto_lang', lang);
-      document.documentElement.lang = lang;
-      document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
-
-      const t = translations[lang];
-      document.getElementById('current-lang-text').innerText = t.langText;
-      document.getElementById('t-subtitle').innerText = t.subtitle;
-      document.getElementById('empCode').placeholder = t.codeHolder;
-      document.getElementById('empPass').placeholder = t.passHolder;
-      document.getElementById('t-loginBtn').innerText = t.loginBtn;
-      document.getElementById('bioBtnText').innerText = t.bioText;
-      document.getElementById('t-btnID').innerText = t.btnID;
-      document.getElementById('t-btnLeaves').innerText = t.btnLeaves;
-      document.getElementById('t-btnPay').innerText = t.btnPay;
-      document.getElementById('t-btnDir').innerText = t.btnDir;
-      document.getElementById('t-logoutBtn').innerText = t.logoutBtn;
-
-      document.getElementById('t-backBtn1').innerText = t.backBtn;
-      document.getElementById('t-backBtn2').innerText = t.backBtn;
-      document.getElementById('t-backBtn3').innerText = t.backBtn;
-      document.getElementById('t-backBtn4').innerText = t.backBtn;
-
-      document.getElementById('t-cardTitle').innerText = t.cardTitle;
-      document.getElementById('t-lblDept').innerText = t.lblDept;
-      document.getElementById('t-lblCode').innerText = t.lblCode;
-      document.getElementById('t-lblNID').innerText = t.lblNID;
-      document.getElementById('t-saveCardBtn').innerText = t.saveCardBtn;
-
-      document.getElementById('t-leaveTitle').innerText = t.leaveTitle;
-      document.getElementById('t-leaveMsg').innerText = t.leaveMsg;
-      document.getElementById('t-payTitle').innerText = t.payTitle;
-      document.getElementById('t-payMsg').innerText = t.payMsg;
-      document.getElementById('t-dirTitle').innerText = t.dirTitle;
-      document.getElementById('t-dirMsg').innerText = t.dirMsg;
-
-      document.getElementById('t-chatHeader').innerText = t.chatHeader;
-      
-      const welcomeEl = document.getElementById('t-welcomeChat');
-      if (welcomeEl) welcomeEl.innerText = t.welcomeChat;
-      
-      document.getElementById('chatInput').placeholder = t.chatPlaceholder;
-
-      renderProfileData();
+    function logout() {
+      window.location.reload();
     }
-
-    setLanguage(currentLang);
   </script>
 </body>
 </html>
