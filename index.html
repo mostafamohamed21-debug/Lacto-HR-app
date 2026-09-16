@@ -14,11 +14,7 @@
   <link rel="apple-touch-icon" href="logo.png">
   <link rel="icon" type="image/png" href="logo.png">
 
-  <!-- Swiper.js CSS & JS for manual/touch control -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
-  <!-- GSAP Library -->
+  <!-- Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -32,7 +28,7 @@
 
     :root {
       --bg: #0b0f19;
-      --card-bg: rgba(15, 23, 42, 0.85);
+      --card-bg: rgba(15, 23, 42, 0.75);
       --border-color: rgba(255, 255, 255, 0.18);
       --text: #f8fafc;
       --accent: #0284c7;
@@ -61,11 +57,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0 1rem 1.5rem 1rem;
+      padding: 1.5rem 1rem;
+      perspective: 1000px;
       overflow-x: hidden;
     }
 
-    /* Intro Screen */
+    /* Intro Overlay Fix */
     #intro-screen {
       position: fixed;
       top: 0;
@@ -75,50 +72,83 @@
       background: linear-gradient(rgba(11, 15, 25, 0.92), rgba(11, 15, 25, 0.96)), url('background.jpg');
       background-size: cover;
       background-position: center;
+      background-repeat: no-repeat;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 9999;
-      transition: opacity 1.2s ease, visibility 1.2s ease;
+      perspective: 1200px;
+      overflow: hidden;
+      transition: opacity 1s ease, visibility 1s ease;
+      pointer-events: auto;
     }
 
     #intro-screen.fade-out {
       opacity: 0;
       visibility: hidden;
+      pointer-events: none;
+    }
+
+    .intro-content-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      text-align: center;
     }
 
     .intro-title-container {
+      width: 100%;
       display: flex;
       gap: 0.15rem;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
       direction: ltr;
+      padding: 0 0.5rem;
+      transform-style: preserve-3d;
+      text-align: center;
     }
 
     .intro-char {
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: clamp(1.5rem, 5.5vw, 2.2rem);
       font-weight: 800;
+      letter-spacing: 1px;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
       display: inline-block;
+      transform-style: preserve-3d;
+      will-change: transform, opacity;
+    }
+
+    .intro-space {
+      width: 0.5rem;
     }
 
     .intro-subtitle {
       font-family: 'Great Vibes', cursive;
       font-size: clamp(1.4rem, 4vw, 2rem);
       color: #38bdf8;
+      text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
       opacity: 0;
+      letter-spacing: 1.5px;
+      will-change: opacity, transform;
     }
 
-    /* Header Layout */
     .app-header {
       width: 100%;
       max-width: 420px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 0;
-      z-index: 10;
+      margin-bottom: 1.5rem;
+      position: relative;
     }
 
     .brand-container {
@@ -131,14 +161,17 @@
       width: 32px;
       height: 32px;
       object-fit: contain;
+      border-radius: 8px;
     }
 
     .brand-title {
       font-size: 1.2rem;
       font-weight: 800;
+      letter-spacing: 0.5px;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      text-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
     }
 
     .lang-dropdown-container {
@@ -152,7 +185,18 @@
       padding: 0.5rem 0.9rem;
       border-radius: 1rem;
       font-size: 0.8rem;
+      font-weight: 700;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .lang-dropdown-btn:active {
+      transform: scale(0.92) translateZ(-5px);
     }
 
     .lang-dropdown-menu {
@@ -162,9 +206,12 @@
       background: rgba(15, 23, 42, 0.95);
       border: 1px solid var(--border-color);
       border-radius: 1rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
       display: none;
       z-index: 200;
       min-width: 130px;
+      backdrop-filter: blur(16px);
     }
 
     [dir="rtl"] .lang-dropdown-menu { left: auto; right: 0; }
@@ -173,7 +220,17 @@
     .lang-option {
       padding: 0.7rem 1rem;
       font-size: 0.85rem;
+      color: var(--text);
       cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .lang-option:hover {
+      background: rgba(2, 132, 199, 0.3);
+      color: #38bdf8;
     }
 
     .container {
@@ -185,81 +242,11 @@
       background: var(--card-bg);
       border: 1px solid var(--border-color);
       backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       padding: 1.75rem 1.5rem;
-      border-radius: 2rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      border-radius: 1.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
       text-align: center;
-    }
-
-    .user-header-card-top {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-top: none;
-      backdrop-filter: blur(16px);
-      padding: 1.5rem 1.25rem 1.25rem 1.25rem;
-      border-radius: 0 0 2rem 2rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-top: -1rem;
-      margin-bottom: 1.5rem;
-      text-align: right;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-    }
-
-    [dir="ltr"] .user-header-card-top { text-align: left; }
-
-    .header-avatar {
-      width: 65px;
-      height: 65px;
-      border-radius: 50%;
-      border: 2px solid #38bdf8;
-      object-fit: cover;
-    }
-
-    .password-container {
-      position: relative;
-      width: 100%;
-      margin: 0.5rem 0;
-      display: flex;
-      align-items: center;
-    }
-
-    .password-container input {
-      width: 100%;
-      margin: 0;
-      padding-left: 3rem;
-    }
-
-    [dir="rtl"] .password-container input {
-      padding-left: 1rem;
-      padding-right: 3rem;
-    }
-
-    .toggle-password {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      left: 0.75rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-    }
-
-    [dir="rtl"] .toggle-password {
-      left: auto;
-      right: 0.75rem;
-    }
-
-    .toggle-password svg {
-      width: 22px;
-      height: 22px;
-      fill: currentColor;
     }
 
     input {
@@ -273,6 +260,63 @@
       font-size: 0.95rem;
       text-align: center;
       outline: none;
+      transition: all 0.3s;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
+    }
+
+    input:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 15px var(--accent-glow), inset 0 1px 3px rgba(0,0,0,0.5);
+    }
+
+    .password-container {
+      position: relative;
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+
+    .password-container input {
+      margin: 0;
+      padding-left: 3rem;
+    }
+
+    [dir="rtl"] .password-container input {
+      padding-left: 1rem;
+      padding-right: 3rem;
+    }
+
+    .toggle-password {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0.2rem;
+      width: 40px;
+      background: none;
+      border: none;
+      box-shadow: none !important;
+      cursor: pointer;
+      color: var(--muted);
+      padding: 0;
+      margin: auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+      z-index: 10;
+    }
+
+    [dir="rtl"] .toggle-password {
+      left: auto;
+      right: 0.2rem;
+    }
+
+    .toggle-password:hover { color: #38bdf8; }
+
+    .toggle-password svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+      pointer-events: none;
     }
 
     button {
@@ -286,39 +330,53 @@
       font-size: 1rem;
       cursor: pointer;
       margin-top: 0.85rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 0 #024e77, 0 12px 20px rgba(0, 0, 0, 0.4), inset 0 2px 2px rgba(255, 255, 255, 0.3);
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
     }
 
-    .btn-biometric {
-      background: rgba(30, 41, 59, 0.8);
-      border: 1px solid #38bdf8;
-      color: #38bdf8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-top: 0.75rem;
+    button:active {
+      transform: translateY(6px);
+      box-shadow: 0 2px 0 #024e77, 0 5px 10px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
     }
 
     .btn-danger {
       background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      box-shadow: 0 8px 0 #991b1b, 0 12px 20px rgba(220, 38, 38, 0.3), inset 0 2px 2px rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-danger:active {
+      box-shadow: 0 2px 0 #991b1b, 0 5px 10px rgba(220, 38, 38, 0.3);
     }
 
     .hidden { display: none !important; }
 
-    /* Swiper Controls & Layout */
-    .swiper {
-      width: 100%;
-      padding-bottom: 2.5rem !important;
-      margin-bottom: 1rem;
+    .user-header-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 1.25rem;
+      border-radius: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      text-align: right;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15);
     }
 
-    .swiper-slide {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid var(--border-color);
-      border-radius: 1.5rem;
-      padding: 1.25rem;
-      text-align: center;
-      backdrop-filter: blur(10px);
+    [dir="ltr"] .user-header-card { text-align: left; }
+
+    .header-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid #38bdf8;
+      object-fit: cover;
+      box-shadow: 0 0 15px var(--accent-glow);
     }
 
     .services-grid {
@@ -326,11 +384,14 @@
       grid-template-columns: 1fr 1fr;
       gap: 1.2rem;
       margin-bottom: 1.5rem;
+      perspective: 1000px;
     }
 
     .service-btn {
       background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.85));
       border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-radius: 1.5rem;
       padding: 1.5rem 1rem;
       display: flex;
@@ -338,35 +399,135 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 4px 0 rgba(2, 132, 199, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-style: preserve-3d;
+    }
+
+    .service-btn:hover {
+      border-color: #38bdf8;
+      transform: translateY(-6px) rotateX(8deg) scale(1.02);
+      box-shadow: 0 18px 30px rgba(2, 132, 199, 0.35), 0 8px 0 rgba(2, 132, 199, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+    }
+
+    .service-btn:active {
+      transform: translateY(4px) rotateX(-5deg) scale(0.96);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5), 0 1px 0 rgba(2, 132, 199, 0.5);
     }
 
     .service-icon-box {
       width: 52px;
       height: 52px;
       border-radius: 1.2rem;
-      background: rgba(56, 189, 248, 0.1);
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(2, 132, 199, 0.1));
       border: 1px solid rgba(56, 189, 248, 0.3);
       color: #38bdf8;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 0.85rem;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
     }
 
-    .service-icon-box svg { width: 26px; height: 26px; fill: currentColor; }
+    .service-btn:hover .service-icon-box {
+      transform: scale(1.15) rotate(5deg);
+      background: rgba(56, 189, 248, 0.3);
+    }
 
-    /* Location Box Styling */
-    .location-box {
-      background: rgba(30, 41, 59, 0.7);
-      border: 1px solid var(--border-color);
-      border-radius: 1rem;
-      padding: 0.85rem;
+    .service-icon-box svg {
+      width: 26px;
+      height: 26px;
+      fill: currentColor;
+    }
+
+    .service-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 1rem;
-      font-size: 0.85rem;
-      text-align: center;
     }
 
-    /* Floating Chat */
+    .back-btn {
+      background: rgba(51, 65, 85, 0.8);
+      border: 1px solid var(--border-color);
+      width: auto;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      margin: 0;
+      box-shadow: 0 4px 0 #1e293b, 0 6px 10px rgba(0,0,0,0.3);
+      border-radius: 0.85rem;
+    }
+
+    .back-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #1e293b;
+    }
+
+    .id-card {
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      position: relative;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.2);
+    }
+
+    .id-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .profile-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid #38bdf8;
+      object-fit: cover;
+      margin: 0 auto 0.75rem auto;
+      display: block;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      text-align: right;
+      background: rgba(11, 15, 25, 0.7);
+      padding: 0.85rem;
+      border-radius: 1rem;
+      font-size: 0.8rem;
+      margin-bottom: 1.25rem;
+      border: 1px solid var(--border-color);
+    }
+
+    [dir="ltr"] .info-grid { text-align: left; }
+
+    .info-label { color: var(--muted); font-size: 0.75rem; margin-bottom: 0.1rem; }
+    .info-val { font-weight: 700; color: var(--text); }
+
+    .qr-container {
+      background: #ffffff;
+      padding: 0.65rem;
+      border-radius: 1rem;
+      display: inline-block;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+    }
+
+    /* Floating Chat Widget */
     .floating-chat-btn {
       position: fixed;
       bottom: 25px;
@@ -378,12 +539,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.5), 0 4px 10px rgba(0,0,0,0.4);
       cursor: pointer;
       z-index: 99999;
       border: 2px solid rgba(255, 255, 255, 0.3);
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     [dir="ltr"] .floating-chat-btn { left: auto; right: 20px; }
+    .floating-chat-btn:hover { transform: scale(1.1); }
+    .floating-chat-btn svg { width: 28px; height: 28px; fill: #ffffff; }
 
     .chat-modal {
       position: fixed;
@@ -394,25 +559,65 @@
       height: 430px;
       background: rgba(15, 23, 42, 0.96);
       border: 1px solid var(--border-color);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border-radius: 1.5rem;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.7);
       display: flex;
       flex-direction: column;
       z-index: 100000;
+      overflow: hidden;
+      transform: scale(0.9);
       opacity: 0;
       visibility: hidden;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-origin: bottom left;
     }
 
-    [dir="ltr"] .chat-modal { left: auto; right: 20px; }
-    .chat-modal.show { opacity: 1; visibility: visible; }
+    [dir="ltr"] .chat-modal { left: auto; right: 20px; transform-origin: bottom right; }
+
+    .chat-modal.show {
+      transform: scale(1);
+      opacity: 1;
+      visibility: visible;
+    }
 
     .chat-header {
-      background: rgba(2, 132, 199, 0.8);
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.8), rgba(3, 105, 161, 0.9));
       padding: 0.85rem 1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
     }
+
+    .chat-header-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .chat-close-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      box-shadow: none !important;
+      margin: 0;
+      padding: 0;
+    }
+
+    .chat-close-btn:hover { background: rgba(0,0,0,0.2); }
 
     .chat-body {
       flex: 1;
@@ -421,6 +626,7 @@
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
+      background: rgba(11, 15, 25, 0.5);
     }
 
     .chat-msg {
@@ -428,47 +634,96 @@
       padding: 0.65rem 0.85rem;
       border-radius: 1rem;
       font-size: 0.85rem;
+      line-height: 1.4;
+      word-break: break-word;
     }
 
-    .chat-msg.employee { background: #0284c7; color: #fff; align-self: flex-end; }
-    .chat-msg.hr { background: rgba(30, 41, 59, 0.9); color: var(--text); align-self: flex-start; }
+    .chat-msg.employee {
+      background: #0284c7;
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 0.25rem;
+    }
 
-    .chat-footer { padding: 0.75rem; display: flex; gap: 0.5rem; }
-    .chat-footer input { margin: 0; font-size: 0.85rem; }
+    .chat-msg.hr {
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid var(--border-color);
+      color: var(--text);
+      align-self: flex-start;
+      border-bottom-left-radius: 0.25rem;
+    }
+
+    .chat-footer {
+      padding: 0.75rem;
+      background: rgba(15, 23, 42, 0.98);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .chat-footer input {
+      margin: 0;
+      padding: 0.65rem 0.85rem;
+      font-size: 0.85rem;
+      text-align: right;
+    }
+
+    [dir="ltr"] .chat-footer input { text-align: left; }
+
+    .chat-send-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #0284c7;
+      border: none;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin: 0;
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.4);
+      flex-shrink: 0;
+    }
+
+    .chat-send-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: #fff;
+      transform: rotate(180deg);
+    }
+
+    [dir="ltr"] .chat-send-btn svg { transform: none; }
   </style>
 
-  <!-- Screen Wake Lock -->
   <script>
     let wakeLock = null;
     async function requestWakeLock() {
-      try {
-        if ('wakeLock' in navigator) {
-          wakeLock = await navigator.wakeLock.request('screen');
+      if ('wakeLock' in navigator) {
+        try {
+          if (wakeLock === null) {
+            wakeLock = await navigator.wakeLock.request('screen');
+          }
+        } catch (err) {
+          console.error(`Wake Lock error: ${err.name}, ${err.message}`);
         }
-      } catch (err) {
-        console.log(`Wake Lock Error: ${err.message}`);
       }
     }
-
     requestWakeLock();
-
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') requestWakeLock();
+    document.addEventListener('visibilitychange', async () => {
+      if (document.visibilityState === 'visible') await requestWakeLock();
     });
-    
-    ['click', 'touchstart', 'mousemove', 'keydown'].forEach(evt => {
-      window.addEventListener(evt, () => {
-        if (!wakeLock) requestWakeLock();
-      }, { passive: true });
-    });
+    document.addEventListener('touchstart', () => { requestWakeLock(); }, { passive: true });
   </script>
 </head>
 <body>
 
-  <!-- Intro Screen -->
+  <!-- Tornado Intro Overlay -->
   <div id="intro-screen">
-    <div class="intro-title-container" id="introTitle"></div>
-    <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
+    <div class="intro-content-wrapper">
+      <div class="intro-title-container" id="introTitle"></div>
+      <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
+    </div>
   </div>
 
   <!-- App Header -->
@@ -509,45 +764,17 @@
       
       <button id="t-loginBtn" onclick="login()">دخول الحساب</button>
 
-      <button type="button" class="btn-biometric" onclick="authenticateBiometrics()">
-        <svg style="width: 20px; height: 20px; fill: currentColor;" viewBox="0 0 24 24">
-          <path d="M17.81 4.42c-1.32-1.02-3.11-1.62-5.07-1.62-1.95 0-3.74.6-5.06 1.61C6.27 5.57 5.5 7.08 5.5 8.8c0 .41.34.75.75.75s.75-.34.75-.75c0-1.29.58-2.42 1.62-3.21 1.04-.8 2.45-1.29 4.14-1.29 1.68 0 3.1.48 4.13 1.28 1.04.8 1.61 1.93 1.61 3.22 0 3.09-2.02 5.09-3.9 6.84-.87.81-1.8 1.68-2.4 2.66-.54.89-.7 1.84-.7 2.75 0 .41.34.75.75.75s.75-.34.75-.75c0-.66.12-1.33.51-1.98.48-.79 1.27-1.53 2.05-2.26 2.11-1.96 4.49-4.18 4.49-7.99 0-1.73-.77-3.24-2.19-4.39z"/>
-        </svg>
-        <span>تسجيل الدخول بالبصمة</span>
-      </button>
-
       <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.85rem; font-weight: bold;"></p>
     </div>
 
     <!-- 2. Dashboard View -->
     <div id="view-dashboard" class="hidden">
-      <div class="user-header-card-top">
+      <div class="user-header-card">
         <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
         <div>
           <h3 id="dash-name" style="margin: 0; font-size: 1.1rem; font-weight: 700;">--</h3>
           <p id="dash-job" style="margin: 0; color: #38bdf8; font-size: 0.85rem;">--</p>
         </div>
-      </div>
-
-      <!-- Location Verification Status -->
-      <div class="location-box">
-        📍 <strong>الموقع الحالي:</strong> <span id="dist-status">جاري حساب المسافة دقيقاً...</span>
-        <button style="padding: 0.4rem; margin-top: 0.5rem; font-size: 0.75rem;" onclick="checkLocationAccurately()">تحديث الموقع (High Accuracy GPS)</button>
-      </div>
-
-      <!-- Swiper Slider -->
-      <div class="swiper mySwiper">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <h4 style="color:#38bdf8; margin-bottom:0.3rem;">أهم الإعلانات</h4>
-            <p style="font-size:0.8rem; color:var(--muted);">مرحباً بكم في نظام LM HR الجديد! يمكنك متابعة خدماتك بسهولة.</p>
-          </div>
-          <div class="swiper-slide">
-            <h4 style="color:#38bdf8; margin-bottom:0.3rem;">مختصر الراتب (Salary Summary)</h4>
-            <p style="font-size:0.85rem; color:var(--muted); font-weight:bold;">قريباً / Coming Soon</p>
-          </div>
-        </div>
-        <div class="swiper-pagination"></div>
       </div>
 
       <div class="services-grid">
@@ -585,122 +812,210 @@
 
     <!-- 3. ID Card View -->
     <div id="view-id-card" class="card hidden">
-      <button class="back-btn" id="t-backBtn1" onclick="showPage('view-dashboard')">← رجوع</button>
-      <div class="id-card" id="myCardToDownload">
-        <h3 id="userName" style="margin: 0.5rem 0;">--</h3>
-        <p id="userJob" style="color: #38bdf8;">--</p>
-        <div id="qrcode" style="margin-top: 1rem;"></div>
+      <div class="nav-bar">
+        <button class="back-btn" id="t-backBtn1" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span id="t-cardTitle" style="font-weight: 700; font-size: 0.9rem;">الكارت الرقمي</span>
       </div>
+
+      <div class="id-card" id="myCardToDownload">
+        <div class="id-card-header">
+          <span style="font-weight: 800; font-size: 0.85rem; color: #38bdf8; letter-spacing: 1px;">LACTO MISR S.A.E</span>
+          <span style="font-size: 0.65rem; background: rgba(2, 132, 199, 0.4); border: 1px solid var(--accent); color: #38bdf8; padding: 0.15rem 0.5rem; border-radius: 0.5rem; font-weight: 600;">VERIFIED</span>
+        </div>
+        <img id="userPhoto" class="profile-img" crossorigin="anonymous" src="" alt="User">
+        <h3 id="userName" style="margin:0 0 0.2rem 0; font-size: 1.1rem;">--</h3>
+        <p id="userJob" style="color: #38bdf8; font-size: 0.85rem; margin:0 0 0.85rem 0;">--</p>
+        
+        <div class="info-grid">
+          <div><div class="info-label" id="t-lblDept">الإدارة</div><div id="userDept" class="info-val">--</div></div>
+          <div><div class="info-label" id="t-lblCode">كود الموظف</div><div id="userCodeVal" class="info-val">--</div></div>
+          <div style="grid-column: span 2;"><div class="info-label" id="t-lblNID">الرقم القومي</div><div id="userNID" class="info-val">--</div></div>
+        </div>
+
+        <div class="qr-container"><div id="qrcode"></div></div>
+      </div>
+
+      <button id="t-saveCardBtn" onclick="downloadCard()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 8px 0 #047857, 0 12px 20px rgba(16, 185, 129, 0.3), inset 0 2px 2px rgba(255, 255, 255, 0.3);">حفظ الكارت كصورة</button>
     </div>
 
+    <!-- 4. Leaves View -->
     <div id="view-leaves" class="card hidden">
-      <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
-      <p style="padding:1rem;">خدمة الإجازات - قريباً</p>
+      <div class="nav-bar">
+        <button class="back-btn" id="t-backBtn2" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span id="t-leaveTitle" style="font-weight: 700;">خدمة الإجازات</span>
+      </div>
+      <p id="t-leaveMsg" style="color: var(--muted); font-size: 0.85rem; line-height: 1.6; padding: 1rem 0;">قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.</p>
     </div>
+
+    <!-- 5. Payroll View -->
     <div id="view-payroll" class="card hidden">
-      <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
-      <p style="padding:1rem;">مفردات المرتب - قريباً</p>
+      <div class="nav-bar">
+        <button class="back-btn" id="t-backBtn3" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span id="t-payTitle" style="font-weight: 700;">مفردات المرتب</span>
+      </div>
+      <p id="t-payMsg" style="color: var(--muted); font-size: 0.85rem; line-height: 1.6; padding: 1rem 0;">قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.</p>
     </div>
+
+    <!-- 6. Directory View -->
     <div id="view-directory" class="card hidden">
-      <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
-      <p style="padding:1rem;">دليل التواصل - قريباً</p>
+      <div class="nav-bar">
+        <button class="back-btn" id="t-backBtn4" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span id="t-dirTitle" style="font-weight: 700;">دليل التواصل</span>
+      </div>
+      <p id="t-dirMsg" style="color: var(--muted); font-size: 0.85rem; line-height: 1.6; padding: 1rem 0;">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
     </div>
 
   </div>
 
-  <!-- Chat Floating Buttons -->
+  <!-- Floating Chat Button -->
   <div class="floating-chat-btn" id="chatFloatingBtn" onclick="toggleChatModal()">
-    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+    <svg viewBox="0 0 24 24">
+      <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
+    </svg>
   </div>
 
+  <!-- Chat Modal Window -->
   <div class="chat-modal" id="chatModal">
     <div class="chat-header">
-      <span>محادثة دعم الـ HR</span>
-      <button style="width:auto; margin:0;" onclick="toggleChatModal()">×</button>
+      <div class="chat-header-title">
+        💬 <span id="t-chatHeader">محادثة دعم الـ HR</span>
+      </div>
+      <button class="chat-close-btn" onclick="toggleChatModal()">×</button>
     </div>
     <div class="chat-body" id="chatBody">
-      <div class="chat-msg hr">مرحباً بك! اكتب استفسارك وسيقوم فريق الموارد البشرية بالرد عليك.</div>
+      <div class="chat-msg hr" id="t-welcomeChat">مرحباً بك! اكتب استفسارك وسيقوم فريق الموارد البشرية بالرد عليك قريباً.</div>
     </div>
     <div class="chat-footer">
-      <input type="text" id="chatInput" placeholder="اكتب رسالتك...">
-      <button style="width: auto; margin: 0;" onclick="sendChatMessage()">إرسال</button>
+      <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا..." onkeypress="handleChatKeyPress(event)">
+      <button class="chat-send-btn" onclick="sendChatMessage()">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
     </div>
   </div>
 
   <script>
-    // Initialize Swiper
-    var swiper = new Swiper(".mySwiper", {
-      allowTouchMove: true,
-      loop: true,
-      pagination: { el: ".swiper-pagination", clickable: true },
-    });
+    // Tornado Animation with Auto-Dismiss Guard
+    function runTornadoIntro() {
+      const introScreen = document.getElementById('intro-screen');
+      
+      // Safety auto-dismiss after 4.5 seconds to prevent frozen overlay
+      const dismissTimeout = setTimeout(() => {
+        if (introScreen) introScreen.classList.add('fade-out');
+      }, 4500);
 
-    // ----------------------------------------------------
-    // GEOLOCATION & DISTANCE FIX (تصحيح المسافة والـ GPS)
-    // ----------------------------------------------------
-    
-    // ضع إحداثيات الشركة الصحيحة هنا (Latitude, Longitude)
-    const COMPANY_LAT = 30.2981; // استبدلها بخط عرض مدرستك/شركتك
-    const COMPANY_LNG = 31.7412; // استبدلها بخط طول مدرستك/شركتك
+      const text = "LACTO MISR S.A.E";
+      const container = document.getElementById('introTitle');
+      const subtitle = document.getElementById('introSubtitle');
+      if (!container || !subtitle) return;
+      
+      container.innerHTML = "";
+      const charElements = [];
 
-    function calculateDistanceInMeters(lat1, lon1, lat2, lon2) {
-      const R = 6371000; // نصف قطر الأرض بالمتر
-      const dLat = (lat2 - lat1) * Math.PI / 180;
-      const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a = 
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      return Math.round(R * c); // إرجاع المسافة بالمتر
-    }
+      for (let char of text) {
+        if (char === ' ') {
+          const space = document.createElement('span');
+          space.className = 'intro-space';
+          container.appendChild(space);
+        } else {
+          const span = document.createElement('span');
+          span.className = 'intro-char';
+          span.innerText = char;
+          container.appendChild(span);
+          charElements.push(span);
+        }
+      }
 
-    function checkLocationAccurately() {
-      const statusEl = document.getElementById('dist-status');
-      if (statusEl) statusEl.innerText = "جاري الاتصال بالـ GPS...";
-
-      if (!navigator.geolocation) {
-        if (statusEl) statusEl.innerText = "الـ GPS غير مدعوم في متصفحك";
+      if (typeof gsap === 'undefined') {
+        introScreen.classList.add('fade-out');
         return;
       }
 
-      const options = {
-        enableHighAccuracy: true, // إجبار الدقة العالية بدلاً من الـ Wi-Fi
-        timeout: 10000,
-        maximumAge: 0
-      };
+      const directions = [
+        { x: -600, y: -500 }, { x: 0, y: -600 }, { x: 600, y: -500 },
+        { x: 600, y: 0 }, { x: 600, y: 500 }, { x: 0, y: 600 },
+        { x: -600, y: 500 }, { x: -600, y: 0 }
+      ];
 
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
-          
-          const distance = calculateDistanceInMeters(userLat, userLng, COMPANY_LAT, COMPANY_LNG);
-          
-          if (statusEl) {
-            statusEl.innerText = `أنت يبعد عن الشركة حوالي ${distance} متر`;
-            statusEl.style.color = distance <= 200 ? "#10b981" : "#ef4444";
-          }
-        },
-        (error) => {
-          if (statusEl) statusEl.innerText = "تعذر تحديد الموقع، برجاء تفعيل الـ GPS";
-        },
-        options
-      );
+      const tl = gsap.timeline({
+        onComplete: () => {
+          clearTimeout(dismissTimeout);
+          introScreen.classList.add('fade-out');
+        }
+      });
+
+      charElements.forEach((el, index) => {
+        const randomAngle = (index / charElements.length) * Math.PI * 4;
+        const radius = 150 + Math.random() * 50;
+        gsap.set(el, {
+          y: -300 - (index * 20),
+          x: Math.cos(randomAngle) * radius,
+          z: Math.sin(randomAngle) * radius,
+          rotationX: Math.random() * 360 - 180,
+          rotationY: Math.random() * 360 - 180,
+          rotationZ: Math.random() * 360 - 180,
+          opacity: 0,
+          scale: 0.2
+        });
+      });
+
+      gsap.set(subtitle, { opacity: 0, y: 20 });
+
+      tl.to(charElements, {
+        duration: 1.8,
+        x: 0, y: 0, z: 0,
+        rotationX: 0, rotationY: 0, rotationZ: 0,
+        opacity: 1, scale: 1,
+        stagger: 0.05,
+        ease: "power2.out"
+      })
+      .to(subtitle, {
+        duration: 0.8,
+        opacity: 1, y: 0,
+        ease: "power2.out"
+      }, "-=0.5")
+      .to(charElements, {
+        duration: 0.8,
+        textShadow: "0 0 35px rgba(56, 189, 248, 1)",
+        scale: 1.05,
+        yoyo: true, repeat: 1,
+        ease: "sine.inOut"
+      }, "+=0.3")
+      .to(subtitle, {
+        duration: 0.6,
+        opacity: 0, y: -20,
+        ease: "power1.in"
+      }, "scatter");
+
+      charElements.forEach((el, index) => {
+        const dir = directions[index % directions.length];
+        tl.to(el, {
+          duration: 0.8,
+          x: dir.x, y: dir.y, z: Math.random() * 200 - 100,
+          opacity: 0, scale: 0.5,
+          ease: "power1.inOut"
+        }, index === 0 ? "scatter" : `-=0.75`);
+      });
     }
 
-    // Toggle Pass
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', runTornadoIntro);
+    } else {
+      runTornadoIntro();
+    }
+
     function togglePasswordVisibility() {
       const passInput = document.getElementById('empPass');
-      passInput.type = (passInput.type === 'password') ? 'text' : 'password';
+      const eyeIcon = document.getElementById('eyeIcon');
+      
+      if (passInput.type === 'password') {
+        passInput.type = 'text';
+        eyeIcon.innerHTML = '<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.12c0-1.66-1.34-3-3-3l-.17.02z"/>';
+      } else {
+        passInput.type = 'password';
+        eyeIcon.innerHTML = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>';
+      }
     }
 
-    // Biometrics
-    function authenticateBiometrics() {
-      alert("جاري التحقق من البصمة الرقمية...");
-    }
-
-    // Firebase Init & Flow
     const firebaseConfig = {
       apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
       authDomain: "lacto-hr-system.firebaseapp.com",
@@ -711,8 +1026,87 @@
       appId: "1:671259800401:web:905e1a36adba52ba2d1970"
     };
 
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
     const db = firebase.database();
+
+    let currentUserData = null;
+    let currentEmpCode = "";
+    let currentLang = localStorage.getItem('lacto_lang') || 'ar';
+
+    const translations = {
+      ar: {
+        langText: "العربية",
+        subtitle: "بوابة الموظفين والمدراء الرقمية",
+        codeHolder: "كود الموظف",
+        passHolder: "كلمة السر",
+        loginBtn: "دخول الحساب",
+        btnID: "كارت الهوية",
+        btnLeaves: "طلبات الإجازات",
+        btnPay: "مفردات المرتب",
+        btnDir: "دليل التواصل",
+        logoutBtn: "تسجيل الخروج",
+        backBtn: "← رجوع",
+        cardTitle: "الكارت الرقمي",
+        lblDept: "الإدارة",
+        lblCode: "كود الموظف",
+        lblNID: "الرقم القومي",
+        saveCardBtn: "حفظ الكارت كصورة",
+        leaveTitle: "خدمة الإجازات",
+        leaveMsg: "قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.",
+        payTitle: "مفردات المرتب",
+        payMsg: "قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.",
+        dirTitle: "دليل التواصل",
+        dirMsg: "أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.",
+        chatHeader: "محادثة دعم الـ HR",
+        welcomeChat: "مرحباً بك! اكتب استفسارك وسيقوم فريق الموارد البشرية بالرد عليك قريباً.",
+        chatPlaceholder: "اكتب رسالتك هنا..."
+      },
+      en: {
+        langText: "English",
+        subtitle: "Digital Employee Portal",
+        codeHolder: "Employee Code",
+        passHolder: "Password",
+        loginBtn: "Sign In",
+        btnID: "ID Card",
+        btnLeaves: "Leave Requests",
+        btnPay: "Pay Slip",
+        btnDir: "Directory",
+        logoutBtn: "Sign Out",
+        backBtn: "Back →",
+        cardTitle: "Digital ID",
+        lblDept: "Department",
+        lblCode: "Emp Code",
+        lblNID: "National ID",
+        saveCardBtn: "Save Card Image",
+        leaveTitle: "Leave Requests",
+        leaveMsg: "Coming Soon: Submit your leave and permission requests directly.",
+        payTitle: "Pay Slip",
+        payMsg: "Coming Soon: Access your monthly salary slips easily.",
+        dirTitle: "Directory",
+        dirMsg: "Emergency numbers, medical clinic, and HR contact list.",
+        chatHeader: "HR Support Chat",
+        welcomeChat: "Welcome! Type your inquiry and our HR team will reply shortly.",
+        chatPlaceholder: "Type your message here..."
+      }
+    };
+
+    function toggleLangMenu() {
+      document.getElementById('langMenu').classList.toggle('show');
+    }
+
+    function selectLanguage(lang) {
+      toggleLangMenu();
+      setLanguage(lang);
+    }
+
+    window.onclick = function(event) {
+      if (!event.target.matches('.lang-dropdown-btn') && !event.target.matches('#current-lang-text')) {
+        const dropdown = document.getElementById('langMenu');
+        if (dropdown && dropdown.classList.contains('show')) dropdown.classList.remove('show');
+      }
+    }
 
     function showPage(pageId) {
       const views = ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory'];
@@ -721,10 +1115,27 @@
         if (el) el.classList.add('hidden');
       });
       document.getElementById(pageId).classList.remove('hidden');
+    }
 
-      if (pageId === 'view-dashboard') {
-        checkLocationAccurately();
-      }
+    function renderProfileData() {
+      if (!currentUserData) return;
+      const user = currentUserData;
+      const isEn = (currentLang === 'en');
+
+      const name = isEn ? (user.name_en || user.name) : user.name;
+      const job = isEn ? (user.job_en || user.job) : user.job;
+      const dept = isEn ? (user.dept_en || user.dept) : user.dept;
+
+      document.getElementById('dash-name').innerText = name || "--";
+      document.getElementById('dash-job').innerText = job || "--";
+      document.getElementById('dash-avatar').src = user.photo || "https://i.pravatar.cc/150?img=12";
+
+      document.getElementById('userName').innerText = name || "--";
+      document.getElementById('userJob').innerText = job || "--";
+      document.getElementById('userDept').innerText = dept || "--";
+      document.getElementById('userCodeVal').innerText = currentEmpCode;
+      document.getElementById('userNID').innerText = user.nationalId || "--";
+      document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
     }
 
     function login() {
@@ -732,34 +1143,162 @@
       const pass = document.getElementById('empPass').value.trim();
       const errorEl = document.getElementById('error');
       
-      if (!code) { errorEl.innerText = "يرجى إدخال الكود"; return; }
+      errorEl.innerText = (currentLang === 'en') ? "Connecting..." : "جاري الاتصال...";
+
+      if (!code) { 
+        errorEl.innerText = (currentLang === 'en') ? "Please enter employee code" : "يرجى إدخال الكود"; 
+        return; 
+      }
 
       db.ref('users/' + code).once('value').then((snapshot) => {
         if (snapshot.exists()) {
           const user = snapshot.val();
           if (user.password !== pass) {
-            errorEl.innerText = "كلمة السر غير صحيحة!";
+            errorEl.innerText = (currentLang === 'en') ? "Incorrect Password!" : "كلمة السر غير صحيحة!";
             return;
           }
 
-          document.getElementById('dash-name').innerText = user.name || "--";
-          document.getElementById('dash-job').innerText = user.job || "--";
-          document.getElementById('dash-avatar').src = user.photo || "https://i.pravatar.cc/150?img=12";
+          currentUserData = user;
+          currentEmpCode = code;
+          errorEl.innerText = "";
 
+          renderProfileData();
+
+          const currentUrl = window.location.origin + window.location.pathname;
+          document.getElementById('qrcode').innerHTML = "";
+          new QRCode(document.getElementById("qrcode"), { 
+            text: currentUrl + "?emp=" + code, 
+            width: 85, 
+            height: 85 
+          });
+
+          listenToChatMessages(code);
           showPage('view-dashboard');
         } else {
-          errorEl.innerText = "كود الموظف غير مسجل!";
+          errorEl.innerText = (currentLang === 'en') ? "Employee code not found!" : "كود الموظف غير مسجل!";
         }
+      }).catch((err) => {
+        console.error(err);
+        errorEl.innerText = (currentLang === 'en') ? "Connection Error!" : "حدث خطأ في الاتصال!";
       });
     }
 
-    function toggleChatModal() {
-      document.getElementById('chatModal').classList.toggle('show');
+    function downloadCard() {
+      html2canvas(document.getElementById('myCardToDownload'), { useCORS: true, scale: 2 }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'Lacto_ID_' + currentEmpCode + '.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
     }
 
     function logout() {
       window.location.reload();
     }
+
+    function toggleChatModal() {
+      const modal = document.getElementById('chatModal');
+      modal.classList.toggle('show');
+      if (modal.classList.contains('show')) {
+        const chatBody = document.getElementById('chatBody');
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+    }
+
+    function handleChatKeyPress(e) {
+      if (e.key === 'Enter') sendChatMessage();
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const senderId = (currentEmpCode && currentEmpCode !== "") ? currentEmpCode : ("guest_" + Math.floor(Math.random() * 10000));
+
+      const msgData = {
+        sender: senderId,
+        senderName: currentUserData ? currentUserData.name : "زائر",
+        text: text,
+        timestamp: Date.now(),
+        isAdmin: false
+      };
+
+      db.ref('chats/' + senderId).push(msgData);
+      input.value = "";
+    }
+
+    function listenToChatMessages(empCode) {
+      if (!empCode) return;
+      const chatBody = document.getElementById('chatBody');
+      db.ref('chats/' + empCode).off();
+      
+      const t = translations[currentLang];
+      chatBody.innerHTML = `<div class="chat-msg hr" id="t-welcomeChat">${t.welcomeChat}</div>`;
+
+      db.ref('chats/' + empCode).on('child_added', (snapshot) => {
+        const msg = snapshot.val();
+        if (!msg) return;
+
+        const messageContent = (typeof msg === 'string') ? msg : (msg.text || msg.message || '');
+        if (!messageContent) return;
+
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'chat-msg ' + (msg.isAdmin ? 'hr' : 'employee');
+        msgDiv.innerText = messageContent;
+
+        chatBody.appendChild(msgDiv);
+        chatBody.scrollTop = chatBody.scrollHeight;
+      });
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lacto_lang', lang);
+      document.documentElement.lang = lang;
+      document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+
+      const t = translations[lang];
+      document.getElementById('current-lang-text').innerText = t.langText;
+      document.getElementById('t-subtitle').innerText = t.subtitle;
+      document.getElementById('empCode').placeholder = t.codeHolder;
+      document.getElementById('empPass').placeholder = t.passHolder;
+      document.getElementById('t-loginBtn').innerText = t.loginBtn;
+      document.getElementById('t-btnID').innerText = t.btnID;
+      document.getElementById('t-btnLeaves').innerText = t.btnLeaves;
+      document.getElementById('t-btnPay').innerText = t.btnPay;
+      document.getElementById('t-btnDir').innerText = t.btnDir;
+      document.getElementById('t-logoutBtn').innerText = t.logoutBtn;
+
+      document.getElementById('t-backBtn1').innerText = t.backBtn;
+      document.getElementById('t-backBtn2').innerText = t.backBtn;
+      document.getElementById('t-backBtn3').innerText = t.backBtn;
+      document.getElementById('t-backBtn4').innerText = t.backBtn;
+
+      document.getElementById('t-cardTitle').innerText = t.cardTitle;
+      document.getElementById('t-lblDept').innerText = t.lblDept;
+      document.getElementById('t-lblCode').innerText = t.lblCode;
+      document.getElementById('t-lblNID').innerText = t.lblNID;
+      document.getElementById('t-saveCardBtn').innerText = t.saveCardBtn;
+
+      document.getElementById('t-leaveTitle').innerText = t.leaveTitle;
+      document.getElementById('t-leaveMsg').innerText = t.leaveMsg;
+      document.getElementById('t-payTitle').innerText = t.payTitle;
+      document.getElementById('t-payMsg').innerText = t.payMsg;
+      document.getElementById('t-dirTitle').innerText = t.dirTitle;
+      document.getElementById('t-dirMsg').innerText = t.dirMsg;
+
+      document.getElementById('t-chatHeader').innerText = t.chatHeader;
+      
+      const welcomeEl = document.getElementById('t-welcomeChat');
+      if (welcomeEl) welcomeEl.innerText = t.welcomeChat;
+      
+      document.getElementById('chatInput').placeholder = t.chatPlaceholder;
+
+      renderProfileData();
+    }
+
+    setLanguage(currentLang);
   </script>
 </body>
 </html>
