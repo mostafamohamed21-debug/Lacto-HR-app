@@ -62,7 +62,7 @@
     }
 
     /* ----------------------------------
-       1. Slow & Cinematic Tornado Intro 
+       1. Fixed 3D Tornado Intro Screen 
     ---------------------------------- */
     #intro-screen {
       position: fixed;
@@ -76,46 +76,50 @@
       justify-content: center;
       align-items: center;
       z-index: 99999;
-      perspective: 1200px;
+      perspective: 1000px;
       overflow: hidden;
     }
 
     .intro-title-container {
       display: flex;
-      gap: 0.15rem;
+      gap: 0.12rem;
       justify-content: center;
       align-items: center;
       direction: ltr;
       margin-bottom: 1.5rem;
       transform-style: preserve-3d;
+      flex-wrap: nowrap;
     }
 
     .intro-char {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: clamp(2rem, 7vw, 2.8rem);
+      font-size: clamp(1.2rem, 4.5vw, 1.8rem); /* حجم خط مناسب بدون تضخم */
       font-weight: 800;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 25px rgba(56, 189, 248, 0.8);
+      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
       display: inline-block;
       opacity: 0;
       will-change: transform, opacity;
+      transform-style: preserve-3d;
     }
 
-    .intro-space { width: 0.7rem; }
+    .intro-space { width: 0.4rem; }
 
     .intro-subtitle {
       font-family: 'Great Vibes', cursive;
-      font-size: clamp(1.5rem, 4.5vw, 2.2rem);
+      font-size: clamp(1.2rem, 3.8vw, 1.8rem);
       color: #38bdf8;
       text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
       opacity: 0;
       transform: translateY(20px);
+      text-align: center;
+      padding: 0 1rem;
     }
 
     /* ----------------------------------
-       2. Fixed Position Header & Lang Button
+       2. Fixed Header & Clean Language Selector
     ---------------------------------- */
     .app-header {
       width: 100%;
@@ -123,15 +127,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 1.25rem;
+      padding: 0.8rem 1rem;
       z-index: 50;
       position: relative;
     }
 
-    .brand-container { display: flex; align-items: center; gap: 0.6rem; }
-    .brand-logo { width: 36px; height: 36px; object-fit: contain; border-radius: 8px; }
+    .brand-container { display: flex; align-items: center; gap: 0.5rem; }
+    .brand-logo { width: 34px; height: 34px; object-fit: contain; border-radius: 8px; }
     .brand-title {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 800;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text;
@@ -139,51 +143,99 @@
     }
 
     .lang-dropdown-container {
-      position: absolute;
-      top: 1rem;
-      left: 1.25rem;
-    }
-    [dir="rtl"] .lang-dropdown-container {
-      left: auto;
-      right: 1.25rem;
+      position: relative;
+      display: inline-block;
     }
 
     .lang-dropdown-btn {
-      background: rgba(30, 41, 59, 0.9);
+      background: rgba(30, 41, 59, 0.85);
       border: 1px solid var(--border-color);
       color: var(--text);
-      padding: 0.4rem 0.8rem;
-      border-radius: 1rem;
-      font-size: 0.85rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 0.8rem;
+      font-size: 0.8rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.3rem;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      width: auto;
+      margin: 0;
     }
 
     .lang-dropdown-menu {
       position: absolute;
-      top: 115%;
+      top: 110%;
       left: 0;
       background: rgba(15, 23, 42, 0.98);
       border: 1px solid var(--border-color);
-      border-radius: 1rem;
+      border-radius: 0.8rem;
       display: none;
       z-index: 200;
-      min-width: 130px;
+      min-width: 120px;
       overflow: hidden;
       box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     }
     [dir="rtl"] .lang-dropdown-menu { left: auto; right: 0; }
     .lang-dropdown-menu.show { display: block; }
-    .lang-option { padding: 0.65rem 1rem; font-size: 0.85rem; cursor: pointer; transition: background 0.2s; }
+    .lang-option { padding: 0.5rem 0.8rem; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; }
     .lang-option:hover { background: rgba(56, 189, 248, 0.2); }
 
     /* ----------------------------------
-       3 & 4. Biometrics Card & Header Border Fix
+       3. Smooth Password Box with Detached Eye Button
     ---------------------------------- */
+    .password-wrapper {
+      position: relative;
+      width: 100%;
+      margin: 0.5rem 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .password-wrapper input {
+      margin: 0;
+      padding-left: 3rem !important;
+      padding-right: 1rem !important;
+    }
+    [dir="rtl"] .password-wrapper input {
+      padding-right: 3rem !important;
+      padding-left: 1rem !important;
+    }
+
+    .toggle-eye-btn {
+      position: absolute;
+      left: 0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0.6rem;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--neon-blue);
+      z-index: 10;
+      box-shadow: none;
+      margin: 0;
+      padding: 0;
+      transition: all 0.2s ease;
+      touch-action: manipulation;
+    }
+    [dir="rtl"] .toggle-eye-btn {
+      left: auto;
+      right: 0.5rem;
+    }
+    .toggle-eye-btn:active {
+      transform: translateY(-50%) scale(0.9);
+      background: rgba(56, 189, 248, 0.2);
+    }
+    .toggle-eye-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; pointer-events: none; }
+
+    /* Profile Header & Bio Card */
     .emp-profile-header {
       width: 100%;
       max-width: 420px;
@@ -258,49 +310,6 @@
     .bio-btn:active { transform: scale(0.92); }
     .bio-btn svg { width: 42px; height: 42px; fill: none; stroke: var(--neon-blue); stroke-width: 1.8; stroke-linecap: round; }
     .bio-status { font-size: 0.82rem; color: var(--muted); font-weight: 600; text-align: center; }
-
-    /* ----------------------------------
-       5. Password Box with Toggle Eye
-    ---------------------------------- */
-    .password-wrapper {
-      position: relative;
-      width: 100%;
-      margin: 0.5rem 0;
-    }
-
-    .password-wrapper input {
-      margin: 0;
-      padding-left: 2.8rem;
-      padding-right: 1rem;
-    }
-    [dir="rtl"] .password-wrapper input {
-      padding-right: 2.8rem;
-      padding-left: 1rem;
-    }
-
-    .toggle-eye-btn {
-      position: absolute;
-      top: 50%;
-      left: 0.8rem;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      margin: 0;
-      box-shadow: none;
-      width: auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--muted);
-      z-index: 5;
-    }
-    [dir="rtl"] .toggle-eye-btn {
-      left: auto;
-      right: 0.8rem;
-    }
-    .toggle-eye-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; }
 
     /* Slides & General UI */
     .slides-container {
@@ -497,7 +506,7 @@
 </head>
 <body>
 
-  <!-- 1. Intro Screen (Full 3D Cinematic Tornado) -->
+  <!-- 1. Intro Screen with True 3D Tornado Spin Animation -->
   <div id="intro-screen">
     <div class="intro-title-container" id="introTitle"></div>
     <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
@@ -522,7 +531,7 @@
     </div>
   </div>
 
-  <!-- Dashboard Top Header (Employee Card) -->
+  <!-- Dashboard Top Header -->
   <div id="top-emp-header" class="emp-profile-header hidden">
     <div class="emp-profile-content">
       <img id="dash-avatar" class="emp-avatar" src="" alt="Avatar">
@@ -534,7 +543,7 @@
     </div>
   </div>
 
-  <!-- Biometric Card with Detailed Fingerprint Lines -->
+  <!-- Biometric Card -->
   <div id="top-bio-card" class="biometric-card hidden">
     <div class="bio-btn" onclick="triggerBiometricCheckIn()">
       <svg viewBox="0 0 24 24">
@@ -555,10 +564,10 @@
       
       <input type="text" id="empCode" placeholder="كود الموظف">
       
-      <!-- Password Box with Toggle Eye -->
+      <!-- Password Box with Separated Eye Toggle Button -->
       <div class="password-wrapper">
         <input type="password" id="empPass" placeholder="كلمة السر">
-        <button type="button" class="toggle-eye-btn" onclick="togglePasswordVisibility()" tabIndex="-1">
+        <button type="button" class="toggle-eye-btn" onclick="togglePasswordVisibility(event)" tabIndex="-1">
           <svg id="eyeIcon" viewBox="0 0 24 24">
             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
             <circle cx="12" cy="12" r="3"></circle>
@@ -725,7 +734,6 @@
       return R * c;
     }
 
-    // Wake Lock API
     let wakeLock = null;
     async function requestWakeLock() {
       try {
@@ -737,7 +745,7 @@
       }
     }
 
-    // 1. Tornado 3D Intro Animation (بطيئة وانسيابية كلوحة فنية)
+    // 1. Complete Tornado 3D Spin Animation (حركة إعصار حقيقية حلزونية مع دوران الحروف)
     function runTornadoIntro() {
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
@@ -762,41 +770,52 @@
       const tl = gsap.timeline({
         onComplete: () => {
           gsap.to('#intro-screen', {
-            duration: 1.2,
+            duration: 1.0,
             opacity: 0,
             visibility: 'hidden',
-            delay: 1.5,
+            delay: 1.2,
             ease: "power2.inOut"
           });
         }
       });
 
-      // نزول بطيء ورزين للحروف
-      tl.fromTo(chars, 
-        {
-          y: -350,
-          rotationX: () => Math.random() * 360 - 180,
-          rotationY: () => Math.random() * 360 - 180,
-          rotationZ: () => Math.random() * 180 - 90,
-          scale: 0.3,
-          opacity: 0
-        },
-        {
-          duration: 2.8,
-          y: 0,
-          rotationX: 0,
-          rotationY: 0,
-          rotationZ: 0,
-          scale: 1,
-          opacity: 1,
-          stagger: 0.12,
-          ease: "power3.out"
-        }
-      );
+      // حركة الإعصار الحلزونية الحقيقية (3D Tornado)
+      chars.forEach((char, index) => {
+        const angle = (index / chars.length) * Math.PI * 4; // مسار حلزوني
+        const radius = 180 + Math.random() * 80; // قطر الإعصار
 
-      // ظهور الجملة التوضيحية بنعومة
+        const startX = Math.cos(angle) * radius;
+        const startY = -400 - (index * 25); // الهبوط التدريجي من أعلى الإعصار
+        const startZ = Math.sin(angle) * radius;
+
+        tl.fromTo(char, 
+          {
+            x: startX,
+            y: startY,
+            z: startZ,
+            rotationY: 720, // دوران الحرف حول نفسه دورات كاملة
+            rotationX: 360,
+            scale: 0.1,
+            opacity: 0
+          },
+          {
+            duration: 2.6,
+            x: 0,
+            y: 0,
+            z: 0,
+            rotationY: 0,
+            rotationX: 0,
+            scale: 1,
+            opacity: 1,
+            ease: "power2.out"
+          },
+          index * 0.08 // دخول الحروف ورا بعضها بانتظام لإعطاء مظهر الحلزون
+        );
+      });
+
+      // ظهور النص الإضافي تحت اللوحة بنعومة
       tl.to(subtitle, { 
-        duration: 1.5, 
+        duration: 1.2, 
         opacity: 1, 
         y: 0, 
         ease: "power2.out" 
@@ -814,8 +833,13 @@
       if (document.visibilityState === 'visible') requestWakeLock();
     });
 
-    // Toggle Password Eye Visibility
-    function togglePasswordVisibility() {
+    // Toggle Password Visibility Smoothly
+    function togglePasswordVisibility(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      
       const input = document.getElementById('empPass');
       const eyeIcon = document.getElementById('eyeIcon');
 
