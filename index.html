@@ -1292,9 +1292,12 @@
       if (!empCode) return;
       const chatBody = document.getElementById('chatBody');
       
-      // تفريغ الشات وإيقاف المستمع القديم إن وجد
+      // إيقاف المستمع القديم إن وجد
       db.ref('chats/' + empCode).off();
-      chatBody.innerHTML = '';
+      
+      // إرجاع الرسالة الترحيبية المترجمة حسب اللغة الحالية
+      const t = translations[currentLang];
+      chatBody.innerHTML = `<div class="chat-msg hr" id="t-welcomeChat">${t.welcomeChat}</div>`;
 
       db.ref('chats/' + empCode).on('child_added', (snapshot) => {
         const msg = snapshot.val();
@@ -1350,7 +1353,10 @@
       document.getElementById('t-dirMsg').innerText = t.dirMsg;
 
       document.getElementById('t-chatHeader').innerText = t.chatHeader;
-      document.getElementById('t-welcomeChat').innerText = t.welcomeChat;
+      
+      const welcomeEl = document.getElementById('t-welcomeChat');
+      if (welcomeEl) welcomeEl.innerText = t.welcomeChat;
+      
       document.getElementById('chatInput').placeholder = t.chatPlaceholder;
 
       renderProfileData();
