@@ -61,14 +61,14 @@
       overflow-x: hidden;
     }
 
-    /* Intro Tornado Animation (1s Duration) */
+    /* Intro Screen */
     #intro-screen {
       position: fixed;
       inset: 0;
-      background: linear-gradient(rgba(11, 15, 25, 0.96), rgba(11, 15, 25, 0.99)), url('background.jpg');
+      background: linear-gradient(rgba(11, 15, 25, 0.97), rgba(11, 15, 25, 0.99)), url('background.jpg');
       background-size: cover;
       background-position: center;
-      backdrop-filter: blur(15px);
+      backdrop-filter: blur(20px);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -90,7 +90,7 @@
 
     .intro-char {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: clamp(1.6rem, 5.2vw, 2.3rem);
+      font-size: clamp(1.6rem, 5.2vw, 2.4rem);
       font-weight: 800;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text;
@@ -98,8 +98,6 @@
       text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
       display: inline-block;
       opacity: 0;
-      will-change: transform, opacity;
-      transform-style: preserve-3d;
     }
 
     .intro-space { width: 0.5rem; }
@@ -172,7 +170,7 @@
     .lang-option { padding: 0.5rem 0.8rem; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; }
     .lang-option:hover { background: rgba(56, 189, 248, 0.2); }
 
-    /* Fixed Password Input & Aligned Eye Switch */
+    /* Password Input & Eye Switch */
     .password-wrapper {
       position: relative;
       width: 100%;
@@ -184,7 +182,7 @@
     .password-wrapper input {
       width: 100%;
       margin: 0;
-      padding: 0.85rem 3.2rem 0.85rem 1rem !important; /* مساحة مناسبة على اليمين للعين في وضع RTL */
+      padding: 0.85rem 3.2rem 0.85rem 1rem !important;
     }
     [dir="ltr"] .password-wrapper input {
       padding: 0.85rem 1rem 0.85rem 3.2rem !important;
@@ -192,7 +190,7 @@
 
     .toggle-eye-btn {
       position: absolute;
-      right: 12px; /* تم الضبط بدقة داخل حدود الحقل */
+      right: 14px;
       top: 50%;
       transform: translateY(-50%);
       background: transparent;
@@ -208,10 +206,10 @@
       margin: 0;
       padding: 0;
     }
-    [dir="ltr"] .toggle-eye-btn { right: auto; left: 12px; }
+    [dir="ltr"] .toggle-eye-btn { right: auto; left: 14px; }
     .toggle-eye-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; pointer-events: none; }
 
-    /* Profile Header & Real Fingerprint Icon */
+    /* Profile Header */
     .emp-profile-header {
       width: 100%;
       max-width: 420px;
@@ -250,43 +248,53 @@
       font-weight: 700;
     }
 
+    /* Fingerprint Card Design */
     .biometric-card {
       width: 90%;
       max-width: 380px;
-      background: rgba(11, 20, 38, 0.98);
-      border: 1.5px solid var(--neon-blue);
-      border-radius: 1.5rem;
-      padding: 1.2rem;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8);
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 2rem;
+      padding: 1rem 1.2rem;
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 0.6rem;
+      justify-content: space-between;
       z-index: 10;
       margin-top: -0.8rem;
       margin-bottom: 1.5rem;
       position: relative;
+      color: #fff;
+      cursor: pointer;
     }
 
-    /* Fixed Fingerprint Button Styling matching user reference image */
-    .bio-btn {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      background: linear-gradient(145deg, #0f172a, #1e293b);
-      border: 2.5px solid var(--neon-blue);
+    .bio-left-section { display: flex; flex-direction: column; gap: 0.2rem; }
+    .bio-main-title { font-size: 1.1rem; font-weight: 800; }
+    .bio-details-row { display: flex; align-items: center; gap: 1rem; font-size: 0.75rem; color: rgba(255, 255, 255, 0.9); margin-top: 0.2rem; }
+    .bio-sub-item { display: flex; align-items: center; gap: 0.3rem; }
+    .bio-sub-item svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; }
+    
+    .bio-right-section {
+      border-left: 1px solid rgba(255, 255, 255, 0.3);
+      padding-left: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 0 20px var(--accent-glow), inset 0 0 10px rgba(56, 189, 248, 0.3);
-      transition: all 0.2s ease;
     }
-    .bio-btn:active { transform: scale(0.92); }
-    .bio-btn svg { width: 40px; height: 40px; fill: none; stroke: var(--neon-blue); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-    .bio-status { font-size: 0.82rem; color: var(--muted); font-weight: 600; text-align: center; }
+    [dir="ltr"] .bio-right-section { border-left: none; border-right: 1px solid rgba(255, 255, 255, 0.3); padding-left: 0; padding-right: 1rem; }
 
-    /* Interactive Slides Carousel */
+    .bio-icon-btn {
+      width: 55px;
+      height: 55px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bio-icon-btn svg { width: 45px; height: 45px; fill: none; stroke: #fff; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .bio-status-msg { font-size: 0.75rem; text-align: center; margin-top: -1rem; margin-bottom: 1rem; font-weight: 700; color: var(--success); }
+    .bio-status-msg.error { color: var(--danger); }
+
+    /* Slides Carousel */
     .slides-container {
       width: 100%;
       max-width: 420px;
@@ -455,7 +463,7 @@
 </head>
 <body>
 
-  <!-- Intro Screen (Tornado Animation - exactly 1 second) -->
+  <!-- Intro Screen -->
   <div id="intro-screen">
     <div class="intro-title-container" id="introTitle"></div>
     <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
@@ -491,19 +499,38 @@
     </div>
   </div>
 
-  <!-- Real Fingerprint Biometric Check-In Card -->
-  <div id="top-bio-card" class="biometric-card hidden">
-    <div class="bio-btn" onclick="triggerBiometricCheckIn()">
-      <svg viewBox="0 0 24 24">
-        <path d="M12 2a10 10 0 0 0-7.5 16.5"/>
-        <path d="M12 5a7 7 0 0 1 5.25 11.6"/>
-        <path d="M12 8a4 4 0 0 0-3 6.6"/>
-        <path d="M12 11v6"/>
-        <path d="M9 18h6"/>
-      </svg>
+  <!-- Fingerprint Card with 50m GPS Radius Verification -->
+  <div id="top-bio-card" class="biometric-card hidden" onclick="verifyAndCheckIn()">
+    <div class="bio-left-section">
+      <div id="bio-card-title" class="bio-main-title">تسجيل الحضور</div>
+      <div class="bio-details-row">
+        <div class="bio-sub-item">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span id="bio-wh-label">ساعات العمل</span>
+        </div>
+        <div class="bio-sub-item">
+          <svg viewBox="0 0 24 24"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+          <span>Out <span id="out-time">00:00</span></span>
+        </div>
+        <div class="bio-sub-item">
+          <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          <span>In <span id="in-time">00:00</span></span>
+        </div>
+      </div>
     </div>
-    <div id="bio-msg" class="bio-status">اضغط البصمة لتسجيل الحضور/الانصراف</div>
+    <div class="bio-right-section">
+      <div class="bio-icon-btn">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2a10 10 0 0 0-7.5 16.5"/>
+          <path d="M12 5a7 7 0 0 1 5.25 11.6"/>
+          <path d="M12 8a4 4 0 0 0-3 6.6"/>
+          <path d="M12 11v6"/>
+          <path d="M9 18h6"/>
+        </svg>
+      </div>
+    </div>
   </div>
+  <div id="bio-msg" class="bio-status-msg hidden"></div>
 
   <div class="container">
     
@@ -665,33 +692,13 @@
   </div>
 
   <script>
-    const COMPANY_LAT = 30.2974;
-    const COMPANY_LNG = 31.7455;
-    const MAX_DISTANCE_METERS = 500;
-
-    function calculateDistance(lat1, lon1, lat2, lon2) {
-      const R = 6371e3;
-      const φ1 = lat1 * Math.PI / 180;
-      const φ2 = lat2 * Math.PI / 180;
-      const Δφ = (lat2 - lat1) * Math.PI / 180;
-      const Δλ = (lon2 - lon1) * Math.PI / 180;
-
-      const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-                Math.cos(φ1) * Math.cos(φ2) *
-                Math.sin(Δλ/2) * Math.sin(Δλ/2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      return R * c;
-    }
-
     let wakeLock = null;
     async function requestWakeLock() {
       try {
         if ('wakeLock' in navigator) {
           wakeLock = await navigator.wakeLock.request('screen');
         }
-      } catch (err) {
-        console.error(err);
-      }
+      } catch (err) {}
     }
 
     async function releaseWakeLock() {
@@ -699,12 +706,11 @@
         try {
           await wakeLock.release();
           wakeLock = null;
-        } catch (err) {
-          console.error(err);
-        }
+        } catch (err) {}
       }
     }
 
+    // Intro Animation
     function runTornadoIntro() {
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
@@ -729,7 +735,7 @@
       const tl = gsap.timeline({
         onComplete: () => {
           gsap.to('#intro-screen', {
-            duration: 0.3,
+            duration: 0.6,
             opacity: 0,
             visibility: 'hidden',
             ease: "power2.inOut"
@@ -737,15 +743,13 @@
         }
       });
 
-      chars.forEach((char, index) => {
-        tl.fromTo(char, 
-          { rotation: 360, scale: 0.1, opacity: 0, y: -50 },
-          { duration: 0.7, rotation: 0, scale: 1, opacity: 1, y: 0, ease: "back.out(1.7)" },
-          index * 0.03
-        );
-      });
+      tl.fromTo(chars, 
+        { rotationY: 180, scale: 0.3, opacity: 0, y: -30 },
+        { duration: 2.2, rotationY: 0, scale: 1, opacity: 1, y: 0, stagger: 0.04, ease: "power3.out" }
+      );
 
-      tl.to(subtitle, { duration: 0.4, opacity: 1, y: 0, ease: "power2.out" }, "-=0.4");
+      tl.to(subtitle, { duration: 1.2, opacity: 1, y: 0, ease: "power2.out" }, "-=1.5");
+      tl.to({}, { duration: 1.8 });
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -808,8 +812,8 @@
         logoutBtn: "تسجيل الخروج",
         greetingM: "صباح الخير ☀️",
         greetingE: "مساء الخير 🌙",
-        bioPrompt: "اضغط البصمة لتسجيل الحضور/الانصراف",
-        bioOffGPS: "يرجى تفعيل الموقع (GPS) وتجديد المحاولة",
+        bioTitle: "تسجيل الحضور",
+        bioWH: "ساعات العمل",
         btnID: "كارت الهوية",
         btnLeaves: "طلبات الإجازات",
         btnPay: "مفردات المرتب",
@@ -835,8 +839,8 @@
         logoutBtn: "Logout",
         greetingM: "Good Morning ☀️",
         greetingE: "Good Evening 🌙",
-        bioPrompt: "Tap fingerprint to Check-In/Out",
-        bioOffGPS: "Please enable GPS location and retry",
+        bioTitle: "Sign In",
+        bioWH: "Working Hours",
         btnID: "ID Card",
         btnLeaves: "Leaves Request",
         btnPay: "Payslip",
@@ -885,6 +889,9 @@
       document.getElementById('t-loginBtn').innerText = t.loginBtn;
       document.getElementById('t-logoutBtn').innerText = t.logoutBtn;
 
+      document.getElementById('bio-card-title').innerText = t.bioTitle;
+      document.getElementById('bio-wh-label').innerText = t.bioWH;
+
       document.getElementById('t-btnID').innerText = t.btnID;
       document.getElementById('t-btnLeaves').innerText = t.btnLeaves;
       document.getElementById('t-btnPay').innerText = t.btnPay;
@@ -901,8 +908,6 @@
       document.querySelector('.payroll-title-txt').innerText = t.payTitle;
       document.querySelector('.dir-title-txt').innerText = t.dirTitle;
       document.getElementById('t-saveCardBtn').innerText = t.saveCard;
-
-      document.getElementById('bio-msg').innerText = t.bioPrompt;
 
       if (currentUserData) renderProfileData();
     }
@@ -1010,40 +1015,59 @@
       }
     }
 
-    function triggerBiometricCheckIn() {
+    // Geolocation Check with 50 meters Radius Limit
+    const COMPANY_LAT = 30.3000; // إحداثيات مقر الشركة (يمكنك ضبطها بدقة)
+    const COMPANY_LNG = 31.5000;
+    const ALLOWED_RADIUS_METERS = 50;
+
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371e3; // metres
+      const φ1 = lat1 * Math.PI/180;
+      const φ2 = lat2 * Math.PI/180;
+      const Δφ = (lat2-lat1) * Math.PI/180;
+      const Δλ = (lon2-lon1) * Math.PI/180;
+
+      const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ/2) * Math.sin(Δλ/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+      return R * c; // Distance in meters
+    }
+
+    function verifyAndCheckIn() {
       const bioMsg = document.getElementById('bio-msg');
+      bioMsg.classList.remove('hidden', 'error');
+      bioMsg.innerText = currentLang === 'ar' ? "جاري التحقق من موقعك الجغرافي..." : "Checking your location...";
 
       if (!navigator.geolocation) {
-        bioMsg.innerText = translations[currentLang].bioOffGPS;
-        bioMsg.style.color = "var(--danger)";
+        bioMsg.classList.add('error');
+        bioMsg.innerText = currentLang === 'ar' ? "المتصفح لا يدعم تحديد الموقع" : "Geolocation is not supported";
         return;
       }
 
-      bioMsg.innerText = currentLang === 'ar' ? "جاري قراءة موقع الجهاز بدقة..." : "Reading precise GPS location...";
-      bioMsg.style.color = "var(--neon-blue)";
+      navigator.geolocation.getCurrentPosition((position) => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+        const distance = calculateDistance(userLat, userLng, COMPANY_LAT, COMPANY_LNG);
 
-      const geoOptions = { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 };
+        if (distance <= ALLOWED_RADIUS_METERS) {
+          const now = new Date();
+          const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          document.getElementById('in-time').innerText = timeString;
+          bioMsg.classList.remove('error');
+          bioMsg.innerText = currentLang === 'ar' ? "تم تسجيل الحضور بنجاح داخل نطاق الشركة! ✔️" : "Check-In Successful within company radius! ✔️";
+        } else {
+          const roundedDist = Math.round(distance);
+          bioMsg.classList.add('error');
+          bioMsg.innerText = currentLang === 'ar' ? `عذراً، أنت خارج نطاق الشركة (${roundedDist} متر)` : `Sorry, you are outside company range (${roundedDist}m)`;
+        }
 
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const distance = calculateDistance(position.coords.latitude, position.coords.longitude, COMPANY_LAT, COMPANY_LNG);
-
-          if (distance <= MAX_DISTANCE_METERS) {
-            bioMsg.innerText = currentLang === 'ar' ? "تم تسجيل الحضور/الانصراف بنجاح! ✔️" : "Check-In/Out Successful! ✔️";
-            bioMsg.style.color = "var(--success)";
-          } else {
-            bioMsg.innerText = currentLang === 'ar' 
-              ? `عذراً، أنت خارج نطاق الشركة (${Math.round(distance)} متر)` 
-              : `Out of company bounds (${Math.round(distance)}m away)`;
-            bioMsg.style.color = "var(--danger)";
-          }
-        },
-        () => {
-          bioMsg.innerText = translations[currentLang].bioOffGPS;
-          bioMsg.style.color = "var(--danger)";
-        },
-        geoOptions
-      );
+        setTimeout(() => { bioMsg.classList.add('hidden'); }, 5000);
+      }, (error) => {
+        bioMsg.classList.add('error');
+        bioMsg.innerText = currentLang === 'ar' ? "تعذر تحديد موقعك، تأكد من تفعيل الـ GPS." : "Unable to retrieve your location.";
+      }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
     }
 
     let slideIndex = 0;
