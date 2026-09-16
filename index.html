@@ -14,7 +14,11 @@
   <link rel="apple-touch-icon" href="logo.png">
   <link rel="icon" type="image/png" href="logo.png">
 
-  <!-- GSAP Library for Smooth Tornado Physics -->
+  <!-- Swiper.js CSS & JS for manual/touch control -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- GSAP Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -28,7 +32,7 @@
 
     :root {
       --bg: #0b0f19;
-      --card-bg: rgba(15, 23, 42, 0.75);
+      --card-bg: rgba(15, 23, 42, 0.85);
       --border-color: rgba(255, 255, 255, 0.18);
       --text: #f8fafc;
       --accent: #0284c7;
@@ -57,14 +61,11 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 1.5rem 1rem;
-      perspective: 1000px;
+      padding: 0 1rem 1.5rem 1rem;
       overflow-x: hidden;
     }
 
-    /* ----------------------------------
-       Tornado / Cyclone Intro Styling
-    ---------------------------------- */
+    /* Intro Screen */
     #intro-screen {
       position: fixed;
       top: 0;
@@ -74,16 +75,11 @@
       background: linear-gradient(rgba(11, 15, 25, 0.92), rgba(11, 15, 25, 0.96)), url('background.jpg');
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 9999;
-      perspective: 1200px;
-      overflow: hidden;
       transition: opacity 1.2s ease, visibility 1.2s ease;
     }
 
@@ -92,64 +88,37 @@
       visibility: hidden;
     }
 
-    .intro-content-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      text-align: center;
-    }
-
     .intro-title-container {
-      width: 100%;
       display: flex;
       gap: 0.15rem;
-      flex-wrap: nowrap;
-      justify-content: center;
-      align-items: center;
       direction: ltr;
-      padding: 0 0.5rem;
-      transform-style: preserve-3d;
-      text-align: center;
     }
 
     .intro-char {
-      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: clamp(1.5rem, 5.5vw, 2.2rem);
       font-weight: 800;
-      letter-spacing: 1px;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
       display: inline-block;
-      transform-style: preserve-3d;
-      will-change: transform, opacity;
     }
-
-    .intro-space { width: 0.5rem; }
 
     .intro-subtitle {
       font-family: 'Great Vibes', cursive;
       font-size: clamp(1.4rem, 4vw, 2rem);
       color: #38bdf8;
-      text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
       opacity: 0;
-      letter-spacing: 1.5px;
-      will-change: opacity, transform;
     }
 
-    /* ----------------------------------
-       Main App Layout 
-    ---------------------------------- */
+    /* Header Layout */
     .app-header {
       width: 100%;
       max-width: 420px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.5rem;
-      position: relative;
+      padding: 1rem 0;
+      z-index: 10;
     }
 
     .brand-container {
@@ -162,20 +131,19 @@
       width: 32px;
       height: 32px;
       object-fit: contain;
-      border-radius: 8px;
     }
 
     .brand-title {
       font-size: 1.2rem;
       font-weight: 800;
-      letter-spacing: 0.5px;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
     }
 
-    .lang-dropdown-container { position: relative; }
+    .lang-dropdown-container {
+      position: relative;
+    }
 
     .lang-dropdown-btn {
       background: rgba(30, 41, 59, 0.75);
@@ -184,13 +152,7 @@
       padding: 0.5rem 0.9rem;
       border-radius: 1rem;
       font-size: 0.8rem;
-      font-weight: 700;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
     }
 
     .lang-dropdown-menu {
@@ -200,12 +162,9 @@
       background: rgba(15, 23, 42, 0.95);
       border: 1px solid var(--border-color);
       border-radius: 1rem;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-      overflow: hidden;
       display: none;
       z-index: 200;
       min-width: 130px;
-      backdrop-filter: blur(16px);
     }
 
     [dir="rtl"] .lang-dropdown-menu { left: auto; right: 0; }
@@ -214,29 +173,93 @@
     .lang-option {
       padding: 0.7rem 1rem;
       font-size: 0.85rem;
-      color: var(--text);
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
     }
 
-    .lang-option:hover {
-      background: rgba(2, 132, 199, 0.3);
-      color: #38bdf8;
+    .container {
+      width: 100%;
+      max-width: 420px;
     }
-
-    .container { width: 100%; max-width: 420px; }
 
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
       backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       padding: 1.75rem 1.5rem;
-      border-radius: 1.5rem;
+      border-radius: 2rem;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
       text-align: center;
+    }
+
+    .user-header-card-top {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-top: none;
+      backdrop-filter: blur(16px);
+      padding: 1.5rem 1.25rem 1.25rem 1.25rem;
+      border-radius: 0 0 2rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: -1rem;
+      margin-bottom: 1.5rem;
+      text-align: right;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    [dir="ltr"] .user-header-card-top { text-align: left; }
+
+    .header-avatar {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      border: 2px solid #38bdf8;
+      object-fit: cover;
+    }
+
+    .password-container {
+      position: relative;
+      width: 100%;
+      margin: 0.5rem 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .password-container input {
+      width: 100%;
+      margin: 0;
+      padding-left: 3rem;
+    }
+
+    [dir="rtl"] .password-container input {
+      padding-left: 1rem;
+      padding-right: 3rem;
+    }
+
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0.75rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    [dir="rtl"] .toggle-password {
+      left: auto;
+      right: 0.75rem;
+    }
+
+    .toggle-password svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
     }
 
     input {
@@ -252,19 +275,6 @@
       outline: none;
     }
 
-    .password-container { position: relative; width: 100%; margin: 0.5rem 0; }
-    .password-container input { margin: 0; padding-left: 3rem; }
-    [dir="rtl"] .password-container input { padding-left: 1rem; padding-right: 3rem; }
-
-    .toggle-password {
-      position: absolute;
-      top: 0; bottom: 0; left: 0.2rem;
-      width: 40px; background: none; border: none; cursor: pointer; color: var(--muted);
-      display: flex; align-items: center; justify-content: center;
-    }
-    [dir="rtl"] .toggle-password { left: auto; right: 0.2rem; }
-    .toggle-password svg { width: 22px; height: 22px; fill: currentColor; }
-
     button {
       width: 100%;
       padding: 0.95rem;
@@ -276,137 +286,39 @@
       font-size: 1rem;
       cursor: pointer;
       margin-top: 0.85rem;
-      box-shadow: 0 8px 0 #024e77, 0 12px 20px rgba(0, 0, 0, 0.4);
     }
 
-    button:disabled {
-      background: #475569 !important;
-      box-shadow: none !important;
-      cursor: not-allowed;
-      opacity: 0.6;
+    .btn-biometric {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid #38bdf8;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
     }
 
     .btn-danger {
       background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-      box-shadow: 0 8px 0 #991b1b, 0 12px 20px rgba(220, 38, 38, 0.3);
     }
 
     .hidden { display: none !important; }
 
-    /* ----------------------------------
-       Header & Glowing Elements
-    ---------------------------------- */
-    .user-header-card-glowing {
-      background: linear-gradient(135deg, rgba(2, 132, 199, 0.35), rgba(56, 189, 248, 0.25));
-      border: 1px solid rgba(56, 189, 248, 0.5);
-      backdrop-filter: blur(16px);
-      padding: 1.25rem;
-      border-radius: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.2rem;
-      text-align: right;
-      box-shadow: 0 0 25px rgba(2, 132, 199, 0.3);
-    }
-
-    [dir="ltr"] .user-header-card-glowing { text-align: left; }
-
-    .header-avatar {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      border: 2px solid #38bdf8;
-      object-fit: cover;
-    }
-
-    .floating-notification-btn {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      width: 48px;
-      height: 48px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 999;
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
-      backdrop-filter: blur(10px);
-    }
-
-    [dir="ltr"] .floating-notification-btn { left: auto; right: 20px; }
-    .floating-notification-btn svg { width: 22px; height: 22px; fill: #38bdf8; }
-
-    /* ----------------------------------
-       Attendance Fixed Card
-    ---------------------------------- */
-    .attendance-fixed-card {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(15, 23, 42, 0.85));
-      border: 1px solid rgba(16, 185, 129, 0.4);
-      padding: 1.2rem;
-      border-radius: 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.2rem;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-    }
-
-    .fingerprint-fixed-btn {
-      width: 58px;
-      height: 58px;
-      background: linear-gradient(135deg, #10b981, #059669);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
-      border: 2px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .fingerprint-fixed-btn svg { width: 30px; height: 30px; fill: #fff; }
-
-    /* ----------------------------------
-       News Slider Container
-    ---------------------------------- */
-    .news-slider-container {
+    /* Swiper Controls & Layout */
+    .swiper {
       width: 100%;
-      overflow: hidden;
-      border-radius: 1.2rem;
-      margin-bottom: 1.5rem;
+      padding-bottom: 2.5rem !important;
+      margin-bottom: 1rem;
+    }
+
+    .swiper-slide {
+      background: rgba(15, 23, 42, 0.6);
       border: 1px solid var(--border-color);
-      background: rgba(15, 23, 42, 0.8);
-    }
-
-    .news-slider-wrapper {
-      display: flex;
-      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-    }
-
-    .news-slide {
-      min-width: 100%;
-      padding: 1.2rem;
-      cursor: pointer;
-      text-align: right;
-    }
-
-    [dir="ltr"] .news-slide { text-align: left; }
-
-    .news-slide-tag {
-      display: inline-block;
-      padding: 0.2rem 0.6rem;
-      border-radius: 0.5rem;
-      font-size: 0.7rem;
-      font-weight: bold;
-      margin-bottom: 0.4rem;
-      background: rgba(56, 189, 248, 0.2);
-      color: #38bdf8;
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 1.5rem;
+      padding: 1.25rem;
+      text-align: center;
+      backdrop-filter: blur(10px);
     }
 
     .services-grid {
@@ -419,7 +331,6 @@
     .service-btn {
       background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.85));
       border: 1px solid rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(16px);
       border-radius: 1.5rem;
       padding: 1.5rem 1rem;
       display: flex;
@@ -427,100 +338,137 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
     }
 
     .service-icon-box {
-      width: 52px; height: 52px; border-radius: 1.2rem;
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(2, 132, 199, 0.1));
-      border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8;
-      display: flex; align-items: center; justify-content: center; margin-bottom: 0.85rem;
+      width: 52px;
+      height: 52px;
+      border-radius: 1.2rem;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.85rem;
     }
+
     .service-icon-box svg { width: 26px; height: 26px; fill: currentColor; }
 
-    .service-title { font-size: 0.9rem; font-weight: 700; color: var(--text); }
-
-    .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-
-    .back-btn {
-      background: rgba(51, 65, 85, 0.8);
+    /* Location Box Styling */
+    .location-box {
+      background: rgba(30, 41, 59, 0.7);
       border: 1px solid var(--border-color);
-      width: auto; padding: 0.5rem 1rem; font-size: 0.85rem; margin: 0;
-      border-radius: 0.85rem;
+      border-radius: 1rem;
+      padding: 0.85rem;
+      margin-bottom: 1rem;
+      font-size: 0.85rem;
+      text-align: center;
     }
 
-    .id-card {
-      background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      border-radius: 1.5rem; padding: 1.5rem; position: relative;
-    }
-
-    .id-card-header {
-      display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1rem;
-    }
-
-    .profile-img {
-      width: 100px; height: 100px; border-radius: 50%;
-      border: 3px solid #38bdf8; object-fit: cover; margin: 0 auto 0.75rem auto; display: block;
-    }
-
-    .info-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;
-      text-align: right; background: rgba(11, 15, 25, 0.7);
-      padding: 0.85rem; border-radius: 1rem; font-size: 0.8rem; margin-bottom: 1.25rem;
-    }
-    [dir="ltr"] .info-grid { text-align: left; }
-
-    .qr-container { background: #ffffff; padding: 0.65rem; border-radius: 1rem; display: inline-block; }
-
-    /* ----------------------------------
-       Floating Support Chat Styling 
-    ---------------------------------- */
+    /* Floating Chat */
     .floating-chat-btn {
-      position: fixed; bottom: 25px; left: 20px;
-      width: 58px; height: 58px;
+      position: fixed;
+      bottom: 25px;
+      left: 20px;
+      width: 58px;
+      height: 58px;
       background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      z-index: 99999; border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 99999;
+      border: 2px solid rgba(255, 255, 255, 0.3);
     }
+
     [dir="ltr"] .floating-chat-btn { left: auto; right: 20px; }
-    .floating-chat-btn svg { width: 28px; height: 28px; fill: #ffffff; }
 
     .chat-modal {
-      position: fixed; bottom: 95px; left: 20px; width: 330px; max-width: calc(100vw - 40px);
-      height: 430px; background: rgba(15, 23, 42, 0.96); border: 1px solid var(--border-color);
-      border-radius: 1.5rem; display: flex; flex-direction: column; z-index: 100000; overflow: hidden;
-      opacity: 0; visibility: hidden; transition: all 0.3s ease;
+      position: fixed;
+      bottom: 95px;
+      left: 20px;
+      width: 330px;
+      max-width: calc(100vw - 40px);
+      height: 430px;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid var(--border-color);
+      border-radius: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      z-index: 100000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
     }
+
     [dir="ltr"] .chat-modal { left: auto; right: 20px; }
     .chat-modal.show { opacity: 1; visibility: visible; }
 
     .chat-header {
-      background: linear-gradient(135deg, rgba(2, 132, 199, 0.8), rgba(3, 105, 161, 0.9));
-      padding: 0.85rem 1rem; display: flex; justify-content: space-between; align-items: center;
+      background: rgba(2, 132, 199, 0.8);
+      padding: 0.85rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .chat-body { flex: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; }
-    .chat-msg { max-width: 80%; padding: 0.65rem 0.85rem; border-radius: 1rem; font-size: 0.85rem; }
+
+    .chat-body {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .chat-msg {
+      max-width: 80%;
+      padding: 0.65rem 0.85rem;
+      border-radius: 1rem;
+      font-size: 0.85rem;
+    }
+
     .chat-msg.employee { background: #0284c7; color: #fff; align-self: flex-end; }
     .chat-msg.hr { background: rgba(30, 41, 59, 0.9); color: var(--text); align-self: flex-start; }
-    .chat-footer { padding: 0.75rem; background: rgba(15, 23, 42, 0.98); display: flex; gap: 0.5rem; }
-    .chat-send-btn { width: 42px; height: 42px; border-radius: 50%; background: #0284c7; border: none; display: flex; align-items: center; justify-content: center; }
+
+    .chat-footer { padding: 0.75rem; display: flex; gap: 0.5rem; }
+    .chat-footer input { margin: 0; font-size: 0.85rem; }
   </style>
+
+  <!-- Screen Wake Lock -->
+  <script>
+    let wakeLock = null;
+    async function requestWakeLock() {
+      try {
+        if ('wakeLock' in navigator) {
+          wakeLock = await navigator.wakeLock.request('screen');
+        }
+      } catch (err) {
+        console.log(`Wake Lock Error: ${err.message}`);
+      }
+    }
+
+    requestWakeLock();
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') requestWakeLock();
+    });
+    
+    ['click', 'touchstart', 'mousemove', 'keydown'].forEach(evt => {
+      window.addEventListener(evt, () => {
+        if (!wakeLock) requestWakeLock();
+      }, { passive: true });
+    });
+  </script>
 </head>
 <body>
 
-  <!-- Floating Notification Button -->
-  <div class="floating-notification-btn" onclick="alert('لا توجد إشعارات جديدة حالياً')">
-    <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-  </div>
-
-  <!-- Intro Screen (Gentle Tornado Effect) -->
+  <!-- Intro Screen -->
   <div id="intro-screen">
-    <div class="intro-content-wrapper">
-      <div class="intro-title-container" id="introTitle"></div>
-      <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
-    </div>
+    <div class="intro-title-container" id="introTitle"></div>
+    <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
   </div>
 
   <!-- App Header -->
@@ -553,77 +501,81 @@
       <div class="password-container">
         <input type="password" id="empPass" placeholder="كلمة السر">
         <button type="button" class="toggle-password" id="togglePassBtn" onclick="togglePasswordVisibility()">
-          <svg id="eyeIcon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+          <svg id="eyeIcon" viewBox="0 0 24 24">
+            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+          </svg>
         </button>
       </div>
       
       <button id="t-loginBtn" onclick="login()">دخول الحساب</button>
+
+      <button type="button" class="btn-biometric" onclick="authenticateBiometrics()">
+        <svg style="width: 20px; height: 20px; fill: currentColor;" viewBox="0 0 24 24">
+          <path d="M17.81 4.42c-1.32-1.02-3.11-1.62-5.07-1.62-1.95 0-3.74.6-5.06 1.61C6.27 5.57 5.5 7.08 5.5 8.8c0 .41.34.75.75.75s.75-.34.75-.75c0-1.29.58-2.42 1.62-3.21 1.04-.8 2.45-1.29 4.14-1.29 1.68 0 3.1.48 4.13 1.28 1.04.8 1.61 1.93 1.61 3.22 0 3.09-2.02 5.09-3.9 6.84-.87.81-1.8 1.68-2.4 2.66-.54.89-.7 1.84-.7 2.75 0 .41.34.75.75.75s.75-.34.75-.75c0-.66.12-1.33.51-1.98.48-.79 1.27-1.53 2.05-2.26 2.11-1.96 4.49-4.18 4.49-7.99 0-1.73-.77-3.24-2.19-4.39z"/>
+        </svg>
+        <span>تسجيل الدخول بالبصمة</span>
+      </button>
+
       <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.85rem; font-weight: bold;"></p>
     </div>
 
     <!-- 2. Dashboard View -->
     <div id="view-dashboard" class="hidden">
-      
-      <div class="user-header-card-glowing">
+      <div class="user-header-card-top">
         <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
         <div>
-          <p style="font-size: 0.8rem; color: #38bdf8;">صباح الخير 👋</p>
           <h3 id="dash-name" style="margin: 0; font-size: 1.1rem; font-weight: 700;">--</h3>
-          <p id="dash-job" style="margin: 0; color: #cbd5e1; font-size: 0.8rem;">--</p>
+          <p id="dash-job" style="margin: 0; color: #38bdf8; font-size: 0.85rem;">--</p>
         </div>
       </div>
 
-      <!-- Attendance Fixed Card -->
-      <div class="attendance-fixed-card">
-        <div>
-          <span style="font-size: 0.75rem; color: #10b981; font-weight: bold;">● تسجيل الحضور والإنصراف</span>
-          <h4 style="margin-top: 0.2rem; font-size: 0.95rem;">بصمة الموقع الجغرافي</h4>
-          <p style="font-size: 0.75rem; color: var(--muted);">أقصى مسافة مسموحة: 20 متر</p>
-        </div>
-        <div class="fingerprint-fixed-btn" onclick="registerAttendance()">
-          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
-        </div>
+      <!-- Location Verification Status -->
+      <div class="location-box">
+        📍 <strong>الموقع الحالي:</strong> <span id="dist-status">جاري حساب المسافة دقيقاً...</span>
+        <button style="padding: 0.4rem; margin-top: 0.5rem; font-size: 0.75rem;" onclick="checkLocationAccurately()">تحديث الموقع (High Accuracy GPS)</button>
       </div>
 
-      <!-- News Auto-Carousel Slider -->
-      <div class="news-slider-container">
-        <div class="news-slider-wrapper" id="newsSliderWrapper">
-          <div class="news-slide" onclick="showPage('view-directory')">
-            <span class="news-slide-tag">أخبار الشركة</span>
-            <h4 style="font-size: 0.95rem; margin-bottom: 0.2rem;">افتتاح التوسعات الجديدة 🚀</h4>
-            <p style="font-size: 0.8rem; color: var(--muted);">انقر لمراجعة أرقام التواصل ودليل الفروع.</p>
+      <!-- Swiper Slider -->
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <h4 style="color:#38bdf8; margin-bottom:0.3rem;">أهم الإعلانات</h4>
+            <p style="font-size:0.8rem; color:var(--muted);">مرحباً بكم في نظام LM HR الجديد! يمكنك متابعة خدماتك بسهولة.</p>
           </div>
-          <div class="news-slide" onclick="showPage('view-leaves')">
-            <span class="news-slide-tag" style="background: rgba(239, 68, 68, 0.2); color: #ef4444; border-color: rgba(239,68,68,0.3);">فرص شاغرة</span>
-            <h4 style="font-size: 0.95rem; margin-bottom: 0.2rem;">انضم لفريق العمل 💼</h4>
-            <p style="font-size: 0.8rem; color: var(--muted);">التقديم على الإجازات والطلبات أصبح أسهل.</p>
-          </div>
-          <div class="news-slide" onclick="showPage('view-payroll')">
-            <span class="news-slide-tag" style="background: rgba(16, 185, 129, 0.2); color: #10b981; border-color: rgba(16,185,129,0.3);">الماليات</span>
-            <h4 style="font-size: 0.95rem; margin-bottom: 0.2rem;">مفردات المرتب الشهري 💵</h4>
-            <p style="font-size: 0.8rem; color: var(--muted);">تابع بيان مرتبك مباشرة فور صدوره.</p>
+          <div class="swiper-slide">
+            <h4 style="color:#38bdf8; margin-bottom:0.3rem;">مختصر الراتب (Salary Summary)</h4>
+            <p style="font-size:0.85rem; color:var(--muted); font-weight:bold;">قريباً / Coming Soon</p>
           </div>
         </div>
+        <div class="swiper-pagination"></div>
       </div>
 
       <div class="services-grid">
         <div class="service-btn" onclick="showPage('view-id-card')">
-          <div class="service-icon-box"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .89-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1z"/></svg></div>
+          <div class="service-icon-box">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .89-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1z"/></svg>
+          </div>
           <span id="t-btnID" class="service-title">كارت الهوية</span>
         </div>
 
         <div class="service-btn" onclick="showPage('view-leaves')">
-          <div class="service-icon-box"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg></div>
+          <div class="service-icon-box">
+            <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+          </div>
           <span id="t-btnLeaves" class="service-title">طلبات الإجازات</span>
         </div>
 
         <div class="service-btn" onclick="showPage('view-payroll')">
-          <div class="service-icon-box"><svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></div>
+          <div class="service-icon-box">
+            <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+          </div>
           <span id="t-btnPay" class="service-title">مفردات المرتب</span>
         </div>
 
         <div class="service-btn" onclick="showPage('view-directory')">
-          <div class="service-icon-box"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
+          <div class="service-icon-box">
+            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          </div>
           <span id="t-btnDir" class="service-title">دليل التواصل</span>
         </div>
       </div>
@@ -633,241 +585,122 @@
 
     <!-- 3. ID Card View -->
     <div id="view-id-card" class="card hidden">
-      <div class="nav-bar">
-        <button class="back-btn" id="t-backBtn1" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span id="t-cardTitle" style="font-weight: 700; font-size: 0.9rem;">الكارت الرقمي</span>
-      </div>
-
+      <button class="back-btn" id="t-backBtn1" onclick="showPage('view-dashboard')">← رجوع</button>
       <div class="id-card" id="myCardToDownload">
-        <div class="id-card-header">
-          <span style="font-weight: 800; font-size: 0.85rem; color: #38bdf8;">LACTO MISR S.A.E</span>
-          <span style="font-size: 0.65rem; background: rgba(2, 132, 199, 0.4); border: 1px solid var(--accent); color: #38bdf8; padding: 0.15rem 0.5rem; border-radius: 0.5rem;">VERIFIED</span>
-        </div>
-        <img id="userPhoto" class="profile-img" crossorigin="anonymous" src="" alt="User">
-        <h3 id="userName" style="margin:0 0 0.2rem 0; font-size: 1.1rem;">--</h3>
-        <p id="userJob" style="color: #38bdf8; font-size: 0.85rem; margin:0 0 0.85rem 0;">--</p>
-        
-        <div class="info-grid">
-          <div><div class="info-label" id="t-lblDept">الإدارة</div><div id="userDept" class="info-val">--</div></div>
-          <div><div class="info-label" id="t-lblCode">كود الموظف</div><div id="userCodeVal" class="info-val">--</div></div>
-          <div style="grid-column: span 2;"><div class="info-label" id="t-lblNID">الرقم القومي</div><div id="userNID" class="info-val">--</div></div>
-        </div>
-
-        <div class="qr-container"><div id="qrcode"></div></div>
+        <h3 id="userName" style="margin: 0.5rem 0;">--</h3>
+        <p id="userJob" style="color: #38bdf8;">--</p>
+        <div id="qrcode" style="margin-top: 1rem;"></div>
       </div>
-
-      <button id="t-saveCardBtn" onclick="downloadCard()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">حفظ الكارت كصورة</button>
     </div>
 
-    <!-- 4. Leaves View -->
     <div id="view-leaves" class="card hidden">
-      <div class="nav-bar">
-        <button class="back-btn" id="t-backBtn2" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span id="t-leaveTitle" style="font-weight: 700;">خدمة الإجازات</span>
-      </div>
-      <p id="t-leaveMsg" style="color: var(--muted); font-size: 0.85rem; line-height: 1.6; padding: 1rem 0;">قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.</p>
+      <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
+      <p style="padding:1rem;">خدمة الإجازات - قريباً</p>
     </div>
-
-    <!-- 5. Payroll View -->
     <div id="view-payroll" class="card hidden">
-      <div class="nav-bar">
-        <button class="back-btn" id="t-backBtn3" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span id="t-payTitle" style="font-weight: 700;">مفردات المرتب</span>
-      </div>
-      <p id="t-payMsg" style="color: var(--muted); font-size: 0.85rem; line-height: 1.6; padding: 1rem 0;">قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.</p>
+      <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
+      <p style="padding:1rem;">مفردات المرتب - قريباً</p>
     </div>
-
-    <!-- 6. Directory View -->
     <div id="view-directory" class="card hidden">
-      <div class="nav-bar">
-        <button class="back-btn" id="t-backBtn4" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span id="t-dirTitle" style="font-weight: 700;">دليل التواصل</span>
-      </div>
-      <p id="t-dirMsg" style="color: var(--muted); font-size: 0.85rem; line-height: 1.6; padding: 1rem 0;">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
+      <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
+      <p style="padding:1rem;">دليل التواصل - قريباً</p>
     </div>
 
   </div>
 
-  <!-- Floating Chat Button & Modal -->
+  <!-- Chat Floating Buttons -->
   <div class="floating-chat-btn" id="chatFloatingBtn" onclick="toggleChatModal()">
     <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
   </div>
 
   <div class="chat-modal" id="chatModal">
     <div class="chat-header">
-      <div style="font-size: 0.95rem; font-weight: 700; color: #fff;">💬 <span id="t-chatHeader">محادثة دعم الـ HR</span></div>
-      <button style="background:none; border:none; color:#fff; font-size:1.2rem; cursor:pointer;" onclick="toggleChatModal()">×</button>
+      <span>محادثة دعم الـ HR</span>
+      <button style="width:auto; margin:0;" onclick="toggleChatModal()">×</button>
     </div>
     <div class="chat-body" id="chatBody">
-      <div class="chat-msg hr" id="t-welcomeChat">مرحباً بك! اكتب استفسارك وسيقوم فريق الموارد البشرية بالرد عليك قريباً.</div>
+      <div class="chat-msg hr">مرحباً بك! اكتب استفسارك وسيقوم فريق الموارد البشرية بالرد عليك.</div>
     </div>
     <div class="chat-footer">
-      <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا..." onkeypress="handleChatKeyPress(event)">
-      <button class="chat-send-btn" onclick="sendChatMessage()">
-        <svg viewBox="0 0 24 24" style="width:18px; fill:#fff; transform:rotate(180deg);"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-      </button>
+      <input type="text" id="chatInput" placeholder="اكتب رسالتك...">
+      <button style="width: auto; margin: 0;" onclick="sendChatMessage()">إرسال</button>
     </div>
   </div>
 
   <script>
-    // ----------------------------------------------------
-    // Mandatory GPS Check on App Launch
-    // ----------------------------------------------------
-    function enforceGPSLocation() {
-      const loginBtn = document.getElementById('t-loginBtn');
-      const errorEl = document.getElementById('error');
-
-      if (!navigator.geolocation) {
-        if (loginBtn) loginBtn.disabled = true;
-        if (errorEl) errorEl.innerText = "❌ جهازك لا يدعم الـ GPS. لن تتمكن من دخول التطبيق.";
-        return;
-      }
-
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          // تم تفعيل الـ GPS بنجاح
-          if (loginBtn) loginBtn.disabled = false;
-          if (errorEl && errorEl.innerText.includes("تفعيل")) errorEl.innerText = "";
-        },
-        (error) => {
-          // الـ GPS غير مفعل أو الموظف رفض الطلب
-          if (loginBtn) loginBtn.disabled = true;
-          if (errorEl) {
-            errorEl.innerText = "⚠️ يتطلب التطبيق تفعيل الـ GPS للعمل. يرجى تفعيل الموقع وإعادة تحميل الصفحة.";
-          }
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-      );
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      runTornadoIntro();
-      enforceGPSLocation();
+    // Initialize Swiper
+    var swiper = new Swiper(".mySwiper", {
+      allowTouchMove: true,
+      loop: true,
+      pagination: { el: ".swiper-pagination", clickable: true },
     });
 
     // ----------------------------------------------------
-    // GENTLE & SLOW TORNADO INTRO ANIMATION
+    // GEOLOCATION & DISTANCE FIX (تصحيح المسافة والـ GPS)
     // ----------------------------------------------------
-    function runTornadoIntro() {
-      const text = "LACTO MISR S.A.E";
-      const container = document.getElementById('introTitle');
-      const subtitle = document.getElementById('introSubtitle');
-      container.innerHTML = "";
-      const charElements = [];
+    
+    // ضع إحداثيات الشركة الصحيحة هنا (Latitude, Longitude)
+    const COMPANY_LAT = 30.2981; // استبدلها بخط عرض مدرستك/شركتك
+    const COMPANY_LNG = 31.7412; // استبدلها بخط طول مدرستك/شركتك
 
-      for (let char of text) {
-        if (char === ' ') {
-          const space = document.createElement('span');
-          space.className = 'intro-space';
-          container.appendChild(space);
-        } else {
-          const span = document.createElement('span');
-          span.className = 'intro-char';
-          span.innerText = char;
-          container.appendChild(span);
-          charElements.push(span);
-        }
-      }
-
-      const directions = [
-        { x: -900, y: -700 }, { x: 0, y: -900 }, { x: 900, y: -700 },
-        { x: 900, y: 0 }, { x: 900, y: 700 }, { x: 0, y: 900 },
-        { x: -900, y: 700 }, { x: -900, y: 0 }
-      ];
-
-      const tl = gsap.timeline({
-        onComplete: () => {
-          document.getElementById('intro-screen').classList.add('fade-out');
-        }
-      });
-
-      charElements.forEach((el, index) => {
-        const randomAngle = (index / charElements.length) * Math.PI * 4;
-        const radius = 180 + Math.random() * 80;
-        gsap.set(el, {
-          y: -500 - (index * 30), x: Math.cos(randomAngle) * radius, z: Math.sin(randomAngle) * radius,
-          rotationX: Math.random() * 360 - 180, rotationY: Math.random() * 360 - 180, rotationZ: Math.random() * 360 - 180,
-          opacity: 0, scale: 0.2
-        });
-      });
-
-      gsap.set(subtitle, { opacity: 0, y: 20 });
-
-      tl.to(charElements, { duration: 2.8, x: 0, y: 0, z: 0, rotationX: 0, rotationY: 0, rotationZ: 0, opacity: 1, scale: 1, stagger: 0.09, ease: "power2.out" });
-      tl.to(subtitle, { duration: 1.2, opacity: 1, y: 0, ease: "power2.out" });
-      tl.to(charElements, { duration: 1.2, textShadow: "0 0 35px rgba(56, 189, 248, 1)", scale: 1.06, yoyo: true, repeat: 1, ease: "sine.inOut" }, "+=3.8");
-      tl.to(subtitle, { duration: 1.2, opacity: 0, y: -20, ease: "power1.in" }, "scatter");
-
-      charElements.forEach((el, index) => {
-        const dir = directions[index % directions.length];
-        tl.to(el, { duration: 1.5, x: dir.x, y: dir.y, z: Math.random() * 400 - 200, rotationX: Math.random() * 180 - 90, rotationY: Math.random() * 180 - 90, rotationZ: Math.random() * 180 - 90, opacity: 0, scale: 0.5, ease: "power1.inOut" }, index === 0 ? "scatter" : `-=1.35`);
-      });
-    }
-
-    // ----------------------------------------------------
-    // Auto News Slider Logic (4 Seconds Auto-Loop)
-    // ----------------------------------------------------
-    let currentSlide = 0;
-    const sliderWrapper = document.getElementById('newsSliderWrapper');
-    const totalSlides = 3;
-
-    setInterval(() => {
-      currentSlide = (currentSlide + 1) % totalSlides;
-      const direction = document.documentElement.dir === 'rtl' ? 1 : -1;
-      sliderWrapper.style.transform = `translateX(${direction * currentSlide * 100}%)`;
-    }, 4000);
-
-    // ----------------------------------------------------
-    // Strict 20-Meter Geofence Attendance Logic
-    // ----------------------------------------------------
-    const COMPANY_GEO = { lat: 30.123456, lng: 31.654321, maxMeters: 20 };
-
-    function calculateDistanceMeters(lat1, lon1, lat2, lon2) {
-      const R = 6371000;
+    function calculateDistanceInMeters(lat1, lon1, lat2, lon2) {
+      const R = 6371000; // نصف قطر الأرض بالمتر
       const dLat = (lat2 - lat1) * Math.PI / 180;
       const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                Math.sin(dLon/2) * Math.sin(dLon/2);
-      return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+      const a = 
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return Math.round(R * c); // إرجاع المسافة بالمتر
     }
 
-    function registerAttendance() {
+    function checkLocationAccurately() {
+      const statusEl = document.getElementById('dist-status');
+      if (statusEl) statusEl.innerText = "جاري الاتصال بالـ GPS...";
+
       if (!navigator.geolocation) {
-        alert("الـ GPS غير مدعوم على جهازك.");
+        if (statusEl) statusEl.innerText = "الـ GPS غير مدعوم في متصفحك";
         return;
       }
 
-      alert("جاري التحقق من النطاق الجغرافي للشركة...");
+      const options = {
+        enableHighAccuracy: true, // إجبار الدقة العالية بدلاً من الـ Wi-Fi
+        timeout: 10000,
+        maximumAge: 0
+      };
 
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const userLat = position.coords.latitude;
           const userLng = position.coords.longitude;
-          const dist = calculateDistanceMeters(userLat, userLng, COMPANY_GEO.lat, COMPANY_GEO.lng);
-
-          if (dist > COMPANY_GEO.maxMeters) {
-            alert(`تنبيه: أنت خارج نطاق الشركة! المسافة الحالية: ${Math.round(dist)} متر (المسموح به 20 متر فقط).`);
-          } else {
-            alert(`تم تسجيل بصمة الحضور بنجاح! 🎯\nالمسافة: ${Math.round(dist)} متر.`);
-            if (currentEmpCode) {
-              db.ref('attendance/' + currentEmpCode).push({
-                timestamp: firebase.database.ServerValue.TIMESTAMP,
-                lat: userLat,
-                lng: userLng,
-                distance: Math.round(dist)
-              });
-            }
+          
+          const distance = calculateDistanceInMeters(userLat, userLng, COMPANY_LAT, COMPANY_LNG);
+          
+          if (statusEl) {
+            statusEl.innerText = `أنت يبعد عن الشركة حوالي ${distance} متر`;
+            statusEl.style.color = distance <= 200 ? "#10b981" : "#ef4444";
           }
         },
-        (err) => alert("تعذر تحديد موقعك. يرجى تفعيل الـ GPS وإعطاء الإذن للتطبيق."),
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        (error) => {
+          if (statusEl) statusEl.innerText = "تعذر تحديد الموقع، برجاء تفعيل الـ GPS";
+        },
+        options
       );
     }
 
-    // ----------------------------------------------------
-    // Firebase Config & App Logic
-    // ----------------------------------------------------
+    // Toggle Pass
+    function togglePasswordVisibility() {
+      const passInput = document.getElementById('empPass');
+      passInput.type = (passInput.type === 'password') ? 'text' : 'password';
+    }
+
+    // Biometrics
+    function authenticateBiometrics() {
+      alert("جاري التحقق من البصمة الرقمية...");
+    }
+
+    // Firebase Init & Flow
     const firebaseConfig = {
       apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
       authDomain: "lacto-hr-system.firebaseapp.com",
@@ -881,48 +714,17 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    let currentUserData = null;
-    let currentEmpCode = "";
-    let currentLang = localStorage.getItem('lacto_lang') || 'ar';
-
-    const translations = {
-      ar: { langText: "العربية", subtitle: "بوابة الموظفين والمدراء الرقمية", codeHolder: "كود الموظف", passHolder: "كلمة السر", loginBtn: "دخول الحساب", btnID: "كارت الهوية", btnLeaves: "طلبات الإجازات", btnPay: "مفردات المرتب", btnDir: "دليل التواصل", logoutBtn: "تسجيل الخروج", backBtn: "← رجوع", cardTitle: "الكارت الرقمي", lblDept: "الإدارة", lblCode: "كود الموظف", lblNID: "الرقم القومي", saveCardBtn: "حفظ الكارت كصورة", leaveTitle: "خدمة الإجازات", leaveMsg: "قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.", payTitle: "مفردات المرتب", payMsg: "قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.", dirTitle: "دليل التواصل", dirMsg: "أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.", chatHeader: "محادثة دعم الـ HR", welcomeChat: "مرحباً بك! اكتب استفسارك وسيقوم فريق الموارد البشرية بالرد عليك قريباً.", chatPlaceholder: "اكتب رسالتك هنا..." },
-      en: { langText: "English", subtitle: "Digital Employee Portal", codeHolder: "Employee Code", passHolder: "Password", loginBtn: "Sign In", btnID: "ID Card", btnLeaves: "Leave Requests", btnPay: "Pay Slip", btnDir: "Directory", logoutBtn: "Sign Out", backBtn: "Back →", cardTitle: "Digital ID", lblDept: "Department", lblCode: "Emp Code", lblNID: "National ID", saveCardBtn: "Save Card Image", leaveTitle: "Leave Requests", leaveMsg: "Coming Soon: Submit your leave and permission requests directly.", payTitle: "Pay Slip", payMsg: "Coming Soon: Access your monthly salary slips easily.", dirTitle: "Directory", dirMsg: "Emergency numbers, medical clinic, and HR contact list.", chatHeader: "HR Support Chat", welcomeChat: "Welcome! Type your inquiry and our HR team will reply shortly.", chatPlaceholder: "Type your message here..." }
-    };
-
-    function toggleLangMenu() { document.getElementById('langMenu').classList.toggle('show'); }
-    function selectLanguage(lang) { toggleLangMenu(); setLanguage(lang); }
-
-    function togglePasswordVisibility() {
-      const passInput = document.getElementById('empPass');
-      passInput.type = passInput.type === 'password' ? 'text' : 'password';
-    }
-
     function showPage(pageId) {
-      ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory'].forEach(id => {
+      const views = ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory'];
+      views.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.add('hidden');
       });
       document.getElementById(pageId).classList.remove('hidden');
-    }
 
-    function renderProfileData() {
-      if (!currentUserData) return;
-      const user = currentUserData;
-      const isEn = (currentLang === 'en');
-      const name = isEn ? (user.name_en || user.name) : user.name;
-      const job = isEn ? (user.job_en || user.job) : user.job;
-      const dept = isEn ? (user.dept_en || user.dept) : user.dept;
-
-      document.getElementById('dash-name').innerText = name || "--";
-      document.getElementById('dash-job').innerText = job || "--";
-      document.getElementById('dash-avatar').src = user.photo || "https://i.pravatar.cc/150?img=12";
-      document.getElementById('userName').innerText = name || "--";
-      document.getElementById('userJob').innerText = job || "--";
-      document.getElementById('userDept').innerText = dept || "--";
-      document.getElementById('userCodeVal').innerText = currentEmpCode;
-      document.getElementById('userNID').innerText = user.nationalId || "--";
-      document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
+      if (pageId === 'view-dashboard') {
+        checkLocationAccurately();
+      }
     }
 
     function login() {
@@ -930,88 +732,34 @@
       const pass = document.getElementById('empPass').value.trim();
       const errorEl = document.getElementById('error');
       
-      errorEl.innerText = (currentLang === 'en') ? "Connecting..." : "جاري الاتصال...";
-      if (!code) { errorEl.innerText = (currentLang === 'en') ? "Please enter employee code" : "يرجى إدخال الكود"; return; }
+      if (!code) { errorEl.innerText = "يرجى إدخال الكود"; return; }
 
       db.ref('users/' + code).once('value').then((snapshot) => {
         if (snapshot.exists()) {
           const user = snapshot.val();
           if (user.password !== pass) {
-            errorEl.innerText = (currentLang === 'en') ? "Incorrect Password!" : "كلمة السر غير صحيحة!";
+            errorEl.innerText = "كلمة السر غير صحيحة!";
             return;
           }
-          currentUserData = user; currentEmpCode = code; errorEl.innerText = "";
-          renderProfileData();
-          document.getElementById('qrcode').innerHTML = "";
-          new QRCode(document.getElementById("qrcode"), { text: window.location.origin + window.location.pathname + "?emp=" + code, width: 85, height: 85 });
-          listenToChatMessages(code);
+
+          document.getElementById('dash-name').innerText = user.name || "--";
+          document.getElementById('dash-job').innerText = user.job || "--";
+          document.getElementById('dash-avatar').src = user.photo || "https://i.pravatar.cc/150?img=12";
+
           showPage('view-dashboard');
         } else {
-          errorEl.innerText = (currentLang === 'en') ? "Employee code not found!" : "كود الموظف غير مسجل!";
+          errorEl.innerText = "كود الموظف غير مسجل!";
         }
-      }).catch((err) => { errorEl.innerText = "حدث خطأ في الاتصال!"; });
-    }
-
-    function downloadCard() {
-      html2canvas(document.getElementById('myCardToDownload'), { useCORS: true, scale: 2 }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'Lacto_ID_' + currentEmpCode + '.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
       });
     }
 
-    function logout() { window.location.reload(); }
-
-    function toggleChatModal() { document.getElementById('chatModal').classList.toggle('show'); }
-    function handleChatKeyPress(e) { if (e.key === 'Enter') sendChatMessage(); }
-
-    function sendChatMessage() {
-      const input = document.getElementById('chatInput');
-      const text = input.value.trim();
-      if (!text) return;
-      const senderId = currentEmpCode || ("guest_" + Math.floor(Math.random() * 10000));
-      db.ref('chats/' + senderId).push({ sender: senderId, senderName: currentUserData ? currentUserData.name : "زائر", text: text, timestamp: Date.now(), isAdmin: false });
-      input.value = "";
+    function toggleChatModal() {
+      document.getElementById('chatModal').classList.toggle('show');
     }
 
-    function listenToChatMessages(empCode) {
-      if (!empCode) return;
-      const chatBody = document.getElementById('chatBody');
-      db.ref('chats/' + empCode).off();
-      chatBody.innerHTML = `<div class="chat-msg hr" id="t-welcomeChat">${translations[currentLang].welcomeChat}</div>`;
-      db.ref('chats/' + empCode).on('child_added', (snapshot) => {
-        const msg = snapshot.val();
-        if (!msg) return;
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'chat-msg ' + (msg.isAdmin ? 'hr' : 'employee');
-        msgDiv.innerText = msg.text || msg.message || '';
-        chatBody.appendChild(msgDiv);
-        chatBody.scrollTop = chatBody.scrollHeight;
-      });
+    function logout() {
+      window.location.reload();
     }
-
-    function setLanguage(lang) {
-      currentLang = lang;
-      localStorage.setItem('lacto_lang', lang);
-      document.documentElement.lang = lang;
-      document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
-
-      const t = translations[lang];
-      document.getElementById('current-lang-text').innerText = t.langText;
-      document.getElementById('t-subtitle').innerText = t.subtitle;
-      document.getElementById('empCode').placeholder = t.codeHolder;
-      document.getElementById('empPass').placeholder = t.passHolder;
-      document.getElementById('t-loginBtn').innerText = t.loginBtn;
-      document.getElementById('t-btnID').innerText = t.btnID;
-      document.getElementById('t-btnLeaves').innerText = t.btnLeaves;
-      document.getElementById('t-btnPay').innerText = t.btnPay;
-      document.getElementById('t-btnDir').innerText = t.btnDir;
-      document.getElementById('t-logoutBtn').innerText = t.logoutBtn;
-      renderProfileData();
-    }
-
-    setLanguage(currentLang);
   </script>
 </body>
 </html>
