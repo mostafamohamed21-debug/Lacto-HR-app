@@ -1427,6 +1427,7 @@
         try {
           const challenge = new Uint8Array(32);
           window.crypto.getRandomValues(challenge);
+          
           await navigator.credentials.create({
             publicKey: {
               challenge: challenge,
@@ -1438,13 +1439,18 @@
               },
               pubKeyCredParams: [{ alg: -7, type: "public-key" }],
               timeout: 60000,
+              // التعديل هنا لإجبار النظام على استخدام بصمة الموبايل الداخلية حصرياً
+              authenticatorSelection: {
+                authenticatorAttachment: "platform",
+                userVerification: "required"
+              },
               attestation: "direct"
             }
           });
           localStorage.setItem('lacto_biometric', 'true');
           alert(currentLang === 'en' ? "Biometric login successfully linked!" : "تم ربط بصمة الجهاز بنجاح وتفعيلها للاستخدام القادم!");
         } catch (e) {
-          console.log("Biometric setup cancelled or simulated.");
+          console.log("Biometric setup cancelled or simulated.", e);
           localStorage.setItem('lacto_biometric', 'true');
           alert(currentLang === 'en' ? "Biometric login enabled!" : "تم تفعيل البصمة بنجاح!");
         }
