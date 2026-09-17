@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LM HR - Lacto HR Hub</title>
   
-  <!-- App Manifest & Branding -->
+  <!-- App Manifest & Branding (LM HR & Logo) -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -272,55 +272,45 @@
       box-shadow: 0 0 15px var(--accent-glow), inset 0 1px 3px rgba(0,0,0,0.5);
     }
 
-    /* ----------------------------------
-       إصلاح جذري لزر العين وحقل كلمة السر
-    ---------------------------------- */
     .password-container {
       position: relative;
       width: 100%;
       margin: 0.5rem 0;
-      display: flex;
-      align-items: center;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid var(--border-color);
-      border-radius: 1rem;
-      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
-      transition: all 0.3s;
-    }
-
-    .password-container:focus-within {
-      border-color: #38bdf8;
-      box-shadow: 0 0 15px var(--accent-glow), inset 0 1px 3px rgba(0,0,0,0.5);
     }
 
     .password-container input {
-      background: transparent;
-      border: none;
-      box-shadow: none;
       margin: 0;
-      padding: 0.9rem 1rem;
-      flex: 1;
-      text-align: center;
+      padding-left: 3rem;
     }
 
-    .password-container input:focus {
-      box-shadow: none;
+    [dir="rtl"] .password-container input {
+      padding-left: 1rem;
+      padding-right: 3rem;
     }
 
     .toggle-password {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0.2rem;
+      width: 40px;
       background: none;
       border: none;
+      box-shadow: none !important;
       cursor: pointer;
       color: var(--muted);
-      padding: 0 0.9rem;
+      padding: 0;
+      margin: auto 0;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: color 0.2s;
-      flex-shrink: 0;
-      box-shadow: none !important;
-      margin: 0;
-      height: 100%;
+      z-index: 10;
+    }
+
+    [dir="rtl"] .toggle-password {
+      left: auto;
+      right: 0.2rem;
     }
 
     .toggle-password:hover {
@@ -826,11 +816,12 @@
         <input type="password" id="empPass" placeholder="كلمة السر">
         <button type="button" class="toggle-password" id="togglePassBtn" onclick="togglePasswordVisibility()">
           <svg id="eyeIcon" viewBox="0 0 24 24">
-            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
           </svg>
         </button>
       </div>
 
+      <!-- خيار تذكرني المفعل -->
       <label class="checkbox-container">
         <input type="checkbox" id="rememberMe">
         <span id="t-remember">تذكرني</span>
@@ -941,14 +932,14 @@
 
   </div>
 
-  <!-- Global Floating Chat Widget Button -->
+  <!-- Global Floating Chat Widget Button (Visible on ALL Pages) -->
   <div class="floating-chat-btn" id="chatFloatingBtn" onclick="toggleChatModal()">
     <svg viewBox="0 0 24 24">
       <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
     </svg>
   </div>
 
-  <!-- Global Chat Modal Window -->
+  <!-- Global Chat Modal Window (Visible on ALL Pages) -->
   <div class="chat-modal" id="chatModal">
     <div class="chat-header">
       <div class="chat-header-title">
@@ -1083,10 +1074,7 @@
       });
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      runTornadoIntro();
-      checkAutoLogin();
-    });
+    window.addEventListener('DOMContentLoaded', runTornadoIntro);
 
     // ----------------------------------------------------
     // Toggle Password Visibility Function
@@ -1100,7 +1088,7 @@
         eyeIcon.innerHTML = '<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.12c0-1.66-1.34-3-3-3l-.17.02z"/>';
       } else {
         passInput.type = 'password';
-        eyeIcon.innerHTML = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>';
+        eyeIcon.innerHTML = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>';
       }
     }
 
@@ -1232,22 +1220,10 @@
       document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
     }
 
-    function checkAutoLogin() {
-      const savedCode = localStorage.getItem('lacto_saved_code');
-      const savedPass = localStorage.getItem('lacto_saved_pass');
-      
-      if (savedCode && savedPass) {
-        document.getElementById('empCode').value = savedCode;
-        document.getElementById('empPass').value = savedPass;
-        document.getElementById('rememberMe').checked = true;
-        login(true);
-      }
-    }
-
-    function login(isAuto = false) {
+    function login() {
       const code = document.getElementById('empCode').value.trim();
       const pass = document.getElementById('empPass').value.trim();
-      const remember = document.getElementById('rememberMe').checked;
+      const rememberMe = document.getElementById('rememberMe').checked;
       const errorEl = document.getElementById('error');
       
       errorEl.innerText = (currentLang === 'en') ? "Connecting..." : "جاري الاتصال...";
@@ -1260,7 +1236,7 @@
       db.ref('users/' + code).once('value').then((snapshot) => {
         if (snapshot.exists()) {
           const user = snapshot.val();
-          if (!isAuto && user.password !== pass) {
+          if (user.password !== pass) {
             errorEl.innerText = (currentLang === 'en') ? "Incorrect Password!" : "كلمة السر غير صحيحة!";
             return;
           }
@@ -1269,9 +1245,10 @@
           currentEmpCode = code;
           errorEl.innerText = "";
 
-          if (remember) {
+          // معالجة تذكرني
+          if (rememberMe) {
             localStorage.setItem('lacto_saved_code', code);
-            localStorage.setItem('lacto_saved_pass', user.password);
+            localStorage.setItem('lacto_saved_pass', pass);
           } else {
             localStorage.removeItem('lacto_saved_code');
             localStorage.removeItem('lacto_saved_pass');
@@ -1299,6 +1276,17 @@
       });
     }
 
+    // التحقق من وجود بيانات محفوظة لـ "تذكرني" عند فتح الصفحة
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedCode = localStorage.getItem('lacto_saved_code');
+      const savedPass = localStorage.getItem('lacto_saved_pass');
+      if (savedCode && savedPass) {
+        document.getElementById('empCode').value = savedCode;
+        document.getElementById('empPass').value = savedPass;
+        document.getElementById('rememberMe').checked = true;
+      }
+    });
+
     function downloadCard() {
       html2canvas(document.getElementById('myCardToDownload'), { useCORS: true, scale: 2 }).then(canvas => {
         const link = document.createElement('a');
@@ -1309,11 +1297,12 @@
     }
 
     function logout() {
-      localStorage.removeItem('lacto_saved_code');
-      localStorage.removeItem('lacto_saved_pass');
       window.location.reload();
     }
 
+    // ----------------------------------------------------
+    // Embedded Chat Functions (Firebase Realtime)
+    // ----------------------------------------------------
     function toggleChatModal() {
       const modal = document.getElementById('chatModal');
       modal.classList.toggle('show');
@@ -1389,7 +1378,7 @@
       document.getElementById('t-btnID').innerText = t.btnID;
       document.getElementById('t-btnLeaves').innerText = t.btnLeaves;
       document.getElementById('t-btnPay').innerText = t.btnPay;
-      document.getElementById('t-btnDir').innerText, t.btnDir;
+      document.getElementById('t-btnDir').innerText = t.btnDir;
       document.getElementById('t-logoutBtn').innerText = t.logoutBtn;
 
       document.getElementById('t-backBtn1').innerText = t.backBtn;
