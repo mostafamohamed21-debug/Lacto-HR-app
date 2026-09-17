@@ -963,6 +963,26 @@
 
   <script>
     // ----------------------------------------------------
+    // INITIALIZATION & REMEMBER ME LOGIC
+    // ----------------------------------------------------
+    window.addEventListener('DOMContentLoaded', () => {
+      // استرجاع الكود وخيار "تذكرني" عند فتح التطبيق مباشرة
+      const savedData = localStorage.getItem('lacto_saved_user');
+      if (savedData) {
+        try {
+          const { code } = JSON.parse(savedData);
+          if (code) {
+            document.getElementById('empCode').value = code;
+            document.getElementById('rememberMe').checked = true;
+          }
+        } catch (e) {
+          console.error("Error parsing saved user:", e);
+        }
+      }
+      runTornadoIntro();
+    });
+
+    // ----------------------------------------------------
     // GENTLE & SLOW TORNADO INTRO ANIMATION
     // ----------------------------------------------------
     function runTornadoIntro() {
@@ -1002,7 +1022,7 @@
         onComplete: () => {
           const introScreen = document.getElementById('intro-screen');
           introScreen.classList.add('fade-out');
-          // الاستدعاء التلقائي لبصمة الإصبع بعد الانترو مباشرة
+          // الاستدعاء التلقائي الآمن للدخول السريع
           autoTriggerBiometric();
         }
       });
@@ -1078,8 +1098,6 @@
         }, index === 0 ? "scatter" : `-=1.35`); 
       });
     }
-
-    window.addEventListener('DOMContentLoaded', runTornadoIntro);
 
     // ----------------------------------------------------
     // Toggle Password Visibility Function
@@ -1223,7 +1241,7 @@
       document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
     }
 
-    // الدخول وتفعيل حفظ البصمة للبدء في استخدامها مستقبلاً تلقائياً
+    // الدخول والتحقق من حفظ البيانات
     function login(forcedUser, forcedCode) {
       const code = forcedCode || document.getElementById('empCode').value.trim();
       const pass = forcedUser ? forcedUser.password : document.getElementById('empPass').value.trim();
@@ -1264,9 +1282,11 @@
           currentEmpCode = code;
           errorEl.innerText = "";
 
-          // حفظ بيانات الجلسة للتفعيل التلقائي مستقبلاً
+          // حفظ الجلسة إذا كان خيار تذكرني مفعلاً
           if (document.getElementById('rememberMe').checked) {
             localStorage.setItem('lacto_saved_user', JSON.stringify({ code: code, user: user }));
+          } else {
+            localStorage.removeItem('lacto_saved_user');
           }
 
           renderProfileData();
@@ -1291,30 +1311,18 @@
       });
     }
 
-    // التثبت والطلب الاوتوماتيكي للبصمة بعد الانترو مباشرة
+    // الدالة المحدثة للتعرف التلقائي بدون الدخول في متاهة طلب Passkey النظام
     async function autoTriggerBiometric() {
       const savedData = localStorage.getItem('lacto_saved_user');
       if (!savedData) return;
 
-      const { code, user } = JSON.parse(savedData);
-
-      if (window.PublicKeyCredential) {
-        try {
-          const challenge = new Uint8Array(32);
-          window.crypto.getRandomValues(challenge);
-          await navigator.credentials.get({
-            publicKey: {
-              challenge: challenge,
-              timeout: 60000
-            }
-          });
-          login(user, code);
-        } catch (e) {
-          // تسجيل الدخول بالبصمة تلقائياً في البيئات المعتمدة
+      try {
+        const { code, user } = JSON.parse(savedData);
+        if (code && user) {
           login(user, code);
         }
-      } else {
-        login(user, code);
+      } catch (e) {
+        console.error("Auto trigger error:", e);
       }
     }
 
@@ -1435,8 +1443,6 @@
       
       const welcomeEl = document.getElementById('t-welcomeChat');
       if (welcomeEl) welcomeEl.innerText = t.welcomeChat;
-      
-      document.getElementById('chatInput').placeholder = t.chatPlaceholder;
 
       renderProfileData();
     }
