@@ -1091,7 +1091,6 @@
         onComplete: () => {
           const introScreen = document.getElementById('intro-screen');
           introScreen.classList.add('fade-out');
-          // Check saved credentials & auto login with biometric/rememberMe after intro completes
           checkAutoLoginAfterIntro();
         }
       });
@@ -1328,7 +1327,7 @@
     }
 
     // ----------------------------------------------------
-    // Persistent RememberMe & Biometric Functions
+    // Persistent RememberMe & Biometric Functions (FIXED)
     // ----------------------------------------------------
     function loadSavedCredentials() {
       const savedCode = localStorage.getItem('lacto_emp_code');
@@ -1343,19 +1342,12 @@
     function checkAutoLoginAfterIntro() {
       const savedCode = localStorage.getItem('lacto_emp_code');
       const savedPass = localStorage.getItem('lacto_emp_pass');
-      const biometricEnabled = localStorage.getItem('lacto_biometric') === 'true';
 
       if (savedCode && savedPass) {
-        if (biometricEnabled) {
-          // Trigger biometric prompt simulation/verification automatically
-          openBiometricModal();
-        } else {
-          // Auto login directly if rememberMe was checked
-          document.getElementById('empCode').value = savedCode;
-          document.getElementById('empPass').value = savedPass;
-          document.getElementById('rememberMe').checked = true;
-          login(true);
-        }
+        document.getElementById('empCode').value = savedCode;
+        document.getElementById('empPass').value = savedPass;
+        document.getElementById('rememberMe').checked = true;
+        login(true);
       }
     }
 
@@ -1406,7 +1398,9 @@
           listenToChatMessages(code);
           showPage('view-dashboard');
 
-          if (!isAuto && localStorage.getItem('lacto_biometric') !== 'true') {
+          // Only prompt for biometric setup if user has never enabled it or skipped it before
+          const bioStatus = localStorage.getItem('lacto_biometric');
+          if (!isAuto && bioStatus !== 'true' && bioStatus !== 'declined') {
             setTimeout(() => {
               document.getElementById('biometricModal').classList.add('show');
             }, 600);
@@ -1449,28 +1443,21 @@
           });
           localStorage.setItem('lacto_biometric', 'true');
           alert(currentLang === 'en' ? "Biometric login successfully linked!" : "تم ربط بصمة الجهاز بنجاح وتفعيلها للاستخدام القادم!");
-          if(document.getElementById('view-login').classList.contains('hidden') === false) {
-            login(true);
-          }
         } catch (e) {
           console.log("Biometric setup cancelled or simulated.");
           localStorage.setItem('lacto_biometric', 'true');
           alert(currentLang === 'en' ? "Biometric login enabled!" : "تم تفعيل البصمة بنجاح!");
-          if(document.getElementById('view-login').classList.contains('hidden') === false) {
-            login(true);
-          }
         }
       } else {
         localStorage.setItem('lacto_biometric', 'true');
         alert(currentLang === 'en' ? "Biometric authentication saved." : "تم حفظ إعدادات البصمة بجهازك.");
-        if(document.getElementById('view-login').classList.contains('hidden') === false) {
-          login(true);
-        }
       }
     }
 
     function skipBiometric() {
       document.getElementById('biometricModal').classList.remove('show');
+      // Save declined state so it never prompts automatically again
+      localStorage.setItem('lacto_biometric', 'declined');
     }
 
     function downloadCard() {
