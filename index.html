@@ -18,6 +18,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
+  <!-- Firebase SDKs (تأكد أنهم متوافقين مع نسخة مشروعك) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&display=swap');
 
@@ -168,65 +172,6 @@
       text-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
     }
 
-    .lang-dropdown-container {
-      position: relative;
-    }
-
-    .lang-dropdown-btn {
-      background: rgba(30, 41, 59, 0.75);
-      border: 1px solid var(--border-color);
-      color: var(--text);
-      padding: 0.5rem 0.9rem;
-      border-radius: 1rem;
-      font-size: 0.8rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .lang-dropdown-btn:active {
-      transform: scale(0.92) translateZ(-5px);
-    }
-
-    .lang-dropdown-menu {
-      position: absolute;
-      top: 115%;
-      left: 0;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid var(--border-color);
-      border-radius: 1rem;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-      overflow: hidden;
-      display: none;
-      z-index: 200;
-      min-width: 130px;
-      backdrop-filter: blur(16px);
-    }
-
-    [dir="rtl"] .lang-dropdown-menu { left: auto; right: 0; }
-    .lang-dropdown-menu.show { display: block; }
-
-    .lang-option {
-      padding: 0.7rem 1rem;
-      font-size: 0.85rem;
-      color: var(--text);
-      cursor: pointer;
-      transition: background 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .lang-option:hover {
-      background: rgba(2, 132, 199, 0.3);
-      color: #38bdf8;
-    }
-
     .container {
       width: 100%;
       max-width: 420px;
@@ -356,19 +301,6 @@
     button:active {
       transform: translateY(6px);
       box-shadow: 0 2px 0 #024e77, 0 5px 10px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-    }
-
-    .bio-quick-btn {
-      background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
-      box-shadow: 0 8px 0 #115e59, 0 12px 20px rgba(13, 148, 136, 0.3), inset 0 2px 2px rgba(255, 255, 255, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-
-    .bio-quick-btn:active {
-      box-shadow: 0 2px 0 #115e59, 0 5px 10px rgba(13, 148, 136, 0.3);
     }
 
     .btn-danger {
@@ -539,7 +471,7 @@
 </head>
 <body>
 
-  <!-- Intro Screen -->
+  <!-- Tornado Intro Screen (تم إرجاعه بالكامل وصيانته) -->
   <div id="intro-screen">
     <div class="intro-content-wrapper">
       <div class="intro-title-container" id="introTitle"></div>
@@ -553,16 +485,6 @@
       <img src="logo.png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
       <div class="brand-title">LM HR</div>
     </div>
-    
-    <div class="lang-dropdown-container">
-      <button class="lang-dropdown-btn" onclick="toggleLangMenu()">
-        🌐 <span id="current-lang-text">العربية</span> ▼
-      </button>
-      <div class="lang-dropdown-menu" id="langMenu">
-        <div class="lang-option" onclick="selectLanguage('ar')">🇪🇬 العربية</div>
-        <div class="lang-option" onclick="selectLanguage('en')">🇬🇧 English</div>
-      </div>
-    </div>
   </div>
 
   <div class="container">
@@ -570,7 +492,7 @@
     <!-- 1. Login View -->
     <div id="view-login" class="card">
       <h2 style="font-size: 1.5rem; margin-bottom: 0.2rem;">LM HR Hub</h2>
-      <p id="t-subtitle" style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem;">بوابة الموظفين والمدراء الرقمية</p>
+      <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem;">بوابة الموظفين والمدراء الرقمية</p>
       
       <input type="text" id="empCode" placeholder="كود الموظف">
       
@@ -585,14 +507,10 @@
 
       <label class="checkbox-container">
         <input type="checkbox" id="rememberMe">
-        <span id="t-remember">تذكرني</span>
+        <span>تذكرني</span>
       </label>
       
-      <button id="t-loginBtn" onclick="login()">دخول الحساب</button>
-
-      <button id="bioQuickBtn" class="bio-quick-btn hidden" onclick="biometricQuickLogin()">
-        <span id="t-bioQuickText">دخول سريع بالبصمة</span>
-      </button>
+      <button onclick="login()">دخول الحساب</button>
 
       <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.85rem; font-weight: bold;"></p>
     </div>
@@ -612,25 +530,25 @@
           <div class="service-icon-box">
             <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .89-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3zm6 12H6v-1c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1z"/></svg>
           </div>
-          <span id="t-btnID" class="service-title">كارت الهوية</span>
+          <span class="service-title">كارت الهوية</span>
         </div>
 
         <div class="service-btn" onclick="showPage('view-leaves')">
           <div class="service-icon-box">
             <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
           </div>
-          <span id="t-btnLeaves" class="service-title">طلبات الإجازات</span>
+          <span class="service-title">طلبات الإجازات</span>
         </div>
       </div>
 
-      <button id="t-logoutBtn" onclick="logout()" class="btn-danger">تسجيل الخروج</button>
+      <button onclick="logout()" class="btn-danger">تسجيل الخروج</button>
     </div>
 
     <!-- 3. ID Card View -->
     <div id="view-id-card" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" id="t-backBtn1" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span id="t-cardTitle" style="font-weight: 700; font-size: 0.9rem;">الكارت الرقمي</span>
+        <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span style="font-weight: 700; font-size: 0.9rem;">الكارت الرقمي</span>
       </div>
 
       <div class="id-card" id="myCardToDownload">
@@ -643,46 +561,81 @@
         <p id="userJob" style="color: #38bdf8; font-size: 0.85rem; margin:0 0 0.85rem 0;">--</p>
         
         <div class="info-grid">
-          <div><div class="info-label" id="t-lblDept">الإدارة</div><div id="userDept" class="info-val">--</div></div>
-          <div><div class="info-label" id="t-lblCode">كود الموظف</div><div id="userCodeVal" class="info-val">--</div></div>
-          <div style="grid-column: span 2;"><div class="info-label" id="t-lblNID">الرقم القومي</div><div id="userNID" class="info-val">--</div></div>
+          <div><div class="info-label">الإدارة</div><div id="userDept" class="info-val">--</div></div>
+          <div><div class="info-label">كود الموظف</div><div id="userCodeVal" class="info-val">--</div></div>
+          <div style="grid-column: span 2;"><div class="info-label">الرقم القومي</div><div id="userNID" class="info-val">--</div></div>
         </div>
 
         <div class="qr-container"><div id="qrcode"></div></div>
       </div>
 
-      <button id="t-saveCardBtn" onclick="downloadCard()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">حفظ الكارت كصورة</button>
+      <button onclick="downloadCard()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">حفظ الكارت كصورة</button>
     </div>
 
   </div>
 
   <script>
-    // قاعدة بيانات الموظفين - مضاف بها الموظف رقم "2" لمنع الخطأ
-    const employeeDatabase = [
-      {
-        code: "2",
-        pass: "123456",
-        name: "محمد عبد السلام",
-        job: "مدير قسم الموارد البشرية",
-        dept: "الموارد البشرية",
-        nid: "29011021408899",
-        photo: "https://via.placeholder.com/150/0284c7/ffffff?text=LM+HR"
-      },
-      {
-        code: "1",
-        pass: "123456",
-        name: "أحمد محمود علي",
-        job: "مهندس نظم ومعلومات",
-        dept: "تكنولوجيا المعلومات",
-        nid: "29508121401234",
-        photo: "https://via.placeholder.com/150/0284c7/ffffff?text=LM+HR"
-      }
-    ];
+    // --- تهيئة إعصار الانترو (Tornado Intro Animation) ---
+    function initTornadoIntro() {
+      const text = "LACTO MISR";
+      const container = document.getElementById('introTitle');
+      container.innerHTML = '';
+      
+      text.split('').forEach(char => {
+        const span = document.createElement('span');
+        if (char === ' ') {
+          span.className = 'intro-space';
+        } else {
+          span.className = 'intro-char';
+          span.textContent = char;
+        }
+        container.appendChild(span);
+      });
+
+      const chars = container.querySelectorAll('.intro-char');
+      const subtitle = document.getElementById('introSubtitle');
+
+      gsap.set(chars, {
+        opacity: 0,
+        z: () => gsap.utils.random(-800, -300),
+        rotationX: () => gsap.utils.random(-120, 120),
+        rotationY: () => gsap.utils.random(-180, 180),
+        x: () => gsap.utils.random(-300, 300),
+        y: () => gsap.utils.random(-300, 300)
+      });
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          setTimeout(() => {
+            const introScreen = document.getElementById('intro-screen');
+            if(introScreen) introScreen.classList.add('fade-out');
+          }, 400);
+        }
+      });
+
+      tl.to(chars, {
+        opacity: 1,
+        z: 0,
+        rotationX: 0,
+        rotationY: 0,
+        x: 0,
+        y: 0,
+        duration: 1.6,
+        stagger: 0.04,
+        ease: "power4.out"
+      })
+      .to(subtitle, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out"
+      }, "-=0.8");
+    }
 
     let currentUserData = null;
 
-    // دالة الدخول المعدلة بدون أي مشكلة مطابقة
-    function login() {
+    // --- دالة تسجيل الدخول عبر Firebase (مدعومة بالبحث النصي والرقمي لمنع خطأ الموظف 2) ---
+    async function login() {
       const codeInput = document.getElementById('empCode').value.toString().trim();
       const passInput = document.getElementById('empPass').value.toString().trim();
       const errEl = document.getElementById('error');
@@ -693,41 +646,53 @@
         return;
       }
 
-      // البحث عن الموظف بتحويل الكود لنص ممسوح المسافات
-      const foundUser = employeeDatabase.find(emp => emp.code.toString().trim() === codeInput);
+      try {
+        // البحث في مجموعة employees داخل فايربيز (نصياً أولاً)
+        let snapshot = await db.collection('employees').where('code', '==', codeInput).get();
+        
+        // لو ملقاهوش كنص، نبحث عنه كـ Number (رقمي) لضمان عدم حدوث خطأ مطابقة النوع
+        if (snapshot.empty) {
+          snapshot = await db.collection('employees').where('code', '==', Number(codeInput)).get();
+        }
 
-      if (!foundUser) {
-        errEl.textContent = 'كود الموظف غير مسجل!';
-        return;
+        if (snapshot.empty) {
+          errEl.textContent = 'كود الموظف غير مسجل!';
+          return;
+        }
+
+        const foundUser = snapshot.docs[0].data();
+
+        if (foundUser.pass.toString().trim() !== passInput) {
+          errEl.textContent = 'كلمة السر غير صحيحة!';
+          return;
+        }
+
+        currentUserData = foundUser;
+        populateUserData(currentUserData);
+
+        if (document.getElementById('rememberMe').checked) {
+          localStorage.setItem('lm_saved_code', codeInput);
+        }
+
+        showPage('view-dashboard');
+
+      } catch (error) {
+        console.error("Firebase Error: ", error);
+        errEl.textContent = 'حدث خطأ في الاتصال بقاعدة البيانات.';
       }
-
-      if (foundUser.pass !== passInput) {
-        errEl.textContent = 'كلمة السر غير صحيحة!';
-        return;
-      }
-
-      // النجاح وتسجيل الدخول
-      currentUserData = foundUser;
-      populateUserData(currentUserData);
-
-      if (document.getElementById('rememberMe').checked) {
-        localStorage.setItem('lm_saved_code', codeInput);
-      }
-
-      showPage('view-dashboard');
     }
 
     function populateUserData(data) {
       document.getElementById('dash-name').textContent = data.name;
       document.getElementById('dash-job').textContent = data.job;
-      document.getElementById('dash-avatar').src = data.photo;
+      document.getElementById('dash-avatar').src = data.photo || 'https://via.placeholder.com/150';
 
       document.getElementById('userName').textContent = data.name;
       document.getElementById('userJob').textContent = data.job;
       document.getElementById('userDept').textContent = data.dept;
       document.getElementById('userCodeVal').textContent = data.code;
       document.getElementById('userNID').textContent = data.nid;
-      document.getElementById('userPhoto').src = data.photo;
+      document.getElementById('userPhoto').src = data.photo || 'https://via.placeholder.com/150';
 
       const qrTarget = document.getElementById('qrcode');
       qrTarget.innerHTML = '';
@@ -748,8 +713,12 @@
 
     function showPage(pageId) {
       const pages = ['view-login', 'view-dashboard', 'view-id-card'];
-      pages.forEach(id => document.getElementById(id).classList.add('hidden'));
-      document.getElementById(pageId).classList.remove('hidden');
+      pages.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.classList.add('hidden');
+      });
+      const target = document.getElementById(pageId);
+      if(target) target.classList.remove('hidden');
     }
 
     function logout() {
@@ -769,14 +738,13 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      initTornadoIntro();
+      
       const savedCode = localStorage.getItem('lm_saved_code');
       if (savedCode) {
         document.getElementById('empCode').value = savedCode;
         document.getElementById('rememberMe').checked = true;
       }
-      setTimeout(() => {
-        document.getElementById('intro-screen').classList.add('fade-out');
-      }, 1000);
     });
   </script>
 </body>
