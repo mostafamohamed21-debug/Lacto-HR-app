@@ -1,205 +1,1059 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم الذكية</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #f4f7f6;
-            color: #333;
-            padding: 20px;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        .company-name {
-            font-size: 1.4rem; /* تم تصغير الخط ليكون مرتباً */
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 5px;
-        }
-        .slogan {
-            font-size: 0.9rem;
-            color: #7f8c8d;
-            animation: fadeInOut 2s infinite alternate;
-        }
-        @keyframes fadeInOut {
-            0% { opacity: 0.4; }
-            100% { opacity: 1; }
-        }
-        
-        /* الـ Slides الخاصة بالمرتب */
-        .slides-container {
-            background: #fff;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-            text-align: center;
-            overflow: hidden;
-            position: relative;
-        }
-        .slide-item {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #27ae60;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LM HR - Lacto HR Hub</title>
+  
+  <!-- App Manifest & Branding -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="LM HR">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="icon" type="image/png" href="logo.png">
 
-        /* بوكس البصمة مع زرار الـ Swipe */
-        .attendance-box {
-            background: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .attendance-times {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 15px;
-            font-size: 0.95rem;
-            color: #555;
-        }
-        .swipe-track {
-            background: #e0e0e0;
-            height: 50px;
-            border-radius: 25px;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .swipe-text {
-            font-size: 0.85rem;
-            color: #888;
-            position: absolute;
-        }
-        .swipe-btn {
-            width: 55px;
-            height: 44px;
-            background: #3498db;
-            border-radius: 22px;
-            position: absolute;
-            left: 3px;
-            cursor: pointer;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
+  <!-- GSAP Library & Tools -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-        /* الشات التفاعلي */
-        .chat-section {
-            background: #fff;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-        .chat-title {
-            font-size: 1rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-        .chat-box {
-            background: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 10px;
-            height: 100px;
-            overflow-y: auto;
-            font-size: 0.9rem;
-            color: #333;
-        }
-    </style>
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&display=swap');
+
+    :root {
+      --bg: #0b0f19;
+      --card-bg: rgba(15, 23, 42, 0.78);
+      --border-color: rgba(255, 255, 255, 0.16);
+      --text: #f8fafc;
+      --accent: #0284c7;
+      --accent-glow: rgba(56, 189, 248, 0.4);
+      --danger: #ef4444;
+      --success: #10b981;
+      --muted: #cbd5e1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: linear-gradient(rgba(11, 15, 25, 0.78), rgba(11, 15, 25, 0.88)), url('background.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.5rem 1rem 3rem 1rem;
+      perspective: 1000px;
+      overflow-x: hidden;
+    }
+
+    /* Intro Tornado Screen */
+    #intro-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(rgba(11, 15, 25, 0.92), rgba(11, 15, 25, 0.96)), url('background.jpg');
+      background-size: cover;
+      background-position: center;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      perspective: 1200px;
+      overflow: hidden;
+      transition: opacity 1.2s ease, visibility 1.2s ease;
+    }
+
+    #intro-screen.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .intro-content-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+      text-align: center;
+      padding: 0 1rem;
+    }
+
+    .intro-title-container {
+      width: 100%;
+      display: flex;
+      gap: 0.15rem;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      direction: ltr;
+    }
+
+    .intro-char {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.8rem, 6vw, 2.6rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+      display: inline-block;
+    }
+
+    .intro-space { width: 0.6rem; }
+
+    .intro-subtitle {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(1.8rem, 5vw, 2.4rem);
+      color: #38bdf8;
+      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+      opacity: 0;
+      line-height: 1.4;
+    }
+
+    /* Main App Layout */
+    .app-header {
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+    }
+
+    .brand-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .brand-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .lang-dropdown-container { position: relative; }
+
+    .lang-dropdown-btn {
+      background: rgba(30, 41, 59, 0.75);
+      border: 1px solid var(--border-color);
+      color: var(--text);
+      padding: 0.4rem 0.8rem;
+      border-radius: 1rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      backdrop-filter: blur(12px);
+    }
+
+    .lang-dropdown-menu {
+      position: absolute;
+      top: 115%;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      display: none;
+      z-index: 200;
+      min-width: 130px;
+      backdrop-filter: blur(16px);
+    }
+
+    [dir="ltr"] .lang-dropdown-menu { right: auto; left: 0; }
+    .lang-dropdown-menu.show { display: block; }
+
+    .lang-option {
+      padding: 0.7rem 1rem;
+      font-size: 0.85rem;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .lang-option:hover { background: rgba(2, 132, 199, 0.3); color: #38bdf8; }
+
+    .container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 1rem; }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 1.75rem 1.5rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      margin: 0.5rem 0;
+      border-radius: 1rem;
+      border: 1px solid var(--border-color);
+      background: rgba(15, 23, 42, 0.85);
+      color: var(--text);
+      font-size: 0.95rem;
+      text-align: center;
+      outline: none;
+    }
+
+    input:focus { border-color: #38bdf8; box-shadow: 0 0 15px var(--accent-glow); }
+
+    .password-container { position: relative; width: 100%; margin: 0.5rem 0; }
+    .password-container input { margin: 0; padding-right: 3rem; }
+    [dir="ltr"] .password-container input { padding-right: 1rem; padding-left: 3rem; }
+
+    .toggle-password {
+      position: absolute;
+      top: 0; bottom: 0; right: 0.2rem;
+      width: 40px; background: none; border: none; cursor: pointer; color: var(--muted);
+      display: flex; align-items: center; justify-content: center; z-index: 10;
+    }
+    [dir="ltr"] .toggle-password { right: auto; left: 0.2rem; }
+    .toggle-password svg { width: 22px; height: 22px; fill: currentColor; }
+
+    .checkbox-container {
+      display: flex; align-items: center; justify-content: flex-start;
+      gap: 0.5rem; margin: 0.75rem 0; font-size: 0.85rem; color: var(--muted); cursor: pointer;
+    }
+    .checkbox-container input[type="checkbox"] { width: 18px; height: 18px; accent-color: #0284c7; margin: 0; }
+
+    button {
+      width: 100%; padding: 0.95rem; border-radius: 1.25rem; border: none;
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #fff; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 0.85rem;
+      box-shadow: 0 8px 0 #024e77, 0 12px 20px rgba(0, 0, 0, 0.4);
+      transition: all 0.15s ease;
+    }
+    button:active { transform: translateY(6px); box-shadow: 0 2px 0 #024e77; }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      box-shadow: 0 8px 0 #991b1b, 0 12px 20px rgba(220, 38, 38, 0.3);
+    }
+    .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
+
+    .hidden { display: none !important; }
+
+    /* Dashboard UI */
+    .user-header-card {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(16px);
+      padding: 1.1rem 1.25rem;
+      border-radius: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+
+    .user-header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-align: right;
+    }
+    [dir="ltr"] .user-header-right { text-align: left; }
+
+    .header-avatar {
+      width: 55px; height: 55px; border-radius: 50%;
+      border: 2px solid #38bdf8; object-fit: cover;
+    }
+
+    .code-badge-pill {
+      background: rgba(2, 132, 199, 0.2);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38bdf8; padding: 0.25rem 0.85rem;
+      border-radius: 2rem; font-size: 0.8rem; font-weight: 700;
+      display: inline-block; margin-top: 0.3rem;
+    }
+
+    /* Fingerprint Check-in Card */
+    .checkin-card {
+      background: linear-gradient(145deg, #070a12 0%, #0d1527 100%);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 1.5rem;
+      padding: 1.5rem 1.25rem;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .checkin-card:hover { border-color: #38bdf8; box-shadow: 0 20px 40px rgba(2, 132, 199, 0.25); }
+
+    .fingerprint-icon-wrap {
+      width: 70px; height: 70px;
+      background: radial-gradient(circle, rgba(2, 132, 199, 0.3) 0%, rgba(15, 23, 42, 0.8) 70%);
+      border: 2px solid rgba(56, 189, 248, 0.4);
+      border-radius: 50%;
+      margin: 0 auto 0.75rem auto;
+      display: flex; align-items: center; justify-content: center;
+      color: #38bdf8;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+    }
+    .fingerprint-icon-wrap svg { width: 34px; height: 34px; fill: currentColor; }
+
+    .checkin-status-text { font-size: 0.9rem; font-weight: 700; color: #ef4444; }
+    .checkin-status-text.success { color: #10b981; }
+
+    /* Company Announcements Slider */
+    .announcement-card {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border-color);
+      border-radius: 1.5rem;
+      padding: 1.25rem;
+      text-align: right;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      cursor: grab;
+    }
+    [dir="ltr"] .announcement-card { text-align: left; }
+
+    .slider-track { display: flex; transition: transform 0.6s ease-in-out; width: 100%; }
+    .slide-item { min-width: 100%; flex-shrink: 0; }
+
+    .announcement-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .coming-soon-badge {
+      background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #ef4444; font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.6rem; border-radius: 0.5rem;
+    }
+    .announcement-title { font-size: 1rem; font-weight: 700; color: var(--text); }
+    .announcement-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; margin-bottom: 0.75rem; }
+
+    .slider-dots { display: flex; justify-content: center; gap: 0.35rem; align-items: center; margin-top: 0.5rem; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s; }
+    .dot.active { width: 18px; border-radius: 4px; background: #38bdf8; }
+
+    /* Summaries & Stats Grid */
+    .summaries-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+    }
+
+    .summary-card {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border-color);
+      border-radius: 1.25rem;
+      padding: 1rem;
+      text-align: right;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    [dir="ltr"] .summary-card { text-align: left; }
+    .summary-title { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.3rem; font-weight: 600; }
+    .summary-value { font-size: 1.1rem; font-weight: 800; color: #38bdf8; }
+
+    /* Services Grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+    }
+
+    .service-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border-color);
+      border-radius: 1.25rem;
+      padding: 1.1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      transition: all 0.2s ease;
+    }
+    .service-btn:hover { border-color: #38bdf8; transform: translateY(-3px); }
+
+    .service-icon-box {
+      width: 44px; height: 44px; border-radius: 1rem;
+      background: rgba(2, 132, 199, 0.15); border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 0.5rem;
+    }
+    .service-icon-box svg { width: 22px; height: 22px; fill: currentColor; }
+    .service-title { font-size: 0.82rem; font-weight: 700; color: var(--text); }
+
+    /* Career Opportunities Banner Card */
+    .career-card {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.2), rgba(15, 23, 42, 0.9));
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 1.25rem;
+      padding: 1.1rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      transition: all 0.2s ease;
+    }
+    .career-card:hover { border-color: #38bdf8; transform: translateY(-2px); }
+
+    /* Floating Chat Button */
+    .chat-float-btn {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      width: 55px;
+      height: 55px;
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      border-radius: 50%;
+      border: 2px solid rgba(56, 189, 248, 0.6);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.5);
+      cursor: pointer;
+      z-index: 1000;
+      transition: transform 0.2s;
+    }
+    [dir="ltr"] .chat-float-btn { left: auto; right: 1.5rem; }
+    .chat-float-btn:hover { transform: scale(1.08); }
+    .chat-float-btn svg { width: 26px; height: 26px; fill: currentColor; }
+
+    /* ID Card & Sub-pages */
+    .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .back-btn { background: rgba(51, 65, 85, 0.8); border: 1px solid var(--border-color); width: auto; padding: 0.4rem 0.9rem; font-size: 0.8rem; margin: 0; border-radius: 0.8rem; }
+    
+    .id-card {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(11, 15, 25, 0.98));
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 1.5rem; padding: 1.5rem; position: relative;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+    .profile-img { width: 95px; height: 95px; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover; margin: 0 auto 0.75rem auto; display: block; }
+    .info-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; text-align: right;
+      background: rgba(11, 15, 25, 0.7); padding: 0.85rem; border-radius: 1rem; font-size: 0.8rem; margin-bottom: 1.25rem;
+      border: 1px solid var(--border-color);
+    }
+    [dir="ltr"] .info-grid { text-align: left; }
+    .info-label { color: var(--muted); font-size: 0.75rem; margin-bottom: 0.1rem; }
+    .info-val { font-weight: 700; color: var(--text); }
+    .qr-container { background: #fff; padding: 0.65rem; border-radius: 1rem; display: inline-block; }
+  </style>
+
+  <script>
+    let wakeLock = null;
+    async function requestWakeLock() {
+      if ('wakeLock' in navigator) {
+        try { if (wakeLock === null) wakeLock = await navigator.wakeLock.request('screen'); } catch (err) {}
+      }
+    }
+    requestWakeLock();
+    document.addEventListener('visibilitychange', async () => {
+      if (document.visibilityState === 'visible') await requestWakeLock();
+    });
+  </script>
 </head>
 <body>
 
-    <div class="header">
-        <div class="company-name">الشركة الهندسية للتطوير الرقمي</div>
-        <div class="slogan">نبتكر الحلول.. لنصنع المستقبل</div>
+  <!-- Intro Screen with Tornado Effect -->
+  <div id="intro-screen">
+    <div class="intro-content-wrapper">
+      <div class="intro-title-container" id="introTitle"></div>
+      <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
+    </div>
+  </div>
+
+  <!-- App Header -->
+  <div class="app-header">
+    <div class="brand-container">
+      <img src="logo.png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
+      <div class="brand-title">LM HR</div>
+    </div>
+    
+    <div class="lang-dropdown-container">
+      <button class="lang-dropdown-btn" onclick="toggleLangMenu()">
+        🌐 <span id="current-lang-text">العربية</span> ▼
+      </button>
+      <div class="lang-dropdown-menu" id="langMenu">
+        <div class="lang-option" onclick="selectLanguage('ar')">🇪🇬 العربية</div>
+        <div class="lang-option" onclick="selectLanguage('en')">🇬🇧 English</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    
+    <!-- 1. Login View -->
+    <div id="view-login" class="card">
+      <h2 style="font-size: 1.5rem; margin-bottom: 0.2rem;">LM HR Hub</h2>
+      <p id="t-subtitle" style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem;">بوابة الموظفين الرقمية</p>
+      
+      <input type="text" id="empCode" placeholder="كود الموظف">
+      
+      <div class="password-container">
+        <input type="password" id="empPass" placeholder="كلمة السر">
+        <button type="button" class="toggle-password" onclick="togglePasswordVisibility()">
+          <svg id="eyeIcon" viewBox="0 0 24 24">
+            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+          </svg>
+        </button>
+      </div>
+
+      <label class="checkbox-container">
+        <input type="checkbox" id="rememberMe">
+        <span id="t-remember">تذكرني</span>
+      </label>
+      
+      <button id="t-loginBtn" onclick="login()">دخول الحساب</button>
+      <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.85rem; font-weight: bold;"></p>
     </div>
 
-    <!-- Slides المرتب -->
-    <div class="slides-container">
-        <div class="slide-item">💰 ملخص المرتب الصافي: 12,500 ج.م</div>
-    </div>
-
-    <!-- بوكس البصمة الجديد بنظام الـ Swipe -->
-    <div class="attendance-box">
-        <div class="attendance-times">
-            <span>التسجيل: <strong>08:00 ص</strong></span>
-            <span>الانصراف: <strong>04:00 م</strong></span>
+    <!-- 2. Dashboard View -->
+    <div id="view-dashboard" class="hidden">
+      
+      <!-- User Greeting Header -->
+      <div class="user-header-card">
+        <div class="user-header-right">
+          <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
+          <div>
+            <div id="dash-greeting" style="font-size: 0.8rem; color: var(--muted);">مساء الخير 🌙</div>
+            <h3 id="dash-name" style="margin: 0; font-size: 1rem; font-weight: 700;">--</h3>
+            <div class="code-badge-pill"><span id="t-codeLabel">كود:</span> <span id="dash-code-val">--</span></div>
+          </div>
         </div>
-        <div class="swipe-track" id="swipeTrack">
-            <span class="swipe-text">اسحب يمين للدخول ← | → اسحب شمال للخروج</span>
-            <div class="swipe-btn" id="swipeBtn"> بصمة </div>
+      </div>
+
+      <!-- Fingerprint Check-in Card -->
+      <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
+        <div class="fingerprint-icon-wrap">
+          <svg viewBox="0 0 24 24"><path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 13.9 3 12 3s-3.66.42-5.58 1.41c-.15.08-.33.05-.45-.07-.12-.12-.15-.31-.07-.46C7.94 2.76 9.9 2.25 12 2.25s4.06.51 6.1 1.63c.15.08.21.27.13.43-.05.1-.15.16-.25.16zM12 9c-1.1 0-2 .9-2 2 0 .55.22 1.05.59 1.42l.98.98c.37.37.87.59 1.42.59 1.1 0 2-.9 2-2 0-1.1-.9-2-2-2zm6.75 3.75c-.41 0-.75.34-.75.75 0 2.9-2.35 5.25-5.25 5.25S7.5 16.4 7.5 13.5c0-.41-.34-.75-.75-.75s-.75.34-.75.75c0 3.79 3.09 6.88 6.88 6.88s6.88-3.09 6.88-6.88c0-.41-.34-.75-.75-.75z"/></svg>
         </div>
+        <div id="checkinStatusText" class="checkin-status-text">جاري تحديد الموقع الجغرافي...</div>
+      </div>
+
+      <!-- Company Announcements Slider Card -->
+      <div class="announcement-card" id="announcementCard">
+        <div class="slider-track" id="sliderTrack">
+          <div class="slide-item">
+            <div class="announcement-top">
+              <span class="announcement-title slide-title-1">إعلانات الشركة</span>
+              <span class="coming-soon-badge slide-badge-1">Coming Soon</span>
+            </div>
+            <div class="announcement-desc slide-desc-1">أهم الأخبار، الأحداث المباشرة، والمناسبات المرتقبة بالشركة.</div>
+          </div>
+          <div class="slide-item">
+            <div class="announcement-top">
+              <span class="announcement-title slide-title-2">تحديثات النظام</span>
+              <span class="coming-soon-badge slide-badge-2">New</span>
+            </div>
+            <div class="announcement-desc slide-desc-2">ترقبوا إطلاق ميزات البصمة الجغرافية المتقدمة وطلبات الإجازات الرقمية قريباً.</div>
+          </div>
+          <div class="slide-item">
+            <div class="announcement-top">
+              <span class="announcement-title slide-title-3">دليل العاملين</span>
+              <span class="coming-soon-badge slide-badge-3">Important</span>
+            </div>
+            <div class="announcement-desc slide-desc-3">تأكد من تحديث بيانات التواصل الشخصية الخاصة بك عبر قسم الموارد البشرية.</div>
+          </div>
+        </div>
+        <div class="slider-dots" id="sliderDots">
+          <div class="dot active" onclick="currentSlide(0)"></div>
+          <div class="dot" onclick="currentSlide(1)"></div>
+          <div class="dot" onclick="currentSlide(2)"></div>
+        </div>
+      </div>
+
+      <!-- Summaries Grid (Leaves, Permissions, Payroll) -->
+      <div class="summaries-grid">
+        <div class="summary-card">
+          <div class="summary-title" id="t-sumLeaves">رصيد الإجازات</div>
+          <div class="summary-value">21 يوم</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-title" id="t-sumPermissions">الأذونات المتاحة</div>
+          <div class="summary-value">3 أذونات</div>
+        </div>
+        <div class="summary-card" style="grid-column: span 2;">
+          <div class="summary-title" id="t-sumSalary">صافي آخر مرتب</div>
+          <div class="summary-value">محفوظ وآمن 🔒</div>
+        </div>
+      </div>
+
+      <!-- Services Grid (2x2) -->
+      <div class="services-grid">
+        <div class="service-btn" onclick="showPage('view-leaves')">
+          <div class="service-icon-box">
+            <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+          </div>
+          <span id="t-btnLeaves" class="service-title">طلبات الإجازات</span>
+        </div>
+
+        <div class="service-btn" onclick="showPage('view-id-card')">
+          <div class="service-icon-box">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .89-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1z"/></svg>
+          </div>
+          <span id="t-btnID" class="service-title">كارت الهوية</span>
+        </div>
+
+        <div class="service-btn" onclick="showPage('view-payroll')">
+          <div class="service-icon-box">
+            <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+          </div>
+          <span id="t-btnPay" class="service-title">مفردات المرتب</span>
+        </div>
+
+        <div class="service-btn" onclick="showPage('view-directory')">
+          <div class="service-icon-box">
+            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          </div>
+          <span id="t-btnDir" class="service-title">دليل التواصل</span>
+        </div>
+      </div>
+
+      <!-- Career Opportunities Banner -->
+      <div class="career-card" onclick="alert('قريباً: استعراض الوظائف الداخلية والترقيات المتاحة.')">
+        <div style="text-align: right;">
+          <div id="t-careerTitle" style="font-weight: 700; font-size: 0.9rem; color: #38bdf8;">الفرص الوظيفية الشاغرة</div>
+          <div id="t-careerDesc" style="font-size: 0.75rem; color: var(--muted);">استكشف الوظائف الداخلية المتاحة للترقي</div>
+        </div>
+        <span style="font-size: 1.2rem; color: #38bdf8;">➔</span>
+      </div>
+
+      <button id="t-logoutBtn" onclick="logout()" class="btn-danger">تسجيل الخروج</button>
     </div>
 
-    <!-- الشات التفاعلي -->
-    <div class="chat-section">
-        <div class="chat-title">المساعد الذكي (الشات)</div>
-        <div class="chat-box" id="chatBox">
-            أهلاً بك! أنا هنا لمساعدتك، اسألني عما تريده...
-        </div>
-    </div>
+    <!-- 3. ID Card View -->
+    <div id="view-id-card" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span id="t-cardTitle" style="font-weight: 700; font-size: 0.9rem;">الكارت الرقمي</span>
+      </div>
 
-    <script>
-        // محاكاة بسيطة لحركة زر السحب (Swipe Interaction)
-        const btn = document.getElementById('swipeBtn');
-        const track = document.getElementById('swipeTrack');
+      <div class="id-card" id="myCardToDownload">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1rem;">
+          <span style="font-weight: 800; font-size: 0.85rem; color: #38bdf8;">LACTO MISR S.A.E</span>
+          <span style="font-size: 0.65rem; background: rgba(2, 132, 199, 0.4); border: 1px solid var(--accent); color: #38bdf8; padding: 0.15rem 0.5rem; border-radius: 0.5rem; font-weight: 600;">VERIFIED</span>
+        </div>
+        <img id="userPhoto" class="profile-img" crossorigin="anonymous" src="" alt="User">
+        <h3 id="userName" style="margin:0 0 0.2rem 0; font-size: 1.1rem;">--</h3>
+        <p id="userJob" style="color: #38bdf8; font-size: 0.85rem; margin:0 0 0.85rem 0;">--</p>
         
-        let isDragging = false;
-        let startX = 0;
+        <div class="info-grid">
+          <div><div class="info-label" id="t-lblDept">الإدارة</div><div id="userDept" class="info-val">--</div></div>
+          <div><div class="info-label" id="t-lblCode">كود الموظف</div><div id="userCodeVal" class="info-val">--</div></div>
+          <div style="grid-column: span 2;"><div class="info-label" id="t-lblNID">الرقم القومي</div><div id="userNID" class="info-val">--</div></div>
+        </div>
 
-        btn.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            startX = e.clientX;
-        });
+        <div class="qr-container"><div id="qrcode"></div></div>
+      </div>
 
-        window.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            let moveX = e.clientX - startX;
-            let maxMove = track.clientWidth - btn.clientWidth - 6;
-            
-            if (moveX > 0 && moveX <= maxMove) {
-                btn.style.transform = `translateX(${moveX}px)`;
-                if (moveX > maxMove / 2) {
-                    btn.style.backgroundColor = '#2ecc71'; // أخضر للدخول
-                    btn.innerText = 'دخول';
-                }
-            } else if (moveX < 0 && Math.abs(moveX) <= maxMove) {
-                btn.style.transform = `translateX(${moveX}px)`;
-                if (Math.abs(moveX) > maxMove / 2) {
-                    btn.style.backgroundColor = '#e74c3c'; // أحمر للخروج
-                    btn.innerText = 'خروج';
-                }
-            }
-        });
+      <button id="t-saveCardBtn" onclick="downloadCard()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); margin-top:1rem;">حفظ الكارت كصورة</button>
+    </div>
 
-        window.addEventListener('mouseup', () => {
-            if (!isDragging) return;
-            isDragging = false;
-            // إعادة الزر مكانه بسلامة
-            btn.style.transform = 'translateX(0px)';
-            btn.style.backgroundColor = '#3498db';
-            btn.innerText = 'بصمة';
-        });
-    </script>
+    <!-- 4. Leaves View -->
+    <div id="view-leaves" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span style="font-weight: 700;">خدمة الإجازات</span>
+      </div>
+      <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.</p>
+    </div>
 
+    <!-- 5. Payroll View -->
+    <div id="view-payroll" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span style="font-weight: 700;">مفردات المرتب</span>
+      </div>
+      <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.</p>
+    </div>
+
+    <!-- 6. Directory View -->
+    <div id="view-directory" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span style="font-weight: 700;">دليل التواصل</span>
+      </div>
+      <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
+    </div>
+
+  </div>
+
+  <!-- Floating Chat Button -->
+  <div class="chat-float-btn" onclick="alert('قريباً: الشات الذكي مع الدعم الفني للموارد البشرية.')" title="شات الدعم الفني">
+    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+  </div>
+
+  <script>
+    // Tornado Intro Animation
+    function runTornadoIntro() {
+      const text = "LACTO MISR S.A.E";
+      const container = document.getElementById('introTitle');
+      const subtitle = document.getElementById('introSubtitle');
+      container.innerHTML = "";
+      const charElements = [];
+
+      for (let char of text) {
+        if (char === ' ') {
+          const space = document.createElement('span');
+          space.className = 'intro-space';
+          container.appendChild(space);
+        } else {
+          const span = document.createElement('span');
+          span.className = 'intro-char';
+          span.innerText = char;
+          container.appendChild(span);
+          charElements.push(span);
+        }
+      }
+
+      const directions = [{x:-900, y:-700}, {x:0, y:-900}, {x:900, y:-700}, {x:900, y:0}, {x:900, y:700}, {x:0, y:900}, {x:-900, y:700}, {x:-900, y:0}];
+      const tl = gsap.timeline({ onComplete: () => document.getElementById('intro-screen').classList.add('fade-out') });
+
+      charElements.forEach((el, index) => {
+        const randomAngle = (index / charElements.length) * Math.PI * 4;
+        const radius = 180 + Math.random() * 80;
+        gsap.set(el, { y: -500 - (index * 30), x: Math.cos(randomAngle)*radius, z: Math.sin(randomAngle)*radius, opacity: 0, scale: 0.2 });
+      });
+      gsap.set(subtitle, { opacity: 0, y: 20 });
+
+      tl.to(charElements, { duration: 2.8, x: 0, y: 0, z: 0, opacity: 1, scale: 1, stagger: 0.09, ease: "power2.out" });
+      tl.to(subtitle, { duration: 1.2, opacity: 1, y: 0, ease: "power2.out" });
+      tl.to(subtitle, { duration: 1.2, opacity: 0, y: -20, ease: "power1.in" }, "+=3.8");
+
+      charElements.forEach((el, index) => {
+        const dir = directions[index % directions.length];
+        tl.to(el, { duration: 1.5, x: dir.x, y: dir.y, opacity: 0, scale: 0.5, ease: "power1.inOut" }, index === 0 ? "scatter" : `-=1.35`);
+      });
+    }
+    window.addEventListener('DOMContentLoaded', runTornadoIntro);
+
+    function togglePasswordVisibility() {
+      const pass = document.getElementById('empPass');
+      pass.type = (pass.type === 'password') ? 'text' : 'password';
+    }
+
+    // Firebase & App Logic
+    const firebaseConfig = {
+      apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
+      authDomain: "lacto-hr-system.firebaseapp.com",
+      databaseURL: "https://lacto-hr-system-default-rtdb.firebaseio.com",
+      projectId: "lacto-hr-system",
+      storageBucket: "lacto-hr-system.firebasestorage.app",
+      messagingSenderId: "671259800401",
+      appId: "1:671259800401:web:905e1a36adba52ba2d1970"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let currentUserData = null;
+    let currentEmpCode = "";
+    let currentLang = localStorage.getItem('lacto_lang') || 'ar';
+
+    const translations = {
+      ar: {
+        subtitle: "بوابة الموظفين الرقمية",
+        remember: "تذكرني",
+        loginBtn: "دخول الحساب",
+        codeLabel: "كود:",
+        sumLeaves: "رصيد الإجازات",
+        sumPermissions: "الأذونات المتاحة",
+        sumSalary: "صافي آخر مرتب",
+        btnLeaves: "طلبات الإجازات",
+        btnID: "كارت الهوية",
+        btnPay: "مفردات المرتب",
+        btnDir: "دليل التواصل",
+        careerTitle: "الفرص الوظيفية الشاغرة",
+        careerDesc: "استكشف الوظائف الداخلية المتاحة للترقي",
+        logoutBtn: "تسجيل الخروج",
+        cardTitle: "الكارت الرقمي",
+        lblDept: "الإدارة",
+        lblCode: "كود الموظف",
+        lblNID: "الرقم القومي",
+        saveCardBtn: "حفظ الكارت كصورة",
+        slides: [
+          { title: "إعلانات الشركة", badge: "Coming Soon", desc: "أهم الأخبار، الأحداث المباشرة، والمناسبات المرتقبة بالشركة." },
+          { title: "تحديثات النظام", badge: "New", desc: "ترقبوا إطلاق ميزات البصمة الجغرافية المتقدمة وطلبات الإجازات الرقمية قريباً." },
+          { title: "دليل العاملين", badge: "Important", desc: "تأكد من تحديث بيانات التواصل الشخصية الخاصة بك عبر قسم الموارد البشرية." }
+        ]
+      },
+      en: {
+        subtitle: "Digital Employee Portal",
+        remember: "Remember Me",
+        loginBtn: "Sign In",
+        codeLabel: "Code:",
+        sumLeaves: "Leave Balance",
+        sumPermissions: "Available Permissions",
+        sumSalary: "Last Net Salary",
+        btnLeaves: "Leave Requests",
+        btnID: "ID Card",
+        btnPay: "Payroll",
+        btnDir: "Directory",
+        careerTitle: "Career Opportunities",
+        careerDesc: "Explore internal career growth & promotions",
+        logoutBtn: "Sign Out",
+        cardTitle: "Digital ID Card",
+        lblDept: "Department",
+        lblCode: "Employee Code",
+        lblNID: "National ID",
+        saveCardBtn: "Save ID Card as Image",
+        slides: [
+          { title: "Company Announcements", badge: "Coming Soon", desc: "Latest news, live events, and upcoming company occasions." },
+          { title: "System Updates", badge: "New", desc: "Stay tuned for the launch of advanced geo-attendance and digital leaves." },
+          { title: "Employee Guide", badge: "Important", desc: "Make sure to update your personal contact details via the HR department." }
+        ]
+      }
+    };
+
+    function updateContentTranslations() {
+      const t = translations[currentLang];
+      document.getElementById('t-subtitle').innerText = t.subtitle;
+      document.getElementById('t-remember').innerText = t.remember;
+      document.getElementById('t-loginBtn').innerText = t.loginBtn;
+      document.getElementById('t-codeLabel').innerText = t.codeLabel;
+      document.getElementById('t-sumLeaves').innerText = t.sumLeaves;
+      document.getElementById('t-sumPermissions').innerText = t.sumPermissions;
+      document.getElementById('t-sumSalary').innerText = t.sumSalary;
+      document.getElementById('t-btnLeaves').innerText = t.btnLeaves;
+      document.getElementById('t-btnID').innerText = t.btnID;
+      document.getElementById('t-btnPay').innerText = t.btnPay;
+      document.getElementById('t-btnDir').innerText = t.btnDir;
+      document.getElementById('t-careerTitle').innerText = t.careerTitle;
+      document.getElementById('t-careerDesc').innerText = t.careerDesc;
+      document.getElementById('t-logoutBtn').innerText = t.logoutBtn;
+      document.getElementById('t-cardTitle').innerText = t.cardTitle;
+      document.getElementById('t-lblDept').innerText = t.lblDept;
+      document.getElementById('t-lblCode').innerText = t.lblCode;
+      document.getElementById('t-lblNID').innerText = t.lblNID;
+      document.getElementById('t-saveCardBtn').innerText = t.saveCardBtn;
+
+      t.slides.forEach((slide, idx) => {
+        const titleEl = document.querySelector(`.slide-title-${idx + 1}`);
+        const badgeEl = document.querySelector(`.slide-badge-${idx + 1}`);
+        const descEl = document.querySelector(`.slide-desc-${idx + 1}`);
+        if(titleEl) titleEl.innerText = slide.title;
+        if(badgeEl) badgeEl.innerText = slide.badge;
+        if(descEl) descEl.innerText = slide.desc;
+      });
+    }
+
+    // Announcement Slider Logic (Calm Speed: 5.5 seconds)
+    let currentSlideIndex = 0;
+    const totalSlides = 3;
+    let slideInterval;
+
+    function showSlide(index) {
+      currentSlideIndex = (index + totalSlides) % totalSlides;
+      const track = document.getElementById('sliderTrack');
+      track.style.transform = `translateX(${currentSlideIndex * (currentLang === 'ar' ? 100 : -100)}%)`;
+      
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlideIndex);
+      });
+    }
+
+    function currentSlide(index) {
+      showSlide(index);
+      resetSlideTimer();
+    }
+
+    function nextSlide() {
+      showSlide(currentSlideIndex + 1);
+    }
+
+    function resetSlideTimer() {
+      clearInterval(slideInterval);
+      slideInterval = setInterval(nextSlide, 5500);
+    }
+
+    let touchStartX = 0;
+    const cardEl = document.getElementById('announcementCard');
+    cardEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; clearInterval(slideInterval); });
+    cardEl.addEventListener('touchend', e => {
+      let touchEndX = e.changedTouches[0].clientX;
+      if (touchStartX - touchEndX > 50) {
+        nextSlide();
+      } else if (touchEndX - touchStartX > 50) {
+        showSlide(currentSlideIndex - 1);
+      }
+      resetSlideTimer();
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      selectLanguage(currentLang);
+      resetSlideTimer();
+    });
+
+    // Geo-Location Verification (Lat: 30.235154, Lng: 31.743997, Radius: 75m)
+    const COMPANY_LAT = 30.235154;
+    const COMPANY_LNG = 31.743997;
+    const ALLOWED_RADIUS_METERS = 75;
+
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371e3;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    function verifyLocationAndCheckIn() {
+      const statusText = document.getElementById('checkinStatusText');
+      statusText.innerText = currentLang === 'ar' ? "جاري تفعيل نظام الـ GPS والتحقق من النطاق..." : "Activating GPS and verifying location...";
+
+      if (!navigator.geolocation) {
+        statusText.innerText = currentLang === 'ar' ? "متصفحك لا يدعم تحديد الموقع الجغرافي." : "Geolocation is not supported by your browser.";
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+          const distance = calculateDistance(userLat, userLng, COMPANY_LAT, COMPANY_LNG);
+
+          if (distance <= ALLOWED_RADIUS_METERS) {
+            statusText.className = "checkin-status-text success";
+            statusText.innerText = currentLang === 'ar' ? `تم تسجيل الحضور بنجاح! أنت في نطاق الشركة (${Math.round(distance)} متر)` : `Check-in successful! Within company range (${Math.round(distance)}m)`;
+          } else {
+            statusText.className = "checkin-status-text";
+            statusText.innerText = currentLang === 'ar' ? `عذراً، أنت خارج نطاق الشركة (${Math.round(distance)} متر)` : `Sorry, you are outside company range (${Math.round(distance)}m)`;
+          }
+        },
+        (error) => {
+          statusText.className = "checkin-status-text";
+          statusText.innerText = currentLang === 'ar' ? "تعذر الحصول على موقعك. تأكد من تفعيل الـ GPS." : "Unable to retrieve location. Please enable GPS.";
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    }
+
+    function showPage(pageId) {
+      ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+      document.getElementById(pageId).classList.remove('hidden');
+    }
+
+    function login() {
+      const code = document.getElementById('empCode').value.trim();
+      const pass = document.getElementById('empPass').value.trim();
+      const rememberMe = document.getElementById('rememberMe').checked;
+      const errorEl = document.getElementById('error');
+
+      if (!code) { errorEl.innerText = currentLang === 'ar' ? "يرجى إدخال كود الموظف" : "Please enter employee code"; return; }
+
+      db.ref('users/' + code).once('value').then((snapshot) => {
+        if (snapshot.exists()) {
+          const user = snapshot.val();
+          if (user.password !== pass) {
+            errorEl.innerText = currentLang === 'ar' ? "كلمة السر غير صحيحة!" : "Incorrect password!";
+            return;
+          }
+
+          currentUserData = user;
+          currentEmpCode = code;
+          errorEl.innerText = "";
+
+          if (rememberMe) {
+            localStorage.setItem('lacto_saved_code', code);
+            localStorage.setItem('lacto_saved_pass', pass);
+          } else {
+            localStorage.removeItem('lacto_saved_code');
+            localStorage.removeItem('lacto_saved_pass');
+          }
+
+          document.getElementById('dash-name').innerText = user.name || "--";
+          document.getElementById('dash-code-val').innerText = code;
+          document.getElementById('dash-avatar').src = user.photo || "https://i.pravatar.cc/150?img=12";
+          
+          document.getElementById('userName').innerText = user.name || "--";
+          document.getElementById('userJob').innerText = user.job || "--";
+          document.getElementById('userDept').innerText = user.dept || "--";
+          document.getElementById('userCodeVal').innerText = code;
+          document.getElementById('userNID').innerText = user.nationalId || "--";
+          document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
+
+          document.getElementById('qrcode').innerHTML = "";
+          new QRCode(document.getElementById("qrcode"), { text: window.location.origin + window.location.pathname + "?emp=" + code, width: 85, height: 85 });
+
+          showPage('view-dashboard');
+          verifyLocationAndCheckIn();
+        } else {
+          errorEl.innerText = currentLang === 'ar' ? "كود الموظف غير مسجل!" : "Employee code not found!";
+        }
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedCode = localStorage.getItem('lacto_saved_code');
+      const savedPass = localStorage.getItem('lacto_saved_pass');
+      if (savedCode && savedPass) {
+        document.getElementById('empCode').value = savedCode;
+        document.getElementById('empPass').value = savedPass;
+        document.getElementById('rememberMe').checked = true;
+      }
+    });
+
+    function downloadCard() {
+      html2canvas(document.getElementById('myCardToDownload'), { useCORS: true, scale: 2 }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'Lacto_ID_' + currentEmpCode + '.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    }
+
+    function logout() { window.location.reload(); }
+
+    function toggleLangMenu() { document.getElementById('langMenu').classList.toggle('show'); }
+    
+    function selectLanguage(lang) {
+      toggleLangMenu();
+      currentLang = lang;
+      localStorage.setItem('lacto_lang', lang);
+      document.documentElement.lang = lang;
+      document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+      document.getElementById('current-lang-text').innerText = (lang === 'ar') ? "العربية" : "English";
+      updateContentTranslations();
+      showSlide(currentSlideIndex);
+    }
+  </script>
 </body>
 </html>
