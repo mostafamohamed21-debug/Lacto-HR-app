@@ -1347,11 +1347,63 @@
         document.getElementById('empCode').value = savedCode;
         document.getElementById('empPass').value = savedPass;
         document.getElementById('rememberMe').checked = true;
-        login(true);
+        
+        // جلب البيانات أولاً للتحقق من وجود المستخدم قبل طلب البصمة
+        db.ref('users/' + savedCode).once('value').then((snapshot) => {
+          if (snapshot.exists()) {
+            currentUserData = snapshot.val();
+            currentEmpCode = savedCode;
+            renderProfileData();
+
+            const currentUrl = window.location.origin + window.location.pathname;
+            document.getElementById('qrcode').innerHTML = "";
+            new QRCode(document.getElementById("qrcode"), { 
+              text: currentUrl + "?emp=" + savedCode, 
+              width: 85, 
+              height: 85 
+            });
+            listenToChatMessages(savedCode);
+
+            // التحقق من حالة البصمة: إذا كانت مفعلة مسبقاً، نطلب التحقق بالبصمة قبل الدوحة للـ Dashboard
+            const bioStatus = localStorage.getItem('lacto_biometric');
+            if (bioStatus === 'true') {
+              triggerBiometricVerification();
+            } else {
+              // لو مش مفعلة، بنسيبه على صفحة الدخول أو يضغط دخول يدوي طبيعي
+              localStorage.removeItem('lacto_emp_code');
+              localStorage.removeItem('lacto_emp_pass');
+            }
+          }
+        });
       }
     }
 
-    function login(isAuto = false) {
+    async function triggerBiometricVerification() {
+      if (window.PublicKeyCredential) {
+        try {
+          const challenge = new Uint8Array(32);
+          window.crypto.getRandomValues(challenge);
+          
+          await navigator.credentials.get({
+            publicKey: {
+              challenge: challenge,
+              timeout: 60000,
+              userVerification: "required"
+            }
+          });
+          // نجاح التحقق بالبصمة -> الدخول للوحة التحكم مباشرة
+          showPage('view-dashboard');
+        } catch (e) {
+          console.log("Biometric verification cancelled or failed:", e);
+          // في حال فشل أو إلغاء البصمة، نظهر صفحة الدخول العادية ليكتب كلمة المرور
+          showPage('view-login');
+        }
+      } else {
+        showPage('view-dashboard');
+      }
+    }
+
+    function login() {
       const code = document.getElementById('empCode').value.trim();
       const pass = document.getElementById('empPass').value.trim();
       const remember = document.getElementById('rememberMe').checked;
@@ -1367,7 +1419,7 @@
       db.ref('users/' + code).once('value').then((snapshot) => {
         if (snapshot.exists()) {
           const user = snapshot.val();
-          if (!isAuto && user.password !== pass) {
+          if (user.password !== pass) {
             errorEl.innerText = (currentLang === 'en') ? "Incorrect Password!" : "كلمة السر غير صحيحة!";
             return;
           }
@@ -1376,8 +1428,7 @@
           currentEmpCode = code;
           errorEl.innerText = "";
 
-          // Save or clear remember credentials instantly
-          if (remember || isAuto) {
+          if (remember) {
             localStorage.setItem('lacto_emp_code', code);
             localStorage.setItem('lacto_emp_pass', user.password);
           } else {
@@ -1398,9 +1449,8 @@
           listenToChatMessages(code);
           showPage('view-dashboard');
 
-          // Only prompt for biometric setup if user has never enabled it or skipped it before
           const bioStatus = localStorage.getItem('lacto_biometric');
-          if (!isAuto && bioStatus !== 'true' && bioStatus !== 'declined') {
+          if (bioStatus !== 'true' && bioStatus !== 'declined') {
             setTimeout(() => {
               document.getElementById('biometricModal').classList.add('show');
             }, 600);
@@ -1462,7 +1512,6 @@
 
     function skipBiometric() {
       document.getElementById('biometricModal').classList.remove('show');
-      // Save declined state so it never prompts automatically again
       localStorage.setItem('lacto_biometric', 'declined');
     }
 
