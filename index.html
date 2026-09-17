@@ -324,7 +324,6 @@
       pointer-events: none;
     }
 
-    /* Checkbox Container Styling */
     .checkbox-container {
       display: flex;
       align-items: center;
@@ -624,7 +623,7 @@
     }
 
     /* ----------------------------------
-       Floating Chat Widget Styling (Global Fixed)
+       Floating Chat Widget Styling 
     ---------------------------------- */
     .floating-chat-btn {
       position: fixed;
@@ -659,7 +658,6 @@
       fill: #ffffff;
     }
 
-    /* Chat Modal Box (Global Fixed) */
     .chat-modal {
       position: fixed;
       bottom: 95px;
@@ -1010,20 +1008,20 @@
         </svg>
       </div>
       <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;" id="t-bioTitle">تفعيل تسجيل الدخول السريع</h3>
-      <p style="color: var(--muted); font-size: 0.82rem; line-height: 1.5; margin-bottom: 1.25rem;" id="t-bioDesc">هل ترغب في ربط البرنامج ببصمة الإصبع أو بصمة الوجه (Biometric) الخاصة بجهازك لتسهيل الدخول في المرات القادمة؟</p>
-      <button onclick="enableBiometric()" id="t-bioYes" style="margin-bottom: 0.5rem;">نعم، تفعيل البصمة</button>
+      <p style="color: var(--muted); font-size: 0.82rem; line-height: 1.5; margin-bottom: 1.25rem;" id="t-bioDesc">هل ترغب في حفظ بيانات تسجيل الدخول على هذا الجهاز لتسهيل الدخول المباشر في المرات القادمة؟</p>
+      <button onclick="enableBiometric()" id="t-bioYes" style="margin-bottom: 0.5rem;">نعم، تفعيل الدخول المباشر</button>
       <button onclick="skipBiometric()" id="t-bioNo" class="btn-danger" style="background: rgba(51, 65, 85, 0.8); box-shadow: 0 4px 0 #1e293b, 0 6px 10px rgba(0,0,0,0.3);">لاحقاً</button>
     </div>
   </div>
 
-  <!-- Global Floating Chat Widget Button (Visible on ALL Pages) -->
+  <!-- Global Floating Chat Widget Button -->
   <div class="floating-chat-btn" id="chatFloatingBtn" onclick="toggleChatModal()">
     <svg viewBox="0 0 24 24">
       <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
     </svg>
   </div>
 
-  <!-- Global Chat Modal Window (Visible on ALL Pages) -->
+  <!-- Global Chat Modal Window -->
   <div class="chat-modal" id="chatModal">
     <div class="chat-header">
       <div class="chat-header-title">
@@ -1084,9 +1082,8 @@
           const introScreen = document.getElementById('intro-screen');
           introScreen.classList.add('fade-out');
           
-          // Trigger Biometric Login Check AFTER Intro Animation Finishes
           setTimeout(() => {
-            triggerAutoBiometricLogin();
+            triggerAutoLoginCheck();
           }, 400);
         }
       });
@@ -1168,9 +1165,6 @@
       loadSavedLogin();
     });
 
-    // ----------------------------------------------------
-    // Toggle Password Visibility Function
-    // ----------------------------------------------------
     function togglePasswordVisibility() {
       const passInput = document.getElementById('empPass');
       const eyeIcon = document.getElementById('eyeIcon');
@@ -1233,8 +1227,8 @@
         welcomeChat: "مرحباً بك! اكتب استفسارك وسيقوم فريق الموارد البشرية بالرد عليك قريباً.",
         chatPlaceholder: "اكتب رسالتك هنا...",
         bioTitle: "تفعيل تسجيل الدخول السريع",
-        bioDesc: "هل ترغب في ربط البرنامج ببصمة الإصبع أو بصمة الوجه (Biometric) الخاصة بجهازك لتسهيل الدخول في المرات القادمة؟",
-        bioYes: "نعم، تفعيل البصمة",
+        bioDesc: "هل ترغب في حفظ بيانات تسجيل الدخول على هذا الجهاز لتسهيل الدخول المباشر في المرات القادمة؟",
+        bioYes: "نعم، تفعيل الدخول المباشر",
         bioNo: "لاحقاً"
       },
       en: {
@@ -1264,9 +1258,9 @@
         chatHeader: "HR Support Chat",
         welcomeChat: "Welcome! Type your inquiry and our HR team will reply shortly.",
         chatPlaceholder: "Type your message here...",
-        bioTitle: "Enable Quick Biometric Sign In",
-        bioDesc: "Would you like to link the app to your device's fingerprint or face ID for faster and easier login next time?",
-        bioYes: "Yes, Enable Biometric",
+        bioTitle: "Enable Quick Auto Sign In",
+        bioDesc: "Would you like to save credentials on this device for faster direct login next time?",
+        bioYes: "Yes, Enable Quick Sign In",
         bioNo: "Later"
       }
     };
@@ -1321,7 +1315,7 @@
     }
 
     /* ----------------------------------------------------
-       Remember Me & Biometric Auto-Login Functions
+       Remember Me & Auto Login Logic
     ---------------------------------------------------- */
     function loadSavedLogin() {
       const savedCode = localStorage.getItem('lacto_emp_code');
@@ -1335,30 +1329,13 @@
       }
     }
 
-    async function triggerAutoBiometricLogin() {
-      const isBioEnabled = localStorage.getItem('lacto_biometric_enabled');
+    function triggerAutoLoginCheck() {
+      const remember = localStorage.getItem('lacto_remember');
       const savedCode = localStorage.getItem('lacto_emp_code');
       const savedPass = localStorage.getItem('lacto_emp_pass');
 
-      if (isBioEnabled === 'true' && savedCode && savedPass) {
-        if (window.PublicKeyCredential) {
-          try {
-            const challenge = new Uint8Array(32);
-            window.crypto.getRandomValues(challenge);
-            const credential = await navigator.credentials.get({
-              publicKey: {
-                challenge: challenge,
-                timeout: 60000,
-                userVerification: "preferred"
-              }
-            });
-            if (credential) {
-              login(savedCode, savedPass);
-            }
-          } catch (err) {
-            console.log("Biometric auth cancelled/failed on startup.", err);
-          }
-        }
+      if (remember === 'true' && savedCode && savedPass) {
+        login(savedCode, savedPass);
       }
     }
 
@@ -1387,7 +1364,6 @@
           currentEmpCode = code;
           errorEl.innerText = "";
 
-          // Save / Clear Remember Me Data
           if (rememberMe) {
             localStorage.setItem('lacto_emp_code', code);
             localStorage.setItem('lacto_emp_pass', pass);
@@ -1412,7 +1388,6 @@
 
           showPage('view-dashboard');
 
-          // Show Biometric Prompt ONLY once if never prompted/configured before
           const bioStatus = localStorage.getItem('lacto_biometric_enabled');
           if (bioStatus === null) {
             setTimeout(() => {
@@ -1429,38 +1404,17 @@
       });
     }
 
-    async function enableBiometric() {
-      const modal = document.getElementById('biometricModal');
-      modal.classList.remove('show');
-
-      if (window.PublicKeyCredential) {
-        try {
-          const challenge = new Uint8Array(32);
-          window.crypto.getRandomValues(challenge);
-          await navigator.credentials.create({
-            publicKey: {
-              challenge: challenge,
-              rp: { name: "LM HR Hub" },
-              user: {
-                id: Uint8Array.from(currentEmpCode, c => c.charCodeAt(0)),
-                name: currentEmpCode,
-                displayName: currentEmpCode
-              },
-              pubKeyCredParams: [{ alg: -7, type: "public-key" }],
-              timeout: 60000,
-              attestation: "direct"
-            }
-          });
-          localStorage.setItem('lacto_biometric_enabled', 'true');
-          alert(currentLang === 'en' ? "Biometric login successfully linked!" : "تم ربط بصمة الجهاز بنجاح!");
-        } catch (e) {
-          localStorage.setItem('lacto_biometric_enabled', 'true');
-          alert(currentLang === 'en' ? "Biometric login successfully configured!" : "تم حفظ إعدادات البصمة بجهازك بنجاح!");
-        }
-      } else {
-        localStorage.setItem('lacto_biometric_enabled', 'true');
-        alert(currentLang === 'en' ? "Biometric authentication is supported on this device." : "تم حفظ إعدادات البصمة بجهازك.");
+    function enableBiometric() {
+      localStorage.setItem('lacto_biometric_enabled', 'true');
+      document.getElementById('rememberMe').checked = true;
+      const code = document.getElementById('empCode').value.trim();
+      const pass = document.getElementById('empPass').value.trim();
+      if(code && pass) {
+        localStorage.setItem('lacto_emp_code', code);
+        localStorage.setItem('lacto_emp_pass', pass);
+        localStorage.setItem('lacto_remember', 'true');
       }
+      document.getElementById('biometricModal').classList.remove('show');
     }
 
     function skipBiometric() {
@@ -1478,6 +1432,7 @@
     }
 
     function logout() {
+      localStorage.removeItem('lacto_remember');
       window.location.reload();
     }
 
