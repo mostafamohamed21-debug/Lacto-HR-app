@@ -272,6 +272,7 @@
       box-shadow: 0 0 15px var(--accent-glow), inset 0 1px 3px rgba(0,0,0,0.5);
     }
 
+    /* إصلاح حاوية حقل كلمة السر وزر العين بدقة */
     .password-container {
       position: relative;
       width: 100%;
@@ -280,37 +281,38 @@
 
     .password-container input {
       margin: 0;
-      padding-left: 3rem;
+      padding-right: 3rem; /* مساحة لزر العين في اليمين للغة العربية */
+      padding-left: 1rem;
     }
 
-    [dir="rtl"] .password-container input {
-      padding-left: 1rem;
-      padding-right: 3rem;
+    [dir="ltr"] .password-container input {
+      padding-right: 1rem;
+      padding-left: 3rem; /* مساحة لزر العين في اليسار للغة الإنجليزية */
     }
 
     .toggle-password {
       position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0.2rem;
-      width: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 0.75rem; /* موقع زر العين للغة العربية */
       background: none;
       border: none;
       box-shadow: none !important;
       cursor: pointer;
       color: var(--muted);
-      padding: 0;
-      margin: auto 0;
+      padding: 0.25rem;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: color 0.2s;
       z-index: 10;
+      width: auto;
+      margin: 0;
     }
 
-    [dir="rtl"] .toggle-password {
-      left: auto;
-      right: 0.2rem;
+    [dir="ltr"] .toggle-password {
+      right: auto;
+      left: 0.75rem; /* موقع زر العين للغة الإنجليزية */
     }
 
     .toggle-password:hover {
@@ -334,10 +336,6 @@
       font-size: 0.85rem;
       color: var(--muted);
       cursor: pointer;
-    }
-
-    [dir="rtl"] .checkbox-container {
-      justify-content: flex-start;
     }
 
     .checkbox-container input[type="checkbox"] {
@@ -1079,7 +1077,7 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       runTornadoIntro();
-      checkAutoLogin(); // التحقق من الحفظ التلقائي عند فتح التطبيق
+      checkAutoLogin();
     });
 
     // ----------------------------------------------------
@@ -1226,7 +1224,6 @@
       document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
     }
 
-    // دالة التحقق التلقائي من تسجيل الدخول المحفوظ مسبقاً
     function checkAutoLogin() {
       const savedCode = localStorage.getItem('lacto_saved_code');
       const savedPass = localStorage.getItem('lacto_saved_pass');
@@ -1235,7 +1232,7 @@
         document.getElementById('empCode').value = savedCode;
         document.getElementById('empPass').value = savedPass;
         document.getElementById('rememberMe').checked = true;
-        login(true); // تنفيذ الدخول تلقائياً
+        login(true);
       }
     }
 
@@ -1264,7 +1261,6 @@
           currentEmpCode = code;
           errorEl.innerText = "";
 
-          // معالجة حالة زر تذكرني
           if (remember) {
             localStorage.setItem('lacto_saved_code', code);
             localStorage.setItem('lacto_saved_pass', user.password);
@@ -1283,7 +1279,6 @@
             height: 85 
           });
 
-          // الاستماع للرسائل باستخدام كود الموظف
           listenToChatMessages(code);
 
           showPage('view-dashboard');
@@ -1306,15 +1301,11 @@
     }
 
     function logout() {
-      // مسح بيانات الحفظ عند تسجيل الخروج يدوياً لكي يطلب البيانات مجدداً
       localStorage.removeItem('lacto_saved_code');
       localStorage.removeItem('lacto_saved_pass');
       window.location.reload();
     }
 
-    // ----------------------------------------------------
-    // Embedded Chat Functions (Firebase Realtime)
-    // ----------------------------------------------------
     function toggleChatModal() {
       const modal = document.getElementById('chatModal');
       modal.classList.toggle('show');
@@ -1353,10 +1344,8 @@
       if (!empCode) return;
       const chatBody = document.getElementById('chatBody');
       
-      // إيقاف المستمع القديم إن وجد
       db.ref('chats/' + empCode).off();
       
-      // إرجاع الرسالة الترحيبية المترجمة حسب اللغة الحالية
       const t = translations[currentLang];
       chatBody.innerHTML = `<div class="chat-msg hr" id="t-welcomeChat">${t.welcomeChat}</div>`;
 
@@ -1364,7 +1353,6 @@
         const msg = snapshot.val();
         if (!msg) return;
 
-        // دعم النص سواء كان مسجلاً بـ text أو message أو كائن نصي
         const messageContent = (typeof msg === 'string') ? msg : (msg.text || msg.message || '');
         if (!messageContent) return;
 
