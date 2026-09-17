@@ -1,88 +1,38 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LM HR - Lacto HR Hub</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lacto Misr HR Hub</title>
   
-  <!-- App Manifest & Branding (LM HR & Logo) -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0f172a">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="LM HR">
-  <link rel="apple-touch-icon" href="logo.png">
-  <link rel="icon" type="image/png" href="logo.png">
-
-  <!-- GSAP Library for Smooth Tornado Physics -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&display=swap');
-
-    :root {
-      --bg: #0b0f19;
-      --card-bg: rgba(15, 23, 42, 0.75);
-      --border-color: rgba(255, 255, 255, 0.18);
-      --text: #f8fafc;
-      --accent: #0284c7;
-      --accent-glow: rgba(56, 189, 248, 0.4);
-      --danger: #ef4444;
-      --success: #10b981;
-      --muted: #cbd5e1;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Cairo', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Orbitron:wght@600;800&family=Outfit:wght@400;600;700&display=swap');
 
     body {
-      background: linear-gradient(rgba(11, 15, 25, 0.75), rgba(11, 15, 25, 0.85)), url('background.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1.5rem 1rem;
-      perspective: 1000px;
+      font-family: 'Cairo', sans-serif;
+      background-color: #030712;
+      color: #f3f4f6;
       overflow-x: hidden;
     }
 
-    /* ----------------------------------
-       Tornado / Cyclone Intro Styling 
-    ---------------------------------- */
+    /* Intro Overlay */
     #intro-screen {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: linear-gradient(rgba(11, 15, 25, 0.92), rgba(11, 15, 25, 0.96)), url('background.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      inset: 0;
+      z-index: 99999;
+      background: #030712;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      z-index: 9999;
-      perspective: 1200px;
+      justify-content: center;
+      perspective: 1000px;
       overflow: hidden;
       transition: opacity 1.2s ease, visibility 1.2s ease;
     }
@@ -90,874 +40,441 @@
     #intro-screen.fade-out {
       opacity: 0;
       visibility: hidden;
-    }
-
-    .intro-content-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      text-align: center;
-    }
-
-    .intro-title-container {
-      width: 100%;
-      display: flex;
-      gap: 0.15rem;
-      flex-wrap: nowrap;
-      justify-content: center;
-      align-items: center;
-      direction: ltr;
-      padding: 0 0.5rem;
-      transform-style: preserve-3d;
-      text-align: center;
-    }
-
-    .intro-char {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: clamp(1.5rem, 5.5vw, 2.2rem);
-      font-weight: 800;
-      letter-spacing: 1px;
-      background: linear-gradient(135deg, #38bdf8, #0284c7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
-      display: inline-block;
-      transform-style: preserve-3d;
-      will-change: transform, opacity;
-    }
-
-    .intro-space {
-      width: 0.5rem;
-    }
-
-    .intro-subtitle {
-      font-family: 'Great Vibes', cursive;
-      font-size: clamp(1.4rem, 4vw, 2rem);
-      color: #38bdf8;
-      text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
-      opacity: 0;
-      letter-spacing: 1.5px;
-      will-change: opacity, transform;
-    }
-
-    /* ----------------------------------
-       Main App Layout 
-    ---------------------------------- */
-    .app-header {
-      width: 100%;
-      max-width: 420px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-      position: relative;
-    }
-
-    .brand-container {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .brand-logo {
-      width: 32px;
-      height: 32px;
-      object-fit: contain;
-      border-radius: 8px;
-    }
-
-    .brand-title {
-      font-size: 1.2rem;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      background: linear-gradient(135deg, #38bdf8, #0284c7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
-    }
-
-    .lang-dropdown-container {
-      position: relative;
-    }
-
-    .lang-dropdown-btn {
-      background: rgba(30, 41, 59, 0.75);
-      border: 1px solid var(--border-color);
-      color: var(--text);
-      padding: 0.5rem 0.9rem;
-      border-radius: 1rem;
-      font-size: 0.8rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .lang-dropdown-btn:active {
-      transform: scale(0.92) translateZ(-5px);
-    }
-
-    .lang-dropdown-menu {
-      position: absolute;
-      top: 115%;
-      left: 0;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid var(--border-color);
-      border-radius: 1rem;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-      overflow: hidden;
-      display: none;
-      z-index: 200;
-      min-width: 130px;
-      backdrop-filter: blur(16px);
-    }
-
-    [dir="rtl"] .lang-dropdown-menu { left: auto; right: 0; }
-    .lang-dropdown-menu.show { display: block; }
-
-    .lang-option {
-      padding: 0.7rem 1rem;
-      font-size: 0.85rem;
-      color: var(--text);
-      cursor: pointer;
-      transition: background 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .lang-option:hover {
-      background: rgba(2, 132, 199, 0.3);
-      color: #38bdf8;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 420px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      padding: 1.75rem 1.5rem;
-      border-radius: 1.5rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-      text-align: center;
-    }
-
-    input {
-      width: 100%;
-      padding: 0.9rem 1rem;
-      margin: 0.5rem 0;
-      border-radius: 1rem;
-      border: 1px solid var(--border-color);
-      background: rgba(15, 23, 42, 0.85);
-      color: var(--text);
-      font-size: 0.95rem;
-      text-align: center;
-      outline: none;
-      transition: all 0.3s;
-      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
-    }
-
-    input:focus {
-      border-color: #38bdf8;
-      box-shadow: 0 0 15px var(--accent-glow), inset 0 1px 3px rgba(0,0,0,0.5);
-    }
-
-    .password-container {
-      position: relative;
-      width: 100%;
-      margin: 0.5rem 0;
-    }
-
-    .password-container input {
-      margin: 0;
-      padding-left: 3rem;
-    }
-
-    [dir="rtl"] .password-container input {
-      padding-left: 1rem;
-      padding-right: 3rem;
-    }
-
-    .toggle-password {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0.2rem;
-      width: 40px;
-      background: none;
-      border: none;
-      box-shadow: none !important;
-      cursor: pointer;
-      color: var(--muted);
-      padding: 0;
-      margin: auto 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: color 0.2s;
-      z-index: 10;
-    }
-
-    [dir="rtl"] .toggle-password {
-      left: auto;
-      right: 0.2rem;
-    }
-
-    .toggle-password:hover {
-      color: #38bdf8;
-    }
-
-    .toggle-password svg {
-      width: 22px;
-      height: 22px;
-      fill: currentColor;
       pointer-events: none;
     }
 
-    /* Checkbox Container Styling */
-    .checkbox-container {
+    .intro-title-wrapper {
       display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 0.5rem;
-      margin: 0.75rem 0;
-      font-size: 0.85rem;
-      color: var(--muted);
-      cursor: pointer;
-    }
-
-    [dir="rtl"] .checkbox-container {
-      justify-content: flex-start;
-    }
-
-    .checkbox-container input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      accent-color: #0284c7;
-      cursor: pointer;
-      margin: 0;
-      box-shadow: none;
-    }
-
-    button {
-      width: 100%;
-      padding: 0.95rem;
-      border-radius: 1.25rem;
-      border: none;
-      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-      color: #fff;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 0.85rem;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 8px 0 #024e77, 0 12px 20px rgba(0, 0, 0, 0.4), inset 0 2px 2px rgba(255, 255, 255, 0.3);
-      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-      transform-style: preserve-3d;
-    }
-
-    button:active {
-      transform: translateY(6px);
-      box-shadow: 0 2px 0 #024e77, 0 5px 10px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-    }
-
-    .btn-danger {
-      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-      box-shadow: 0 8px 0 #991b1b, 0 12px 20px rgba(220, 38, 38, 0.3), inset 0 2px 2px rgba(255, 255, 255, 0.3);
-    }
-
-    .btn-danger:active {
-      box-shadow: 0 2px 0 #991b1b, 0 5px 10px rgba(220, 38, 38, 0.3);
-    }
-
-    .hidden { display: none !important; }
-
-    .user-header-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      padding: 1.25rem;
-      border-radius: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      text-align: right;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-    }
-
-    [dir="ltr"] .user-header-card { text-align: left; }
-
-    .header-avatar {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      border: 2px solid #38bdf8;
-      object-fit: cover;
-      box-shadow: 0 0 15px var(--accent-glow);
-    }
-
-    .services-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.2rem;
-      margin-bottom: 1.5rem;
-      perspective: 1000px;
-    }
-
-    .service-btn {
-      background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.85));
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-radius: 1.5rem;
-      padding: 1.5rem 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      flex-wrap: wrap;
       justify-content: center;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 4px 0 rgba(2, 132, 199, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      align-items: center;
       transform-style: preserve-3d;
+      gap: 0.15em;
+      padding: 0 20px;
     }
 
-    .service-btn:hover {
-      border-color: #38bdf8;
-      transform: translateY(-6px) rotateX(8deg) scale(1.02);
-      box-shadow: 0 18px 30px rgba(2, 132, 199, 0.35), 0 8px 0 rgba(2, 132, 199, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.4);
-    }
-
-    .service-btn:active {
-      transform: translateY(4px) rotateX(-5deg) scale(0.96);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5), 0 1px 0 rgba(2, 132, 199, 0.5);
-    }
-
-    .service-icon-box {
-      width: 52px;
-      height: 52px;
-      border-radius: 1.2rem;
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(2, 132, 199, 0.1));
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      color: #38bdf8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 0.85rem;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-      transition: transform 0.3s ease;
-    }
-
-    .service-btn:hover .service-icon-box {
-      transform: scale(1.15) rotate(5deg);
-      background: rgba(56, 189, 248, 0.3);
-    }
-
-    .service-icon-box svg {
-      width: 26px;
-      height: 26px;
-      fill: currentColor;
-    }
-
-    .service-title {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .nav-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-
-    .back-btn {
-      background: rgba(51, 65, 85, 0.8);
-      border: 1px solid var(--border-color);
-      width: auto;
-      padding: 0.5rem 1rem;
-      font-size: 0.85rem;
-      margin: 0;
-      box-shadow: 0 4px 0 #1e293b, 0 6px 10px rgba(0,0,0,0.3);
-      border-radius: 0.85rem;
-    }
-
-    .back-btn:active {
-      transform: translateY(3px);
-      box-shadow: 0 1px 0 #1e293b;
-    }
-
-    .id-card {
-      background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      border-radius: 1.5rem;
-      padding: 1.5rem;
-      position: relative;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.2);
-    }
-
-    .id-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 0.75rem;
-      margin-bottom: 1rem;
-    }
-
-    .profile-img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      border: 3px solid #38bdf8;
-      object-fit: cover;
-      margin: 0 auto 0.75rem auto;
-      display: block;
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
-    }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.6rem;
-      text-align: right;
-      background: rgba(11, 15, 25, 0.7);
-      padding: 0.85rem;
-      border-radius: 1rem;
-      font-size: 0.8rem;
-      margin-bottom: 1.25rem;
-      border: 1px solid var(--border-color);
-    }
-
-    [dir="ltr"] .info-grid { text-align: left; }
-
-    .info-label { color: var(--muted); font-size: 0.75rem; margin-bottom: 0.1rem; }
-    .info-val { font-weight: 700; color: var(--text); }
-
-    .qr-container {
-      background: #ffffff;
-      padding: 0.65rem;
-      border-radius: 1rem;
+    .intro-char {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.2rem, 6vw, 4.8rem);
+      background: linear-gradient(135deg, #ffffff 0%, #38bdf8 50%, #0284c7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       display: inline-block;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+      will-change: transform, opacity;
+      transform-style: preserve-3d;
+      letter-spacing: -1px;
     }
 
-    /* ----------------------------------
-       Floating Chat Widget Styling (Global Fixed)
-    ---------------------------------- */
-    .floating-chat-btn {
-      position: fixed;
-      bottom: 25px;
-      left: 20px;
-      width: 58px;
-      height: 58px;
-      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+    .intro-space {
+      width: clamp(10px, 2.5vw, 25px);
+    }
+
+    .intro-subtitle {
+      font-family: 'Cairo', sans-serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+      color: #94a3b8;
+      margin-top: 25px;
+      letter-spacing: 2px;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    /* Background Effects */
+    .bg-glow {
+      position: absolute;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.5), 0 4px 10px rgba(0,0,0,0.4);
-      cursor: pointer;
-      z-index: 99999;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .bg-glow-1 {
+      width: 450px;
+      height: 450px;
+      background: rgba(56, 189, 248, 0.12);
+      top: -100px;
+      left: -100px;
+    }
+    .bg-glow-2 {
+      width: 400px;
+      height: 400px;
+      background: rgba(14, 165, 233, 0.08);
+      bottom: -100px;
+      right: -100px;
     }
 
-    [dir="ltr"] .floating-chat-btn {
+    /* Glassmorphism */
+    .glass-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    }
+
+    .glass-input {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #f8fafc;
+      transition: all 0.3s ease;
+    }
+    .glass-input:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
+      outline: none;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #030712;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #38bdf8;
+    }
+
+    /* Language Switcher Dropdown */
+    .lang-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .lang-dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 120px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 8px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      overflow: hidden;
+    }
+    html[dir="rtl"] .lang-dropdown-content {
       left: auto;
-      right: 20px;
+      right: 0;
+    }
+    .lang-dropdown-content button {
+      width: 100%;
+      padding: 8px 12px;
+      text-align: right;
+      background: transparent;
+      border: none;
+      color: #e2e8f0;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    html[dir="ltr"] .lang-dropdown-content button {
+      text-align: left;
+    }
+    .lang-dropdown-content button:hover {
+      background: rgba(56, 189, 248, 0.2);
+      color: #38bdf8;
+    }
+    .lang-dropdown-content.show {
+      display: block;
     }
 
-    .floating-chat-btn:hover {
-      transform: scale(1.1);
+    /* ID Card Canvas Preview Style */
+    #idCardContainer {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
     }
 
-    .floating-chat-btn svg {
-      width: 28px;
-      height: 28px;
-      fill: #ffffff;
-    }
-
-    /* Chat Modal Box (Global Fixed) */
+    /* Embedded Support Chat Modal */
     .chat-modal {
       position: fixed;
-      bottom: 95px;
+      bottom: 85px;
       left: 20px;
-      width: 330px;
-      max-width: calc(100vw - 40px);
-      height: 430px;
-      background: rgba(15, 23, 42, 0.96);
-      border: 1px solid var(--border-color);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-radius: 1.5rem;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.7);
-      display: flex;
+      width: 320px;
+      height: 420px;
+      z-index: 999;
+      display: none;
       flex-direction: column;
-      z-index: 100000;
+      border-radius: 16px;
       overflow: hidden;
-      transform: scale(0.9);
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      transform-origin: bottom left;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
     }
-
-    [dir="ltr"] .chat-modal {
+    html[dir="ltr"] .chat-modal {
       left: auto;
       right: 20px;
-      transform-origin: bottom right;
     }
-
     .chat-modal.show {
-      transform: scale(1);
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .chat-header {
-      background: linear-gradient(135deg, rgba(2, 132, 199, 0.8), rgba(3, 105, 161, 0.9));
-      padding: 0.85rem 1rem;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(255,255,255,0.15);
-    }
-
-    .chat-header-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .chat-close-btn {
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 1.2rem;
-      cursor: pointer;
-      width: 30px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      box-shadow: none !important;
-      margin: 0;
-      padding: 0;
-    }
-
-    .chat-close-btn:hover {
-      background: rgba(0,0,0,0.2);
     }
 
     .chat-body {
       flex: 1;
-      padding: 1rem;
+      padding: 12px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
-      background: rgba(11, 15, 25, 0.5);
+      gap: 8px;
+      background: rgba(15, 23, 42, 0.85);
     }
 
     .chat-msg {
       max-width: 80%;
-      padding: 0.65rem 0.85rem;
-      border-radius: 1rem;
+      padding: 8px 12px;
+      border-radius: 12px;
       font-size: 0.85rem;
       line-height: 1.4;
       word-break: break-word;
     }
 
-    .chat-msg.employee {
-      background: #0284c7;
-      color: #fff;
-      align-self: flex-end;
-      border-bottom-right-radius: 0.25rem;
-    }
-
     .chat-msg.hr {
-      background: rgba(30, 41, 59, 0.9);
-      border: 1px solid var(--border-color);
-      color: var(--text);
       align-self: flex-start;
-      border-bottom-left-radius: 0.25rem;
+      background: rgba(30, 41, 59, 0.9);
+      color: #e2e8f0;
+      border-bottom-left-radius: 2px;
     }
 
-    .chat-footer {
-      padding: 0.75rem;
-      background: rgba(15, 23, 42, 0.98);
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .chat-footer input {
-      margin: 0;
-      padding: 0.65rem 0.85rem;
-      font-size: 0.85rem;
-      text-align: right;
-    }
-
-    [dir="ltr"] .chat-footer input {
-      text-align: left;
-    }
-
-    .chat-send-btn {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
+    .chat-msg.employee {
+      align-self: flex-end;
       background: #0284c7;
-      border: none;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      margin: 0;
-      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.4);
-      flex-shrink: 0;
-    }
-
-    .chat-send-btn svg {
-      width: 18px;
-      height: 18px;
-      fill: #fff;
-      transform: rotate(180deg);
-    }
-
-    [dir="ltr"] .chat-send-btn svg {
-      transform: none;
+      color: #ffffff;
+      border-bottom-right-radius: 2px;
     }
   </style>
-
-  <!-- Screen Wake Lock API -->
-  <script>
-    let wakeLock = null;
-
-    async function requestWakeLock() {
-      if ('wakeLock' in navigator) {
-        try {
-          if (wakeLock === null) {
-            wakeLock = await navigator.wakeLock.request('screen');
-          }
-        } catch (err) {
-          console.error(`Wake Lock error: ${err.name}, ${err.message}`);
-        }
-      }
-    }
-
-    requestWakeLock();
-
-    document.addEventListener('visibilitychange', async () => {
-      if (document.visibilityState === 'visible') {
-        await requestWakeLock();
-      }
-    });
-
-    document.addEventListener('touchstart', () => {
-      requestWakeLock();
-    }, { passive: true, once: false });
-  </script>
 </head>
-<body>
+<body class="min-h-screen flex flex-col justify-between relative selection:bg-sky-500 selection:text-white">
 
-  <!-- Intro Screen with Gentle Tornado Effect -->
+  <!-- Background Glows -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Intro Screen (Tornado Effect) -->
   <div id="intro-screen">
-    <div class="intro-content-wrapper">
-      <div class="intro-title-container" id="introTitle"></div>
-      <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
-    </div>
+    <div class="intro-title-wrapper" id="introTitle"></div>
+    <div class="intro-subtitle" id="introSubtitle">شركة لاكتو مصر للمستحضرات الطبية</div>
   </div>
 
-  <!-- App Header -->
-  <div class="app-header">
-    <div class="brand-container">
-      <img src="logo.png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
-      <div class="brand-title">LM HR</div>
-    </div>
-    
-    <div class="lang-dropdown-container">
-      <button class="lang-dropdown-btn" onclick="toggleLangMenu()">
-        🌐 <span id="current-lang-text">العربية</span> ▼
-      </button>
-      <div class="lang-dropdown-menu" id="langMenu">
-        <div class="lang-option" onclick="selectLanguage('ar')">🇪🇬 العربية</div>
-        <div class="lang-option" onclick="selectLanguage('en')">🇬🇧 English</div>
+  <!-- Top Navigation / Bar -->
+  <header class="relative z-10 w-full max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+    <div class="flex items-center space-x-3 space-x-reverse">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-sky-500/30">
+        <span class="font-bold text-xl text-white">LM</span>
+      </div>
+      <div>
+        <h1 class="text-lg font-bold text-white tracking-wide">LACTO MISR</h1>
+        <p class="text-xs text-slate-400" id="t-subtitle">بوابة الموظفين والمدراء الرقمية</p>
       </div>
     </div>
-  </div>
 
-  <div class="container">
-    
-    <!-- 1. Login View -->
-    <div id="view-login" class="card">
-      <h2 style="font-size: 1.5rem; margin-bottom: 0.2rem;">LM HR Hub</h2>
-      <p id="t-subtitle" style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem;">بوابة الموظفين الرقمية</p>
-      
-      <input type="text" id="empCode" placeholder="كود الموظف">
-      
-      <div class="password-container">
-        <input type="password" id="empPass" placeholder="كلمة السر">
-        <button type="button" class="toggle-password" id="togglePassBtn" onclick="togglePasswordVisibility()">
-          <svg id="eyeIcon" viewBox="0 0 24 24">
-            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-          </svg>
+    <!-- Language Selector -->
+    <div class="lang-dropdown">
+      <button onclick="toggleLangMenu()" class="lang-dropdown-btn glass-card px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-slate-800 transition">
+        <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+        <span id="current-lang-text">العربية</span>
+      </button>
+      <div id="langMenu" class="lang-dropdown-content">
+        <button onclick="selectLanguage('ar')">العربية</button>
+        <button onclick="selectLanguage('en')">English</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View Area -->
+  <main class="relative z-10 flex-1 flex items-center justify-center p-4">
+
+    <!-- 1. LOGIN VIEW -->
+    <div id="view-login" class="w-full max-w-md">
+      <div class="glass-card rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+        <div class="text-center mb-6">
+          <h2 class="text-2xl font-extrabold text-white mb-1">تسجيل الدخول</h2>
+          <p class="text-xs text-slate-400">أدخل بيانات الحساب الخاص بك للوصول إلى الخدمات</p>
+        </div>
+
+        <form id="loginForm" onsubmit="event.preventDefault(); login();" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">كود الموظف</label>
+            <input type="text" id="empCode" required class="glass-input w-full px-4 py-2.5 rounded-xl text-sm" placeholder="مثال: 1024" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">كلمة السر</label>
+            <div class="relative">
+              <input type="password" id="empPass" required class="glass-input w-full px-4 py-2.5 rounded-xl text-sm pl-10" placeholder="••••••••" />
+              <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 hover:text-white">
+                <svg id="eyeIcon" class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5-5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between text-xs">
+            <label class="flex items-center gap-2 text-slate-300 cursor-pointer">
+              <input type="checkbox" id="rememberMe" class="rounded bg-slate-800 border-slate-700 text-sky-500 focus:ring-sky-500">
+              <span id="t-remember">تذكرني</span>
+            </label>
+          </div>
+
+          <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold text-sm shadow-lg shadow-sky-500/25 hover:opacity-95 transition transform active:scale-95">
+            <span id="t-loginBtn">دخول الحساب</span>
+          </button>
+        </form>
+
+        <div id="error" class="mt-4 text-center text-xs font-semibold text-rose-400 min-h-[20px]"></div>
+      </div>
+    </div>
+
+    <!-- 2. DASHBOARD VIEW -->
+    <div id="view-dashboard" class="w-full max-w-4xl hidden">
+      <div class="glass-card rounded-2xl p-6 sm:p-8">
+        
+        <!-- User Profile Header -->
+        <div class="flex flex-col sm:flex-row items-center justify-between pb-6 border-b border-slate-800 gap-4">
+          <div class="flex items-center gap-4">
+            <img id="dash-avatar" src="" alt="Avatar" class="w-16 h-16 rounded-2xl object-cover border-2 border-sky-400/30 shadow-md"/>
+            <div>
+              <h2 id="dash-name" class="text-xl font-bold text-white">--</h2>
+              <p id="dash-job" class="text-xs text-sky-400 font-semibold">--</p>
+            </div>
+          </div>
+          <button onclick="logout()" class="px-4 py-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-bold hover:bg-rose-500/20 transition">
+            <span id="t-logoutBtn">تسجيل الخروج</span>
+          </button>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+          <button onclick="showPage('view-id-card')" class="glass-card p-4 rounded-xl flex flex-col items-center justify-center gap-3 hover:border-sky-500/50 transition group">
+            <div class="w-12 h-12 rounded-xl bg-sky-500/10 flex items-center justify-center text-sky-400 group-hover:scale-110 transition">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 012-2h2a2 2 0 012 2v1m-4 0h4"/></svg>
+            </div>
+            <span id="t-btnID" class="text-xs font-bold text-slate-200">كارت الهوية</span>
+          </button>
+
+          <button onclick="showPage('view-leaves')" class="glass-card p-4 rounded-xl flex flex-col items-center justify-center gap-3 hover:border-sky-500/50 transition group">
+            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </div>
+            <span id="t-btnLeaves" class="text-xs font-bold text-slate-200">طلبات الإجازات</span>
+          </button>
+
+          <button onclick="showPage('view-payroll')" class="glass-card p-4 rounded-xl flex flex-col items-center justify-center gap-3 hover:border-sky-500/50 transition group">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <span id="t-btnPay" class="text-xs font-bold text-slate-200">مفردات المرتب</span>
+          </button>
+
+          <button onclick="showPage('view-directory')" class="glass-card p-4 rounded-xl flex flex-col items-center justify-center gap-3 hover:border-sky-500/50 transition group">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover:scale-110 transition">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h32a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm0 0l7.88 5.91a2 2 0 002.24 0L21 5"/></svg>
+            </div>
+            <span id="t-btnDir" class="text-xs font-bold text-slate-200">دليل التواصل</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 3. DIGITAL ID CARD VIEW -->
+    <div id="view-id-card" class="w-full max-w-sm hidden">
+      <div class="glass-card rounded-2xl p-6 relative">
+        <button onclick="showPage('view-dashboard')" class="text-xs text-sky-400 font-bold mb-4 flex items-center gap-1 hover:underline">
+          <span id="t-backBtn1">← رجوع</span>
+        </button>
+
+        <!-- Printable Card Target -->
+        <div id="myCardToDownload" class="p-5 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-800 border border-slate-700 shadow-2xl relative overflow-hidden text-right">
+          <div class="flex items-center justify-between border-b border-slate-700 pb-3 mb-4">
+            <div>
+              <p class="text-[10px] font-bold text-sky-400 tracking-wider">LACTO MISR S.A.E</p>
+              <h3 id="t-cardTitle" class="text-xs font-extrabold text-white">الكارت الرقمي</h3>
+            </div>
+            <div class="w-7 h-7 rounded-lg bg-sky-500 flex items-center justify-center font-bold text-xs text-white">LM</div>
+          </div>
+
+          <div class="flex gap-4 items-center mb-4">
+            <img id="userPhoto" src="" alt="User" class="w-20 h-20 rounded-xl object-cover border-2 border-sky-400/40 shadow-md"/>
+            <div class="space-y-1">
+              <h4 id="userName" class="text-sm font-bold text-white">--</h4>
+              <p id="userJob" class="text-[11px] text-sky-400 font-semibold">--</p>
+              <p class="text-[10px] text-slate-400"><span id="t-lblDept">الإدارة</span>: <span id="userDept" class="text-slate-200">--</span></p>
+            </div>
+          </div>
+
+          <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex items-center justify-between">
+            <div class="space-y-1 text-[10px]">
+              <p class="text-slate-400"><span id="t-lblCode">كود الموظف</span>: <span id="userCodeVal" class="text-white font-bold">--</span></p>
+              <p class="text-slate-400"><span id="t-lblNID">الرقم القومي</span>: <span id="userNID" class="text-slate-200">--</span></p>
+            </div>
+            <div id="qrcode" class="p-1 bg-white rounded-lg"></div>
+          </div>
+        </div>
+
+        <button onclick="downloadCard()" class="w-full mt-4 py-2.5 rounded-xl bg-sky-500 text-white font-bold text-xs shadow-lg shadow-sky-500/20 hover:bg-sky-400 transition">
+          <span id="t-saveCardBtn">حفظ الكارت كصورة</span>
         </button>
       </div>
-
-      <label class="checkbox-container">
-        <input type="checkbox" id="rememberMe">
-        <span id="t-remember">تذكرني</span>
-      </label>
-      
-      <button id="t-loginBtn" onclick="login()">دخول الحساب</button>
-
-      <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.85rem; font-weight: bold;"></p>
     </div>
 
-    <!-- 2. Dashboard View -->
-    <div id="view-dashboard" class="hidden">
-      <div class="user-header-card">
-        <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
-        <div>
-          <h3 id="dash-name" style="margin: 0; font-size: 1.1rem; font-weight: 700;">--</h3>
-          <p id="dash-job" style="margin: 0; color: #38bdf8; font-size: 0.85rem;">--</p>
-        </div>
+    <!-- 4. LEAVES VIEW -->
+    <div id="view-leaves" class="w-full max-w-md hidden">
+      <div class="glass-card rounded-2xl p-6">
+        <button onclick="showPage('view-dashboard')" class="text-xs text-sky-400 font-bold mb-4 flex items-center gap-1 hover:underline">
+          <span id="t-backBtn2">← رجوع</span>
+        </button>
+        <h3 id="t-leaveTitle" class="text-lg font-bold text-white mb-2">خدمة الإجازات</h3>
+        <p id="t-leaveMsg" class="text-xs text-slate-400 leading-relaxed">قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.</p>
       </div>
-
-      <div class="services-grid">
-        <div class="service-btn" onclick="showPage('view-id-card')">
-          <div class="service-icon-box">
-            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .89-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1z"/></svg>
-          </div>
-          <span id="t-btnID" class="service-title">كارت الهوية</span>
-        </div>
-
-        <div class="service-btn" onclick="showPage('view-leaves')">
-          <div class="service-icon-box">
-            <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
-          </div>
-          <span id="t-btnLeaves" class="service-title">طلبات الإجازات</span>
-        </div>
-
-        <div class="service-btn" onclick="showPage('view-payroll')">
-          <div class="service-icon-box">
-            <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-          </div>
-          <span id="t-btnPay" class="service-title">مفردات المرتب</span>
-        </div>
-
-        <div class="service-btn" onclick="showPage('view-directory')">
-          <div class="service-icon-box">
-            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-          </div>
-          <span id="t-btnDir" class="service-title">دليل التواصل</span>
-        </div>
-      </div>
-
-      <button id="t-logoutBtn" onclick="logout()" class="btn-danger">تسجيل الخروج</button>
     </div>
 
-    <!-- 3. ID Card View -->
-    <div id="view-id-card" class="card hidden">
-      <div class="nav-bar">
-        <button class="back-btn" id="t-backBtn1" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span id="t-cardTitle" style="font-weight: 700; font-size: 0.9rem;">الكارت الرقمي</span>
+    <!-- 5. PAYROLL VIEW -->
+    <div id="view-payroll" class="w-full max-w-md hidden">
+      <div class="glass-card rounded-2xl p-6">
+        <button onclick="showPage('view-dashboard')" class="text-xs text-sky-400 font-bold mb-4 flex items-center gap-1 hover:underline">
+          <span id="t-backBtn3">← رجوع</span>
+        </button>
+        <h3 id="t-payTitle" class="text-lg font-bold text-white mb-2">مفردات المرتب</h3>
+        <p id="t-payMsg" class="text-xs text-slate-400 leading-relaxed">قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.</p>
       </div>
-
-      <div class="id-card" id="myCardToDownload">
-        <div class="id-card-header">
-          <span style="font-weight: 800; font-size: 0.85rem; color: #38bdf8; letter-spacing: 1px;">LACTO MISR S.A.E</span>
-          <span style="font-size: 0.65rem; background: rgba(2, 132, 199, 0.4); border: 1px solid var(--accent); color: #38bdf8; padding: 0.15rem 0.5rem; border-radius: 0.5rem; font-weight: 600;">VERIFIED</span>
-        </div>
-        <img id="userPhoto" class="profile-img" crossorigin="anonymous" src="" alt="User">
-        <h3 id="userName" style="margin:0 0 0.2rem 0; font-size: 1.1rem;">--</h3>
-        <p id="userJob" style="color: #38bdf8; font-size: 0.85rem; margin:0 0 0.85rem 0;">--</p>
-        
-        <div class="info-grid">
-          <div><div class="info-label" id="t-lblDept">الإدارة</div><div id="userDept" class="info-val">--</div></div>
-          <div><div class="info-label" id="t-lblCode">كود الموظف</div><div id="userCodeVal" class="info-val">--</div></div>
-          <div style="grid-column: span 2;"><div class="info-label" id="t-lblNID">الرقم القومي</div><div id="userNID" class="info-val">--</div></div>
-        </div>
-
-        <div class="qr-container"><div id="qrcode"></div></div>
-      </div>
-
-      <button id="t-saveCardBtn" onclick="downloadCard()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 8px 0 #047857, 0 12px 20px rgba(16, 185, 129, 0.3), inset 0 2px 2px rgba(255, 255, 255, 0.3);">حفظ الكارت كصورة</button>
     </div>
 
-    <!-- 4. Leaves View -->
-    <div id="view-leaves" class="card hidden">
-      <div class="nav-bar">
-        <button class="back-btn" id="t-backBtn2" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span id="t-leaveTitle" style="font-weight: 700;">خدمة الإجازات</span>
+    <!-- 6. DIRECTORY VIEW -->
+    <div id="view-directory" class="w-full max-w-md hidden">
+      <div class="glass-card rounded-2xl p-6">
+        <button onclick="showPage('view-dashboard')" class="text-xs text-sky-400 font-bold mb-4 flex items-center gap-1 hover:underline">
+          <span id="t-backBtn4">← رجوع</span>
+        </button>
+        <h3 id="t-dirTitle" class="text-lg font-bold text-white mb-2">دليل التواصل</h3>
+        <p id="t-dirMsg" class="text-xs text-slate-400 leading-relaxed">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
       </div>
-      <p id="t-leaveMsg" style="color: var(--muted); font-size: 0.85rem; line-height: 1.6; padding: 1rem 0;">قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.</p>
     </div>
 
-    <!-- 5. Payroll View -->
-    <div id="view-payroll" class="card hidden">
-      <div class="nav-bar">
-        <button class="back-btn" id="t-backBtn3" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span id="t-payTitle" style="font-weight: 700;">مفردات المرتب</span>
-      </div>
-      <p id="t-payMsg" style="color: var(--muted); font-size: 0.85rem; line-height: 1.6; padding: 1rem 0;">قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.</p>
+  </main>
+
+  <!-- Embedded Chat Trigger Button -->
+  <button onclick="toggleChatModal()" class="fixed bottom-5 left-5 z-50 w-12 h-12 rounded-full bg-sky-500 text-white flex items-center justify-center shadow-xl shadow-sky-500/30 hover:scale-105 transition">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+  </button>
+
+  <!-- Embedded Chat Window -->
+  <div id="chatModal" class="chat-modal glass-card">
+    <div class="bg-slate-900/90 p-3 border-b border-slate-800 flex items-center justify-between">
+      <span id="t-chatHeader" class="text-xs font-bold text-white">محادثة دعم الـ HR</span>
+      <button onclick="toggleChatModal()" class="text-slate-400 hover:text-white text-xs font-bold">✕</button>
     </div>
-
-    <!-- 6. Directory View -->
-    <div id="view-directory" class="card hidden">
-      <div class="nav-bar">
-        <button class="back-btn" id="t-backBtn4" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span id="t-dirTitle" style="font-weight: 700;">دليل التواصل</span>
-      </div>
-      <p id="t-dirMsg" style="color: var(--muted); font-size: 0.85rem; line-height: 1.6; padding: 1rem 0;">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
-    </div>
-
-  </div>
-
-  <!-- Global Floating Chat Widget Button (Visible on ALL Pages) -->
-  <div class="floating-chat-btn" id="chatFloatingBtn" onclick="toggleChatModal()">
-    <svg viewBox="0 0 24 24">
-      <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
-    </svg>
-  </div>
-
-  <!-- Global Chat Modal Window (Visible on ALL Pages) -->
-  <div class="chat-modal" id="chatModal">
-    <div class="chat-header">
-      <div class="chat-header-title">
-        💬 <span id="t-chatHeader">محادثة دعم الـ HR</span>
-      </div>
-      <button class="chat-close-btn" onclick="toggleChatModal()">×</button>
-    </div>
-    <div class="chat-body" id="chatBody">
+    <div id="chatBody" class="chat-body">
       <div class="chat-msg hr" id="t-welcomeChat">مرحباً بك! اكتب استفسارك وسيقوم فريق الموارد البشرية بالرد عليك قريباً.</div>
     </div>
-    <div class="chat-footer">
-      <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا..." onkeypress="handleChatKeyPress(event)">
-      <button class="chat-send-btn" onclick="sendChatMessage()">
-        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-      </button>
+    <div class="p-2 bg-slate-900/90 border-t border-slate-800 flex gap-2">
+      <input type="text" id="chatInput" onkeypress="handleChatKeyPress(event)" class="glass-input flex-1 px-3 py-1.5 rounded-lg text-xs" placeholder="اكتب رسالتك..." />
+      <button onclick="sendChatMessage()" class="px-3 py-1.5 rounded-lg bg-sky-500 text-white font-bold text-xs hover:bg-sky-400">إرسال</button>
     </div>
   </div>
 
@@ -966,7 +483,6 @@
     // INITIALIZATION & REMEMBER ME LOGIC
     // ----------------------------------------------------
     window.addEventListener('DOMContentLoaded', () => {
-      // استرجاع الكود وخيار "تذكرني" عند فتح التطبيق مباشرة
       const savedData = localStorage.getItem('lacto_saved_user');
       if (savedData) {
         try {
@@ -1022,7 +538,6 @@
         onComplete: () => {
           const introScreen = document.getElementById('intro-screen');
           introScreen.classList.add('fade-out');
-          // الاستدعاء التلقائي الآمن للدخول السريع
           autoTriggerBiometric();
         }
       });
@@ -1241,7 +756,67 @@
       document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
     }
 
-    // الدخول والتحقق من حفظ البيانات
+    // ----------------------------------------------------
+    // BIOMETRIC AUTHENTICATION LOGIC
+    // ----------------------------------------------------
+
+    async function offerBiometricSetup(code, user) {
+      if (!window.PublicKeyCredential) return;
+
+      const confirmMsg = currentLang === 'en' 
+        ? "Would you like to enable Biometric Login (Face ID / Fingerprint) for faster access next time?" 
+        : "هل تريد تفعيل بصمة الجهاز (الإصبع / الوجه) لفتح التطبيق بسهولة المرة القادمة؟";
+
+      if (confirm(confirmMsg)) {
+        try {
+          const publicKey = {
+            challenge: new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]),
+            rp: { name: "LM HR Hub" },
+            user: {
+              id: Uint8Array.from(code, c => c.charCodeAt(0)),
+              name: user.name || code,
+              displayName: user.name || code
+            },
+            pubKeyCredParams: [{ alg: -7, type: "public-key" }],
+            authenticatorSelection: { authenticatorAttachment: "platform" },
+            timeout: 60000
+          };
+
+          const credential = await navigator.credentials.create({ publicKey });
+          if (credential) {
+            localStorage.setItem('lacto_biometric_enabled', 'true');
+            localStorage.setItem('lacto_saved_user', JSON.stringify({ code: code, user: user }));
+            alert(currentLang === 'en' ? "Biometric login enabled successfully!" : "تم تفعيل بصمة الجهاز بنجاح!");
+          }
+        } catch (err) {
+          console.log("Biometric Setup Cancelled or Failed:", err);
+        }
+      }
+    }
+
+    async function autoTriggerBiometric() {
+      const isBioEnabled = localStorage.getItem('lacto_biometric_enabled');
+      const savedData = localStorage.getItem('lacto_saved_user');
+
+      if (isBioEnabled === 'true' && savedData && window.PublicKeyCredential) {
+        try {
+          const { code, user } = JSON.parse(savedData);
+
+          const publicKey = {
+            challenge: new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]),
+            timeout: 60000
+          };
+
+          const assertion = await navigator.credentials.get({ publicKey });
+          if (assertion) {
+            login(user, code);
+          }
+        } catch (err) {
+          console.log("Biometric verification active or user skipped prompt:", err);
+        }
+      }
+    }
+
     function login(forcedUser, forcedCode) {
       const code = forcedCode || document.getElementById('empCode').value.trim();
       const pass = forcedUser ? forcedUser.password : document.getElementById('empPass').value.trim();
@@ -1282,7 +857,6 @@
           currentEmpCode = code;
           errorEl.innerText = "";
 
-          // حفظ الجلسة إذا كان خيار تذكرني مفعلاً
           if (document.getElementById('rememberMe').checked) {
             localStorage.setItem('lacto_saved_user', JSON.stringify({ code: code, user: user }));
           } else {
@@ -1302,6 +876,12 @@
           listenToChatMessages(code);
           showPage('view-dashboard');
 
+          if (!localStorage.getItem('lacto_biometric_enabled')) {
+            setTimeout(() => {
+              offerBiometricSetup(code, user);
+            }, 600);
+          }
+
         } else {
           errorEl.innerText = (currentLang === 'en') ? "Employee code not found!" : "كود الموظف غير مسجل!";
         }
@@ -1309,21 +889,6 @@
         console.error(err);
         errorEl.innerText = (currentLang === 'en') ? "Connection Error!" : "حدث خطأ في الاتصال!";
       });
-    }
-
-    // الدالة المحدثة للتعرف التلقائي بدون الدخول في متاهة طلب Passkey النظام
-    async function autoTriggerBiometric() {
-      const savedData = localStorage.getItem('lacto_saved_user');
-      if (!savedData) return;
-
-      try {
-        const { code, user } = JSON.parse(savedData);
-        if (code && user) {
-          login(user, code);
-        }
-      } catch (e) {
-        console.error("Auto trigger error:", e);
-      }
     }
 
     function downloadCard() {
@@ -1337,6 +902,7 @@
 
     function logout() {
       localStorage.removeItem('lacto_saved_user');
+      localStorage.removeItem('lacto_biometric_enabled');
       window.location.reload();
     }
 
