@@ -324,31 +324,6 @@
       pointer-events: none;
     }
 
-    /* Checkbox Container Styling */
-    .checkbox-container {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 0.5rem;
-      margin: 0.75rem 0;
-      font-size: 0.85rem;
-      color: var(--muted);
-      cursor: pointer;
-    }
-
-    [dir="rtl"] .checkbox-container {
-      justify-content: flex-start;
-    }
-
-    .checkbox-container input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      accent-color: #0284c7;
-      cursor: pointer;
-      margin: 0;
-      box-shadow: none;
-    }
-
     button {
       width: 100%;
       padding: 0.95rem;
@@ -824,12 +799,6 @@
           </svg>
         </button>
       </div>
-
-      <!-- تم إضافة التشيك بوكس هنا بدون أي تغييرات أو ترحيل غير مبرر -->
-      <label class="checkbox-container">
-        <input type="checkbox" id="rememberMe">
-        <span id="t-remember">تذكرني</span>
-      </label>
       
       <button id="t-loginBtn" onclick="login()">دخول الحساب</button>
 
@@ -1122,7 +1091,6 @@
         subtitle: "بوابة الموظفين والمدراء الرقمية",
         codeHolder: "كود الموظف",
         passHolder: "كلمة السر",
-        remember: "تذكرني",
         loginBtn: "دخول الحساب",
         btnID: "كارت الهوية",
         btnLeaves: "طلبات الإجازات",
@@ -1150,7 +1118,6 @@
         subtitle: "Digital Employee Portal",
         codeHolder: "Employee Code",
         passHolder: "Password",
-        remember: "Remember me",
         loginBtn: "Sign In",
         btnID: "ID Card",
         btnLeaves: "Leave Requests",
@@ -1360,7 +1327,6 @@
       document.getElementById('t-subtitle').innerText = t.subtitle;
       document.getElementById('empCode').placeholder = t.codeHolder;
       document.getElementById('empPass').placeholder = t.passHolder;
-      document.getElementById('t-remember').innerText = t.remember;
       document.getElementById('t-loginBtn').innerText = t.loginBtn;
       document.getElementById('t-btnID').innerText = t.btnID;
       document.getElementById('t-btnLeaves').innerText = t.btnLeaves;
