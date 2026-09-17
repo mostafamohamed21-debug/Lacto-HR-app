@@ -913,7 +913,7 @@
       <button id="t-loginBtn" onclick="login()">دخول الحساب</button>
 
       <!-- Biometric Quick Login Button -->
-      <button id="bioQuickBtn" class="bio-quick-btn hidden" onclick="loginWithPasskey()">
+      <button id="bioQuickBtn" class="bio-quick-btn hidden" onclick="biometricQuickLogin()">
         <svg style="width:22px; height:22px; fill:currentColor;" viewBox="0 0 24 24">
           <path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 13.9 3 12 3c-1.9 0-3.66.42-5.58 1.41-.15.08-.33.05-.45-.07-.12-.12-.15-.3-.07-.45C7.94 2.8 9.9 2.3 12 2.3s4.06.5 6.1 1.59c.15.08.21.27.13.43-.05.1-.15.15-.24.15zM12 6c-3.31 0-6 2.69-6 6 0 1.09.29 2.12.8 3 .09.15.04.35-.11.44-.15.09-.35.04-.44-.11C5.74 14.52 5.4 13.29 5.4 12c0-3.64 2.96-6.6 6.6-6.6s6.6 2.96 6.6 6.6c0 1.29-.34 2.52-.95 3.53-.09.15-.29.2-.44.11-.15-.09-.2-.29-.11-.44.51-.88.8-1.91.8-3 0-3.31-2.69-6-6-6zm0 3c-1.66 0-3 1.34-3 3 0 .55.15 1.06.41 1.5.09.15.04.35-.11.44-.15.09-.35.04-.44-.11C8.42 13.34 8.2 12.69 8.2 12c0-2.1 1.7-3.8 3.8-3.8s3.8 1.7 3.8 3.8c0 .69-.22 1.34-.66 1.83-.09.15-.29.2-.44.11-.15-.09-.2-.29-.11-.44.26-.44.41-.95.41-1.5 0-1.66-1.34-3-3-3zm-1 4v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1s-1 .45-1 1z"/>
         </svg>
@@ -1035,7 +1035,7 @@
       <p style="color: var(--muted); font-size: 0.85rem; line-height: 1.5; margin-bottom: 1rem;" id="t-bioDesc">هل ترغب في اعتماد بصمة هذا الهاتف لتسجيل الدخول السريع بدلاً من إدخال البيانات يدوياً في المرات القادمة؟</p>
       
       <div class="biometric-actions">
-        <button onclick="registerPasskey()" id="t-bioYes">نعم</button>
+        <button onclick="enableBiometricSetting()" id="t-bioYes">نعم</button>
         <button onclick="skipBiometricSetting()" id="t-bioNo" class="btn-danger">لا</button>
       </div>
     </div>
@@ -1361,75 +1361,24 @@
     }
 
     // ----------------------------------------------------
-    // WebAuthn Passkey Methods (التسجيل والتسجيل التلقائي بالبصمة)
+    // Direct Biometric Device Verification
     // ----------------------------------------------------
-    function stringToBuffer(str) {
-      return new TextEncoder().encode(str);
-    }
+    function checkAutoLoginState() {
+      const bioEnabled = localStorage.getItem('lacto_bio_active');
+      const savedCode = localStorage.getItem('lacto_emp_code');
+      const savedPass = localStorage.getItem('lacto_emp_pass');
 
-    async function registerPasskey() {
-      if (!window.PublicKeyCredential) {
-        alert((currentLang === 'en') ? "Biometric is not supported on this browser." : "متصفحك لا يدعم الدخول بالبصمة أو الوجه.");
-        return;
-      }
-
-      try {
-        const code = currentEmpCode || document.getElementById('empCode').value.trim();
-        const pass = currentUserData ? currentUserData.password : document.getElementById('empPass').value.trim();
-
-        if (!code || !pass) {
-          alert((currentLang === 'en') ? "Missing user data to setup biometric." : "يرجى تسجيل الدخول أولاً لتفعيل البصمة.");
-          return;
+      if (bioEnabled === 'true' && savedCode && savedPass) {
+        biometricQuickLogin();
+      } else {
+        const remember = localStorage.getItem('lacto_remember');
+        if (remember === 'true' && savedCode && savedPass) {
+          login(savedCode, savedPass, true);
         }
-
-        const publicKey = {
-          challenge: stringToBuffer("lacto_hr_register_challenge_" + Date.now()),
-          rp: { 
-            name: "LM HR Hub",
-            id: window.location.hostname
-          },
-          user: {
-            id: stringToBuffer(code),
-            name: code,
-            displayName: currentUserData ? currentUserData.name : code
-          },
-          pubKeyCredParams: [
-            { alg: -7, type: "public-key" },
-            { alg: -257, type: "public-key" }
-          ],
-          authenticatorSelection: {
-            authenticatorAttachment: "platform",
-            userVerification: "required"
-          },
-          timeout: 60000,
-          attestation: "none"
-        };
-
-        const credential = await navigator.credentials.create({ publicKey });
-        
-        if (credential) {
-          localStorage.setItem('lacto_bio_active', 'true');
-          localStorage.setItem('lacto_emp_code', code);
-          localStorage.setItem('lacto_emp_pass', pass);
-          localStorage.setItem('lacto_remember', 'true');
-
-          document.getElementById('biometricModal').classList.remove('show');
-          document.getElementById('bioQuickBtn').classList.remove('hidden');
-          
-          alert((currentLang === 'en') ? "Biometric registered successfully!" : "تم تسجيل بصمة الجهاز بنجاح!");
-        }
-      } catch (err) {
-        console.error("Biometric registration failed:", err);
-        alert((currentLang === 'en') ? "Biometric setup failed or cancelled." : "فشل إعداد البصمة أو تم إلغاؤها.");
       }
     }
 
-    async function loginWithPasskey() {
-      if (!window.PublicKeyCredential) {
-        document.getElementById('error').innerText = (currentLang === 'en') ? "Biometrics not supported" : "المتصفح لا يدعم البصمة";
-        return;
-      }
-
+    function biometricQuickLogin() {
       const savedCode = localStorage.getItem('lacto_emp_code');
       const savedPass = localStorage.getItem('lacto_emp_pass');
 
@@ -1438,38 +1387,7 @@
         return;
       }
 
-      try {
-        const publicKey = {
-          challenge: stringToBuffer("lacto_hr_login_challenge_" + Date.now()),
-          rpId: window.location.hostname,
-          timeout: 60000,
-          userVerification: "required"
-        };
-
-        const assertion = await navigator.credentials.get({ publicKey });
-        
-        if (assertion) {
-          login(savedCode, savedPass, true);
-        }
-      } catch (err) {
-        console.error("Biometric Login Failed:", err);
-        document.getElementById('error').innerText = (currentLang === 'en') ? "Biometric verification failed" : "فشل التحقق عبر بصمة الهاتف";
-      }
-    }
-
-    async function checkAutoLoginState() {
-      const bioEnabled = localStorage.getItem('lacto_bio_active');
-      const savedCode = localStorage.getItem('lacto_emp_code');
-      const savedPass = localStorage.getItem('lacto_emp_pass');
-
-      if (bioEnabled === 'true' && savedCode && savedPass) {
-        await loginWithPasskey();
-      } else {
-        const remember = localStorage.getItem('lacto_remember');
-        if (remember === 'true' && savedCode && savedPass) {
-          login(savedCode, savedPass, true);
-        }
-      }
+      login(savedCode, savedPass, true);
     }
 
     function login(autoCode = null, autoPass = null, isAuto = false) {
@@ -1485,9 +1403,12 @@
         return; 
       }
 
-      db.ref('users/' + code).once('value').then((snapshot) => {
+      db.ref('users').orderByChild('code').equalTo(code).once('value').then((snapshot) => {
         if (snapshot.exists()) {
-          const user = snapshot.val();
+          const val = snapshot.val();
+          const key = Object.keys(val)[0];
+          const user = val[key];
+
           if (user.password !== pass) {
             errorEl.innerText = (currentLang === 'en') ? "Incorrect Password!" : "كلمة السر غير صحيحة!";
             return;
@@ -1531,6 +1452,19 @@
         console.error(err);
         errorEl.innerText = (currentLang === 'en') ? "Connection Error!" : "حدث خطأ في الاتصال!";
       });
+    }
+
+    function enableBiometricSetting() {
+      const code = currentEmpCode || document.getElementById('empCode').value.trim();
+      const pass = currentUserData ? currentUserData.password : document.getElementById('empPass').value.trim();
+
+      localStorage.setItem('lacto_bio_active', 'true');
+      localStorage.setItem('lacto_emp_code', code);
+      localStorage.setItem('lacto_emp_pass', pass);
+      localStorage.setItem('lacto_remember', 'true');
+
+      document.getElementById('biometricModal').classList.remove('show');
+      document.getElementById('bioQuickBtn').classList.remove('hidden');
     }
 
     function skipBiometricSetting() {
