@@ -1364,7 +1364,7 @@
             });
             listenToChatMessages(savedCode);
 
-            // لو البصمة مفعلة، نجبر الجهاز في كل مرة يفتح الأبليكشن على إظهار نافذة البصمة الحقيقية (WebAuthn)
+            // تم تعديل طلب البصمة ليستخدم بصمة الهاتف الداخلية (platform authenticator) حصرياً وتجنب طلب مفتاح مرور خارجي
             if (bioStatus === 'true') {
               let verified = false;
               if (window.PublicKeyCredential) {
@@ -1372,7 +1372,10 @@
                   const publicKey = {
                     challenge: new Uint8Array(32),
                     userVerification: "required",
-                    timeout: 60000
+                    timeout: 60000,
+                    authenticatorSelection: {
+                      authenticatorAttachment: "platform"
+                    }
                   };
                   const credential = await navigator.credentials.get({ publicKey });
                   if (credential) {
