@@ -1361,15 +1361,40 @@
     }
 
     // ----------------------------------------------------
-    // Direct Biometric Device Verification
+    // Direct Biometric Device Verification (WebAuthn Native Support)
     // ----------------------------------------------------
-    function checkAutoLoginState() {
+    async function triggerBiometricAuthentication() {
+      if (!window.PublicKeyCredential) {
+        return true; 
+      }
+      try {
+        const challenge = new Uint8Array(32);
+        window.crypto.getRandomValues(challenge);
+        
+        await navigator.credentials.get({
+          publicKey: {
+            challenge: challenge,
+            timeout: 60000,
+            userVerification: "required"
+          }
+        });
+        return true;
+      } catch (err) {
+        console.warn("Biometric check prompt result:", err);
+        if (err.name === 'NotAllowedError' || err.name === 'SecurityError') {
+          return false;
+        }
+        return true;
+      }
+    }
+
+    async function checkAutoLoginState() {
       const bioEnabled = localStorage.getItem('lacto_bio_active');
       const savedCode = localStorage.getItem('lacto_emp_code');
       const savedPass = localStorage.getItem('lacto_emp_pass');
 
       if (bioEnabled === 'true' && savedCode && savedPass) {
-        biometricQuickLogin();
+        await biometricQuickLogin();
       } else {
         const remember = localStorage.getItem('lacto_remember');
         if (remember === 'true' && savedCode && savedPass) {
@@ -1378,7 +1403,7 @@
       }
     }
 
-    function biometricQuickLogin() {
+    async function biometricQuickLogin() {
       const savedCode = localStorage.getItem('lacto_emp_code');
       const savedPass = localStorage.getItem('lacto_emp_pass');
 
@@ -1387,7 +1412,12 @@
         return;
       }
 
-      login(savedCode, savedPass, true);
+      const isVerified = await triggerBiometricAuthentication();
+      if (isVerified) {
+        login(savedCode, savedPass, true);
+      } else {
+        document.getElementById('error').innerText = (currentLang === 'en') ? "Biometric verification failed" : "فشل التحقق عبر بصمة الهاتف";
+      }
     }
 
     function login(autoCode = null, autoPass = null, isAuto = false) {
@@ -1451,7 +1481,13 @@
       });
     }
 
-    function enableBiometricSetting() {
+    async function enableBiometricSetting() {
+      const isVerified = await triggerBiometricAuthentication();
+      if (!isVerified) {
+        alert((currentLang === 'en') ? "Biometric verification failed" : "فشلت عملية التحقق من بصمة الهاتف");
+        return;
+      }
+
       const code = currentEmpCode || document.getElementById('empCode').value.trim();
       const pass = currentUserData ? currentUserData.password : document.getElementById('empPass').value.trim();
 
