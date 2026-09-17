@@ -367,6 +367,19 @@
       box-shadow: 0 2px 0 #024e77, 0 5px 10px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
     }
 
+    .bio-quick-btn {
+      background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+      box-shadow: 0 8px 0 #115e59, 0 12px 20px rgba(13, 148, 136, 0.3), inset 0 2px 2px rgba(255, 255, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .bio-quick-btn:active {
+      box-shadow: 0 2px 0 #115e59, 0 5px 10px rgba(13, 148, 136, 0.3);
+    }
+
     .btn-danger {
       background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
       box-shadow: 0 8px 0 #991b1b, 0 12px 20px rgba(220, 38, 38, 0.3), inset 0 2px 2px rgba(255, 255, 255, 0.3);
@@ -559,7 +572,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(11, 15, 25, 0.85);
+      background: rgba(11, 15, 25, 0.88);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       display: flex;
@@ -611,15 +624,15 @@
     }
 
     .biometric-icon-wrap svg {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       fill: currentColor;
     }
 
     .biometric-actions {
       display: flex;
       gap: 0.75rem;
-      margin-top: 1rem;
+      margin-top: 1.2rem;
     }
 
     .biometric-actions button {
@@ -899,6 +912,14 @@
       
       <button id="t-loginBtn" onclick="login()">دخول الحساب</button>
 
+      <!-- Biometric Quick Login Button -->
+      <button id="bioQuickBtn" class="bio-quick-btn hidden" onclick="biometricQuickLogin()">
+        <svg style="width:22px; height:22px; fill:currentColor;" viewBox="0 0 24 24">
+          <path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 13.9 3 12 3c-1.9 0-3.66.42-5.58 1.41-.15.08-.33.05-.45-.07-.12-.12-.15-.3-.07-.45C7.94 2.8 9.9 2.3 12 2.3s4.06.5 6.1 1.59c.15.08.21.27.13.43-.05.1-.15.15-.24.15zM12 6c-3.31 0-6 2.69-6 6 0 1.09.29 2.12.8 3 .09.15.04.35-.11.44-.15.09-.35.04-.44-.11C5.74 14.52 5.4 13.29 5.4 12c0-3.64 2.96-6.6 6.6-6.6s6.6 2.96 6.6 6.6c0 1.29-.34 2.52-.95 3.53-.09.15-.29.2-.44.11-.15-.09-.2-.29-.11-.44.51-.88.8-1.91.8-3 0-3.31-2.69-6-6-6zm0 3c-1.66 0-3 1.34-3 3 0 .55.15 1.06.41 1.5.09.15.04.35-.11.44-.15.09-.35.04-.44-.11C8.42 13.34 8.2 12.69 8.2 12c0-2.1 1.7-3.8 3.8-3.8s3.8 1.7 3.8 3.8c0 .69-.22 1.34-.66 1.83-.09.15-.29.2-.44.11-.15-.09-.2-.29-.11-.44.26-.44.41-.95.41-1.5 0-1.66-1.34-3-3-3zm-1 4v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1s-1 .45-1 1z"/>
+        </svg>
+        <span id="t-bioQuickText">تسجيل بالبصمة</span>
+      </button>
+
       <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.85rem; font-weight: bold;"></p>
     </div>
 
@@ -915,7 +936,7 @@
       <div class="services-grid">
         <div class="service-btn" onclick="showPage('view-id-card')">
           <div class="service-icon-box">
-            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .89-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .89-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3zm6 12H6v-1c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1z"/></svg>
           </div>
           <span id="t-btnID" class="service-title">كارت الهوية</span>
         </div>
@@ -1010,12 +1031,12 @@
           <path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 13.9 3 12 3c-1.9 0-3.66.42-5.58 1.41-.15.08-.33.05-.45-.07-.12-.12-.15-.3-.07-.45C7.94 2.8 9.9 2.3 12 2.3s4.06.5 6.1 1.59c.15.08.21.27.13.43-.05.1-.15.15-.24.15zM12 6c-3.31 0-6 2.69-6 6 0 1.09.29 2.12.8 3 .09.15.04.35-.11.44-.15.09-.35.04-.44-.11C5.74 14.52 5.4 13.29 5.4 12c0-3.64 2.96-6.6 6.6-6.6s6.6 2.96 6.6 6.6c0 1.29-.34 2.52-.95 3.53-.09.15-.29.2-.44.11-.15-.09-.2-.29-.11-.44.51-.88.8-1.91.8-3 0-3.31-2.69-6-6-6zm0 3c-1.66 0-3 1.34-3 3 0 .55.15 1.06.41 1.5.09.15.04.35-.11.44-.15.09-.35.04-.44-.11C8.42 13.34 8.2 12.69 8.2 12c0-2.1 1.7-3.8 3.8-3.8s3.8 1.7 3.8 3.8c0 .69-.22 1.34-.66 1.83-.09.15-.29.2-.44.11-.15-.09-.2-.29-.11-.44.26-.44.41-.95.41-1.5 0-1.66-1.34-3-3-3zm-1 4v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1s-1 .45-1 1z"/>
         </svg>
       </div>
-      <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;" id="t-bioTitle">تسجيل الدخول بالبصمة</h3>
-      <p style="color: var(--muted); font-size: 0.85rem; line-height: 1.5; margin-bottom: 1rem;" id="t-bioDesc">هل ترغب في استخدام بصمة الهاتف لتسجيل الدخول فيما بعد؟</p>
+      <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;" id="t-bioTitle">تفعيل بصمة الهاتف</h3>
+      <p style="color: var(--muted); font-size: 0.85rem; line-height: 1.5; margin-bottom: 1rem;" id="t-bioDesc">هل ترغب في اعتماد بصمة هذا الهاتف لتسجيل الدخول السريع بدلاً من إدخال البيانات يدوياً في المرات القادمة؟</p>
       
       <div class="biometric-actions">
-        <button onclick="enableBiometric()" id="t-bioYes">نعم</button>
-        <button onclick="skipBiometric()" id="t-bioNo" class="btn-danger">لا</button>
+        <button onclick="enableBiometricSetting()" id="t-bioYes">نعم</button>
+        <button onclick="skipBiometricSetting()" id="t-bioNo" class="btn-danger">لا</button>
       </div>
     </div>
   </div>
@@ -1089,7 +1110,7 @@
           introScreen.classList.add('fade-out');
           
           setTimeout(() => {
-            triggerBiometricOrAutoLogin();
+            checkAutoLoginState();
           }, 400);
         }
       });
@@ -1212,6 +1233,7 @@
         passHolder: "كلمة السر",
         remember: "تذكرني",
         loginBtn: "دخول الحساب",
+        bioQuickText: "دخول سريع بالبصمة",
         btnID: "كارت الهوية",
         btnLeaves: "طلبات الإجازات",
         btnPay: "مفردات المرتب",
@@ -1232,8 +1254,8 @@
         chatHeader: "محادثة دعم الـ HR",
         welcomeChat: "مرحباً بك! اكتب استفسارك وسيقوم فريق الموارد البشرية بالرد عليك قريباً.",
         chatPlaceholder: "اكتب رسالتك هنا...",
-        bioTitle: "تسجيل الدخول بالبصمة",
-        bioDesc: "هل ترغب في استخدام بصمة الهاتف لتسجيل الدخول فيما بعد؟",
+        bioTitle: "تفعيل بصمة الهاتف",
+        bioDesc: "هل ترغب في اعتماد بصمة هذا الهاتف لتسجيل الدخول السريع بدلاً من إدخال البيانات يدوياً في المرات القادمة؟",
         bioYes: "نعم",
         bioNo: "لا"
       },
@@ -1244,6 +1266,7 @@
         passHolder: "Password",
         remember: "Remember me",
         loginBtn: "Sign In",
+        bioQuickText: "Quick Biometric Login",
         btnID: "ID Card",
         btnLeaves: "Leave Requests",
         btnPay: "Pay Slip",
@@ -1264,8 +1287,8 @@
         chatHeader: "HR Support Chat",
         welcomeChat: "Welcome! Type your inquiry and our HR team will reply shortly.",
         chatPlaceholder: "Type your message here...",
-        bioTitle: "Fingerprint Sign In",
-        bioDesc: "Would you like to use fingerprint login in the future?",
+        bioTitle: "Enable Phone Biometric",
+        bioDesc: "Would you like to authorize this phone's biometric lock for future fast logins?",
         bioYes: "Yes",
         bioNo: "No"
       }
@@ -1324,57 +1347,47 @@
       const savedCode = localStorage.getItem('lacto_emp_code');
       const savedPass = localStorage.getItem('lacto_emp_pass');
       const remember = localStorage.getItem('lacto_remember');
+      const bioEnabled = localStorage.getItem('lacto_bio_active');
 
       if (remember === 'true' && savedCode && savedPass) {
         document.getElementById('empCode').value = savedCode;
         document.getElementById('empPass').value = savedPass;
         document.getElementById('rememberMe').checked = true;
       }
+
+      if (bioEnabled === 'true' && savedCode && savedPass) {
+        document.getElementById('bioQuickBtn').classList.remove('hidden');
+      }
     }
 
     // ----------------------------------------------------
-    // Biometric WebAuthn & Verification Functions
+    // Direct Biometric Device Verification
     // ----------------------------------------------------
-    async function triggerBiometricOrAutoLogin() {
-      const bioEnabled = localStorage.getItem('lacto_biometric_enabled');
+    function checkAutoLoginState() {
+      const bioEnabled = localStorage.getItem('lacto_bio_active');
       const savedCode = localStorage.getItem('lacto_emp_code');
       const savedPass = localStorage.getItem('lacto_emp_pass');
 
-      if (bioEnabled === 'true' && savedCode) {
-        if (window.PublicKeyCredential) {
-          try {
-            const credentialId = localStorage.getItem('lacto_cred_id');
-            const challenge = new Uint8Array(32);
-            window.crypto.getRandomValues(challenge);
-
-            const getOptions = {
-              challenge: challenge,
-              timeout: 60000,
-              userVerification: "required"
-            };
-
-            if (credentialId) {
-              getOptions.allowCredentials = [{
-                id: Uint8Array.from(atob(credentialId), c => c.charCodeAt(0)),
-                type: 'public-key'
-              }];
-            }
-
-            const assertion = await navigator.credentials.get({ publicKey: getOptions });
-            if (assertion) {
-              login(savedCode, savedPass, true);
-              return;
-            }
-          } catch (err) {
-            console.log("Biometric auth cancelled/failed, falling back to credentials.", err);
-          }
+      if (bioEnabled === 'true' && savedCode && savedPass) {
+        biometricQuickLogin();
+      } else {
+        const remember = localStorage.getItem('lacto_remember');
+        if (remember === 'true' && savedCode && savedPass) {
+          login(savedCode, savedPass, true);
         }
       }
+    }
 
-      const remember = localStorage.getItem('lacto_remember');
-      if (remember === 'true' && savedCode && savedPass) {
-        login(savedCode, savedPass, true);
+    function biometricQuickLogin() {
+      const savedCode = localStorage.getItem('lacto_emp_code');
+      const savedPass = localStorage.getItem('lacto_emp_pass');
+
+      if (!savedCode || !savedPass) {
+        document.getElementById('error').innerText = (currentLang === 'en') ? "No saved credentials found" : "لا توجد بيانات مسجلة سابقة للبصمة";
+        return;
       }
+
+      login(savedCode, savedPass, true);
     }
 
     function login(autoCode = null, autoPass = null, isAuto = false) {
@@ -1421,8 +1434,8 @@
           listenToChatMessages(code);
           showPage('view-dashboard');
 
-          // Check if Biometric Modal Dialog should be prompted
-          const bioStatus = localStorage.getItem('lacto_biometric_enabled');
+          // Trigger Biometric Confirmation Modal box if not configured yet
+          const bioStatus = localStorage.getItem('lacto_bio_active');
           if (!isAuto && bioStatus === null) {
             setTimeout(() => {
               document.getElementById('biometricModal').classList.add('show');
@@ -1438,48 +1451,21 @@
       });
     }
 
-    async function enableBiometric() {
+    function enableBiometricSetting() {
       const code = currentEmpCode || document.getElementById('empCode').value.trim();
       const pass = currentUserData ? currentUserData.password : document.getElementById('empPass').value.trim();
 
-      if (window.PublicKeyCredential && code) {
-        try {
-          const challenge = new Uint8Array(32);
-          window.crypto.getRandomValues(challenge);
-
-          const createOptions = {
-            challenge: challenge,
-            rp: { name: "LM HR Hub" },
-            user: {
-              id: Uint8Array.from(code, c => c.charCodeAt(0)),
-              name: code,
-              displayName: currentUserData ? currentUserData.name : code
-            },
-            pubKeyCredParams: [{ alg: -7, type: "public-key" }, { alg: -257, type: "public-key" }],
-            authenticatorSelection: { userVerification: "required" },
-            timeout: 60000
-          };
-
-          const credential = await navigator.credentials.create({ publicKey: createOptions });
-          if (credential) {
-            const rawId = btoa(String.fromCharCode(...new Uint8Array(credential.rawId)));
-            localStorage.setItem('lacto_cred_id', rawId);
-          }
-        } catch (err) {
-          console.warn("Biometric credential registration skipped or unsupported", err);
-        }
-      }
-
-      localStorage.setItem('lacto_biometric_enabled', 'true');
+      localStorage.setItem('lacto_bio_active', 'true');
       localStorage.setItem('lacto_emp_code', code);
-      if (pass) localStorage.setItem('lacto_emp_pass', pass);
+      localStorage.setItem('lacto_emp_pass', pass);
       localStorage.setItem('lacto_remember', 'true');
 
       document.getElementById('biometricModal').classList.remove('show');
+      document.getElementById('bioQuickBtn').classList.remove('hidden');
     }
 
-    function skipBiometric() {
-      localStorage.setItem('lacto_biometric_enabled', 'false');
+    function skipBiometricSetting() {
+      localStorage.setItem('lacto_bio_active', 'false');
       document.getElementById('biometricModal').classList.remove('show');
     }
 
@@ -1496,8 +1482,7 @@
       localStorage.removeItem('lacto_remember');
       localStorage.removeItem('lacto_emp_code');
       localStorage.removeItem('lacto_emp_pass');
-      localStorage.removeItem('lacto_biometric_enabled');
-      localStorage.removeItem('lacto_cred_id');
+      localStorage.removeItem('lacto_bio_active');
       window.location.reload();
     }
 
@@ -1576,6 +1561,7 @@
       document.getElementById('empPass').placeholder = t.passHolder;
       document.getElementById('t-remember').innerText = t.remember;
       document.getElementById('t-loginBtn').innerText = t.loginBtn;
+      document.getElementById('t-bioQuickText').innerText = t.bioQuickText;
       document.getElementById('t-btnID').innerText = t.btnID;
       document.getElementById('t-btnLeaves').innerText = t.btnLeaves;
       document.getElementById('t-btnPay').innerText = t.btnPay;
