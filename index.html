@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LM HR - Lacto HR Hub</title>
   
+  <!-- App Manifest & Branding (LM HR & Logo) -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -13,7 +14,7 @@
   <link rel="apple-touch-icon" href="logo.png">
   <link rel="icon" type="image/png" href="logo.png">
 
-  <!-- Libraries -->
+  <!-- GSAP Library for Smooth Tornado Physics -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -27,12 +28,11 @@
 
     :root {
       --bg: #0b0f19;
-      --card-bg: rgba(15, 23, 42, 0.85);
-      --border-color: rgba(56, 189, 248, 0.3);
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --border-color: rgba(255, 255, 255, 0.18);
       --text: #f8fafc;
       --accent: #0284c7;
-      --accent-glow: rgba(56, 189, 248, 0.5);
-      --neon-blue: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.4);
       --danger: #ef4444;
       --success: #10b981;
       --muted: #cbd5e1;
@@ -47,7 +47,7 @@
     }
 
     body {
-      background: linear-gradient(rgba(11, 15, 25, 0.85), rgba(11, 15, 25, 0.95)), url('background.jpg');
+      background: linear-gradient(rgba(11, 15, 25, 0.75), rgba(11, 15, 25, 0.85)), url('background.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -57,419 +57,739 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-bottom: 2rem;
+      padding: 1.5rem 1rem;
+      perspective: 1000px;
       overflow-x: hidden;
     }
 
-    /* New Intro Animation (5 Seconds, Smooth Collective Rotation & Fade In) */
+    /* ----------------------------------
+       Tornado / Cyclone Intro Styling 
+    ---------------------------------- */
     #intro-screen {
       position: fixed;
-      inset: 0;
-      background: linear-gradient(rgba(11, 15, 25, 0.97), rgba(11, 15, 25, 0.99)), url('background.jpg');
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(rgba(11, 15, 25, 0.92), rgba(11, 15, 25, 0.96)), url('background.jpg');
       background-size: cover;
       background-position: center;
-      backdrop-filter: blur(20px);
+      background-repeat: no-repeat;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      z-index: 99999;
+      z-index: 9999;
       perspective: 1200px;
       overflow: hidden;
+      transition: opacity 1.2s ease, visibility 1.2s ease;
+    }
+
+    #intro-screen.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .intro-content-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      text-align: center;
     }
 
     .intro-title-container {
+      width: 100%;
       display: flex;
       gap: 0.15rem;
+      flex-wrap: nowrap;
       justify-content: center;
       align-items: center;
       direction: ltr;
-      margin-bottom: 1rem;
+      padding: 0 0.5rem;
       transform-style: preserve-3d;
+      text-align: center;
     }
 
     .intro-char {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: clamp(1.6rem, 5.2vw, 2.4rem);
+      font-size: clamp(1.5rem, 5.5vw, 2.2rem);
       font-weight: 800;
+      letter-spacing: 1px;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
       display: inline-block;
-      opacity: 0;
+      transform-style: preserve-3d;
+      will-change: transform, opacity;
     }
 
-    .intro-space { width: 0.5rem; }
+    .intro-space {
+      width: 0.5rem;
+    }
 
     .intro-subtitle {
       font-family: 'Great Vibes', cursive;
-      font-size: clamp(1.4rem, 4vw, 1.9rem);
+      font-size: clamp(1.4rem, 4vw, 2rem);
       color: #38bdf8;
-      text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+      text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
       opacity: 0;
-      transform: translateY(20px);
-      text-align: center;
-      padding: 0 1rem;
+      letter-spacing: 1.5px;
+      will-change: opacity, transform;
     }
 
-    /* Header */
+    /* ----------------------------------
+       Main App Layout 
+    ---------------------------------- */
     .app-header {
       width: 100%;
       max-width: 420px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.8rem 1rem;
-      z-index: 50;
+      margin-bottom: 1.5rem;
       position: relative;
     }
 
-    .brand-container { display: flex; align-items: center; gap: 0.5rem; }
-    .brand-logo { width: 34px; height: 34px; object-fit: contain; border-radius: 8px; }
+    .brand-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
     .brand-title {
       font-size: 1.2rem;
       font-weight: 800;
+      letter-spacing: 0.5px;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      text-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
     }
 
-    .lang-dropdown-container { position: relative; display: inline-block; }
+    .lang-dropdown-container {
+      position: relative;
+    }
 
     .lang-dropdown-btn {
-      background: rgba(30, 41, 59, 0.85);
+      background: rgba(30, 41, 59, 0.75);
       border: 1px solid var(--border-color);
       color: var(--text);
-      padding: 0.35rem 0.7rem;
-      border-radius: 0.8rem;
+      padding: 0.5rem 0.9rem;
+      border-radius: 1rem;
       font-size: 0.8rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 0.3rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      gap: 0.4rem;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .lang-dropdown-btn:active {
+      transform: scale(0.92) translateZ(-5px);
     }
 
     .lang-dropdown-menu {
       position: absolute;
-      top: 110%;
+      top: 115%;
       left: 0;
-      background: rgba(15, 23, 42, 0.98);
+      background: rgba(15, 23, 42, 0.95);
       border: 1px solid var(--border-color);
-      border-radius: 0.8rem;
+      border-radius: 1rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
       display: none;
       z-index: 200;
-      min-width: 120px;
-      overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      min-width: 130px;
+      backdrop-filter: blur(16px);
     }
+
     [dir="rtl"] .lang-dropdown-menu { left: auto; right: 0; }
     .lang-dropdown-menu.show { display: block; }
-    .lang-option { padding: 0.5rem 0.8rem; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; }
-    .lang-option:hover { background: rgba(56, 189, 248, 0.2); }
 
-    /* Fixed Password Input & Perfectly Aligned Eye Switch */
-    .password-wrapper {
-      position: relative;
-      width: 100%;
-      margin: 0.5rem 0;
-      display: flex;
-      align-items: center;
-    }
-
-    .password-wrapper input {
-      width: 100%;
-      margin: 0;
-      padding: 0.85rem 3.2rem 0.85rem 1rem !important;
-    }
-    [dir="ltr"] .password-wrapper input {
-      padding: 0.85rem 1rem 0.85rem 3.2rem !important;
-    }
-
-    .toggle-eye-btn {
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: transparent;
-      border: none;
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .lang-option {
+      padding: 0.7rem 1rem;
+      font-size: 0.85rem;
+      color: var(--text);
       cursor: pointer;
-      color: var(--neon-blue);
-      z-index: 10;
-      margin: 0;
-      padding: 0;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-    [dir="ltr"] .toggle-eye-btn { right: auto; left: 14px; }
-    .toggle-eye-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; pointer-events: none; }
 
-    /* Profile Header */
-    .emp-profile-header {
+    .lang-option:hover {
+      background: rgba(2, 132, 199, 0.3);
+      color: #38bdf8;
+    }
+
+    .container {
       width: 100%;
       max-width: 420px;
-      background: linear-gradient(180deg, rgba(2, 132, 199, 0.35) 0%, rgba(15, 23, 42, 0.95) 100%);
-      border: 2px solid var(--neon-blue);
-      border-bottom: none;
-      border-top-left-radius: 2rem;
-      border-top-right-radius: 2rem;
-      padding: 1.25rem 1.25rem 2rem 1.25rem;
-      box-shadow: 0 -5px 25px rgba(56, 189, 248, 0.15);
-      position: relative;
-      z-index: 1;
     }
 
-    .emp-profile-content { display: flex; align-items: center; gap: 1rem; }
-    .emp-avatar {
-      width: 65px;
-      height: 65px;
-      border-radius: 50%;
-      border: 2px solid var(--neon-blue);
-      object-fit: cover;
-      box-shadow: 0 0 15px var(--accent-glow);
-    }
-    .emp-info { text-align: right; }
-    [dir="ltr"] .emp-info { text-align: left; }
-    .greeting-text { font-size: 0.85rem; color: #38bdf8; font-weight: 600; }
-    .emp-name { font-size: 1.15rem; font-weight: 800; color: #fff; margin: 0.1rem 0; }
-    .emp-code-badge {
-      display: inline-block;
-      background: rgba(56, 189, 248, 0.15);
-      border: 1px solid var(--neon-blue);
-      color: var(--neon-blue);
-      padding: 0.1rem 0.6rem;
-      border-radius: 0.5rem;
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-
-    /* New Fingerprint Card Design Matching User Reference Image */
-    .biometric-card {
-      width: 90%;
-      max-width: 380px;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      border: 1.5px solid rgba(255, 255, 255, 0.3);
-      border-radius: 2rem;
-      padding: 1rem 1.2rem;
-      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      z-index: 10;
-      margin-top: -0.8rem;
-      margin-bottom: 1.5rem;
-      position: relative;
-      color: #fff;
-      cursor: pointer;
-    }
-
-    .bio-left-section { display: flex; flex-direction: column; gap: 0.2rem; }
-    .bio-main-title { font-size: 1.1rem; font-weight: 800; }
-    .bio-details-row { display: flex; align-items: center; gap: 1rem; font-size: 0.75rem; color: rgba(255, 255, 255, 0.9); margin-top: 0.2rem; }
-    .bio-sub-item { display: flex; align-items: center; gap: 0.3rem; }
-    .bio-sub-item svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; }
-    .bio-times { font-size: 0.7rem; font-weight: 600; opacity: 0.85; }
-
-    .bio-right-section {
-      border-left: 1px solid rgba(255, 255, 255, 0.3);
-      padding-left: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    [dir="ltr"] .bio-right-section { border-left: none; border-right: 1px solid rgba(255, 255, 255, 0.3); padding-left: 0; padding-right: 1rem; }
-
-    .bio-icon-btn {
-      width: 55px;
-      height: 55px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .bio-icon-btn svg { width: 45px; height: 45px; fill: none; stroke: #fff; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-    .bio-status-msg { font-size: 0.75rem; text-align: center; margin-top: -1rem; margin-bottom: 1rem; font-weight: 700; color: var(--success); }
-
-    /* Slides Carousel */
-    .slides-container {
-      width: 100%;
-      max-width: 420px;
-      margin-bottom: 1.5rem;
-      position: relative;
-      overflow: hidden;
-      border-radius: 1.2rem;
-      touch-action: pan-y;
-    }
-
-    .slides-wrapper { display: flex; transition: transform 0.4s ease-out; width: 100%; }
-
-    .slide-card {
-      min-width: 100%;
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(2, 132, 199, 0.25));
-      border: 1px solid var(--neon-blue);
-      border-radius: 1.2rem;
-      padding: 1.2rem;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 120px;
-      cursor: pointer;
-    }
-
-    .slide-title { font-size: 1rem; font-weight: 800; color: #fff; display: flex; justify-content: space-between; align-items: center; }
-    .slide-badge { background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger); color: #f87171; padding: 0.15rem 0.5rem; border-radius: 0.5rem; font-size: 0.65rem; font-weight: 700; }
-    .slide-desc { font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; }
-
-    .slides-dots { display: flex; justify-content: center; gap: 0.4rem; margin-top: 0.6rem; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.3); transition: all 0.3s; cursor: pointer; }
-    .dot.active { background: var(--neon-blue); width: 20px; border-radius: 4px; }
-
-    .container { width: 100%; max-width: 420px; padding: 0 1rem; }
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
       backdrop-filter: blur(16px);
-      padding: 1.5rem;
+      -webkit-backdrop-filter: blur(16px);
+      padding: 1.75rem 1.5rem;
       border-radius: 1.5rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
       text-align: center;
     }
 
     input {
       width: 100%;
-      padding: 0.85rem 1rem;
+      padding: 0.9rem 1rem;
       margin: 0.5rem 0;
       border-radius: 1rem;
       border: 1px solid var(--border-color);
       background: rgba(15, 23, 42, 0.85);
       color: var(--text);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       text-align: center;
       outline: none;
+      transition: all 0.3s;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
     }
 
-    .remember-container {
+    input:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 15px var(--accent-glow), inset 0 1px 3px rgba(0,0,0,0.5);
+    }
+
+    .password-container {
+      position: relative;
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+
+    .password-container input {
+      margin: 0;
+      padding-left: 3rem;
+    }
+
+    [dir="rtl"] .password-container input {
+      padding-left: 1rem;
+      padding-right: 3rem;
+    }
+
+    .toggle-password {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0.2rem;
+      width: 40px;
+      background: none;
+      border: none;
+      box-shadow: none !important;
+      cursor: pointer;
+      color: var(--muted);
+      padding: 0;
+      margin: auto 0;
       display: flex;
       align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+      z-index: 10;
+    }
+
+    [dir="rtl"] .toggle-password {
+      left: auto;
+      right: 0.2rem;
+    }
+
+    .toggle-password:hover {
+      color: #38bdf8;
+    }
+
+    .toggle-password svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+      pointer-events: none;
+    }
+
+    /* Checkbox Container Styling */
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
       gap: 0.5rem;
-      margin: 0.6rem 0;
+      margin: 0.75rem 0;
       font-size: 0.85rem;
       color: var(--muted);
+      cursor: pointer;
     }
-    .remember-container input { width: auto; margin: 0; cursor: pointer; }
+
+    [dir="rtl"] .checkbox-container {
+      justify-content: flex-start;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #0284c7;
+      cursor: pointer;
+      margin: 0;
+      box-shadow: none;
+    }
 
     button {
       width: 100%;
-      padding: 0.9rem;
+      padding: 0.95rem;
       border-radius: 1.25rem;
       border: none;
       background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
       color: #fff;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 1rem;
       cursor: pointer;
       margin-top: 0.85rem;
-      box-shadow: 0 6px 0 #024e77, 0 10px 20px rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 0 #024e77, 0 12px 20px rgba(0, 0, 0, 0.4), inset 0 2px 2px rgba(255, 255, 255, 0.3);
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
     }
-    button:active { transform: translateY(4px); box-shadow: 0 2px 0 #024e77; }
-    .btn-danger { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 6px 0 #991b1b; }
-    .btn-secondary { background: rgba(51, 65, 85, 0.8); box-shadow: none; border: 1px solid var(--border-color); margin-top: 0.5rem; }
+
+    button:active {
+      transform: translateY(6px);
+      box-shadow: 0 2px 0 #024e77, 0 5px 10px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      box-shadow: 0 8px 0 #991b1b, 0 12px 20px rgba(220, 38, 38, 0.3), inset 0 2px 2px rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-danger:active {
+      box-shadow: 0 2px 0 #991b1b, 0 5px 10px rgba(220, 38, 38, 0.3);
+    }
 
     .hidden { display: none !important; }
 
-    .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+    .user-header-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 1.25rem;
+      border-radius: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      text-align: right;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    }
+
+    [dir="ltr"] .user-header-card { text-align: left; }
+
+    .header-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid #38bdf8;
+      object-fit: cover;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+      perspective: 1000px;
+    }
+
     .service-btn {
       background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.85));
       border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-radius: 1.5rem;
-      padding: 1.2rem 1rem;
+      padding: 1.5rem 1rem;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       cursor: pointer;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 4px 0 rgba(2, 132, 199, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-style: preserve-3d;
+    }
+
+    .service-btn:hover {
+      border-color: #38bdf8;
+      transform: translateY(-6px) rotateX(8deg) scale(1.02);
+      box-shadow: 0 18px 30px rgba(2, 132, 199, 0.35), 0 8px 0 rgba(2, 132, 199, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+    }
+
+    .service-btn:active {
+      transform: translateY(4px) rotateX(-5deg) scale(0.96);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5), 0 1px 0 rgba(2, 132, 199, 0.5);
     }
 
     .service-icon-box {
-      width: 44px;
-      height: 44px;
-      border-radius: 1rem;
-      background: rgba(56, 189, 248, 0.15);
+      width: 52px;
+      height: 52px;
+      border-radius: 1.2rem;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(2, 132, 199, 0.1));
       border: 1px solid rgba(56, 189, 248, 0.3);
       color: #38bdf8;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.85rem;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
     }
-    .service-icon-box svg { width: 22px; height: 22px; fill: currentColor; }
-    .service-title { font-size: 0.85rem; font-weight: 700; color: var(--text); }
 
-    .nav-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; width: 100%; }
-    .back-btn { background: rgba(51, 65, 85, 0.8); width: auto; padding: 0.4rem 0.9rem; font-size: 0.8rem; margin: 0; box-shadow: none; border-radius: 0.8rem; }
+    .service-btn:hover .service-icon-box {
+      transform: scale(1.15) rotate(5deg);
+      background: rgba(56, 189, 248, 0.3);
+    }
 
+    .service-icon-box svg {
+      width: 26px;
+      height: 26px;
+      fill: currentColor;
+    }
+
+    .service-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .back-btn {
+      background: rgba(51, 65, 85, 0.8);
+      border: 1px solid var(--border-color);
+      width: auto;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      margin: 0;
+      box-shadow: 0 4px 0 #1e293b, 0 6px 10px rgba(0,0,0,0.3);
+      border-radius: 0.85rem;
+    }
+
+    .back-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #1e293b;
+    }
+
+    .id-card {
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      position: relative;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.2);
+    }
+
+    .id-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .profile-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid #38bdf8;
+      object-fit: cover;
+      margin: 0 auto 0.75rem auto;
+      display: block;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      text-align: right;
+      background: rgba(11, 15, 25, 0.7);
+      padding: 0.85rem;
+      border-radius: 1rem;
+      font-size: 0.8rem;
+      margin-bottom: 1.25rem;
+      border: 1px solid var(--border-color);
+    }
+
+    [dir="ltr"] .info-grid { text-align: left; }
+
+    .info-label { color: var(--muted); font-size: 0.75rem; margin-bottom: 0.1rem; }
+    .info-val { font-weight: 700; color: var(--text); }
+
+    .qr-container {
+      background: #ffffff;
+      padding: 0.65rem;
+      border-radius: 1rem;
+      display: inline-block;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+    }
+
+    /* ----------------------------------
+       Floating Chat Widget Styling (Global Fixed)
+    ---------------------------------- */
     .floating-chat-btn {
       position: fixed;
-      bottom: 20px;
+      bottom: 25px;
       left: 20px;
-      width: 50px;
-      height: 50px;
+      width: 58px;
+      height: 58px;
       background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 20px rgba(2, 132, 199, 0.5);
+      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.5), 0 4px 10px rgba(0,0,0,0.4);
       cursor: pointer;
-      z-index: 9999;
+      z-index: 99999;
       border: 2px solid rgba(255, 255, 255, 0.3);
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    [dir="ltr"] .floating-chat-btn { left: auto; right: 20px; }
-    .floating-chat-btn svg { width: 24px; height: 24px; fill: #fff; }
 
+    [dir="ltr"] .floating-chat-btn {
+      left: auto;
+      right: 20px;
+    }
+
+    .floating-chat-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .floating-chat-btn svg {
+      width: 28px;
+      height: 28px;
+      fill: #ffffff;
+    }
+
+    /* Chat Modal Box (Global Fixed) */
     .chat-modal {
       position: fixed;
-      bottom: 80px;
+      bottom: 95px;
       left: 20px;
-      width: 320px;
+      width: 330px;
       max-width: calc(100vw - 40px);
-      height: 380px;
+      height: 430px;
       background: rgba(15, 23, 42, 0.96);
       border: 1px solid var(--border-color);
       backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border-radius: 1.5rem;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.7);
       display: flex;
       flex-direction: column;
-      z-index: 10000;
+      z-index: 100000;
+      overflow: hidden;
+      transform: scale(0.9);
       opacity: 0;
       visibility: hidden;
-      transition: all 0.3s;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-origin: bottom left;
     }
-    [dir="ltr"] .chat-modal { left: auto; right: 20px; }
-    .chat-modal.show { opacity: 1; visibility: visible; }
-    .chat-header { background: #0284c7; padding: 0.75rem 1rem; display: flex; justify-content: space-between; color: #fff; font-weight: 700; border-radius: 1.5rem 1.5rem 0 0; }
-    .chat-body { flex: 1; padding: 0.85rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem; }
-    .chat-msg { max-width: 80%; padding: 0.5rem 0.75rem; border-radius: 0.8rem; font-size: 0.8rem; }
-    .chat-msg.employee { background: #0284c7; color: #fff; align-self: flex-end; }
-    .chat-msg.hr { background: rgba(30, 41, 59, 0.9); border: 1px solid var(--border-color); color: var(--text); align-self: flex-start; }
-    .chat-footer { padding: 0.5rem; display: flex; gap: 0.4rem; }
-    .chat-footer input { margin: 0; padding: 0.5rem; font-size: 0.8rem; }
+
+    [dir="ltr"] .chat-modal {
+      left: auto;
+      right: 20px;
+      transform-origin: bottom right;
+    }
+
+    .chat-modal.show {
+      transform: scale(1);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .chat-header {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.8), rgba(3, 105, 161, 0.9));
+      padding: 0.85rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .chat-header-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .chat-close-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      box-shadow: none !important;
+      margin: 0;
+      padding: 0;
+    }
+
+    .chat-close-btn:hover {
+      background: rgba(0,0,0,0.2);
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      background: rgba(11, 15, 25, 0.5);
+    }
+
+    .chat-msg {
+      max-width: 80%;
+      padding: 0.65rem 0.85rem;
+      border-radius: 1rem;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .chat-msg.employee {
+      background: #0284c7;
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 0.25rem;
+    }
+
+    .chat-msg.hr {
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid var(--border-color);
+      color: var(--text);
+      align-self: flex-start;
+      border-bottom-left-radius: 0.25rem;
+    }
+
+    .chat-footer {
+      padding: 0.75rem;
+      background: rgba(15, 23, 42, 0.98);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .chat-footer input {
+      margin: 0;
+      padding: 0.65rem 0.85rem;
+      font-size: 0.85rem;
+      text-align: right;
+    }
+
+    [dir="ltr"] .chat-footer input {
+      text-align: left;
+    }
+
+    .chat-send-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #0284c7;
+      border: none;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin: 0;
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.4);
+      flex-shrink: 0;
+    }
+
+    .chat-send-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: #fff;
+      transform: rotate(180deg);
+    }
+
+    [dir="ltr"] .chat-send-btn svg {
+      transform: none;
+    }
   </style>
+
+  <!-- Screen Wake Lock API -->
+  <script>
+    let wakeLock = null;
+
+    async function requestWakeLock() {
+      if ('wakeLock' in navigator) {
+        try {
+          if (wakeLock === null) {
+            wakeLock = await navigator.wakeLock.request('screen');
+          }
+        } catch (err) {
+          console.error(`Wake Lock error: ${err.name}, ${err.message}`);
+        }
+      }
+    }
+
+    requestWakeLock();
+
+    document.addEventListener('visibilitychange', async () => {
+      if (document.visibilityState === 'visible') {
+        await requestWakeLock();
+      }
+    });
+
+    document.addEventListener('touchstart', () => {
+      requestWakeLock();
+    }, { passive: true, once: false });
+  </script>
 </head>
 <body>
 
-  <!-- New Intro Screen (5 Seconds Duration, Collective Slow Rotation & Smooth Fade In) -->
+  <!-- Intro Screen with Gentle Tornado Effect -->
   <div id="intro-screen">
-    <div class="intro-title-container" id="introTitle"></div>
-    <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
+    <div class="intro-content-wrapper">
+      <div class="intro-title-container" id="introTitle"></div>
+      <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
+    </div>
   </div>
 
-  <!-- Header -->
+  <!-- App Header -->
   <div class="app-header">
     <div class="brand-container">
       <img src="logo.png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
@@ -487,108 +807,43 @@
     </div>
   </div>
 
-  <!-- Profile Top Banner -->
-  <div id="top-emp-header" class="emp-profile-header hidden">
-    <div class="emp-profile-content">
-      <img id="dash-avatar" class="emp-avatar" src="" alt="Avatar">
-      <div class="emp-info">
-        <div id="dash-greeting" class="greeting-text">صباح الخير ☀️</div>
-        <div id="dash-name" class="emp-name">--</div>
-        <div id="dash-code" class="emp-code-badge">كود: --</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- New Fingerprint Card Matching Your Design -->
-  <div id="top-bio-card" class="biometric-card hidden" onclick="triggerBiometricCheckIn()">
-    <div class="bio-left-section">
-      <div id="bio-card-title" class="bio-main-title">تسجيل الحضور</div>
-      <div class="bio-details-row">
-        <div class="bio-sub-item">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <span id="bio-wh-label">ساعات العمل</span>
-        </div>
-        <div class="bio-sub-item">
-          <svg viewBox="0 0 24 24"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
-          <span>Out <span id="out-time">00:00</span></span>
-        </div>
-        <div class="bio-sub-item">
-          <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-          <span>In <span id="in-time">00:00</span></span>
-        </div>
-      </div>
-    </div>
-    <div class="bio-right-section">
-      <div class="bio-icon-btn">
-        <svg viewBox="0 0 24 24">
-          <path d="M12 2a10 10 0 0 0-7.5 16.5"/>
-          <path d="M12 5a7 7 0 0 1 5.25 11.6"/>
-          <path d="M12 8a4 4 0 0 0-3 6.6"/>
-          <path d="M12 11v6"/>
-          <path d="M9 18h6"/>
-        </svg>
-      </div>
-    </div>
-  </div>
-  <div id="bio-msg" class="bio-status-msg hidden"></div>
-
   <div class="container">
     
-    <!-- Login View -->
+    <!-- 1. Login View -->
     <div id="view-login" class="card">
-      <h2 style="font-size: 1.4rem; margin-bottom: 0.2rem;">LM HR Hub</h2>
-      <p id="t-subtitle" style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.2rem;">بوابة الموظفين الرقمية</p>
+      <h2 style="font-size: 1.5rem; margin-bottom: 0.2rem;">LM HR Hub</h2>
+      <p id="t-subtitle" style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem;">بوابة الموظفين الرقمية</p>
       
       <input type="text" id="empCode" placeholder="كود الموظف">
       
-      <div class="password-wrapper">
+      <div class="password-container">
         <input type="password" id="empPass" placeholder="كلمة السر">
-        <button type="button" class="toggle-eye-btn" onclick="togglePasswordVisibility(event)" tabIndex="-1">
+        <button type="button" class="toggle-password" id="togglePassBtn" onclick="togglePasswordVisibility()">
           <svg id="eyeIcon" viewBox="0 0 24 24">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
           </svg>
         </button>
       </div>
 
-      <div class="remember-container">
+      <!-- تم إضافة التشيك بوكس هنا بدون أي تغييرات أو ترحيل غير مبرر -->
+      <label class="checkbox-container">
         <input type="checkbox" id="rememberMe">
-        <label for="rememberMe" id="t-remember">تذكرني (Remember Me)</label>
-      </div>
+        <span id="t-remember">تذكرني</span>
+      </label>
       
       <button id="t-loginBtn" onclick="login()">دخول الحساب</button>
-      <button id="t-bioLoginBtn" class="btn-secondary hidden" onclick="loginWithDeviceBiometrics()">تسجيل الدخول ببصمة الهاتف 👆</button>
-      <p id="error" style="color: var(--danger); margin-top: 0.8rem; font-size: 0.85rem; font-weight: bold;"></p>
+
+      <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.85rem; font-weight: bold;"></p>
     </div>
 
-    <!-- Dashboard View -->
+    <!-- 2. Dashboard View -->
     <div id="view-dashboard" class="hidden">
-      
-      <div class="slides-container" id="slidesContainer">
-        <div class="slides-wrapper" id="slidesWrapper">
-          
-          <div class="slide-card" onclick="showPage('view-payroll')">
-            <div class="slide-title"><span id="sl1-t">مختصر المرتب</span><span class="slide-badge">Coming Soon</span></div>
-            <div class="slide-desc" id="sl1-d">متابعة تفاصيل راتبك الشهري والبدلات الصافية فور صدورها.</div>
-          </div>
-
-          <div class="slide-card" onclick="showPage('view-leaves')">
-            <div class="slide-title"><span id="sl2-t">رصيد الإجازات</span><span class="slide-badge">Coming Soon</span></div>
-            <div class="slide-desc" id="sl2-d">استعلام سريع عن رصيد الإجازات السنوية والمستنفذ منها.</div>
-          </div>
-
-          <div class="slide-card" onclick="showPage('view-leaves')">
-            <div class="slide-title"><span id="sl3-t">مختصر الأذون</span><span class="slide-badge">Coming Soon</span></div>
-            <div class="slide-desc" id="sl3-d">سجل الأذونات الشخصية ومتابعة المتبقي منها هذا الشهر.</div>
-          </div>
-
-          <div class="slide-card" onclick="alert('قسم الإعلانات قريباً!')">
-            <div class="slide-title"><span id="sl4-t">إعلانات الشركة</span><span class="slide-badge">Coming Soon</span></div>
-            <div class="slide-desc" id="sl4-d">أهم الأخبار، الأحداث المباشرة، والمناسبات المرتقبة بالشركة.</div>
-          </div>
-
+      <div class="user-header-card">
+        <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
+        <div>
+          <h3 id="dash-name" style="margin: 0; font-size: 1.1rem; font-weight: 700;">--</h3>
+          <p id="dash-job" style="margin: 0; color: #38bdf8; font-size: 0.85rem;">--</p>
         </div>
-        <div class="slides-dots" id="slidesDots"></div>
       </div>
 
       <div class="services-grid">
@@ -624,100 +879,101 @@
       <button id="t-logoutBtn" onclick="logout()" class="btn-danger">تسجيل الخروج</button>
     </div>
 
-    <!-- ID Card View -->
+    <!-- 3. ID Card View -->
     <div id="view-id-card" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn back-btn-txt" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span class="card-title-txt" style="font-weight: 700; font-size: 0.9rem;">الكارت الرقمي</span>
+        <button class="back-btn" id="t-backBtn1" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span id="t-cardTitle" style="font-weight: 700; font-size: 0.9rem;">الكارت الرقمي</span>
       </div>
 
-      <div class="id-card" id="myCardToDownload" style="background: rgba(15, 23, 42, 0.9); padding: 1rem; border-radius: 1rem; border: 1px solid var(--neon-blue);">
-        <img id="userPhoto" style="width: 75px; height: 75px; border-radius: 50%; border: 2px solid var(--neon-blue);" src="" alt="User">
-        <h3 id="userName" style="margin: 0.5rem 0 0.2rem 0; font-size: 1.05rem;">--</h3>
-        <p id="userJob" style="color: #38bdf8; font-size: 0.85rem; margin-bottom: 0.5rem;">--</p>
-        <div style="font-size: 0.8rem; color: var(--muted);" id="userDept">--</div>
-        <div style="font-size: 0.8rem; color: var(--muted);" id="userCodeVal">--</div>
-        <div id="qrcode" style="margin-top: 0.8rem; display: flex; justify-content: center;"></div>
+      <div class="id-card" id="myCardToDownload">
+        <div class="id-card-header">
+          <span style="font-weight: 800; font-size: 0.85rem; color: #38bdf8; letter-spacing: 1px;">LACTO MISR S.A.E</span>
+          <span style="font-size: 0.65rem; background: rgba(2, 132, 199, 0.4); border: 1px solid var(--accent); color: #38bdf8; padding: 0.15rem 0.5rem; border-radius: 0.5rem; font-weight: 600;">VERIFIED</span>
+        </div>
+        <img id="userPhoto" class="profile-img" crossorigin="anonymous" src="" alt="User">
+        <h3 id="userName" style="margin:0 0 0.2rem 0; font-size: 1.1rem;">--</h3>
+        <p id="userJob" style="color: #38bdf8; font-size: 0.85rem; margin:0 0 0.85rem 0;">--</p>
+        
+        <div class="info-grid">
+          <div><div class="info-label" id="t-lblDept">الإدارة</div><div id="userDept" class="info-val">--</div></div>
+          <div><div class="info-label" id="t-lblCode">كود الموظف</div><div id="userCodeVal" class="info-val">--</div></div>
+          <div style="grid-column: span 2;"><div class="info-label" id="t-lblNID">الرقم القومي</div><div id="userNID" class="info-val">--</div></div>
+        </div>
+
+        <div class="qr-container"><div id="qrcode"></div></div>
       </div>
 
-      <button id="t-saveCardBtn" onclick="downloadCard()" style="background: #10b981; margin-top: 1rem;">حفظ الكارت كصورة</button>
+      <button id="t-saveCardBtn" onclick="downloadCard()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 8px 0 #047857, 0 12px 20px rgba(16, 185, 129, 0.3), inset 0 2px 2px rgba(255, 255, 255, 0.3);">حفظ الكارت كصورة</button>
     </div>
 
-    <!-- Leaves View -->
+    <!-- 4. Leaves View -->
     <div id="view-leaves" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn back-btn-txt" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span class="leaves-title-txt" style="font-weight: 700;">خدمة الإجازات والأذون</span>
+        <button class="back-btn" id="t-backBtn2" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span id="t-leaveTitle" style="font-weight: 700;">خدمة الإجازات</span>
       </div>
-      <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">Coming Soon: تقديم ومتابعة الإجازات والأذونات الرسمية.</p>
+      <p id="t-leaveMsg" style="color: var(--muted); font-size: 0.85rem; line-height: 1.6; padding: 1rem 0;">قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.</p>
     </div>
 
-    <!-- Payroll View -->
+    <!-- 5. Payroll View -->
     <div id="view-payroll" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn back-btn-txt" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span class="payroll-title-txt" style="font-weight: 700;">مفردات المرتب</span>
+        <button class="back-btn" id="t-backBtn3" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span id="t-payTitle" style="font-weight: 700;">مفردات المرتب</span>
       </div>
-      <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">Coming Soon: تفاصيل مرتبك الشهري مباشرة والبدلات.</p>
+      <p id="t-payMsg" style="color: var(--muted); font-size: 0.85rem; line-height: 1.6; padding: 1rem 0;">قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.</p>
     </div>
 
-    <!-- Directory View -->
+    <!-- 6. Directory View -->
     <div id="view-directory" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn back-btn-txt" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span class="dir-title-txt" style="font-weight: 700;">دليل التواصل</span>
+        <button class="back-btn" id="t-backBtn4" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span id="t-dirTitle" style="font-weight: 700;">دليل التواصل</span>
       </div>
-      <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
+      <p id="t-dirMsg" style="color: var(--muted); font-size: 0.85rem; line-height: 1.6; padding: 1rem 0;">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
     </div>
 
   </div>
 
-  <!-- HR Floating Chat -->
-  <div class="floating-chat-btn" onclick="toggleChatModal()">
-    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+  <!-- Global Floating Chat Widget Button (Visible on ALL Pages) -->
+  <div class="floating-chat-btn" id="chatFloatingBtn" onclick="toggleChatModal()">
+    <svg viewBox="0 0 24 24">
+      <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
+    </svg>
   </div>
 
+  <!-- Global Chat Modal Window (Visible on ALL Pages) -->
   <div class="chat-modal" id="chatModal">
     <div class="chat-header">
-      <span id="chat-head-title">💬 محادثة الـ HR</span>
-      <span style="cursor:pointer;" onclick="toggleChatModal()">×</span>
+      <div class="chat-header-title">
+        💬 <span id="t-chatHeader">محادثة دعم الـ HR</span>
+      </div>
+      <button class="chat-close-btn" onclick="toggleChatModal()">×</button>
     </div>
     <div class="chat-body" id="chatBody">
-      <div class="chat-msg hr" id="chat-welcome-msg">مرحباً بك! اكتب استفسارك وسنقوم بالرد عليك.</div>
+      <div class="chat-msg hr" id="t-welcomeChat">مرحباً بك! اكتب استفسارك وسيقوم فريق الموارد البشرية بالرد عليك قريباً.</div>
     </div>
     <div class="chat-footer">
-      <input type="text" id="chatInput" placeholder="اكتب رسالتك..." onkeypress="handleChatKeyPress(event)">
-      <button id="chat-send-btn" style="width: auto; margin:0; padding: 0.4rem 0.8rem;" onclick="sendChatMessage()">إرسال</button>
+      <input type="text" id="chatInput" placeholder="اكتب رسالتك هنا..." onkeypress="handleChatKeyPress(event)">
+      <button class="chat-send-btn" onclick="sendChatMessage()">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
     </div>
   </div>
 
   <script>
-    let wakeLock = null;
-    async function requestWakeLock() {
-      try {
-        if ('wakeLock' in navigator) {
-          wakeLock = await navigator.wakeLock.request('screen');
-        }
-      } catch (err) {}
-    }
-
-    async function releaseWakeLock() {
-      if (wakeLock !== null) {
-        try {
-          await wakeLock.release();
-          wakeLock = null;
-        } catch (err) {}
-      }
-    }
-
-    // New 5-Second Intro Animation with Collective Slow Rotation & Fade In
+    // ----------------------------------------------------
+    // GENTLE & SLOW TORNADO INTRO ANIMATION
+    // ----------------------------------------------------
     function runTornadoIntro() {
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
       const subtitle = document.getElementById('introSubtitle');
       container.innerHTML = "";
 
-      const chars = [];
+      const charElements = [];
+
       for (let char of text) {
         if (char === ' ') {
           const space = document.createElement('span');
@@ -728,66 +984,121 @@
           span.className = 'intro-char';
           span.innerText = char;
           container.appendChild(span);
-          chars.push(span);
+          charElements.push(span);
         }
       }
+
+      const directions = [
+        { x: -900, y: -700 },
+        { x: 0,    y: -900 },
+        { x: 900,  y: -700 },
+        { x: 900,  y: 0 },    
+        { x: 900,  y: 700 },  
+        { x: 0,    y: 900 },  
+        { x: -900, y: 700 },  
+        { x: -900, y: 0 }     
+      ];
 
       const tl = gsap.timeline({
         onComplete: () => {
-          gsap.to('#intro-screen', {
-            duration: 0.6,
-            opacity: 0,
-            visibility: 'hidden',
-            ease: "power2.inOut"
-          });
+          const introScreen = document.getElementById('intro-screen');
+          introScreen.classList.add('fade-out');
         }
       });
 
-      // Collective smooth rotation and dropping into place
-      tl.fromTo(chars, 
-        { rotationY: 180, scale: 0.3, opacity: 0, y: -30 },
-        { duration: 2.2, rotationY: 0, scale: 1, opacity: 1, y: 0, stagger: 0.04, ease: "power3.out" }
-      );
+      charElements.forEach((el, index) => {
+        const randomAngle = (index / charElements.length) * Math.PI * 4;
+        const radius = 180 + Math.random() * 80;
+        
+        gsap.set(el, {
+          y: -500 - (index * 30),
+          x: Math.cos(randomAngle) * radius,
+          z: Math.sin(randomAngle) * radius,
+          rotationX: Math.random() * 360 - 180,
+          rotationY: Math.random() * 360 - 180,
+          rotationZ: Math.random() * 360 - 180,
+          opacity: 0,
+          scale: 0.2
+        });
+      });
 
-      // Slogan fade in together with the title
-      tl.to(subtitle, { duration: 1.2, opacity: 1, y: 0, ease: "power2.out" }, "-=1.5");
+      gsap.set(subtitle, { opacity: 0, y: 20 });
 
-      // Hold for 5 seconds total before hiding
-      tl.to({}, { duration: 1.8 });
+      tl.to(charElements, {
+        duration: 2.8,
+        x: 0,
+        y: 0,
+        z: 0,
+        rotationX: 0,
+        rotationY: 0,
+        rotationZ: 0,
+        opacity: 1,
+        scale: 1,
+        stagger: 0.09,
+        ease: "power2.out"
+      });
+
+      tl.to(subtitle, {
+        duration: 1.2,
+        opacity: 1,
+        y: 0,
+        ease: "power2.out"
+      });
+
+      tl.to(charElements, {
+        duration: 1.2,
+        textShadow: "0 0 35px rgba(56, 189, 248, 1)",
+        scale: 1.06,
+        yoyo: true,
+        repeat: 1,
+        ease: "sine.inOut"
+      }, "+=3.8");
+
+      tl.to(subtitle, {
+        duration: 1.2,
+        opacity: 0,
+        y: -20,
+        ease: "power1.in"
+      }, "scatter");
+
+      charElements.forEach((el, index) => {
+        const dir = directions[index % directions.length];
+        tl.to(el, {
+          duration: 1.5,
+          x: dir.x,
+          y: dir.y,
+          z: Math.random() * 400 - 200,
+          rotationX: Math.random() * 180 - 90,
+          rotationY: Math.random() * 180 - 90,
+          rotationZ: Math.random() * 180 - 90,
+          opacity: 0,
+          scale: 0.5,
+          ease: "power1.inOut"
+        }, index === 0 ? "scatter" : `-=1.35`); 
+      });
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      runTornadoIntro();
-      checkSavedLogin();
-      checkDeviceBiometricSupport();
-      initSlides();
-      requestWakeLock();
-    });
+    window.addEventListener('DOMContentLoaded', runTornadoIntro);
 
-    document.addEventListener('visibilitychange', async () => {
-      if (document.visibilityState === 'visible' && sessionStorage.getItem('active_user_code')) {
-        await requestWakeLock();
-      }
-    });
-
-    function togglePasswordVisibility(e) {
-      if (e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-      
-      const input = document.getElementById('empPass');
+    // ----------------------------------------------------
+    // Toggle Password Visibility Function
+    // ----------------------------------------------------
+    function togglePasswordVisibility() {
+      const passInput = document.getElementById('empPass');
       const eyeIcon = document.getElementById('eyeIcon');
-
-      if (input.type === 'password') {
-        input.type = 'text';
-        eyeIcon.innerHTML = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>`;
+      
+      if (passInput.type === 'password') {
+        passInput.type = 'text';
+        eyeIcon.innerHTML = '<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.12c0-1.66-1.34-3-3-3l-.17.02z"/>';
       } else {
-        input.type = 'password';
-        eyeIcon.innerHTML = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`;
+        passInput.type = 'password';
+        eyeIcon.innerHTML = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>';
       }
     }
 
+    // ----------------------------------------------------
+    // Firebase Config & App Logic
+    // ----------------------------------------------------
     const firebaseConfig = {
       apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
       authDomain: "lacto-hr-system.firebaseapp.com",
@@ -808,68 +1119,65 @@
     const translations = {
       ar: {
         langText: "العربية",
-        subtitle: "بوابة الموظفين الرقمية",
-        codePlace: "كود الموظف",
-        passPlace: "كلمة السر",
-        remember: "تذكرني (Remember Me)",
+        subtitle: "بوابة الموظفين والمدراء الرقمية",
+        codeHolder: "كود الموظف",
+        passHolder: "كلمة السر",
+        remember: "تذكرني",
         loginBtn: "دخول الحساب",
-        logoutBtn: "تسجيل الخروج",
-        greetingM: "صباح الخير ☀️",
-        greetingE: "مساء الخير 🌙",
-        bioTitle: "تسجيل الحضور",
-        bioWH: "ساعات العمل",
         btnID: "كارت الهوية",
         btnLeaves: "طلبات الإجازات",
         btnPay: "مفردات المرتب",
         btnDir: "دليل التواصل",
-        chatTitle: "💬 محادثة الـ HR",
-        chatWelcome: "مرحباً بك! اكتب استفسارك وسنقوم بالرد عليك.",
-        chatPlace: "اكتب رسالتك...",
-        chatSend: "إرسال",
+        logoutBtn: "تسجيل الخروج",
         backBtn: "← رجوع",
         cardTitle: "الكارت الرقمي",
-        leavesTitle: "خدمة الإجازات والأذون",
+        lblDept: "الإدارة",
+        lblCode: "كود الموظف",
+        lblNID: "الرقم القومي",
+        saveCardBtn: "حفظ الكارت كصورة",
+        leaveTitle: "خدمة الإجازات",
+        leaveMsg: "قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.",
         payTitle: "مفردات المرتب",
+        payMsg: "قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.",
         dirTitle: "دليل التواصل",
-        saveCard: "حفظ الكارت كصورة"
+        dirMsg: "أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.",
+        chatHeader: "محادثة دعم الـ HR",
+        welcomeChat: "مرحباً بك! اكتب استفسارك وسيقوم فريق الموارد البشرية بالرد عليك قريباً.",
+        chatPlaceholder: "اكتب رسالتك هنا..."
       },
       en: {
         langText: "English",
         subtitle: "Digital Employee Portal",
-        codePlace: "Employee Code",
-        passPlace: "Password",
-        remember: "Remember Me",
-        loginBtn: "Login",
-        logoutBtn: "Logout",
-        greetingM: "Good Morning ☀️",
-        greetingE: "Good Evening 🌙",
-        bioTitle: "Sign In",
-        bioWH: "Working Hours",
+        codeHolder: "Employee Code",
+        passHolder: "Password",
+        remember: "Remember me",
+        loginBtn: "Sign In",
         btnID: "ID Card",
-        btnLeaves: "Leaves Request",
-        btnPay: "Payslip",
+        btnLeaves: "Leave Requests",
+        btnPay: "Pay Slip",
         btnDir: "Directory",
-        chatTitle: "💬 HR Support Chat",
-        chatWelcome: "Welcome! Write your inquiry and we will reply shortly.",
-        chatPlace: "Type your message...",
-        chatSend: "Send",
-        backBtn: "← Back",
-        cardTitle: "Digital ID Card",
-        leavesTitle: "Leaves & Permissions",
-        payTitle: "Salary Breakdown",
-        dirTitle: "Contact Directory",
-        saveCard: "Save Card Image"
+        logoutBtn: "Sign Out",
+        backBtn: "Back →",
+        cardTitle: "Digital ID",
+        lblDept: "Department",
+        lblCode: "Emp Code",
+        lblNID: "National ID",
+        saveCardBtn: "Save Card Image",
+        leaveTitle: "Leave Requests",
+        leaveMsg: "Coming Soon: Submit your leave and permission requests directly.",
+        payTitle: "Pay Slip",
+        payMsg: "Coming Soon: Access your monthly salary slips easily.",
+        dirTitle: "Directory",
+        dirMsg: "Emergency numbers, medical clinic, and HR contact list.",
+        chatHeader: "HR Support Chat",
+        welcomeChat: "Welcome! Type your inquiry and our HR team will reply shortly.",
+        chatPlaceholder: "Type your message here..."
       }
     };
 
-    function getGreeting() {
-      const hour = new Date().getHours();
-      const t = translations[currentLang];
-      return (hour < 12) ? t.greetingM : t.greetingE;
-    }
-
     function toggleLangMenu() {
-      document.getElementById('langMenu').classList.toggle('show');
+      const menu = document.getElementById('langMenu');
+      menu.classList.toggle('show');
     }
 
     function selectLanguage(lang) {
@@ -877,53 +1185,22 @@
       setLanguage(lang);
     }
 
-    function setLanguage(lang) {
-      currentLang = lang;
-      localStorage.setItem('lacto_lang', lang);
-      document.documentElement.lang = lang;
-      document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
-
-      const t = translations[lang];
-
-      document.getElementById('current-lang-text').innerText = t.langText;
-      document.getElementById('t-subtitle').innerText = t.subtitle;
-      document.getElementById('empCode').placeholder = t.codePlace;
-      document.getElementById('empPass').placeholder = t.passPlace;
-      document.getElementById('t-remember').innerText = t.remember;
-      document.getElementById('t-loginBtn').innerText = t.loginBtn;
-      document.getElementById('t-logoutBtn').innerText = t.logoutBtn;
-
-      document.getElementById('bio-card-title').innerText = t.bioTitle;
-      document.getElementById('bio-wh-label').innerText = t.bioWH;
-
-      document.getElementById('t-btnID').innerText = t.btnID;
-      document.getElementById('t-btnLeaves').innerText = t.btnLeaves;
-      document.getElementById('t-btnPay').innerText = t.btnPay;
-      document.getElementById('t-btnDir').innerText = t.btnDir;
-
-      document.getElementById('chat-head-title').innerText = t.chatTitle;
-      document.getElementById('chat-welcome-msg').innerText = t.chatWelcome;
-      document.getElementById('chatInput').placeholder = t.chatPlace;
-      document.getElementById('chat-send-btn').innerText = t.chatSend;
-
-      document.querySelectorAll('.back-btn-txt').forEach(el => el.innerText = t.backBtn);
-      document.querySelector('.card-title-txt').innerText = t.cardTitle;
-      document.querySelector('.leaves-title-txt').innerText = t.leavesTitle;
-      document.querySelector('.payroll-title-txt').innerText = t.payTitle;
-      document.querySelector('.dir-title-txt').innerText = t.dirTitle;
-      document.getElementById('t-saveCardBtn').innerText = t.saveCard;
-
-      if (currentUserData) renderProfileData();
+    window.onclick = function(event) {
+      if (!event.target.matches('.lang-dropdown-btn') && !event.target.matches('#current-lang-text')) {
+        const dropdown = document.getElementById('langMenu');
+        if (dropdown && dropdown.classList.contains('show')) {
+          dropdown.classList.remove('show');
+        }
+      }
     }
 
     function showPage(pageId) {
       const views = ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory'];
-      views.forEach(id => document.getElementById(id)?.classList.add('hidden'));
+      views.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+      });
       document.getElementById(pageId).classList.remove('hidden');
-
-      const isDash = (pageId === 'view-dashboard');
-      document.getElementById('top-emp-header').classList.toggle('hidden', !isDash);
-      document.getElementById('top-bio-card').classList.toggle('hidden', !isDash);
     }
 
     function renderProfileData() {
@@ -933,52 +1210,37 @@
 
       const name = isEn ? (user.name_en || user.name) : user.name;
       const job = isEn ? (user.job_en || user.job) : user.job;
+      const dept = isEn ? (user.dept_en || user.dept) : user.dept;
 
-      document.getElementById('dash-greeting').innerText = getGreeting();
       document.getElementById('dash-name').innerText = name || "--";
-      document.getElementById('dash-code').innerText = (isEn ? "Code: " : "كود: ") + currentEmpCode;
+      document.getElementById('dash-job').innerText = job || "--";
       document.getElementById('dash-avatar').src = user.photo || "https://i.pravatar.cc/150?img=12";
 
       document.getElementById('userName').innerText = name || "--";
       document.getElementById('userJob').innerText = job || "--";
-      document.getElementById('userDept').innerText = (isEn ? user.dept_en : user.dept) || "--";
+      document.getElementById('userDept').innerText = dept || "--";
       document.getElementById('userCodeVal').innerText = currentEmpCode;
+      document.getElementById('userNID').innerText = user.nationalId || "--";
       document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
     }
 
-    function checkDeviceBiometricSupport() {
-      if (window.PublicKeyCredential && localStorage.getItem('biometrics_enabled_code')) {
-        document.getElementById('t-bioLoginBtn').classList.remove('hidden');
-      }
-    }
-
-    function loginWithDeviceBiometrics() {
-      const savedCode = localStorage.getItem('biometrics_enabled_code');
-      const savedPass = localStorage.getItem('remembered_empPass');
-
-      if (!savedCode || !savedPass) {
-        document.getElementById('error').innerText = "قم بتسجيل الدخول التقليدي وتأكيد البصمة أولاً.";
-        return;
-      }
-
-      document.getElementById('empCode').value = savedCode;
-      document.getElementById('empPass').value = savedPass;
-      login(true);
-    }
-
-    function login(isBiometric = false) {
+    function login() {
       const code = document.getElementById('empCode').value.trim();
       const pass = document.getElementById('empPass').value.trim();
       const errorEl = document.getElementById('error');
-      const rememberMe = document.getElementById('rememberMe').checked;
+      
+      errorEl.innerText = (currentLang === 'en') ? "Connecting..." : "جاري الاتصال...";
 
-      if (!code) { errorEl.innerText = currentLang === 'ar' ? "يرجى إدخال الكود" : "Please enter code"; return; }
+      if (!code) { 
+        errorEl.innerText = (currentLang === 'en') ? "Please enter employee code" : "يرجى إدخال الكود"; 
+        return; 
+      }
 
       db.ref('users/' + code).once('value').then((snapshot) => {
         if (snapshot.exists()) {
           const user = snapshot.val();
           if (user.password !== pass) {
-            errorEl.innerText = currentLang === 'ar' ? "كلمة السر غير صحيحة!" : "Incorrect password!";
+            errorEl.innerText = (currentLang === 'en') ? "Incorrect Password!" : "كلمة السر غير صحيحة!";
             return;
           }
 
@@ -986,148 +1248,155 @@
           currentEmpCode = code;
           errorEl.innerText = "";
 
-          sessionStorage.setItem('active_user_code', code);
-          requestWakeLock();
-
-          if (rememberMe || isBiometric) {
-            localStorage.setItem('remembered_empCode', code);
-            localStorage.setItem('remembered_empPass', pass);
-            localStorage.setItem('biometrics_enabled_code', code);
-          }
-
           renderProfileData();
+
+          const currentUrl = window.location.origin + window.location.pathname;
+          document.getElementById('qrcode').innerHTML = "";
+          new QRCode(document.getElementById("qrcode"), { 
+            text: currentUrl + "?emp=" + code, 
+            width: 85, 
+            height: 85 
+          });
+
+          // الاستماع للرسائل باستخدام كود الموظف
+          listenToChatMessages(code);
+
           showPage('view-dashboard');
         } else {
-          errorEl.innerText = currentLang === 'ar' ? "كود الموظف غير مسجل!" : "Employee code not found!";
+          errorEl.innerText = (currentLang === 'en') ? "Employee code not found!" : "كود الموظف غير مسجل!";
         }
+      }).catch((err) => {
+        console.error(err);
+        errorEl.innerText = (currentLang === 'en') ? "Connection Error!" : "حدث خطأ في الاتصال!";
       });
     }
 
-    function checkSavedLogin() {
-      const activeUser = sessionStorage.getItem('active_user_code');
-      const savedCode = localStorage.getItem('remembered_empCode');
-      const savedPass = localStorage.getItem('remembered_empPass');
-
-      if (savedCode && savedPass) {
-        document.getElementById('empCode').value = savedCode;
-        document.getElementById('empPass').value = savedPass;
-        document.getElementById('rememberMe').checked = true;
-      }
-
-      if (activeUser && savedCode === activeUser) {
-        login();
-      }
-    }
-
-    // Direct Check-In without GPS distance restrictions as requested
-    function triggerBiometricCheckIn() {
-      const bioMsg = document.getElementById('bio-msg');
-      const now = new Date();
-      const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-      document.getElementById('in-time').innerText = timeString;
-      bioMsg.classList.remove('hidden');
-      bioMsg.innerText = currentLang === 'ar' ? "تم تسجيل الحضور بنجاح! ✔️" : "Check-In Successful! ✔️";
-      
-      setTimeout(() => {
-        bioMsg.classList.add('hidden');
-      }, 4000);
-    }
-
-    let slideIndex = 0;
-    let slideInterval = null;
-    let startX = 0;
-
-    function initSlides() {
-      const container = document.getElementById('slidesContainer');
-      const wrapper = document.getElementById('slidesWrapper');
-      const dotsContainer = document.getElementById('slidesDots');
-      const slides = wrapper.children;
-
-      dotsContainer.innerHTML = "";
-      for (let i = 0; i < slides.length; i++) {
-        const dot = document.createElement('div');
-        dot.className = 'dot' + (i === 0 ? ' active' : '');
-        dot.onclick = () => goToSlide(i);
-        dotsContainer.appendChild(dot);
-      }
-
-      startSlideTimer();
-
-      container.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; clearInterval(slideInterval); });
-      container.addEventListener('touchend', (e) => {
-        const diff = startX - e.changedTouches[0].clientX;
-        if (Math.abs(diff) > 40) {
-          if (diff > 0) goToSlide(slideIndex + 1);
-          else goToSlide(slideIndex - 1);
-        } else {
-          startSlideTimer();
-        }
+    function downloadCard() {
+      html2canvas(document.getElementById('myCardToDownload'), { useCORS: true, scale: 2 }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'Lacto_ID_' + currentEmpCode + '.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
       });
     }
 
-    function goToSlide(n) {
-      const wrapper = document.getElementById('slidesWrapper');
-      const slides = wrapper.children;
-      const dots = document.getElementById('slidesDots').children;
-
-      slideIndex = (n + slides.length) % slides.length;
-      const offset = (currentLang === 'ar') ? slideIndex * 100 : -slideIndex * 100;
-      wrapper.style.transform = `translateX(${offset}%)`;
-
-      for (let i = 0; i < dots.length; i++) {
-        dots[i].classList.toggle('active', i === slideIndex);
-      }
-
-      resetSlideTimer();
+    function logout() {
+      window.location.reload();
     }
 
-    function startSlideTimer() { slideInterval = setInterval(() => goToSlide(slideIndex + 1), 4000); }
-    function resetSlideTimer() { clearInterval(slideInterval); startSlideTimer(); }
+    // ----------------------------------------------------
+    // Embedded Chat Functions (Firebase Realtime)
+    // ----------------------------------------------------
+    function toggleChatModal() {
+      const modal = document.getElementById('chatModal');
+      modal.classList.toggle('show');
+      if (modal.classList.contains('show')) {
+        const chatBody = document.getElementById('chatBody');
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+    }
 
-    function toggleChatModal() { document.getElementById('chatModal').classList.toggle('show'); }
+    function handleChatKeyPress(e) {
+      if (e.key === 'Enter') {
+        sendChatMessage();
+      }
+    }
 
     function sendChatMessage() {
       const input = document.getElementById('chatInput');
       const text = input.value.trim();
       if (!text) return;
 
-      const chatBody = document.getElementById('chatBody');
-      const msgDiv = document.createElement('div');
-      msgDiv.className = 'chat-msg employee';
-      msgDiv.innerText = text;
-      chatBody.appendChild(msgDiv);
+      const senderId = (currentEmpCode && currentEmpCode !== "") ? currentEmpCode : ("guest_" + Math.floor(Math.random() * 10000));
 
+      const msgData = {
+        sender: senderId,
+        senderName: currentUserData ? currentUserData.name : "زائر",
+        text: text,
+        timestamp: Date.now(),
+        isAdmin: false
+      };
+
+      db.ref('chats/' + senderId).push(msgData);
       input.value = "";
-      chatBody.scrollTop = chatBody.scrollHeight;
     }
 
-    function handleChatKeyPress(e) { if (e.key === 'Enter') sendChatMessage(); }
+    function listenToChatMessages(empCode) {
+      if (!empCode) return;
+      const chatBody = document.getElementById('chatBody');
+      
+      // إيقاف المستمع القديم إن وجد
+      db.ref('chats/' + empCode).off();
+      
+      // إرجاع الرسالة الترحيبية المترجمة حسب اللغة الحالية
+      const t = translations[currentLang];
+      chatBody.innerHTML = `<div class="chat-msg hr" id="t-welcomeChat">${t.welcomeChat}</div>`;
 
-    function downloadCard() {
-      html2canvas(document.getElementById('myCardToDownload')).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'ID_Card.png';
-        link.href = canvas.toDataURL();
-        link.click();
+      db.ref('chats/' + empCode).on('child_added', (snapshot) => {
+        const msg = snapshot.val();
+        if (!msg) return;
+
+        // دعم النص سواء كان مسجلاً بـ text أو message أو كائن نصي
+        const messageContent = (typeof msg === 'string') ? msg : (msg.text || msg.message || '');
+        if (!messageContent) return;
+
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'chat-msg ' + (msg.isAdmin ? 'hr' : 'employee');
+        msgDiv.innerText = messageContent;
+
+        chatBody.appendChild(msgDiv);
+        chatBody.scrollTop = chatBody.scrollHeight;
       });
     }
 
-    function logout() {
-      releaseWakeLock();
-      sessionStorage.clear();
-      localStorage.removeItem('remembered_empCode');
-      localStorage.removeItem('remembered_empPass');
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lacto_lang', lang);
+      document.documentElement.lang = lang;
+      document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+
+      const t = translations[lang];
+      document.getElementById('current-lang-text').innerText = t.langText;
+      document.getElementById('t-subtitle').innerText = t.subtitle;
+      document.getElementById('empCode').placeholder = t.codeHolder;
+      document.getElementById('empPass').placeholder = t.passHolder;
+      document.getElementById('t-remember').innerText = t.remember;
+      document.getElementById('t-loginBtn').innerText = t.loginBtn;
+      document.getElementById('t-btnID').innerText = t.btnID;
+      document.getElementById('t-btnLeaves').innerText = t.btnLeaves;
+      document.getElementById('t-btnPay').innerText = t.btnPay;
+      document.getElementById('t-btnDir').innerText = t.btnDir;
+      document.getElementById('t-logoutBtn').innerText = t.logoutBtn;
+
+      document.getElementById('t-backBtn1').innerText = t.backBtn;
+      document.getElementById('t-backBtn2').innerText = t.backBtn;
+      document.getElementById('t-backBtn3').innerText = t.backBtn;
+      document.getElementById('t-backBtn4').innerText = t.backBtn;
+
+      document.getElementById('t-cardTitle').innerText = t.cardTitle;
+      document.getElementById('t-lblDept').innerText = t.lblDept;
+      document.getElementById('t-lblCode').innerText = t.lblCode;
+      document.getElementById('t-lblNID').innerText = t.lblNID;
+      document.getElementById('t-saveCardBtn').innerText = t.saveCardBtn;
+
+      document.getElementById('t-leaveTitle').innerText = t.leaveTitle;
+      document.getElementById('t-leaveMsg').innerText = t.leaveMsg;
+      document.getElementById('t-payTitle').innerText = t.payTitle;
+      document.getElementById('t-payMsg').innerText = t.payMsg;
+      document.getElementById('t-dirTitle').innerText = t.dirTitle;
+      document.getElementById('t-dirMsg').innerText = t.dirMsg;
+
+      document.getElementById('t-chatHeader').innerText = t.chatHeader;
       
-      currentUserData = null;
-      currentEmpCode = "";
+      const welcomeEl = document.getElementById('t-welcomeChat');
+      if (welcomeEl) welcomeEl.innerText = t.welcomeChat;
+      
+      document.getElementById('chatInput').placeholder = t.chatPlaceholder;
 
-      document.getElementById('empCode').value = "";
-      document.getElementById('empPass').value = "";
-      document.getElementById('rememberMe').checked = false;
-
-      showPage('view-login');
+      renderProfileData();
     }
+
+    setLanguage(currentLang);
   </script>
 </body>
 </html>
