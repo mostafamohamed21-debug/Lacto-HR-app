@@ -148,10 +148,11 @@
       -webkit-text-fill-color: transparent;
     }
     
-    /* ضبط تنسيق زر اللغة ومكانه بشكل مضبوط */
+    /* ضبط مكان وتموضع زر اللغة ونظافة القائمة تماماً بدون أي ظلال خارجية زائدة أو إزاحة */
     .lang-dropdown-container { 
       position: relative; 
-      display: inline-block;
+      display: flex;
+      align-items: center;
     }
     .lang-dropdown-btn {
       background: rgba(30, 41, 59, 0.75);
@@ -162,29 +163,34 @@
       font-size: 0.8rem;
       font-weight: 700;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 0.4rem;
       backdrop-filter: blur(12px);
       transition: all 0.2s ease;
+      box-shadow: none !important;
+      outline: none;
     }
     .lang-dropdown-menu {
       position: absolute;
-      top: 120%;
-      right: 0;
-      background: rgba(15, 23, 42, 0.95);
+      top: calc(100% + 8px);
+      background: rgba(15, 23, 42, 0.98);
       border: 1px solid var(--border-color);
       border-radius: 1rem;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
       display: none;
-      z-index: 200;
+      z-index: 300;
       min-width: 130px;
       backdrop-filter: blur(16px);
       overflow: hidden;
     }
-    [dir="ltr"] .lang-dropdown-menu { 
-      right: auto; 
+    [dir="rtl"] .lang-dropdown-menu { 
       left: 0; 
+      right: auto; 
+    }
+    [dir="ltr"] .lang-dropdown-menu { 
+      right: 0; 
+      left: auto; 
     }
     .lang-dropdown-menu.show { display: block; }
     .lang-option {
@@ -427,7 +433,7 @@
     }
     .career-card:hover { border-color: #38bdf8; transform: translateY(-2px); }
     
-    /* Floating Chat Button - رفع الزر بوضوح لعدم الاقتطاع واقتطاع الشاشة bottom: 4rem */
+    /* Floating Chat Button */
     .chat-float-btn {
       position: fixed;
       bottom: 4rem;
@@ -686,15 +692,15 @@
       <div class="summaries-grid">
         <div class="summary-card">
           <div class="summary-title" id="t-sumLeaves">رصيد الإجازات</div>
-          <div class="summary-value">21 يوم</div>
+          <div class="summary-value" id="t-valLeaves">21 يوم</div>
         </div>
         <div class="summary-card">
           <div class="summary-title" id="t-sumPermissions">الأذونات المتاحة</div>
-          <div class="summary-value">3 أذونات</div>
+          <div class="summary-value" id="t-valPermissions">3 أذونات</div>
         </div>
         <div class="summary-card" style="grid-column: span 2;">
           <div class="summary-title" id="t-sumSalary">صافي آخر مرتب</div>
-          <div class="summary-value">محفوظ وآمن 🔒</div>
+          <div class="summary-value" id="t-valSalary">محفوظ وآمن 🔒</div>
         </div>
       </div>
       
@@ -727,12 +733,12 @@
       </div>
       
       <!-- Career Opportunities Banner -->
-      <div class="career-card" onclick="alert('قريباً: استعراض الوظائف الداخلية والترقيات المتاحة.')">
-        <div style="text-align: right;">
+      <div class="career-card" onclick="alert(currentLang === 'ar' ? 'قريباً: استعراض الوظائف الداخلية والترقيات المتاحة.' : 'Coming Soon: Browse internal jobs and available promotions.')">
+        <div style="text-align: right;" id="careerTextWrapper">
           <div id="t-careerTitle" style="font-weight: 700; font-size: 0.9rem; color: #38bdf8;">الفرص الوظيفية الشاغرة</div>
           <div id="t-careerDesc" style="font-size: 0.75rem; color: var(--muted);">استكشف الوظائف الداخلية المتاحة للترقي</div>
         </div>
-        <span style="font-size: 1.2rem; color: #38bdf8;">➔</span>
+        <span style="font-size: 1.2rem; color: #38bdf8;" id="careerArrow">➔</span>
       </div>
       <button id="t-logoutBtn" onclick="logout()" class="btn-danger">تسجيل الخروج</button>
     </div>
@@ -790,7 +796,7 @@
     </div>
   </div>
 
-  <!-- Floating Chat Button (مرفوع وفلوتنج بوضوح) -->
+  <!-- Floating Chat Button -->
   <div class="chat-float-btn" onclick="toggleChatPopup()" title="شات الدعم الفني">
     <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
   </div>
@@ -809,7 +815,7 @@
   </div>
 
   <script>
-    /* Leaf Fall Animation مع تماثل سرعة الدخول والخروج والحركة المشتتة من حافة الشاشة */
+    /* Leaf Fall Animation */
     function runLeafFallIntro() {
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
@@ -915,8 +921,11 @@
         loginBtn: "دخول الحساب",
         codeLabel: "كود:",
         sumLeaves: "رصيد الإجازات",
+        valLeaves: "21 يوم",
         sumPermissions: "الأذونات المتاحة",
+        valPermissions: "3 أذونات",
         sumSalary: "صافي آخر مرتب",
+        valSalary: "محفوظ وآمن 🔒",
         btnLeaves: "طلبات الإجازات",
         btnID: "كارت الهوية",
         btnPay: "مفردات المرتب",
@@ -956,8 +965,11 @@
         loginBtn: "Sign In",
         codeLabel: "Code:",
         sumLeaves: "Leave Balance",
+        valLeaves: "21 Days",
         sumPermissions: "Available Permissions",
+        valPermissions: "3 Permissions",
         sumSalary: "Last Net Salary",
+        valSalary: "Secure & Saved 🔒",
         btnLeaves: "Leave Requests",
         btnID: "ID Card",
         btnPay: "Payroll",
@@ -991,7 +1003,7 @@
       }
     };
 
-    // تطبيق زر اللغة الشامل بما فيها تحية مساء الخير
+    // ترجمة كافة العناصر والأرقام ديناميكياً للغتين دون أي تداخل
     function updateContentTranslations() {
       const t = translations[currentLang];
       
@@ -1002,8 +1014,11 @@
       document.getElementById('t-loginBtn').innerText = t.loginBtn;
       document.getElementById('t-codeLabel').innerText = t.codeLabel;
       document.getElementById('t-sumLeaves').innerText = t.sumLeaves;
+      document.getElementById('t-valLeaves').innerText = t.valLeaves;
       document.getElementById('t-sumPermissions').innerText = t.sumPermissions;
+      document.getElementById('t-valPermissions').innerText = t.valPermissions;
       document.getElementById('t-sumSalary').innerText = t.sumSalary;
+      document.getElementById('t-valSalary').innerText = t.valSalary;
       document.getElementById('t-btnLeaves').innerText = t.btnLeaves;
       document.getElementById('t-btnID').innerText = t.btnID;
       document.getElementById('t-btnPay').innerText = t.btnPay;
@@ -1017,7 +1032,16 @@
       document.getElementById('t-lblNID').innerText = t.lblNID;
       document.getElementById('t-saveCardBtn').innerText = t.saveCardBtn;
       
-      // تغيير التحية طبقاً للغة المحددة
+      const careerTextWrap = document.getElementById('careerTextWrapper');
+      const careerArrow = document.getElementById('careerArrow');
+      if (currentLang === 'en') {
+        careerTextWrap.style.textAlign = 'left';
+        careerArrow.innerText = '➔';
+      } else {
+        careerTextWrap.style.textAlign = 'right';
+        careerArrow.innerText = '➔';
+      }
+
       document.getElementById('dash-greeting').innerText = t.greeting;
       
       ['t-backBtn1', 't-backBtn2', 't-backBtn3', 't-backBtn4'].forEach(id => {
