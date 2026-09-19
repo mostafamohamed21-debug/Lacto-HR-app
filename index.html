@@ -275,17 +275,25 @@
     .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
     .hidden { display: none !important; }
     
-    /* Dashboard UI - Header */
+    /* Dashboard UI - Header (كارت الترحيب: مفتوح من الأعلى 3 أضلاع ومتداخل مع البصمة) */
     .user-header-card {
       background: #0d1527;
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      border-radius: 1.5rem;
-      padding: 1.25rem;
+      border-top: none;
+      border-left: 1px solid rgba(56, 189, 248, 0.3);
+      border-right: 1px solid rgba(56, 189, 248, 0.3);
+      border-bottom: none; /* إزالة الضلع السفلي ليتداخل مع كارت البصمة */
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      padding: 1rem 1.25rem 1.25rem 1.25rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
       position: relative;
+      margin-bottom: -10px; /* تداخل سلس بدون ظهور حواف سفلية */
+      z-index: 2;
     }
     .user-header-right {
       display: flex;
@@ -295,18 +303,22 @@
     }
     [dir="ltr"] .user-header-right { text-align: left; }
     .header-avatar {
-      width: 60px; height: 60px; border-radius: 50%;
+      width: 55px; height: 55px; border-radius: 50%;
       border: 2px solid #38bdf8; object-fit: cover;
     }
     .code-badge-pill {
-      color: #38bdf8; font-size: 0.85rem; font-weight: 700;
-      display: inline-block; margin-top: 0.2rem;
+      color: #38bdf8; font-size: 0.8rem; font-weight: 700;
+      display: inline-block; margin-top: 0.1rem;
     }
     
-    /* Notification Button */
+    /* Notification Container with Popup */
+    .notification-wrapper {
+      position: relative;
+      display: inline-block;
+    }
     .notification-btn {
-      width: 50px;
-      height: 50px;
+      width: 45px;
+      height: 45px;
       background: #1e293b;
       border: 1px solid rgba(56, 189, 248, 0.4);
       border-radius: 50%;
@@ -320,42 +332,65 @@
       transition: transform 0.2s;
     }
     .notification-btn:hover { transform: scale(1.05); }
-    .notification-btn svg { width: 24px; height: 24px; fill: currentColor; }
+    .notification-btn svg { width: 22px; height: 22px; fill: currentColor; }
     .notification-badge {
       position: absolute;
       top: 2px;
       right: 2px;
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
       background: #ef4444;
       border-radius: 50%;
       border: 2px solid #0d1527;
     }
+    
+    /* Notification Popup Box */
+    .notification-popup {
+      position: absolute;
+      top: 0;
+      left: calc(100% + 12px);
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 1rem;
+      padding: 0.75rem 1rem;
+      width: 210px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      backdrop-filter: blur(12px);
+      z-index: 400;
+      display: none;
+      text-align: right;
+    }
+    [dir="ltr"] .notification-popup { left: auto; right: calc(100% + 12px); text-align: left; }
+    .notification-popup.show { display: block; }
+    .notification-popup-title { font-size: 0.75rem; font-weight: 800; color: #38bdf8; margin-bottom: 0.2rem; }
+    .notification-popup-desc { font-size: 0.7rem; color: var(--muted); line-height: 1.4; }
 
-    /* Fingerprint Card - Updated to Lighting Baby Blue */
+    /* Fingerprint Card - Updated to Lighting Baby Blue & Half Size */
     .checkin-card {
       background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(15, 23, 42, 0.95));
       border: 1px solid rgba(56, 189, 248, 0.5);
       border-radius: 1.5rem;
-      padding: 1.25rem;
+      padding: 0.75rem 1.25rem; /* تقليص المساحة الرأسية للنصف تقريباً */
       text-align: center;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 0 15px rgba(56, 189, 248, 0.2);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6), inset 0 0 15px rgba(56, 189, 248, 0.2);
       cursor: pointer;
       transition: all 0.3s ease;
       color: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.3rem;
+      position: relative;
+      z-index: 1;
     }
-    .checkin-card:hover { border-color: #38bdf8; box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 0 25px rgba(56, 189, 248, 0.3); }
+    .checkin-card:hover { border-color: #38bdf8; box-shadow: 0 10px 25px rgba(0,0,0,0.6), inset 0 0 20px rgba(56, 189, 248, 0.3); }
     .checkin-top-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
-      padding: 0 0.5rem;
-      font-size: 0.85rem;
+      padding: 0 0.2rem;
+      font-size: 0.75rem;
       font-weight: 700;
       color: #38bdf8;
     }
@@ -364,19 +399,19 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      padding: 0.5rem;
+      padding: 0.2rem 0.5rem;
     }
     .fingerprint-icon-wrap {
-      width: 65px; height: 65px;
+      width: 45px; height: 45px; /* تصغير أيقونة البصمة لتناسب المساحة المصغرة */
       background: rgba(56, 189, 248, 0.2);
       border: 1px solid rgba(56, 189, 248, 0.4);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       color: #38bdf8;
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
     }
-    .fingerprint-icon-wrap svg { width: 36px; height: 36px; fill: currentColor; }
-    .checkin-status-text { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+    .fingerprint-icon-wrap svg { width: 24px; height: 24px; fill: currentColor; }
+    .checkin-status-text { font-size: 0.8rem; font-weight: 700; color: var(--text); }
     
     /* Company Announcements Slider */
     .announcement-card {
@@ -553,27 +588,33 @@
     
     <!-- 2. Dashboard View -->
     <div id="view-dashboard" class="hidden">
-      <!-- User Greeting Header -->
+      <!-- User Greeting Header (مفتوح من الأعلى 3 أضلاع ومتداخل مع البصمة) -->
       <div class="user-header-card">
         <div class="user-header-right">
           <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
           <div>
-            <div id="dash-greeting" style="font-size: 0.8rem; color: var(--muted);">مساء الخير 🌙</div>
-            <h3 id="dash-name" style="margin: 0; font-size: 1rem; font-weight: 700;">--</h3>
+            <div id="dash-greeting" style="font-size: 0.75rem; color: var(--muted);">مساء الخير 🌙</div>
+            <h3 id="dash-name" style="margin: 0; font-size: 0.95rem; font-weight: 700;">--</h3>
             <div class="code-badge-pill"><span id="t-codeLabel">ID:</span> <span id="dash-code-val">--</span></div>
           </div>
         </div>
-        <div class="notification-btn" onclick="triggerNotification()" title="الإشعارات">
-          <div class="notification-badge"></div>
-          <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4v6z"/></svg>
+        <div class="notification-wrapper">
+          <div class="notification-btn" onclick="toggleNotificationPopup(event)" title="الإشعارات">
+            <div class="notification-badge"></div>
+            <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4v6z"/></svg>
+          </div>
+          <div class="notification-popup" id="notificationPopup">
+            <div class="notification-popup-title" id="t-popupTitle">تنبيهات النظام</div>
+            <div class="notification-popup-desc" id="t-popupDesc">لا توجد إشعارات جديدة. تم تفعيل النظام بنجاح!</div>
+          </div>
         </div>
       </div>
       
-      <!-- Fingerprint Check-in Card (Updated to Lighting Baby Blue) -->
+      <!-- Fingerprint Check-in Card (Lighting Baby Blue & Half Size) -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="checkin-top-row">
-          <span style="font-size: 1rem; font-weight: 800;">Sign In</span>
-          <div style="display: flex; gap: 1rem; font-size: 0.75rem;">
+          <span style="font-size: 0.85rem; font-weight: 800;">Sign In</span>
+          <div style="display: flex; gap: 0.75rem; font-size: 0.7rem;">
             <span>Working Hours ⏱️ 00:00</span>
             <span>Out 🚪 00:00</span>
             <span>In 📥 00:00</span>
@@ -850,6 +891,8 @@
         titleDir: "دليل التواصل",
         descDir: "أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.",
         checkinPending: "جاري تحديد الموقع الجغرافي...",
+        popupTitle: "تنبيهات النظام",
+        popupDesc: "لا توجد إشعارات جديدة. تم تفعيل النظام بنجاح!",
         slides: [
           { title: "إعلانات الشركة", badge: "Coming Soon", desc: "أهم الأخبار، الأحداث المباشرة، والمناسبات المرتقبة بالشركة." },
           { title: "تحديثات النظام", badge: "New", desc: "ترقبوا إطلاق ميزات البصمة الجغرافية المتقدمة وطلبات الإجازات الرقمية قريباً." },
@@ -890,6 +933,8 @@
         titleDir: "Contact Directory",
         descDir: "Emergency numbers, medical clinic, and HR office contacts.",
         checkinPending: "Locating via GPS...",
+        popupTitle: "System Alerts",
+        popupDesc: "No new notifications. System activated successfully!",
         slides: [
           { title: "Company Announcements", badge: "Coming Soon", desc: "Latest news, live events, and upcoming company occasions." },
           { title: "System Updates", badge: "New", desc: "Stay tuned for the launch of advanced geo-attendance and digital leaves." },
@@ -924,6 +969,8 @@
       document.getElementById('t-lblCode').innerText = t.lblCode;
       document.getElementById('t-lblNID').innerText = t.lblNID;
       document.getElementById('t-saveCardBtn').innerText = t.saveCardBtn;
+      document.getElementById('t-popupTitle').innerText = t.popupTitle;
+      document.getElementById('t-popupDesc').innerText = t.popupDesc;
       
       const careerTextWrap = document.getElementById('careerTextWrapper');
       const careerArrow = document.getElementById('careerArrow');
@@ -957,14 +1004,20 @@
       });
     }
 
-    // Real Notification Function (Independent of Chat)
-    function triggerNotification() {
-      if (currentLang === 'ar') {
-        alert("لا توجد إشعارات جديدة حالياً. تم تفعيل نظام الإشعارات بنجاح!");
-      } else {
-        alert("No new notifications at the moment. Notification system successfully activated!");
-      }
+    // Toggle Notification Popup Function
+    function toggleNotificationPopup(event) {
+      event.stopPropagation();
+      const popup = document.getElementById('notificationPopup');
+      popup.classList.toggle('show');
     }
+
+    // Hide notification popup when clicking outside
+    window.addEventListener('click', () => {
+      const popup = document.getElementById('notificationPopup');
+      if (popup && popup.classList.contains('show')) {
+        popup.classList.remove('show');
+      }
+    });
 
     let currentSlideIndex = 0;
     const totalSlides = 3;
