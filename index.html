@@ -43,7 +43,8 @@
     }
 
     body {
-      background: #0b0f19;
+      background: #0b0f19 url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
       color: var(--text);
       min-height: 100vh;
       display: flex;
@@ -51,6 +52,16 @@
       align-items: center;
       padding: 1.5rem 1rem 3rem 1rem;
       overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Overlay لضمان وضوح النصوص فوق الصورة */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(11, 15, 25, 0.75);
+      z-index: 0;
     }
 
     /* Intro Screen Overlay */
@@ -114,12 +125,26 @@
 
     /* Header & Layout */
     .app-header {
+      position: relative;
+      z-index: 1;
       width: 100%;
       max-width: 420px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 1.2rem;
+    }
+
+    .brand-logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
     }
 
     .brand-title {
@@ -136,9 +161,18 @@
       border-radius: 1rem;
       font-size: 0.8rem;
       cursor: pointer;
+      backdrop-filter: blur(8px);
     }
 
-    .container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 1rem; }
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
 
     .card {
       background: var(--card-bg);
@@ -146,11 +180,21 @@
       padding: 1.75rem 1.5rem;
       border-radius: 1.5rem;
       text-align: center;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
     }
 
     .form-group {
       width: 100%;
       margin-bottom: 0.85rem;
+      text-align: right;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
     }
 
     input {
@@ -158,10 +202,15 @@
       padding: 0.9rem 1rem;
       border-radius: 1rem;
       border: 1px solid var(--border-color);
-      background: rgba(15, 23, 42, 0.85);
+      background: rgba(15, 23, 42, 0.6);
       color: var(--text);
       font-size: 0.95rem;
       outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #38bdf8;
     }
 
     button.btn-primary {
@@ -169,11 +218,17 @@
       padding: 0.95rem; 
       border-radius: 1.25rem; 
       border: none;
-      background: #0284c7;
+      background: linear-gradient(135deg, #0284c7, #0369a1);
       color: #fff; 
       font-weight: 700; 
       font-size: 1rem; 
       cursor: pointer;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button.btn-primary:active {
+      transform: scale(0.98);
     }
 
     .hidden { display: none !important; }
@@ -181,7 +236,7 @@
 </head>
 <body>
 
-  <!-- Intro Screen -->
+  <!-- Intro Screen Overlay -->
   <div id="intro-screen">
     <div class="intro-content-wrapper">
       <div class="intro-title-container" id="introTitle"></div>
@@ -191,7 +246,10 @@
 
   <!-- App Header -->
   <div class="app-header">
-    <div class="brand-title">LM HR</div>
+    <div class="brand-logo-container">
+      <img src="logo.png" alt="LM Logo" class="brand-logo" onerror="this.style.display='none'">
+      <div class="brand-title">LM HR</div>
+    </div>
     <button class="lang-dropdown-btn">🌐 العربية</button>
   </div>
 
@@ -202,11 +260,13 @@
       <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem;">بوابة الموظفين الرقمية</p>
       
       <div class="form-group">
-        <input type="text" id="empCode" placeholder="كود الموظف">
+        <label for="empCode">كود الموظف</label>
+        <input type="text" id="empCode" placeholder="أدخل كود الموظف">
       </div>
       
       <div class="form-group">
-        <input type="password" id="empPass" placeholder="كلمة السر">
+        <label for="empPass">كلمة السر</label>
+        <input type="password" id="empPass" placeholder="أدخل كلمة السر">
       </div>
 
       <button class="btn-primary" onclick="alert('تم تسجيل الدخول بنجاح')">دخول الحساب</button>
@@ -214,7 +274,6 @@
   </div>
 
   <script>
-    // Tornado Intro Logic (Fixed & Guaranteed)
     function runTornadoIntro() {
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
@@ -238,11 +297,11 @@
         }
       }
 
-      // ضبط البداية: الأحرف نازلة من فوق حافة الشاشة
+      // بداية الأنيميشن من الأفق
       charElements.forEach((el, index) => {
         gsap.set(el, { 
-          y: -300, 
-          x: (index - charElements.length / 2) * 30, 
+          y: -250, 
+          x: (index - charElements.length / 2) * 25, 
           opacity: 0, 
           scale: 0.2,
           rotationY: 720 
@@ -251,32 +310,31 @@
 
       const tl = gsap.timeline();
 
-      // 1. الدخول البطيء من الأعلى
+      // 1. الدخول
       tl.to(charElements, { 
-        duration: 2.2, 
+        duration: 2.0, 
         x: 0, 
         y: 0, 
         rotationY: 0,
         opacity: 1, 
         scale: 1, 
-        stagger: 0.08, 
+        stagger: 0.06, 
         ease: "power2.out" 
       })
-      .to(subtitle, { duration: 1.2, opacity: 1, ease: "power2.out" }, "-=1.0")
-      .to(subtitle, { duration: 1.0, opacity: 0 }, "+=1.5")
+      .to(subtitle, { duration: 1.0, opacity: 1, ease: "power2.out" }, "-=0.8")
+      .to(subtitle, { duration: 0.8, opacity: 0 }, "+=1.2")
       
-      // 2. الخروج بنفس الطريقة نحو الأعلى
+      // 2. الخروج للأعلى وتفعيل الصفحة
       .to(charElements, { 
-        duration: 1.8, 
-        y: -300, 
-        x: (i) => (i - charElements.length / 2) * 30,
+        duration: 1.5, 
+        y: -250, 
+        x: (i) => (i - charElements.length / 2) * 25,
         rotationY: -720,
         opacity: 0, 
         scale: 0.2, 
-        stagger: 0.05,
+        stagger: 0.04,
         ease: "power2.in",
         onComplete: () => {
-          // إخفاء الـ Intro نهائياً لإظهار الصفحة
           introScreen.classList.add('fade-out');
         }
       });
