@@ -148,7 +148,6 @@
       -webkit-text-fill-color: transparent;
     }
     
-    /* ضبط مكان وتموضع زر اللغة ونظافة القائمة تماماً بدون أي ظلال خارجية زائدة أو إزاحة */
     .lang-dropdown-container { 
       position: relative; 
       display: flex;
@@ -288,62 +287,154 @@
     .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
     .hidden { display: none !important; }
     
-    /* Dashboard UI */
-    .user-header-card {
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid var(--border-color);
-      backdrop-filter: blur(16px);
-      padding: 1.1rem 1.25rem;
-      border-radius: 1.5rem;
+    /* ========================================================== */
+    /* التصميم الجديد المطور لكارت الترحيب وكارت البصمة (مطابق للصورة) */
+    /* ========================================================== */
+    .dashboard-top-card {
+      background: linear-gradient(180deg, #091326 0%, #060b14 100%);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 1.75rem;
+      padding: 1.25rem 1.25rem 1rem 1.25rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .user-profile-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      margin-bottom: 1.25rem;
     }
-    .user-header-right {
+    
+    .user-info-group {
       display: flex;
       align-items: center;
       gap: 0.85rem;
       text-align: right;
     }
-    [dir="ltr"] .user-header-right { text-align: left; }
+    [dir="ltr"] .user-info-group { text-align: left; }
+    
     .header-avatar {
-      width: 55px; height: 55px; border-radius: 50%;
-      border: 2px solid #38bdf8; object-fit: cover;
-    }
-    .code-badge-pill {
-      background: rgba(2, 132, 199, 0.2);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      color: #38bdf8; padding: 0.25rem 0.85rem;
-      border-radius: 2rem; font-size: 0.8rem; font-weight: 700;
-      display: inline-block; margin-top: 0.3rem;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2.5px solid #38bdf8;
+      object-fit: cover;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
     }
     
-    /* Fingerprint Card */
-    .checkin-card {
-      background: linear-gradient(145deg, #070a12 0%, #0d1527 100%);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      border-radius: 1.5rem;
-      padding: 1.5rem 1.25rem;
-      text-align: center;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.1);
-      cursor: pointer;
-      transition: all 0.3s ease;
+    .user-text-details h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.15rem;
     }
-    .checkin-card:hover { border-color: #38bdf8; box-shadow: 0 20px 40px rgba(2, 132, 199, 0.25); }
-    .fingerprint-icon-wrap {
-      width: 70px; height: 70px;
-      background: radial-gradient(circle, rgba(2, 132, 199, 0.3) 0%, rgba(15, 23, 42, 0.8) 70%);
-      border: 2px solid rgba(56, 189, 248, 0.4);
-      border-radius: 50%;
-      margin: 0 auto 0.75rem auto;
-      display: flex; align-items: center; justify-content: center;
+    
+    .user-text-details .welcome-sub {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    
+    .user-text-details .id-sub {
+      font-size: 0.82rem;
       color: #38bdf8;
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+      font-weight: 700;
+      margin-top: 0.1rem;
     }
-    .fingerprint-icon-wrap svg { width: 34px; height: 34px; fill: currentColor; }
-    .checkin-status-text { font-size: 0.9rem; font-weight: 700; color: #ef4444; }
-    .checkin-status-text.success { color: #10b981; }
+    
+    /* أيقونة التنبيه العلوية اليمين */
+    .top-notification-btn {
+      width: 46px;
+      height: 46px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #38bdf8;
+      cursor: pointer;
+      position: relative;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .top-notification-btn svg { width: 22px; height: 22px; fill: currentColor; }
+    .notification-dot {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 10px;
+      height: 10px;
+      background-color: #f59e0b;
+      border-radius: 50%;
+      border: 2px solid #091326;
+    }
+    
+    /* كارت البصمة الأخضر بالأسفل داخل نفس الحاوية */
+    .checkin-card-box {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      border-radius: 1.25rem;
+      padding: 1rem 1.15rem;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .checkin-card-box:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(16, 185, 129, 0.5);
+    }
+    
+    .checkin-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .checkin-main-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+    
+    .fingerprint-svg-icon {
+      width: 42px;
+      height: 42px;
+      fill: #fff;
+      opacity: 0.95;
+    }
+    
+    .checkin-metrics-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.12);
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.85rem;
+      font-size: 0.78rem;
+    }
+    
+    .metric-item {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-weight: 600;
+    }
+    .metric-item svg { width: 15px; height: 15px; fill: currentColor; opacity: 0.9; }
+    
+    .checkin-status-text {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 0.35rem;
+      border-radius: 0.5rem;
+    }
+    /* ========================================================== */
     
     /* Company Announcements Slider */
     .announcement-card {
@@ -608,7 +699,6 @@
       </div>
     </div>
   </div>
-
   <div class="container">
     <!-- 1. Login View -->
     <div id="view-login" class="card">
@@ -636,24 +726,47 @@
     
     <!-- 2. Dashboard View -->
     <div id="view-dashboard" class="hidden">
-      <!-- User Greeting Header -->
-      <div class="user-header-card">
-        <div class="user-header-right">
-          <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
-          <div>
-            <div id="dash-greeting" style="font-size: 0.8rem; color: var(--muted);">مساء الخير 🌙</div>
-            <h3 id="dash-name" style="margin: 0; font-size: 1rem; font-weight: 700;">--</h3>
-            <div class="code-badge-pill"><span id="t-codeLabel">كود:</span> <span id="dash-code-val">--</span></div>
+      <!-- User Greeting & Fingerprint Combined Card (Matched with reference screenshot) -->
+      <div class="dashboard-top-card">
+        <div class="user-profile-row">
+          <div class="user-info-group">
+            <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
+            <div class="user-text-details">
+              <div id="dash-greeting" class="welcome-sub">مساء الخير 🌙</div>
+              <h3 id="dash-name">--</h3>
+              <div class="id-sub"><span id="t-codeLabel">ID:</span> <span id="dash-code-val">--</span></div>
+            </div>
+          </div>
+          <div class="top-notification-btn" onclick="toggleChatPopup()" title="الإشعارات / المساعد">
+            <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>
+            <div class="notification-dot"></div>
           </div>
         </div>
-      </div>
-      
-      <!-- Fingerprint Check-in Card -->
-      <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
-        <div class="fingerprint-icon-wrap">
-          <svg viewBox="0 0 24 24"><path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 13.9 3 12 3s-3.66.42-5.58 1.41c-.15.08-.33.05-.45-.07-.12-.12-.15-.31-.07-.46C7.94 2.76 9.9 2.25 12 2.25s4.06.51 6.1 1.63c.15.08.21.27.13.43-.05.1-.15.16-.25.16zM12 9c-1.1 0-2 .9-2 2 0 .55.22 1.05.59 1.42l.98.98c.37.37.87.59 1.42.59 1.1 0 2-.9 2-2 0-1.1-.9-2-2-2zm6.75 3.75c-.41 0-.75.34-.75.75 0 2.9-2.35 5.25-5.25 5.25S7.5 16.4 7.5 13.5c0-.41-.34-.75-.75-.75s-.75.34-.75.75c0 3.79 3.09 6.88 6.88 6.88s6.88-3.09 6.88-6.88c0-.41-.34-.75-.75-.75z"/></svg>
+        
+        <!-- Fingerprint Check-in Card (Green Banner) -->
+        <div class="checkin-card-box" onclick="verifyLocationAndCheckIn()">
+          <div class="checkin-top-row">
+            <div class="checkin-main-title" id="t-signInText">Sign In</div>
+            <svg class="fingerprint-svg-icon" viewBox="0 0 24 24"><path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 13.9 3 12 3s-3.66.42-5.58 1.41c-.15.08-.33.05-.45-.07-.12-.12-.15-.31-.07-.46C7.94 2.76 9.9 2.25 12 2.25s4.06.51 6.1 1.63c.15.08.21.27.13.43-.05.1-.15.16-.25.16zM12 9c-1.1 0-2 .9-2 2 0 .55.22 1.05.59 1.42l.98.98c.37.37.87.59 1.42.59 1.1 0 2-.9 2-2 0-1.1-.9-2-2-2zm6.75 3.75c-.41 0-.75.34-.75.75 0 2.9-2.35 5.25-5.25 5.25S7.5 16.4 7.5 13.5c0-.41-.34-.75-.75-.75s-.75.34-.75.75c0 3.79 3.09 6.88 6.88 6.88s6.88-3.09 6.88-6.88c0-.41-.34-.75-.75-.75z"/></svg>
+          </div>
+          
+          <div class="checkin-metrics-row">
+            <div class="metric-item">
+              <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+              <span id="t-workingHoursLabel">Working Hours</span>: <span id="workingHoursVal">00:00</span>
+            </div>
+            <div class="metric-item">
+              <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+              <span>Out</span>: 00:00
+            </div>
+            <div class="metric-item">
+              <svg viewBox="0 0 24 24"><path d="M9 3L5 6.99h3V14h2V6.99h3L9 3zm7 14.01V10h-2v7.01h-3L15 21l4-3.99h-3z"/></svg>
+              <span>In</span>: 00:00
+            </div>
+          </div>
+          
+          <div id="checkinStatusText" class="checkin-status-text">جاري تحديد الموقع الجغرافي...</div>
         </div>
-        <div id="checkinStatusText" class="checkin-status-text">جاري تحديد الموقع الجغرافي...</div>
       </div>
       
       <!-- Company Announcements Slider Card -->
@@ -795,12 +908,10 @@
       <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;" id="t-descDir">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
     </div>
   </div>
-
   <!-- Floating Chat Button -->
   <div class="chat-float-btn" onclick="toggleChatPopup()" title="شات الدعم الفني">
     <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
   </div>
-
   <!-- Real Chatbot Popup Box -->
   <div class="chat-popup hidden" id="chatPopup">
     <div class="chat-header">
@@ -813,7 +924,6 @@
       <button onclick="sendChatMessage()" id="chat-send-btn">إرسال</button>
     </div>
   </div>
-
   <script>
     /* Leaf Fall Animation */
     function runLeafFallIntro() {
@@ -836,13 +946,11 @@
           charElements.push(span);
         }
       }
-
       const directions = [
         {x:-900, y:-700}, {x:0, y:-900}, {x:900, y:-700}, 
         {x:900, y:0}, {x:900, y:700}, {x:0, y:900}, 
         {x:-900, y:700}, {x:-900, y:0}
       ];
-
       charElements.forEach((el) => {
         const randomX = (Math.random() - 0.5) * 400; 
         const randomRotation = (Math.random() - 0.5) * 720;
@@ -854,13 +962,10 @@
           scale: 0.8 
         });
       });
-
       gsap.set(subtitle, { opacity: 0, y: 20 });
-
       const tl = gsap.timeline({ 
         onComplete: () => document.getElementById('intro-screen').classList.add('fade-out') 
       });
-
       tl.to(charElements, { 
         duration: 1.5, 
         x: 0, 
@@ -871,10 +976,8 @@
         stagger: 0.08, 
         ease: "power2.out" 
       });
-
       tl.to(subtitle, { duration: 1.2, opacity: 1, y: 0, ease: "power2.out" }, "-=0.8");
       tl.to(subtitle, { duration: 1.2, opacity: 0, y: -20, ease: "power1.in" }, "+=2.0");
-
       charElements.forEach((el, index) => {
         const dir = directions[index % directions.length];
         tl.to(el, { 
@@ -887,14 +990,11 @@
         }, index === 0 ? "scatter" : `-=1.35`);
       });
     }
-
     window.addEventListener('DOMContentLoaded', runLeafFallIntro);
-
     function togglePasswordVisibility() {
       const pass = document.getElementById('empPass');
       pass.type = (pass.type === 'password') ? 'text' : 'password';
     }
-
     // Firebase & App Logic
     const firebaseConfig = {
       apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
@@ -907,11 +1007,9 @@
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-
     let currentUserData = null;
     let currentEmpCode = "";
     let currentLang = localStorage.getItem('lacto_lang') || 'ar';
-
     const translations = {
       ar: {
         inputCode: "كود الموظف",
@@ -919,7 +1017,9 @@
         subtitle: "بوابة الموظفين الرقمية",
         remember: "تذكرني",
         loginBtn: "دخول الحساب",
-        codeLabel: "كود:",
+        codeLabel: "ID:",
+        signInText: "تسجيل الحضور (Sign In)",
+        workingHoursLabel: "ساعات العمل",
         sumLeaves: "رصيد الإجازات",
         valLeaves: "21 يوم",
         sumPermissions: "الأذونات المتاحة",
@@ -963,7 +1063,9 @@
         subtitle: "Digital Employee Portal",
         remember: "Remember Me",
         loginBtn: "Sign In",
-        codeLabel: "Code:",
+        codeLabel: "ID:",
+        signInText: "Sign In",
+        workingHoursLabel: "Working Hours",
         sumLeaves: "Leave Balance",
         valLeaves: "21 Days",
         sumPermissions: "Available Permissions",
@@ -1002,8 +1104,6 @@
         ]
       }
     };
-
-    // ترجمة كافة العناصر والأرقام ديناميكياً للغتين دون أي تداخل
     function updateContentTranslations() {
       const t = translations[currentLang];
       
@@ -1013,6 +1113,7 @@
       document.getElementById('t-remember').innerText = t.remember;
       document.getElementById('t-loginBtn').innerText = t.loginBtn;
       document.getElementById('t-codeLabel').innerText = t.codeLabel;
+      document.getElementById('t-signInText').innerText = t.signInText;
       document.getElementById('t-sumLeaves').innerText = t.sumLeaves;
       document.getElementById('t-valLeaves').innerText = t.valLeaves;
       document.getElementById('t-sumPermissions').innerText = t.sumPermissions;
@@ -1041,14 +1142,12 @@
         careerTextWrap.style.textAlign = 'right';
         careerArrow.innerText = '➔';
       }
-
       document.getElementById('dash-greeting').innerText = t.greeting;
       
       ['t-backBtn1', 't-backBtn2', 't-backBtn3', 't-backBtn4'].forEach(id => {
         const btn = document.getElementById(id);
         if(btn) btn.innerText = t.backBtn;
       });
-
       document.getElementById('t-titleLeaves').innerText = t.titleLeaves;
       document.getElementById('t-descLeaves').innerText = t.descLeaves;
       document.getElementById('t-titlePayroll').innerText = t.titlePayroll;
@@ -1059,7 +1158,6 @@
       document.getElementById('chat-title-text').innerText = t.chatTitle;
       document.getElementById('chatInput').placeholder = t.chatPlaceholder;
       document.getElementById('chat-send-btn').innerText = t.chatSend;
-
       t.slides.forEach((slide, idx) => {
         const titleEl = document.querySelector(`.slide-title-${idx + 1}`);
         const badgeEl = document.querySelector(`.slide-badge-${idx + 1}`);
@@ -1072,12 +1170,10 @@
       const chatBody = document.getElementById('chatBody');
       chatBody.innerHTML = `<div class="chat-msg bot">${t.chatWelcome}</div>`;
     }
-
     function toggleChatPopup() {
       const popup = document.getElementById('chatPopup');
       popup.classList.toggle('hidden');
     }
-
     function sendChatMessage() {
       const input = document.getElementById('chatInput');
       const text = input.value.trim();
@@ -1090,7 +1186,6 @@
       chatBody.appendChild(userMsg);
       input.value = '';
       chatBody.scrollTop = chatBody.scrollHeight;
-
       setTimeout(() => {
         const botMsg = document.createElement('div');
         botMsg.className = 'chat-msg bot';
@@ -1123,11 +1218,9 @@
         chatBody.scrollTop = chatBody.scrollHeight;
       }, 600);
     }
-
     let currentSlideIndex = 0;
     const totalSlides = 3;
     let slideInterval;
-
     function showSlide(index) {
       currentSlideIndex = (index + totalSlides) % totalSlides;
       const track = document.getElementById('sliderTrack');
@@ -1138,21 +1231,17 @@
         dot.classList.toggle('active', i === currentSlideIndex);
       });
     }
-
     function currentSlide(index) {
       showSlide(index);
       resetSlideTimer();
     }
-
     function nextSlide() {
       showSlide(currentSlideIndex + 1);
     }
-
     function resetSlideTimer() {
       clearInterval(slideInterval);
       slideInterval = setInterval(nextSlide, 5500);
     }
-
     let touchStartX = 0;
     const cardEl = document.getElementById('announcementCard');
     cardEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; clearInterval(slideInterval); });
@@ -1165,16 +1254,13 @@
       }
       resetSlideTimer();
     });
-
     window.addEventListener('DOMContentLoaded', () => {
       selectLanguage(currentLang);
       resetSlideTimer();
     });
-
     const COMPANY_LAT = 30.235154;
     const COMPANY_LNG = 31.743997;
     const ALLOWED_RADIUS_METERS = 75;
-
     function calculateDistance(lat1, lon1, lat2, lon2) {
       const R = 6371e3;
       const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -1185,7 +1271,6 @@
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
       return R * c;
     }
-
     function verifyLocationAndCheckIn() {
       const statusText = document.getElementById('checkinStatusText');
       statusText.innerText = currentLang === 'ar' ? "جاري تفعيل نظام الـ GPS والتحقق من النطاق..." : "Activating GPS and verifying location...";
@@ -1199,34 +1284,29 @@
           const userLng = position.coords.longitude;
           const distance = calculateDistance(userLat, userLng, COMPANY_LAT, COMPANY_LNG);
           if (distance <= ALLOWED_RADIUS_METERS) {
-            statusText.className = "checkin-status-text success";
-            statusText.innerText = currentLang === 'ar' ? `تم تسجيل الحضور بنجاح! أنت في نطاق الشركة (${Math.round(distance)} متر)` : `Check-in successful! Within company range (${Math.round(distance)}m)`;
+            statusText.innerText = currentLang === 'ar' ? `تم تسجيل الحضور بنجاح! نطاق الشركة (${Math.round(distance)}م)` : `Check-in successful! Range (${Math.round(distance)}m)`;
           } else {
-            statusText.className = "checkin-status-text";
-            statusText.innerText = currentLang === 'ar' ? `عذراً، أنت خارج نطاق الشركة (${Math.round(distance)} متر)` : `Sorry, you are outside company range (${Math.round(distance)}m)`;
+            statusText.innerText = currentLang === 'ar' ? `عذراً، أنت خارج نطاق الشركة (${Math.round(distance)}م)` : `Outside company range (${Math.round(distance)}m)`;
           }
         },
         (error) => {
-          statusText.className = "checkin-status-text";
           statusText.innerText = currentLang === 'ar' ? "تعذر الحصول على موقعك. تأكد من تفعيل الـ GPS." : "Unable to retrieve location. Please enable GPS.";
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     }
-
     function showPage(pageId) {
       ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory'].forEach(id => {
         document.getElementById(id).classList.add('hidden');
       });
       document.getElementById(pageId).classList.remove('hidden');
     }
-
     function login() {
       const code = document.getElementById('empCode').value.trim();
       const pass = document.getElementById('empPass').value.trim();
       const rememberMe = document.getElementById('rememberMe').checked;
       const errorEl = document.getElementById('error');
-      if (!code) { errorEl.innerText = currentLang === 'ar' ? "يرجى إدخال كود الموظف" : "Please enter employee code"; return; }
+      if (!code) { errorEl.innerText = currentLang === 'ar' ? "يرجى إدخال كود الموظف" : "Please employee code"; return; }
       db.ref('users/' + code).once('value').then((snapshot) => {
         if (snapshot.exists()) {
           const user = snapshot.val();
@@ -1265,7 +1345,6 @@
         }
       });
     }
-
     window.addEventListener('DOMContentLoaded', () => {
       const savedCode = localStorage.getItem('lacto_saved_code');
       const savedPass = localStorage.getItem('lacto_saved_pass');
@@ -1275,7 +1354,6 @@
         document.getElementById('rememberMe').checked = true;
       }
     });
-
     function downloadCard() {
       html2canvas(document.getElementById('myCardToDownload'), { useCORS: true, scale: 2 }).then(canvas => {
         const link = document.createElement('a');
@@ -1284,7 +1362,6 @@
         link.click();
       });
     }
-
     function logout() { window.location.reload(); }
     
     function toggleLangMenu() { document.getElementById('langMenu').classList.toggle('show'); }
