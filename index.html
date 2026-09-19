@@ -147,46 +147,70 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .lang-dropdown-container { position: relative; }
+
+    /* Fixed Top Language Selector Switcher */
+    .lang-dropdown-container {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 9000;
+    }
+    [dir="ltr"] .lang-dropdown-container {
+      left: auto;
+      right: 1rem;
+    }
     .lang-dropdown-btn {
-      background: rgba(30, 41, 59, 0.75);
+      background: rgba(15, 23, 42, 0.88);
       border: 1px solid var(--border-color);
       color: var(--text);
-      padding: 0.4rem 0.8rem;
-      border-radius: 1rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 2rem;
       font-size: 0.8rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 0.4rem;
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      transition: all 0.2s ease;
+    }
+    .lang-dropdown-btn:hover {
+      border-color: #38bdf8;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
     }
     .lang-dropdown-menu {
       position: absolute;
-      top: 115%;
-      right: 0;
+      top: 120%;
+      left: 0;
       background: rgba(15, 23, 42, 0.95);
       border: 1px solid var(--border-color);
       border-radius: 1rem;
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
       display: none;
-      z-index: 200;
+      z-index: 9001;
       min-width: 130px;
       backdrop-filter: blur(16px);
+      overflow: hidden;
     }
-    [dir="ltr"] .lang-dropdown-menu { right: auto; left: 0; }
+    [dir="ltr"] .lang-dropdown-menu {
+      left: auto;
+      right: 0;
+    }
     .lang-dropdown-menu.show { display: block; }
     .lang-option {
-      padding: 0.7rem 1rem;
+      padding: 0.75rem 1rem;
       font-size: 0.85rem;
       color: var(--text);
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      transition: background 0.2s;
     }
     .lang-option:hover { background: rgba(2, 132, 199, 0.3); color: #38bdf8; }
+    
     .container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 1rem; }
     
     /* Card & Login Adjustments */
@@ -575,23 +599,26 @@
       <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
     </div>
   </div>
+
+  <!-- Global Floating Fixed Language Switcher Button -->
+  <div class="lang-dropdown-container">
+    <button class="lang-dropdown-btn" onclick="toggleLangMenu()">
+      🌐 <span id="current-lang-text">العربية</span> ▼
+    </button>
+    <div class="lang-dropdown-menu" id="langMenu">
+      <div class="lang-option" onclick="selectLanguage('ar')">🇪🇬 العربية</div>
+      <div class="lang-option" onclick="selectLanguage('en')">🇬🇧 English</div>
+    </div>
+  </div>
+
   <!-- App Header -->
   <div class="app-header">
     <div class="brand-container">
       <img src="logo.png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
       <div class="brand-title">LM HR</div>
     </div>
-    
-    <div class="lang-dropdown-container">
-      <button class="lang-dropdown-btn" onclick="toggleLangMenu()">
-        🌐 <span id="current-lang-text">العربية</span> ▼
-      </button>
-      <div class="lang-dropdown-menu" id="langMenu">
-        <div class="lang-option" onclick="selectLanguage('ar')">🇪🇬 العربية</div>
-        <div class="lang-option" onclick="selectLanguage('en')">🇬🇧 English</div>
-      </div>
-    </div>
   </div>
+
   <div class="container">
     
     <!-- 1. Login View -->
@@ -617,6 +644,7 @@
       <button id="t-loginBtn" onclick="login()">دخول الحساب</button>
       <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.85rem; font-weight: bold;"></p>
     </div>
+
     <!-- 2. Dashboard View -->
     <div id="view-dashboard" class="hidden">
       
@@ -631,6 +659,7 @@
           </div>
         </div>
       </div>
+
       <!-- Fingerprint Check-in Card -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="fingerprint-icon-wrap">
@@ -638,6 +667,7 @@
         </div>
         <div id="checkinStatusText" class="checkin-status-text">جاري تحديد الموقع الجغرافي...</div>
       </div>
+
       <!-- Company Announcements Slider Card -->
       <div class="announcement-card" id="announcementCard">
         <div class="slider-track" id="sliderTrack">
@@ -669,6 +699,7 @@
           <div class="dot" onclick="currentSlide(2)"></div>
         </div>
       </div>
+
       <!-- Summaries Grid (Leaves, Permissions, Payroll) -->
       <div class="summaries-grid">
         <div class="summary-card">
@@ -684,6 +715,7 @@
           <div class="summary-value">محفوظ وآمن 🔒</div>
         </div>
       </div>
+
       <!-- Services Grid (2x2) -->
       <div class="services-grid">
         <div class="service-btn" onclick="showPage('view-leaves')">
@@ -711,6 +743,7 @@
           <span id="t-btnDir" class="service-title">دليل التواصل</span>
         </div>
       </div>
+
       <!-- Career Opportunities Banner -->
       <div class="career-card" onclick="alert('قريباً: استعراض الوظائف الداخلية والترقيات المتاحة.')">
         <div style="text-align: right;">
@@ -719,8 +752,10 @@
         </div>
         <span style="font-size: 1.2rem; color: #38bdf8;">➔</span>
       </div>
+
       <button id="t-logoutBtn" onclick="logout()" class="btn-danger">تسجيل الخروج</button>
     </div>
+
     <!-- 3. ID Card View -->
     <div id="view-id-card" class="card hidden">
       <div class="nav-bar">
@@ -745,6 +780,7 @@
       </div>
       <button id="t-saveCardBtn" onclick="downloadCard()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); margin-top:1rem;">حفظ الكارت كصورة</button>
     </div>
+
     <!-- 4. Leaves View -->
     <div id="view-leaves" class="card hidden">
       <div class="nav-bar">
@@ -753,6 +789,7 @@
       </div>
       <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.</p>
     </div>
+
     <!-- 5. Payroll View -->
     <div id="view-payroll" class="card hidden">
       <div class="nav-bar">
@@ -761,6 +798,7 @@
       </div>
       <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.</p>
     </div>
+
     <!-- 6. Directory View -->
     <div id="view-directory" class="card hidden">
       <div class="nav-bar">
@@ -773,190 +811,144 @@
 
   <!-- Floating Chat Button -->
   <div class="chat-float-btn" onclick="toggleChatPopup()" title="شات الدعم الفني">
-    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
   </div>
 
-  <!-- Real Interactive Chat Window -->
+  <!-- Chat Popup Box -->
   <div class="chat-popup hidden" id="chatPopup">
     <div class="chat-header">
-      <span id="t-chatHeaderTitle">المساعد الذكي - LM HR</span>
+      <span>الدعم الفني - HR Hub</span>
       <button class="chat-close-btn" onclick="toggleChatPopup()">✕</button>
     </div>
     <div class="chat-body" id="chatBody">
-      <div class="chat-msg bot" id="t-chatWelcome">أهلاً بك! كيف يمكنني مساعدتك اليوم في خدمات الموارد البشرية؟</div>
+      <div class="chat-msg bot">مرحباً بك! كيف يمكنني مساعدتك اليوم؟</div>
     </div>
     <div class="chat-footer">
-      <input type="text" id="chatInput" placeholder="اكتب استفسارك..." onkeypress="handleChatKeyPress(event)">
-      <button onclick="sendChatMessage()" id="t-chatSendBtn">إرسال</button>
+      <input type="text" id="chatInput" placeholder="اكتب رسالتك..." onkeypress="handleChatKeyPress(event)">
+      <button onclick="sendChatMessage()">إرسال</button>
     </div>
   </div>
 
+  <!-- Application Logic & Scripts -->
   <script>
-    // Leaf Fall & Smooth Assemble Intro Animation
-    function runTornadoIntro() {
-      const text = "LACTO MISR S.A.E";
-      const container = document.getElementById('introTitle');
-      const subtitle = document.getElementById('introSubtitle');
-      container.innerHTML = "";
-      const charElements = [];
-      for (let char of text) {
-        if (char === ' ') {
-          const space = document.createElement('span');
-          space.className = 'intro-space';
-          container.appendChild(space);
-        } else {
-          const span = document.createElement('span');
-          span.className = 'intro-char';
-          span.innerText = char;
-          container.appendChild(span);
-          charElements.push(span);
-        }
-      }
+    // Intro Animation Setup
+    window.addEventListener('DOMContentLoaded', () => {
+      const titleText = "LACTO MISR";
+      const titleContainer = document.getElementById('introTitle');
       
-      const directions = [
-        {x:-900, y:-700}, {x:0, y:-900}, {x:900, y:-700}, 
-        {x:900, y:0}, {x:900, y:700}, {x:0, y:900}, 
-        {x:-900, y:700}, {x:-900, y:0}
-      ];
-
-      const tl = gsap.timeline({ 
-        onComplete: () => document.getElementById('intro-screen').classList.add('fade-out') 
+      titleText.split('').forEach(char => {
+        const span = document.createElement('span');
+        if (char === ' ') {
+          span.className = 'intro-space';
+        } else {
+          span.className = 'intro-char';
+          span.textContent = char;
+        }
+        titleContainer.appendChild(span);
       });
 
-      // Entry Animation: Falling from top border like leaves, rotating 360deg slowly and settling into a single line smoothly
-      charElements.forEach((el, index) => {
-        const randomX = (Math.random() - 0.5) * 300;
-        const randomRotation = (Math.random() - 0.5) * 720;
-        gsap.set(el, { 
-          y: -window.innerHeight / 2 - 50, 
-          x: randomX, 
-          rotation: randomRotation, 
-          opacity: 0, 
-          scale: 0.6 
-        });
+      const tl = gsap.timeline();
+      tl.from(".intro-char", {
+        duration: 0.8,
+        opacity: 0,
+        y: 40,
+        rotationX: -90,
+        stagger: 0.05,
+        ease: "back.out(1.7)"
+      })
+      .to("#introSubtitle", {
+        duration: 1,
+        opacity: 1,
+        y: 0,
+        ease: "power2.out"
+      }, "-=0.3")
+      .to("#intro-screen", {
+        duration: 1,
+        opacity: 0,
+        delay: 1.2,
+        onComplete: () => {
+          document.getElementById('intro-screen').classList.add('fade-out');
+        }
       });
-      gsap.set(subtitle, { opacity: 0, y: 20 });
+    });
 
-      tl.to(charElements, { 
-        duration: 3.5, 
-        x: 0, 
-        y: 0, 
-        rotation: 360, 
-        opacity: 1, 
-        scale: 1, 
-        stagger: 0.12, 
-        ease: "power2.out" 
-      });
-
-      tl.to(subtitle, { duration: 1.2, opacity: 1, y: 0, ease: "power2.out" }, "-=1.0");
-      tl.to(subtitle, { duration: 1.2, opacity: 0, y: -20, ease: "power1.in" }, "+=2.5");
-
-      // Exit Animation
-      charElements.forEach((el, index) => {
-        const dir = directions[index % directions.length];
-        tl.to(el, { 
-          duration: 1.5, 
-          x: dir.x, 
-          y: dir.y, 
-          opacity: 0, 
-          scale: 0.5, 
-          ease: "power1.inOut" 
-        }, index === 0 ? "scatter" : `-=1.35`);
-      });
+    // Language Dropdown Toggle
+    function toggleLangMenu() {
+      document.getElementById('langMenu').classList.toggle('show');
     }
 
-    window.addEventListener('DOMContentLoaded', runTornadoIntro);
-
-    function togglePasswordVisibility() {
-      const pass = document.getElementById('empPass');
-      pass.type = (pass.type === 'password') ? 'text' : 'password';
-    }
-
-    // Firebase & App Logic
-    const firebaseConfig = {
-      apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
-      authDomain: "lacto-hr-system.firebaseapp.com",
-      databaseURL: "https://lacto-hr-system-default-rtdb.firebaseio.com",
-      projectId: "lacto-hr-system",
-      storageBucket: "lacto-hr-system.firebasestorage.app",
-      messagingSenderId: "671259800401",
-      appId: "1:671259800401:web:905e1a36adba52ba2d1970"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    let currentUserData = null;
-    let currentEmpCode = "";
-    let currentLang = localStorage.getItem('lacto_lang') || 'ar';
-
+    // Language Switching Logic
+    let currentLang = 'ar';
     const translations = {
       ar: {
-        subtitle: "بوابة الموظفين الرقمية",
-        remember: "تذكرني",
-        loginBtn: "دخول الحساب",
-        codeLabel: "كود:",
-        sumLeaves: "رصيد الإجازات",
-        sumPermissions: "الأذونات المتاحة",
-        sumSalary: "صافي آخر مرتب",
-        btnLeaves: "طلبات الإجازات",
-        btnID: "كارت الهوية",
-        btnPay: "مفردات المرتب",
-        btnDir: "دليل التواصل",
-        careerTitle: "الفرص الوظيفية الشاغرة",
-        careerDesc: "استكشف الوظائف الداخلية المتاحة للترقي",
-        logoutBtn: "تسجيل الخروج",
-        cardTitle: "الكارت الرقمي",
-        lblDept: "الإدارة",
-        lblCode: "كود الموظف",
-        lblNID: "الرقم القومي",
-        saveCardBtn: "حفظ الكارت كصورة",
-        chatHeaderTitle: "المساعد الذكي - LM HR",
-        chatWelcome: "أهلاً بك! كيف يمكنني مساعدتك اليوم في خدمات الموارد البشرية؟",
-        chatPlaceholder: "اكتب استفسارك...",
-        chatSendBtn: "إرسال",
-        slides: [
-          { title: "إعلانات الشركة", badge: "Coming Soon", desc: "أهم الأخبار، الأحداث المباشرة، والمناسبات المرتقبة بالشركة." },
-          { title: "تحديثات النظام", badge: "New", desc: "ترقبوا إطلاق ميزات البصمة الجغرافية المتقدمة وطلبات الإجازات الرقمية قريباً." },
-          { title: "دليل العاملين", badge: "Important", desc: "تأكد من تحديث بيانات التواصل الشخصية الخاصة بك عبر قسم الموارد البشرية." }
-        ]
+        currentLangText: 'العربية',
+        subtitle: 'بوابة الموظفين الرقمية',
+        empCode: 'كود الموظف',
+        empPass: 'كلمة السر',
+        remember: 'تذكرني',
+        loginBtn: 'دخول الحساب',
+        greeting: 'مساء الخير 🌙',
+        codeLabel: 'كود:',
+        checkinGeo: 'جاري تحديد الموقع الجغرافي...',
+        sumLeaves: 'رصيد الإجازات',
+        sumPermissions: 'الأذونات المتاحة',
+        sumSalary: 'صافي آخر مرتب',
+        btnLeaves: 'طلبات الإجازات',
+        btnID: 'كارت الهوية',
+        btnPay: 'مفردات المرتب',
+        btnDir: 'دليل التواصل',
+        careerTitle: 'الفرص الوظيفية الشاغرة',
+        careerDesc: 'استكشف الوظائف الداخلية المتاحة للترقي',
+        logoutBtn: 'تسجيل الخروج',
+        cardTitle: 'الكارت الرقمي',
+        lblDept: 'الإدارة',
+        lblCode: 'كود الموظف',
+        lblNID: 'الرقم القومي',
+        saveCardBtn: 'حفظ الكارت كصورة'
       },
       en: {
-        subtitle: "Digital Employee Portal",
-        remember: "Remember Me",
-        loginBtn: "Sign In",
-        codeLabel: "Code:",
-        sumLeaves: "Leave Balance",
-        sumPermissions: "Available Permissions",
-        sumSalary: "Last Net Salary",
-        btnLeaves: "Leave Requests",
-        btnID: "ID Card",
-        btnPay: "Payroll",
-        btnDir: "Directory",
-        careerTitle: "Career Opportunities",
-        careerDesc: "Explore internal career growth & promotions",
-        logoutBtn: "Sign Out",
-        cardTitle: "Digital ID Card",
-        lblDept: "Department",
-        lblCode: "Employee Code",
-        lblNID: "National ID",
-        saveCardBtn: "Save ID Card as Image",
-        chatHeaderTitle: "AI Assistant - LM HR",
-        chatWelcome: "Welcome! How can I assist you today with HR services?",
-        chatPlaceholder: "Type your inquiry...",
-        chatSendBtn: "Send",
-        slides: [
-          { title: "Company Announcements", badge: "Coming Soon", desc: "Latest news, live events, and upcoming company occasions." },
-          { title: "System Updates", badge: "New", desc: "Stay tuned for the launch of advanced geo-attendance and digital leaves." },
-          { title: "Employee Guide", badge: "Important", desc: "Make sure to update your personal contact details via the HR department." }
-        ]
+        currentLangText: 'English',
+        subtitle: 'Digital Employee Portal',
+        empCode: 'Employee Code',
+        empPass: 'Password',
+        remember: 'Remember Me',
+        loginBtn: 'Login',
+        greeting: 'Good Evening 🌙',
+        codeLabel: 'Code:',
+        checkinGeo: 'Determining location...',
+        sumLeaves: 'Leave Balance',
+        sumPermissions: 'Available Permissions',
+        sumSalary: 'Net Last Salary',
+        btnLeaves: 'Leave Requests',
+        btnID: 'ID Card',
+        btnPay: 'Payroll',
+        btnDir: 'Directory',
+        careerTitle: 'Career Opportunities',
+        careerDesc: 'Explore internal job openings for promotion',
+        logoutBtn: 'Logout',
+        cardTitle: 'Digital ID Card',
+        lblDept: 'Department',
+        lblCode: 'Emp Code',
+        lblNID: 'National ID',
+        saveCardBtn: 'Save Card as Image'
       }
     };
 
-    function updateContentTranslations() {
-      const t = translations[currentLang];
+    function selectLanguage(lang) {
+      currentLang = lang;
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      document.documentElement.lang = lang;
+      
+      const t = translations[lang];
+      document.getElementById('current-lang-text').innerText = t.currentLangText;
       document.getElementById('t-subtitle').innerText = t.subtitle;
+      document.getElementById('empCode').placeholder = t.empCode;
+      document.getElementById('empPass').placeholder = t.empPass;
       document.getElementById('t-remember').innerText = t.remember;
       document.getElementById('t-loginBtn').innerText = t.loginBtn;
+      document.getElementById('dash-greeting').innerText = t.greeting;
       document.getElementById('t-codeLabel').innerText = t.codeLabel;
+      document.getElementById('checkinStatusText').innerText = t.checkinGeo;
       document.getElementById('t-sumLeaves').innerText = t.sumLeaves;
       document.getElementById('t-sumPermissions').innerText = t.sumPermissions;
       document.getElementById('t-sumSalary').innerText = t.sumSalary;
@@ -972,240 +964,113 @@
       document.getElementById('t-lblCode').innerText = t.lblCode;
       document.getElementById('t-lblNID').innerText = t.lblNID;
       document.getElementById('t-saveCardBtn').innerText = t.saveCardBtn;
-      document.getElementById('t-chatHeaderTitle').innerText = t.chatHeaderTitle;
-      document.getElementById('t-chatWelcome').innerText = t.chatWelcome;
-      document.getElementById('chatInput').placeholder = t.chatPlaceholder;
-      document.getElementById('t-chatSendBtn').innerText = t.chatSendBtn;
 
-      t.slides.forEach((slide, idx) => {
-        const titleEl = document.querySelector(`.slide-title-${idx + 1}`);
-        const badgeEl = document.querySelector(`.slide-badge-${idx + 1}`);
-        const descEl = document.querySelector(`.slide-desc-${idx + 1}`);
-        if(titleEl) titleEl.innerText = slide.title;
-        if(badgeEl) badgeEl.innerText = slide.badge;
-        if(descEl) descEl.innerText = slide.desc;
+      document.getElementById('langMenu').classList.remove('show');
+    }
+
+    // Toggle Password Visibility
+    function togglePasswordVisibility() {
+      const passInput = document.getElementById('empPass');
+      passInput.type = passInput.type === 'password' ? 'text' : 'password';
+    }
+
+    // Navigation & Views Handler
+    function showPage(pageId) {
+      const pages = ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory'];
+      pages.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
       });
+      const activePage = document.getElementById(pageId);
+      if (activePage) activePage.classList.remove('hidden');
     }
 
-    // Announcement Slider Logic (Calm Speed: 5.5 seconds)
-    let currentSlideIndex = 0;
-    const totalSlides = 3;
-    let slideInterval;
-
-    function showSlide(index) {
-      currentSlideIndex = (index + totalSlides) % totalSlides;
-      const track = document.getElementById('sliderTrack');
-      track.style.transform = `translateX(${currentSlideIndex * (currentLang === 'ar' ? 100 : -100)}%)`;
-      
-      const dots = document.querySelectorAll('.dot');
-      dots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentSlideIndex);
-      });
-    }
-
-    function currentSlide(index) {
-      showSlide(index);
-      resetSlideTimer();
-    }
-
-    function nextSlide() {
-      showSlide(currentSlideIndex + 1);
-    }
-
-    function resetSlideTimer() {
-      clearInterval(slideInterval);
-      slideInterval = setInterval(nextSlide, 5500);
-    }
-
-    let touchStartX = 0;
-    const cardEl = document.getElementById('announcementCard');
-    cardEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; clearInterval(slideInterval); });
-    cardEl.addEventListener('touchend', e => {
-      let touchEndX = e.changedTouches[0].clientX;
-      if (touchStartX - touchEndX > 50) {
-        nextSlide();
-      } else if (touchEndX - touchStartX > 50) {
-        showSlide(currentSlideIndex - 1);
+    // Dummy Auth / Checkin Functions
+    function login() {
+      const code = document.getElementById('empCode').value;
+      if (!code) {
+        document.getElementById('error').innerText = currentLang === 'ar' ? 'برجاء إدخال كود الموظف' : 'Please enter Employee Code';
+        return;
       }
-      resetSlideTimer();
-    });
+      document.getElementById('error').innerText = '';
+      document.getElementById('dash-code-val').innerText = code;
+      document.getElementById('dash-name').innerText = 'أحمد محمد علي';
+      document.getElementById('userCodeVal').innerText = code;
+      document.getElementById('userName').innerText = 'أحمد محمد علي';
+      document.getElementById('userJob').innerText = 'مهندس أنظمة';
+      document.getElementById('userDept').innerText = 'تكنولوجيا المعلومات';
+      document.getElementById('userNID').innerText = '29501011234567';
+      
+      showPage('view-dashboard');
+    }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      selectLanguage(currentLang);
-      resetSlideTimer();
-    });
-
-    // Geo-Location Verification (Lat: 30.235154, Lng: 31.743997, Radius: 75m)
-    const COMPANY_LAT = 30.235154;
-    const COMPANY_LNG = 31.743997;
-    const ALLOWED_RADIUS_METERS = 75;
-
-    function calculateDistance(lat1, lon1, lat2, lon2) {
-      const R = 6371e3;
-      const dLat = (lat2 - lat1) * Math.PI / 180;
-      const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                Math.sin(dLon/2) * Math.sin(dLon/2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      return R * c;
+    function logout() {
+      showPage('view-login');
     }
 
     function verifyLocationAndCheckIn() {
       const statusText = document.getElementById('checkinStatusText');
-      statusText.innerText = currentLang === 'ar' ? "جاري تفعيل نظام الـ GPS والتحقق من النطاق..." : "Activating GPS and verifying location...";
-      if (!navigator.geolocation) {
-        statusText.innerText = currentLang === 'ar' ? "متصفحك لا يدعم تحديد الموقع الجغرافي." : "Geolocation is not supported by your browser.";
-        return;
-      }
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
-          const distance = calculateDistance(userLat, userLng, COMPANY_LAT, COMPANY_LNG);
-          if (distance <= ALLOWED_RADIUS_METERS) {
-            statusText.className = "checkin-status-text success";
-            statusText.innerText = currentLang === 'ar' ? `تم تسجيل الحضور بنجاح! أنت في نطاق الشركة (${Math.round(distance)} متر)` : `Check-in successful! Within company range (${Math.round(distance)}m)`;
-          } else {
-            statusText.className = "checkin-status-text";
-            statusText.innerText = currentLang === 'ar' ? `عذراً، أنت خارج نطاق الشركة (${Math.round(distance)} متر)` : `Sorry, you are outside company range (${Math.round(distance)}m)`;
-          }
-        },
-        (error) => {
-          statusText.className = "checkin-status-text";
-          statusText.innerText = currentLang === 'ar' ? "تعذر الحصول على موقعك. تأكد من تفعيل الـ GPS." : "Unable to retrieve location. Please enable GPS.";
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-      );
+      statusText.innerText = currentLang === 'ar' ? 'جاري التحقق من الموقع...' : 'Checking location...';
+      setTimeout(() => {
+        statusText.classList.add('success');
+        statusText.innerText = currentLang === 'ar' ? 'تم تسجيل الحضور بنجاح ✓' : 'Checked in successfully ✓';
+      }, 1500);
     }
 
-    function showPage(pageId) {
-      ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory'].forEach(id => {
-        document.getElementById(id).classList.add('hidden');
-      });
-      document.getElementById(pageId).classList.remove('hidden');
-    }
-
-    function login() {
-      const code = document.getElementById('empCode').value.trim();
-      const pass = document.getElementById('empPass').value.trim();
-      const rememberMe = document.getElementById('rememberMe').checked;
-      const errorEl = document.getElementById('error');
-      if (!code) { errorEl.innerText = currentLang === 'ar' ? "يرجى إدخال كود الموظف" : "Please enter employee code"; return; }
-      db.ref('users/' + code).once('value').then((snapshot) => {
-        if (snapshot.exists()) {
-          const user = snapshot.val();
-          if (user.password !== pass) {
-            errorEl.innerText = currentLang === 'ar' ? "كلمة السر غير صحيحة!" : "Incorrect password!";
-            return;
-          }
-          currentUserData = user;
-          currentEmpCode = code;
-          errorEl.innerText = "";
-          if (rememberMe) {
-            localStorage.setItem('lacto_saved_code', code);
-            localStorage.setItem('lacto_saved_pass', pass);
-          } else {
-            localStorage.removeItem('lacto_saved_code');
-            localStorage.removeItem('lacto_saved_pass');
-          }
-          document.getElementById('dash-name').innerText = user.name || "--";
-          document.getElementById('dash-code-val').innerText = code;
-          document.getElementById('dash-avatar').src = user.photo || "https://i.pravatar.cc/150?img=12";
-          
-          document.getElementById('userName').innerText = user.name || "--";
-          document.getElementById('userJob').innerText = user.job || "--";
-          document.getElementById('userDept').innerText = user.dept || "--";
-          document.getElementById('userCodeVal').innerText = code;
-          document.getElementById('userNID').innerText = user.nationalId || "--";
-          document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
-          document.getElementById('qrcode').innerHTML = "";
-          new QRCode(document.getElementById("qrcode"), { text: window.location.origin + window.location.pathname + "?emp=" + code, width: 85, height: 85 });
-          showPage('view-dashboard');
-          verifyLocationAndCheckIn();
-        } else {
-          errorEl.innerText = currentLang === 'ar' ? "كود الموظف غير مسجل!" : "Employee code not found!";
-        }
+    // Announcement Slider Logic
+    let currentSlideIndex = 0;
+    function currentSlide(index) {
+      currentSlideIndex = index;
+      const track = document.getElementById('sliderTrack');
+      track.style.transform = `translateX(${currentLang === 'ar' ? index * 100 : -index * 100}%)`;
+      
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === index);
       });
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const savedCode = localStorage.getItem('lacto_saved_code');
-      const savedPass = localStorage.getItem('lacto_saved_pass');
-      if (savedCode && savedPass) {
-        document.getElementById('empCode').value = savedCode;
-        document.getElementById('empPass').value = savedPass;
-        document.getElementById('rememberMe').checked = true;
-      }
-    });
-
-    function downloadCard() {
-      html2canvas(document.getElementById('myCardToDownload'), { useCORS: true, scale: 2 }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'Lacto_ID_' + currentEmpCode + '.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-      });
-    }
-
-    function logout() { window.location.reload(); }
-    function toggleLangMenu() { document.getElementById('langMenu').classList.toggle('show'); }
-    
-    function selectLanguage(lang) {
-      toggleLangMenu();
-      currentLang = lang;
-      localStorage.setItem('lacto_lang', lang);
-      document.documentElement.lang = lang;
-      document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
-      document.getElementById('current-lang-text').innerText = (lang === 'ar') ? "العربية" : "English";
-      updateContentTranslations();
-      showSlide(currentSlideIndex);
-    }
-
-    // Chatbot Implementation
+    // Chat Popup Handlers
     function toggleChatPopup() {
-      document.getElementById('chatPopup').classList.toggle('hidden');
+      const chat = document.getElementById('chatPopup');
+      chat.classList.toggle('hidden');
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const body = document.getElementById('chatBody');
+      const userMsg = document.createElement('div');
+      userMsg.className = 'chat-msg user';
+      userMsg.textContent = text;
+      body.appendChild(userMsg);
+
+      input.value = '';
+      body.scrollTop = body.scrollHeight;
+
+      setTimeout(() => {
+        const botMsg = document.createElement('div');
+        botMsg.className = 'chat-msg bot';
+        botMsg.textContent = currentLang === 'ar' ? 'شكراً لتواصلك معنا، سيقوم أحد ممثلي الموارد البشرية بالرد عليك في أقرب وقت.' : 'Thank you for contacting us. An HR representative will get back to you shortly.';
+        body.appendChild(botMsg);
+        body.scrollTop = body.scrollHeight;
+      }, 1000);
     }
 
     function handleChatKeyPress(e) {
       if (e.key === 'Enter') sendChatMessage();
     }
 
-    function sendChatMessage() {
-      const input = document.getElementById('chatInput');
-      const msgText = input.value.trim();
-      if (!msgText) return;
-
-      const chatBody = document.getElementById('chatBody');
-
-      // User Message
-      const userMsg = document.createElement('div');
-      userMsg.className = 'chat-msg user';
-      userMsg.innerText = msgText;
-      chatBody.appendChild(userMsg);
-
-      input.value = '';
-      chatBody.scrollTop = chatBody.scrollHeight;
-
-      // Smart Bot Response Simulation
-      setTimeout(() => {
-        const botMsg = document.createElement('div');
-        botMsg.className = 'chat-msg bot';
-        
-        const text = msgText.toLowerCase();
-        if (text.includes('إجازة') || text.includes('اجازة') || text.includes('leave')) {
-          botMsg.innerText = currentLang === 'ar' ? 'يمكنك استعلام ومتابعة الإجازات من خيار "طلبات الإجازات" بالقائمة الرئيسية.' : 'You can check and request leaves from "Leave Requests" in the main menu.';
-        } else if (text.includes('مرتب') || text.includes('راتب') || text.includes('salary') || text.includes('payroll')) {
-          botMsg.innerText = currentLang === 'ar' ? 'يتم نشر مفردات المرتب بداية كل شهر عبر قسم مفردات المرتب.' : 'Pay slips are published at the beginning of each month via Payroll section.';
-        } else if (text.includes('حضور') || text.includes('بصمة') || text.includes('checkin') || text.includes('gps')) {
-          botMsg.innerText = currentLang === 'ar' ? 'التسجيل يتم تلقائياً عبر نظام الـ GPS عند التواجد داخل نطاق الشركة.' : 'Check-in is recorded automatically via GPS when you are inside company range.';
-        } else {
-          botMsg.innerText = currentLang === 'ar' ? 'شكراً لتواصلك. تم استلام استفسارك وسيقوم فريق الموارد البشرية بالرد عليك.' : 'Thank you for contacting us. Your query has been received and HR will reply soon.';
-        }
-
-        chatBody.appendChild(botMsg);
-        chatBody.scrollTop = chatBody.scrollHeight;
-      }, 700);
+    function downloadCard() {
+      const card = document.getElementById('myCardToDownload');
+      html2canvas(card).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'id-card.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
     }
   </script>
 </body>
