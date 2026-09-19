@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -27,7 +28,7 @@
       --card-bg: rgba(15, 23, 42, 0.78);
       --border-color: rgba(255, 255, 255, 0.16);
       --text: #f8fafc;
-      --accent: #38bdf8; /* Lighting Baby Blue */
+      --accent: #38bdf8;
       --accent-glow: rgba(56, 189, 248, 0.4);
       --danger: #ef4444;
       --success: #10b981;
@@ -120,15 +121,24 @@
       text-align: center;
       white-space: nowrap;
     }
-    /* Main App Layout */
+    
+    /* Main App Layout & Full-Width Header */
     .app-header {
-      width: 100%;
-      max-width: 420px;
+      width: 100vw;
+      background: #0d1527;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.75rem 1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.2rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
+    body { padding-top: 4.5rem; }
+
     .brand-container {
       display: flex;
       align-items: center;
@@ -166,8 +176,6 @@
       align-items: center;
       gap: 0.4rem;
       backdrop-filter: blur(12px);
-      transition: all 0.2s ease;
-      box-shadow: none !important;
       outline: none;
     }
     .lang-dropdown-menu {
@@ -249,7 +257,6 @@
       z-index: 10;
       margin: 0;
       padding: 0;
-      box-shadow: none !important;
     }
     [dir="ltr"] .toggle-password { right: auto; left: 0.75rem; }
     .toggle-password svg { width: 20px; height: 20px; fill: currentColor; }
@@ -275,24 +282,22 @@
     .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
     .hidden { display: none !important; }
     
-    /* Dashboard UI - Header (كارت الترحيب: مفتوح من الأعلى 3 أضلاع ومتداخل مع البصمة) */
+    /* Full-Width User Greeting Header */
     .user-header-card {
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
       background: #0d1527;
-      border-top: none;
-      border-left: 1px solid rgba(56, 189, 248, 0.3);
-      border-right: 1px solid rgba(56, 189, 248, 0.3);
-      border-bottom: none; /* إزالة الضلع السفلي ليتداخل مع كارت البصمة */
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-      padding: 1rem 1.25rem 1.25rem 1.25rem;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 1rem 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      position: relative;
-      margin-bottom: -10px; /* تداخل سلس بدون ظهور حواف سفلية */
+      margin-bottom: 0.5rem;
       z-index: 2;
     }
     .user-header-right {
@@ -344,7 +349,6 @@
       border: 2px solid #0d1527;
     }
     
-    /* Notification Popup Box */
     .notification-popup {
       position: absolute;
       top: 0;
@@ -364,13 +368,13 @@
     .notification-popup.show { display: block; }
     .notification-popup-title { font-size: 0.75rem; font-weight: 800; color: #38bdf8; margin-bottom: 0.2rem; }
     .notification-popup-desc { font-size: 0.7rem; color: var(--muted); line-height: 1.4; }
-
-    /* Fingerprint Card - Updated to Lighting Baby Blue & Half Size */
+    
+    /* Fingerprint Check-in Card */
     .checkin-card {
       background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(15, 23, 42, 0.95));
       border: 1px solid rgba(56, 189, 248, 0.5);
       border-radius: 1.5rem;
-      padding: 0.75rem 1.25rem; /* تقليص المساحة الرأسية للنصف تقريباً */
+      padding: 0.75rem 1.25rem;
       text-align: center;
       box-shadow: 0 10px 25px rgba(0,0,0,0.6), inset 0 0 15px rgba(56, 189, 248, 0.2);
       cursor: pointer;
@@ -402,7 +406,7 @@
       padding: 0.2rem 0.5rem;
     }
     .fingerprint-icon-wrap {
-      width: 45px; height: 45px; /* تصغير أيقونة البصمة لتناسب المساحة المصغرة */
+      width: 45px; height: 45px;
       background: rgba(56, 189, 248, 0.2);
       border: 1px solid rgba(56, 189, 248, 0.4);
       border-radius: 50%;
@@ -413,7 +417,7 @@
     .fingerprint-icon-wrap svg { width: 24px; height: 24px; fill: currentColor; }
     .checkin-status-text { font-size: 0.8rem; font-weight: 700; color: var(--text); }
     
-    /* Company Announcements Slider */
+    /* Updated 5-Slides Slider */
     .announcement-card {
       background: rgba(15, 23, 42, 0.8);
       border: 1px solid var(--border-color);
@@ -457,17 +461,18 @@
     .summary-title { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.3rem; font-weight: 600; }
     .summary-value { font-size: 1.1rem; font-weight: 800; color: #38bdf8; }
     
-    /* Services Grid */
+    /* Rearranged Services Grid (No overlapping, clean layout) */
     .services-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.85rem;
+      gap: 1rem;
+      margin-top: 0.5rem;
     }
     .service-btn {
       background: rgba(15, 23, 42, 0.85);
       border: 1px solid var(--border-color);
       border-radius: 1.25rem;
-      padding: 1.1rem 1rem;
+      padding: 1.2rem 1rem;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -475,6 +480,7 @@
       cursor: pointer;
       box-shadow: 0 10px 20px rgba(0,0,0,0.3);
       transition: all 0.2s ease;
+      min-height: 110px;
     }
     .service-btn:hover { border-color: #38bdf8; transform: translateY(-3px); }
     .service-icon-box {
@@ -484,7 +490,7 @@
       margin-bottom: 0.5rem;
     }
     .service-icon-box svg { width: 22px; height: 22px; fill: currentColor; }
-    .service-title { font-size: 0.82rem; font-weight: 700; color: var(--text); }
+    .service-title { font-size: 0.85rem; font-weight: 700; color: var(--text); text-align: center; }
     
     /* Career Banner */
     .career-card {
@@ -501,9 +507,22 @@
     }
     .career-card:hover { border-color: #38bdf8; transform: translateY(-2px); }
     
-    /* ID Card & Sub-pages */
+    /* ID Card & Sub-pages with Fixed Back Buttons */
     .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-    .back-btn { background: rgba(51, 65, 85, 0.8); border: 1px solid var(--border-color); width: auto; padding: 0.4rem 0.9rem; font-size: 0.8rem; margin: 0; border-radius: 0.8rem; }
+    .back-btn { 
+      background: rgba(51, 65, 85, 0.9); 
+      border: 1px solid var(--border-color); 
+      width: auto !important; 
+      padding: 0.5rem 1.1rem !important; 
+      font-size: 0.85rem !important; 
+      font-weight: 700;
+      margin: 0 !important; 
+      border-radius: 0.8rem; 
+      cursor: pointer;
+      color: var(--text);
+      box-shadow: none !important;
+    }
+    .back-btn:hover { background: rgba(56, 189, 248, 0.2); border-color: #38bdf8; }
     
     .id-card {
       background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(11, 15, 25, 0.98));
@@ -521,6 +540,96 @@
     .info-label { color: var(--muted); font-size: 0.75rem; margin-bottom: 0.1rem; }
     .info-val { font-weight: 700; color: var(--text); }
     .qr-container { background: #fff; padding: 0.65rem; border-radius: 1rem; display: inline-block; }
+
+    /* Active Chatbot Floating Widget Styles */
+    #chatbot-fab {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 55px;
+      height: 55px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0b0f19;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(56, 189, 248, 0.5);
+      z-index: 9998;
+      transition: transform 0.2s ease;
+    }
+    [dir="ltr"] #chatbot-fab { right: 20px; left: auto; }
+    #chatbot-fab:hover { transform: scale(1.1); }
+    #chatbot-fab svg { width: 28px; height: 28px; fill: currentColor; }
+    
+    #chatbot-window {
+      position: fixed;
+      bottom: 85px;
+      right: 20px;
+      width: 330px;
+      max-width: calc(100vw - 40px);
+      height: 430px;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 1.25rem;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+      backdrop-filter: blur(16px);
+      display: none;
+      flex-direction: column;
+      z-index: 9999;
+      overflow: hidden;
+    }
+    [dir="ltr"] #chatbot-window { right: 20px; left: auto; }
+    #chatbot-window.show { display: flex; }
+    .chatbot-header {
+      background: rgba(30, 41, 59, 0.9);
+      padding: 0.75rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .chatbot-title { font-size: 0.85rem; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 0.4rem; }
+    .chatbot-close { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.1rem; width: auto; margin:0; padding:0; box-shadow:none !important; }
+    .chatbot-messages {
+      flex: 1;
+      padding: 0.75rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      font-size: 0.8rem;
+    }
+    .chat-msg {
+      max-width: 80%;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.75rem;
+      line-height: 1.4;
+    }
+    .chat-msg.bot { background: rgba(30, 41, 59, 0.8); color: var(--text); align-self: flex-start; border-bottom-left-radius: 2px; }
+    .chat-msg.user { background: #0284c7; color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
+    .chatbot-input-area {
+      padding: 0.6rem;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: 0.4rem;
+      background: rgba(11, 15, 25, 0.9);
+    }
+    .chatbot-input-area input {
+      margin: 0;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+      text-align: right;
+    }
+    [dir="ltr"] .chatbot-input-area input { text-align: left; }
+    .chatbot-send-btn {
+      width: auto !important;
+      margin: 0 !important;
+      padding: 0.5rem 0.9rem !important;
+      font-size: 0.8rem !important;
+      border-radius: 0.75rem !important;
+    }
   </style>
   <script>
     let wakeLock = null;
@@ -544,7 +653,7 @@
     </div>
   </div>
   
-  <!-- App Header -->
+  <!-- App Header (Full Width with Logo and Language Selector) -->
   <div class="app-header">
     <div class="brand-container">
       <img src="logo.png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
@@ -561,6 +670,7 @@
       </div>
     </div>
   </div>
+
   <div class="container">
     <!-- 1. Login View -->
     <div id="view-login" class="card">
@@ -588,7 +698,7 @@
     
     <!-- 2. Dashboard View -->
     <div id="view-dashboard" class="hidden">
-      <!-- User Greeting Header (مفتوح من الأعلى 3 أضلاع ومتداخل مع البصمة) -->
+      <!-- Full-Width User Greeting Header -->
       <div class="user-header-card">
         <div class="user-header-right">
           <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
@@ -610,7 +720,7 @@
         </div>
       </div>
       
-      <!-- Fingerprint Check-in Card (Lighting Baby Blue & Half Size) -->
+      <!-- Fingerprint Check-in Card -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="checkin-top-row">
           <span style="font-size: 0.85rem; font-weight: 800;">Sign In</span>
@@ -628,7 +738,7 @@
         </div>
       </div>
       
-      <!-- Company Announcements Slider Card -->
+      <!-- Company Announcements Slider (Updated to 5 Slides) -->
       <div class="announcement-card" id="announcementCard">
         <div class="slider-track" id="sliderTrack">
           <div class="slide-item">
@@ -652,11 +762,27 @@
             </div>
             <div class="announcement-desc slide-desc-3">تأكد من تحديث بيانات التواصل الشخصية الخاصة بك عبر قسم الموارد البشرية.</div>
           </div>
+          <div class="slide-item">
+            <div class="announcement-top">
+              <span class="announcement-title slide-title-4">السياسات الداخلية</span>
+              <span class="coming-soon-badge slide-badge-4">Guide</span>
+            </div>
+            <div class="announcement-desc slide-desc-4">تعرف على لوائح العمل الداخلية وسياسات الحضور والانصراف الجديدة.</div>
+          </div>
+          <div class="slide-item">
+            <div class="announcement-top">
+              <span class="announcement-title slide-title-5">المميزات والخدمات</span>
+              <span class="coming-soon-badge slide-badge-5">Exclusive</span>
+            </div>
+            <div class="announcement-desc slide-desc-5">استمتع بالخدمات الرقمية والعروض المقدمة خصيصاً لموظفي الشركة.</div>
+          </div>
         </div>
         <div class="slider-dots" id="sliderDots">
           <div class="dot active" onclick="currentSlide(0)"></div>
           <div class="dot" onclick="currentSlide(1)"></div>
           <div class="dot" onclick="currentSlide(2)"></div>
+          <div class="dot" onclick="currentSlide(3)"></div>
+          <div class="dot" onclick="currentSlide(4)"></div>
         </div>
       </div>
       
@@ -676,7 +802,7 @@
         </div>
       </div>
       
-      <!-- Services Grid -->
+      <!-- Services Grid (Rearranged and properly aligned) -->
       <div class="services-grid">
         <div class="service-btn" onclick="showPage('view-leaves')">
           <div class="service-icon-box">
@@ -768,6 +894,24 @@
     </div>
   </div>
 
+  <!-- Active Chatbot Floating Widget -->
+  <div id="chatbot-fab" onclick="toggleChatbot()" title="مساعد الرتات / Chatbot">
+    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+  </div>
+  <div id="chatbot-window">
+    <div class="chatbot-header">
+      <div class="chatbot-title">🤖 <span id="t-botName">مساعد LM HR الذكي</span></div>
+      <button class="chatbot-close" onclick="toggleChatbot()">✕</button>
+    </div>
+    <div class="chatbot-messages" id="chatbotMessages">
+      <div class="chat-msg bot" id="t-botWelcome">أهلاً بك! كيف يمكنني مساعدتك اليوم في خدمات الموارد البشرية؟ / Hello! How can I help you today?</div>
+    </div>
+    <div class="chatbot-input-area">
+      <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا... / Type here..." onkeypress="handleChatKeyPress(event)">
+      <button class="chatbot-send-btn" onclick="sendChatMessage()" id="t-sendBtn">إرسال</button>
+    </div>
+  </div>
+
   <script>
     /* Leaf Fall Animation */
     function runLeafFallIntro() {
@@ -840,7 +984,7 @@
       pass.type = (pass.type === 'password') ? 'text' : 'password';
     }
     
-    // Firebase & App Logic
+    /* Firebase & App Logic */
     const firebaseConfig = {
       apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
       authDomain: "lacto-hr-system.firebaseapp.com",
@@ -893,10 +1037,16 @@
         checkinPending: "جاري تحديد الموقع الجغرافي...",
         popupTitle: "تنبيهات النظام",
         popupDesc: "لا توجد إشعارات جديدة. تم تفعيل النظام بنجاح!",
+        botName: "مساعد LM HR الذكي",
+        botWelcome: "أهلاً بك! كيف يمكنني مساعدتك اليوم في خدمات الموارد البشرية؟",
+        sendBtn: "إرسال",
+        chatPlaceholder: "اكتب سؤالك هنا...",
         slides: [
           { title: "إعلانات الشركة", badge: "Coming Soon", desc: "أهم الأخبار، الأحداث المباشرة، والمناسبات المرتقبة بالشركة." },
           { title: "تحديثات النظام", badge: "New", desc: "ترقبوا إطلاق ميزات البصمة الجغرافية المتقدمة وطلبات الإجازات الرقمية قريباً." },
-          { title: "دليل العاملين", badge: "Important", desc: "تأكد من تحديث بيانات التواصل الشخصية الخاصة بك عبر قسم الموارد البشرية." }
+          { title: "دليل العاملين", badge: "Important", desc: "تأكد من تحديث بيانات التواصل الشخصية الخاصة بك عبر قسم الموارد البشرية." },
+          { title: "السياسات الداخلية", badge: "Guide", desc: "تعرف على لوائح العمل الداخلية وسياسات الحضور والانصراف الجديدة." },
+          { title: "المميزات والخدمات", badge: "Exclusive", desc: "استمتع بالخدمات الرقمية والعروض المقدمة خصيصاً لموظفي الشركة." }
         ]
       },
       en: {
@@ -935,10 +1085,16 @@
         checkinPending: "Locating via GPS...",
         popupTitle: "System Alerts",
         popupDesc: "No new notifications. System activated successfully!",
+        botName: "LM HR Smart Assistant",
+        botWelcome: "Hello! How can I help you today with HR services?",
+        sendBtn: "Send",
+        chatPlaceholder: "Type your question here...",
         slides: [
           { title: "Company Announcements", badge: "Coming Soon", desc: "Latest news, live events, and upcoming company occasions." },
           { title: "System Updates", badge: "New", desc: "Stay tuned for the launch of advanced geo-attendance and digital leaves." },
-          { title: "Employee Guide", badge: "Important", desc: "Make sure to update your personal contact details via the HR department." }
+          { title: "Employee Guide", badge: "Important", desc: "Make sure to update your personal contact details via the HR department." },
+          { title: "Internal Policies", badge: "Guide", desc: "Learn about internal work regulations and new attendance policies." },
+          { title: "Benefits & Services", badge: "Exclusive", desc: "Enjoy digital services and special offers tailored for company employees." }
         ]
       }
     };
@@ -972,6 +1128,11 @@
       document.getElementById('t-popupTitle').innerText = t.popupTitle;
       document.getElementById('t-popupDesc').innerText = t.popupDesc;
       
+      document.getElementById('t-botName').innerText = t.botName;
+      document.getElementById('t-botWelcome').innerText = t.botWelcome;
+      document.getElementById('t-sendBtn').innerText = t.sendBtn;
+      document.getElementById('chatInput').placeholder = t.chatPlaceholder;
+      
       const careerTextWrap = document.getElementById('careerTextWrapper');
       const careerArrow = document.getElementById('careerArrow');
       if (currentLang === 'en') {
@@ -1004,14 +1165,12 @@
       });
     }
 
-    // Toggle Notification Popup Function
+    // Toggle Notification Popup
     function toggleNotificationPopup(event) {
       event.stopPropagation();
       const popup = document.getElementById('notificationPopup');
       popup.classList.toggle('show');
     }
-
-    // Hide notification popup when clicking outside
     window.addEventListener('click', () => {
       const popup = document.getElementById('notificationPopup');
       if (popup && popup.classList.contains('show')) {
@@ -1019,8 +1178,67 @@
       }
     });
 
+    // Chatbot Toggle & Messaging Logic (Bilingual Arabic & English)
+    function toggleChatbot() {
+      const chatWin = document.getElementById('chatbot-window');
+      chatWin.classList.toggle('show');
+    }
+
+    function handleChatKeyPress(e) {
+      if (e.key === 'Enter') {
+        sendChatMessage();
+      }
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const messagesContainer = document.getElementById('chatbotMessages');
+      
+      // Append User Message
+      const userMsg = document.createElement('div');
+      userMsg.className = 'chat-msg user';
+      userMsg.innerText = text;
+      messagesContainer.appendChild(userMsg);
+      input.value = '';
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+      // Bot Response Simulation
+      setTimeout(() => {
+        const botMsg = document.createElement('div');
+        botMsg.className = 'chat-msg bot';
+        
+        const lowerText = text.toLowerCase();
+        if (currentLang === 'ar') {
+          if (lowerText.includes('إجازة') || lowerText.includes('اجازات')) {
+            botMsg.innerText = "يمكنك متابعة رصيد إجازاتك من الشاشة الرئيسية (21 يوم) أو الدخول لقسم طلبات الإجازات.";
+          } else if (lowerText.includes('مرتب') || lowerText.includes('راتب')) {
+            botMsg.innerText = "يتم إتاحة مفردات المرتب فور إصدارها من إدارة الرواتب شهرياً.";
+          } else if (lowerText.includes('hello') || lowerText.includes('hi')) {
+            botMsg.innerText = "Hello! How can I assist you with LM HR services?";
+          } else {
+            botMsg.innerText = "شكراً لتواصلك! تم تسجيل استفسارك وسيتم الرد عليك قريباً من قبل ممثل الموارد البشرية.";
+          }
+        } else {
+          if (lowerText.includes('leave') || lowerText.includes('vacation')) {
+            botMsg.innerText = "You can check your leave balance (21 days) on the main dashboard or via the Leaves section.";
+          } else if (lowerText.includes('salary') || lowerText.includes('pay')) {
+            botMsg.innerText = "Payslips are updated monthly as soon as they are issued by the payroll department.";
+          } else {
+            botMsg.innerText = "Thank you for your message! Your query has been noted and HR will follow up with you.";
+          }
+        }
+
+        messagesContainer.appendChild(botMsg);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }, 600);
+    }
+
+    // 5-Slides Slider Logic
     let currentSlideIndex = 0;
-    const totalSlides = 3;
+    const totalSlides = 5;
     let slideInterval;
     function showSlide(index) {
       currentSlideIndex = (index + totalSlides) % totalSlides;
@@ -1055,9 +1273,19 @@
       }
       resetSlideTimer();
     });
+
     window.addEventListener('DOMContentLoaded', () => {
       selectLanguage(currentLang);
       resetSlideTimer();
+      
+      // Auto-retrieve saved credentials if Remember Me was active
+      const savedCode = localStorage.getItem('lacto_saved_code');
+      const savedPass = localStorage.getItem('lacto_saved_pass');
+      if (savedCode && savedPass) {
+        document.getElementById('empCode').value = savedCode;
+        document.getElementById('empPass').value = savedPass;
+        document.getElementById('rememberMe').checked = true;
+      }
     });
 
     const COMPANY_LAT = 30.235154;
@@ -1102,7 +1330,9 @@
         document.getElementById(id).classList.add('hidden');
       });
       document.getElementById(pageId).classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
     function login() {
       const code = document.getElementById('empCode').value.trim();
       const pass = document.getElementById('empPass').value.trim();
@@ -1147,15 +1377,7 @@
         }
       });
     }
-    window.addEventListener('DOMContentLoaded', () => {
-      const savedCode = localStorage.getItem('lacto_saved_code');
-      const savedPass = localStorage.getItem('lacto_saved_pass');
-      if (savedCode && savedPass) {
-        document.getElementById('empCode').value = savedCode;
-        document.getElementById('empPass').value = savedPass;
-        document.getElementById('rememberMe').checked = true;
-      }
-    });
+
     function downloadCard() {
       html2canvas(document.getElementById('myCardToDownload'), { useCORS: true, scale: 2 }).then(canvas => {
         const link = document.createElement('a');
