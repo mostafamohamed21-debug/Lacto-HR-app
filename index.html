@@ -98,6 +98,7 @@
       align-items: center;
       direction: ltr;
     }
+    /* تصغير حجم خط لاكتو مصر */
     .intro-char {
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: clamp(1.2rem, 4vw, 1.8rem);
@@ -109,6 +110,7 @@
       display: inline-block;
     }
     .intro-space { width: 0.4rem; }
+    /* الجملة بعرض الصفحة */
     .intro-subtitle {
       font-family: 'Great Vibes', cursive;
       font-size: clamp(1.5rem, 5vw, 2.5rem);
@@ -161,9 +163,6 @@
       align-items: center;
       gap: 0.4rem;
       backdrop-filter: blur(12px);
-      box-shadow: none;
-      width: auto;
-      margin: 0;
     }
     .lang-dropdown-menu {
       position: absolute;
@@ -215,7 +214,7 @@
     }
     input:focus { border-color: #38bdf8; box-shadow: 0 0 15px var(--accent-glow); }
     
-    /* ضبط محاذاة حقل تسجيل الدخول بدون إزاحة */
+    /* منع إزاحة زرار كلمة السر والتنسيق */
     .password-container { 
       position: relative; 
       width: 100%; 
@@ -273,6 +272,7 @@
     }
     .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
     .hidden { display: none !important; }
+    
     /* Dashboard UI */
     .user-header-card {
       background: rgba(15, 23, 42, 0.85);
@@ -304,7 +304,7 @@
       display: inline-block; margin-top: 0.3rem;
     }
     
-    /* Fingerprint Check-in Card */
+    /* Fingerprint Card */
     .checkin-card {
       background: linear-gradient(145deg, #070a12 0%, #0d1527 100%);
       border: 1px solid rgba(56, 189, 248, 0.25);
@@ -356,7 +356,7 @@
     .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s; }
     .dot.active { width: 18px; border-radius: 4px; background: #38bdf8; }
     
-    /* Summaries & Stats Grid */
+    /* Summaries Grid */
     .summaries-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -403,7 +403,7 @@
     .service-icon-box svg { width: 22px; height: 22px; fill: currentColor; }
     .service-title { font-size: 0.82rem; font-weight: 700; color: var(--text); }
     
-    /* Career Opportunities Banner Card */
+    /* Career Banner */
     .career-card {
       background: linear-gradient(135deg, rgba(2, 132, 199, 0.2), rgba(15, 23, 42, 0.9));
       border: 1px solid rgba(56, 189, 248, 0.4);
@@ -417,18 +417,14 @@
       transition: all 0.2s ease;
     }
     .career-card:hover { border-color: #38bdf8; transform: translateY(-2px); }
-    .career-card-text { text-align: right; }
-    [dir="ltr"] .career-card-text { text-align: left; }
-    .career-arrow { font-size: 1.2rem; color: #38bdf8; transition: transform 0.2s; }
-    [dir="ltr"] .career-arrow { transform: rotate(180deg); }
-
-    /* Floating Chat Button - مرفوع بداخل الشاشة مع محاذاة أفقية متجاوبة */
+    
+    /* Floating Chat Button - رفع زر الرسائل الفلوتنج بوضوح لعدم الاقتطاع */
     .chat-float-btn {
       position: fixed;
-      bottom: 2rem;
+      bottom: 2.8rem;
       left: 1.5rem;
-      width: 55px;
-      height: 55px;
+      width: 58px;
+      height: 58px;
       background: linear-gradient(135deg, #0284c7, #0369a1);
       border-radius: 50%;
       border: 2px solid rgba(56, 189, 248, 0.6);
@@ -448,7 +444,7 @@
     /* Chat Popup Box UI */
     .chat-popup {
       position: fixed;
-      bottom: 6rem;
+      bottom: 7.2rem;
       left: 1.5rem;
       width: 320px;
       max-width: calc(100vw - 3rem);
@@ -536,6 +532,7 @@
       border-radius: 0.8rem;
       box-shadow: none;
     }
+    
     /* ID Card & Sub-pages */
     .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
     .back-btn { background: rgba(51, 65, 85, 0.8); border: 1px solid var(--border-color); width: auto; padding: 0.4rem 0.9rem; font-size: 0.8rem; margin: 0; border-radius: 0.8rem; }
@@ -571,7 +568,7 @@
   </script>
 </head>
 <body>
-  <!-- Intro Screen with Leaf Fall Animation -->
+  <!-- Intro Screen -->
   <div id="intro-screen">
     <div class="intro-content-wrapper">
       <div class="intro-title-container" id="introTitle"></div>
@@ -596,7 +593,6 @@
       </div>
     </div>
   </div>
-
   <div class="container">
     <!-- 1. Login View -->
     <div id="view-login" class="card">
@@ -621,7 +617,7 @@
       <button id="t-loginBtn" onclick="login()">دخول الحساب</button>
       <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.85rem; font-weight: bold;"></p>
     </div>
-
+    
     <!-- 2. Dashboard View -->
     <div id="view-dashboard" class="hidden">
       <!-- User Greeting Header -->
@@ -635,6 +631,7 @@
           </div>
         </div>
       </div>
+      
       <!-- Fingerprint Check-in Card -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="fingerprint-icon-wrap">
@@ -642,6 +639,7 @@
         </div>
         <div id="checkinStatusText" class="checkin-status-text">جاري تحديد الموقع الجغرافي...</div>
       </div>
+      
       <!-- Company Announcements Slider Card -->
       <div class="announcement-card" id="announcementCard">
         <div class="slider-track" id="sliderTrack">
@@ -673,21 +671,23 @@
           <div class="dot" onclick="currentSlide(2)"></div>
         </div>
       </div>
+      
       <!-- Summaries Grid -->
       <div class="summaries-grid">
         <div class="summary-card">
           <div class="summary-title" id="t-sumLeaves">رصيد الإجازات</div>
-          <div class="summary-value" id="t-valLeaves">21 يوم</div>
+          <div class="summary-value">21 يوم</div>
         </div>
         <div class="summary-card">
           <div class="summary-title" id="t-sumPermissions">الأذونات المتاحة</div>
-          <div class="summary-value" id="t-valPermissions">3 أذونات</div>
+          <div class="summary-value">3 أذونات</div>
         </div>
         <div class="summary-card" style="grid-column: span 2;">
           <div class="summary-title" id="t-sumSalary">صافي آخر مرتب</div>
-          <div class="summary-value" id="t-valSalary">محفوظ وآمن 🔒</div>
+          <div class="summary-value">محفوظ وآمن 🔒</div>
         </div>
       </div>
+      
       <!-- Services Grid -->
       <div class="services-grid">
         <div class="service-btn" onclick="showPage('view-leaves')">
@@ -715,17 +715,18 @@
           <span id="t-btnDir" class="service-title">دليل التواصل</span>
         </div>
       </div>
+      
       <!-- Career Opportunities Banner -->
-      <div class="career-card" onclick="alert(currentLang==='ar'?'قريباً: استعراض الوظائف الداخلية والترقيات المتاحة.':'Coming Soon: View internal job postings and promotion opportunities.')">
-        <div class="career-card-text">
+      <div class="career-card" onclick="alert('قريباً: استعراض الوظائف الداخلية والترقيات المتاحة.')">
+        <div style="text-align: right;">
           <div id="t-careerTitle" style="font-weight: 700; font-size: 0.9rem; color: #38bdf8;">الفرص الوظيفية الشاغرة</div>
           <div id="t-careerDesc" style="font-size: 0.75rem; color: var(--muted);">استكشف الوظائف الداخلية المتاحة للترقي</div>
         </div>
-        <span class="career-arrow">➔</span>
+        <span style="font-size: 1.2rem; color: #38bdf8;">➔</span>
       </div>
       <button id="t-logoutBtn" onclick="logout()" class="btn-danger">تسجيل الخروج</button>
     </div>
-
+    
     <!-- 3. ID Card View -->
     <div id="view-id-card" class="card hidden">
       <div class="nav-bar">
@@ -750,41 +751,41 @@
       </div>
       <button id="t-saveCardBtn" onclick="downloadCard()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); margin-top:1rem;">حفظ الكارت كصورة</button>
     </div>
-
+    
     <!-- 4. Leaves View -->
     <div id="view-leaves" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" id="t-backBtn2" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span style="font-weight: 700;" id="t-pageLeavesTitle">خدمة الإجازات</span>
+        <span style="font-weight: 700;" id="t-titleLeaves">خدمة الإجازات</span>
       </div>
-      <p id="t-leavesDesc" style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.</p>
+      <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;" id="t-descLeaves">قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.</p>
     </div>
-
+    
     <!-- 5. Payroll View -->
     <div id="view-payroll" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" id="t-backBtn3" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span style="font-weight: 700;" id="t-pagePayTitle">مفردات المرتب</span>
+        <span style="font-weight: 700;" id="t-titlePayroll">مفردات المرتب</span>
       </div>
-      <p id="t-payDesc" style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.</p>
+      <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;" id="t-descPayroll">قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.</p>
     </div>
-
+    
     <!-- 6. Directory View -->
     <div id="view-directory" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" id="t-backBtn4" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span style="font-weight: 700;" id="t-pageDirTitle">دليل التواصل</span>
+        <span style="font-weight: 700;" id="t-titleDir">دليل التواصل</span>
       </div>
-      <p id="t-dirDesc" style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
+      <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;" id="t-descDir">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
     </div>
   </div>
 
-  <!-- Floating Chat Button (مرفوع ومضبوط في الاتجاهين) -->
+  <!-- Floating Chat Button (مرفوع وفلوتنج بوضوح) -->
   <div class="chat-float-btn" onclick="toggleChatPopup()" title="شات الدعم الفني">
     <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
   </div>
 
-  <!-- Real Chatbot Popup Box (يدعم اللغتين الكاملتين) -->
+  <!-- Real Chatbot Popup Box -->
   <div class="chat-popup hidden" id="chatPopup">
     <div class="chat-header">
       <span id="chat-title-text">المساعد الذكي (HR Bot)</span>
@@ -798,13 +799,14 @@
   </div>
 
   <script>
-    // Leaf Fall Animation for Intro Text
+    /* Leaf Fall Animation مع تماثل سرعة الدخول والخروج والحركة المشتتة من حافة الشاشة */
     function runLeafFallIntro() {
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
       const subtitle = document.getElementById('introSubtitle');
       container.innerHTML = "";
       const charElements = [];
+      
       for (let char of text) {
         if (char === ' ') {
           const space = document.createElement('span');
@@ -818,38 +820,48 @@
           charElements.push(span);
         }
       }
+
       const directions = [
         {x:-900, y:-700}, {x:0, y:-900}, {x:900, y:-700}, 
         {x:900, y:0}, {x:900, y:700}, {x:0, y:900}, 
         {x:-900, y:700}, {x:-900, y:0}
       ];
+
+      // تهيئة الحروف مشتتة أعلى حافة الشاشة
       charElements.forEach((el) => {
-        const randomX = (Math.random() - 0.5) * 300; 
+        const randomX = (Math.random() - 0.5) * 400; 
         const randomRotation = (Math.random() - 0.5) * 720;
         gsap.set(el, { 
-          y: -150, 
+          y: -250, 
           x: randomX, 
           rotation: randomRotation, 
           opacity: 0, 
           scale: 0.8 
         });
       });
+
       gsap.set(subtitle, { opacity: 0, y: 20 });
+
       const tl = gsap.timeline({ 
         onComplete: () => document.getElementById('intro-screen').classList.add('fade-out') 
       });
+
+      // حركة دخول بسقوط أوراق الشجر بطيئة (1.5s) تماثل سرعة الخروج
       tl.to(charElements, { 
-        duration: 3.5, 
+        duration: 1.5, 
         x: 0, 
         y: 0, 
         rotation: 360, 
         opacity: 1, 
         scale: 1, 
-        stagger: 0.12, 
-        ease: "power1.out" 
+        stagger: 0.08, 
+        ease: "power2.out" 
       });
-      tl.to(subtitle, { duration: 1.2, opacity: 1, y: 0, ease: "power2.out" }, "-=1.0");
-      tl.to(subtitle, { duration: 1.2, opacity: 0, y: -20, ease: "power1.in" }, "+=2.5");
+
+      tl.to(subtitle, { duration: 1.2, opacity: 1, y: 0, ease: "power2.out" }, "-=0.8");
+      tl.to(subtitle, { duration: 1.2, opacity: 0, y: -20, ease: "power1.in" }, "+=2.0");
+
+      // حركة الخروج المشتتة بنفس سرعة وتوقيت الدخول (1.5s)
       charElements.forEach((el, index) => {
         const dir = directions[index % directions.length];
         tl.to(el, { 
@@ -862,6 +874,7 @@
         }, index === 0 ? "scatter" : `-=1.35`);
       });
     }
+
     window.addEventListener('DOMContentLoaded', runLeafFallIntro);
 
     function togglePasswordVisibility() {
@@ -881,25 +894,22 @@
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
+
     let currentUserData = null;
     let currentEmpCode = "";
     let currentLang = localStorage.getItem('lacto_lang') || 'ar';
 
     const translations = {
       ar: {
-        empCodePlaceholder: "كود الموظف",
-        empPassPlaceholder: "كلمة السر",
+        inputCode: "كود الموظف",
+        inputPass: "كلمة السر",
         subtitle: "بوابة الموظفين الرقمية",
         remember: "تذكرني",
         loginBtn: "دخول الحساب",
         codeLabel: "كود:",
-        greeting: "مساء الخير 🌙",
         sumLeaves: "رصيد الإجازات",
-        valLeaves: "21 يوم",
         sumPermissions: "الأذونات المتاحة",
-        valPermissions: "3 أذونات",
         sumSalary: "صافي آخر مرتب",
-        valSalary: "محفوظ وآمن 🔒",
         btnLeaves: "طلبات الإجازات",
         btnID: "كارت الهوية",
         btnPay: "مفردات المرتب",
@@ -912,17 +922,19 @@
         lblCode: "كود الموظف",
         lblNID: "الرقم القومي",
         saveCardBtn: "حفظ الكارت كصورة",
-        backBtn: "← رجوع",
-        pageLeavesTitle: "خدمة الإجازات",
-        leavesDesc: "قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.",
-        pagePayTitle: "مفردات المرتب",
-        payDesc: "قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.",
-        pageDirTitle: "دليل التواصل",
-        dirDesc: "أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.",
         chatTitle: "المساعد الذكي (HR Bot)",
         chatPlaceholder: "اكتب سؤالك هنا...",
         chatSend: "إرسال",
         chatWelcome: "مرحباً بك! أنا مساعد الموارد البشرية الذكي. كيف يمكنني مساعدتك اليوم؟",
+        greeting: "مساء الخير 🌙",
+        backBtn: "← رجوع",
+        titleLeaves: "خدمة الإجازات",
+        descLeaves: "قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.",
+        titlePayroll: "مفردات المرتب",
+        descPayroll: "قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.",
+        titleDir: "دليل التواصل",
+        descDir: "أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.",
+        checkinPending: "جاري تحديد الموقع الجغرافي...",
         slides: [
           { title: "إعلانات الشركة", badge: "Coming Soon", desc: "أهم الأخبار، الأحداث المباشرة، والمناسبات المرتقبة بالشركة." },
           { title: "تحديثات النظام", badge: "New", desc: "ترقبوا إطلاق ميزات البصمة الجغرافية المتقدمة وطلبات الإجازات الرقمية قريباً." },
@@ -930,19 +942,15 @@
         ]
       },
       en: {
-        empCodePlaceholder: "Employee Code",
-        empPassPlaceholder: "Password",
+        inputCode: "Employee Code",
+        inputPass: "Password",
         subtitle: "Digital Employee Portal",
         remember: "Remember Me",
         loginBtn: "Sign In",
         codeLabel: "Code:",
-        greeting: "Good Evening 🌙",
         sumLeaves: "Leave Balance",
-        valLeaves: "21 Days",
         sumPermissions: "Available Permissions",
-        valPermissions: "3 Permissions",
         sumSalary: "Last Net Salary",
-        valSalary: "Secured & Safe 🔒",
         btnLeaves: "Leave Requests",
         btnID: "ID Card",
         btnPay: "Payroll",
@@ -955,17 +963,19 @@
         lblCode: "Employee Code",
         lblNID: "National ID",
         saveCardBtn: "Save ID Card as Image",
-        backBtn: "Back →",
-        pageLeavesTitle: "Leave Services",
-        leavesDesc: "Coming Soon: Submit leave & permission requests directly for manager approval.",
-        pagePayTitle: "Payroll Statement",
-        payDesc: "Coming Soon: Check monthly payslip statements as soon as issued.",
-        pageDirTitle: "Contact Directory",
-        dirDesc: "Emergency numbers, medical clinic, and HR department contacts.",
         chatTitle: "HR Assistant Bot",
         chatPlaceholder: "Type your question...",
         chatSend: "Send",
         chatWelcome: "Welcome! I am your HR Smart Assistant. How can I help you today?",
+        greeting: "Good evening 🌙",
+        backBtn: "← Back",
+        titleLeaves: "Leaves Service",
+        descLeaves: "Coming Soon: Submit leave & permission requests directly for manager approval.",
+        titlePayroll: "Payroll Details",
+        descPayroll: "Coming Soon: Check your monthly payslip as soon as it is issued.",
+        titleDir: "Contact Directory",
+        descDir: "Emergency numbers, medical clinic, and HR office contacts.",
+        checkinPending: "Locating via GPS...",
         slides: [
           { title: "Company Announcements", badge: "Coming Soon", desc: "Latest news, live events, and upcoming company occasions." },
           { title: "System Updates", badge: "New", desc: "Stay tuned for the launch of advanced geo-attendance and digital leaves." },
@@ -974,21 +984,19 @@
       }
     };
 
+    // تطبيق زر اللغة الشامل على جميع النصوص والمكونات
     function updateContentTranslations() {
       const t = translations[currentLang];
-      document.getElementById('empCode').placeholder = t.empCodePlaceholder;
-      document.getElementById('empPass').placeholder = t.empPassPlaceholder;
+      
+      document.getElementById('empCode').placeholder = t.inputCode;
+      document.getElementById('empPass').placeholder = t.inputPass;
       document.getElementById('t-subtitle').innerText = t.subtitle;
       document.getElementById('t-remember').innerText = t.remember;
       document.getElementById('t-loginBtn').innerText = t.loginBtn;
       document.getElementById('t-codeLabel').innerText = t.codeLabel;
-      document.getElementById('dash-greeting').innerText = t.greeting;
       document.getElementById('t-sumLeaves').innerText = t.sumLeaves;
-      document.getElementById('t-valLeaves').innerText = t.valLeaves;
       document.getElementById('t-sumPermissions').innerText = t.sumPermissions;
-      document.getElementById('t-valPermissions').innerText = t.valPermissions;
       document.getElementById('t-sumSalary').innerText = t.sumSalary;
-      document.getElementById('t-valSalary').innerText = t.valSalary;
       document.getElementById('t-btnLeaves').innerText = t.btnLeaves;
       document.getElementById('t-btnID').innerText = t.btnID;
       document.getElementById('t-btnPay').innerText = t.btnPay;
@@ -1001,19 +1009,20 @@
       document.getElementById('t-lblCode').innerText = t.lblCode;
       document.getElementById('t-lblNID').innerText = t.lblNID;
       document.getElementById('t-saveCardBtn').innerText = t.saveCardBtn;
+      document.getElementById('dash-greeting').innerText = t.greeting;
       
       ['t-backBtn1', 't-backBtn2', 't-backBtn3', 't-backBtn4'].forEach(id => {
-        document.getElementById(id).innerText = t.backBtn;
+        const btn = document.getElementById(id);
+        if(btn) btn.innerText = t.backBtn;
       });
 
-      document.getElementById('t-pageLeavesTitle').innerText = t.pageLeavesTitle;
-      document.getElementById('t-leavesDesc').innerText = t.leavesDesc;
-      document.getElementById('t-pagePayTitle').innerText = t.pagePayTitle;
-      document.getElementById('t-payDesc').innerText = t.payDesc;
-      document.getElementById('t-pageDirTitle').innerText = t.pageDirTitle;
-      document.getElementById('t-dirDesc').innerText = t.dirDesc;
-
-      // الشات بوت
+      document.getElementById('t-titleLeaves').innerText = t.titleLeaves;
+      document.getElementById('t-descLeaves').innerText = t.descLeaves;
+      document.getElementById('t-titlePayroll').innerText = t.titlePayroll;
+      document.getElementById('t-descPayroll').innerText = t.descPayroll;
+      document.getElementById('t-titleDir').innerText = t.titleDir;
+      document.getElementById('t-descDir').innerText = t.descDir;
+      
       document.getElementById('chat-title-text').innerText = t.chatTitle;
       document.getElementById('chatInput').placeholder = t.chatPlaceholder;
       document.getElementById('chat-send-btn').innerText = t.chatSend;
@@ -1026,13 +1035,11 @@
         if(badgeEl) badgeEl.innerText = slide.badge;
         if(descEl) descEl.innerText = slide.desc;
       });
-
-      // تهيئة الشات بوت حسب اللغة
+      
       const chatBody = document.getElementById('chatBody');
       chatBody.innerHTML = `<div class="chat-msg bot">${t.chatWelcome}</div>`;
     }
 
-    /* Chatbot Logic */
     function toggleChatPopup() {
       const popup = document.getElementById('chatPopup');
       popup.classList.toggle('hidden');
@@ -1084,7 +1091,6 @@
       }, 600);
     }
 
-    // Announcement Slider Logic
     let currentSlideIndex = 0;
     const totalSlides = 3;
     let slideInterval;
@@ -1127,7 +1133,11 @@
       resetSlideTimer();
     });
 
-    // Geo-Location Verification
+    window.addEventListener('DOMContentLoaded', () => {
+      selectLanguage(currentLang);
+      resetSlideTimer();
+    });
+
     const COMPANY_LAT = 30.235154;
     const COMPANY_LNG = 31.743997;
     const ALLOWED_RADIUS_METERS = 75;
@@ -1224,9 +1234,6 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      selectLanguage(currentLang);
-      resetSlideTimer();
-
       const savedCode = localStorage.getItem('lacto_saved_code');
       const savedPass = localStorage.getItem('lacto_saved_pass');
       if (savedCode && savedPass) {
