@@ -93,11 +93,11 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1rem;
+      gap: 1.2rem;
       text-align: center;
       padding: 0 1rem;
       width: 100%;
-      max-width: 600px;
+      max-width: 800px;
     }
 
     .intro-title-container {
@@ -112,7 +112,6 @@
 
     .intro-char {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      /* تم تقليل حجم الخط لتفادي الضخامة مع المحافظة على تناسق الشاشات */
       font-size: clamp(1.2rem, 4.5vw, 2rem);
       font-weight: 800;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
@@ -124,12 +123,12 @@
 
     .intro-space { width: 0.4rem; }
 
+    /* تكبير حجم الـ Slogan مع الحفاظ عليه في سطر واحد */
     .intro-subtitle {
       font-family: 'Great Vibes', cursive;
-      /* تصغير الحجم وجعل النص ينضغط في سطر واحد */
-      font-size: clamp(1.1rem, 3.8vw, 1.6rem);
+      font-size: clamp(1.6rem, 5.2vw, 2.7rem);
       color: #38bdf8;
-      text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
       opacity: 0;
       line-height: 1.2;
       white-space: nowrap;
@@ -168,7 +167,7 @@
       -webkit-text-fill-color: transparent;
     }
 
-    /* Language Dropdown Repair */
+    /* Language Dropdown */
     .lang-dropdown-container { 
       position: relative; 
     }
@@ -196,7 +195,7 @@
       border: 1px solid var(--border-color);
       border-radius: 1rem;
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
-      display: none; /* مقفولة بشكل افتراضي */
+      display: none;
       z-index: 1000;
       min-width: 130px;
       backdrop-filter: blur(16px);
@@ -499,7 +498,7 @@
   <div id="intro-screen">
     <div class="intro-content-wrapper">
       <div class="intro-title-container" id="introTitle"></div>
-      <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
+      <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth Journey</div>
     </div>
   </div>
 
@@ -765,7 +764,7 @@
       pass.type = (pass.type === 'password') ? 'text' : 'password';
     }
 
-    // Language Dropdown Control (FIXED)
+    // Language Dropdown Control
     function toggleLangMenu(event) {
       if(event) event.stopPropagation();
       const menu = document.getElementById('langMenu');
