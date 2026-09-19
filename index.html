@@ -123,7 +123,6 @@
 
     .intro-space { width: 0.4rem; }
 
-    /* تكبير حجم الـ Slogan مع الحفاظ عليه في سطر واحد */
     .intro-subtitle {
       font-family: 'Great Vibes', cursive;
       font-size: clamp(1.6rem, 5.2vw, 2.7rem);
@@ -494,7 +493,7 @@
 </head>
 <body>
 
-  <!-- Intro Screen with Tornado Effect -->
+  <!-- Intro Screen with Top Entrance -> Tornado Exit -->
   <div id="intro-screen">
     <div class="intro-content-wrapper">
       <div class="intro-title-container" id="introTitle"></div>
@@ -716,7 +715,7 @@
   </div>
 
   <script>
-    // Intro Tornado Animation
+    // Intro Animation (Top Entrance -> Tornado Exit)
     function runTornadoIntro() {
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
@@ -738,23 +737,57 @@
         }
       }
 
-      const directions = [{x:-900, y:-700}, {x:0, y:-900}, {x:900, y:-700}, {x:900, y:0}, {x:900, y:700}, {x:0, y:900}, {x:-900, y:700}, {x:-900, y:0}];
-      const tl = gsap.timeline({ onComplete: () => document.getElementById('intro-screen').classList.add('fade-out') });
+      const directions = [
+        {x:-900, y:-700}, {x:0, y:-900}, {x:900, y:-700}, 
+        {x:900, y:0}, {x:900, y:700}, {x:0, y:900}, 
+        {x:-900, y:700}, {x:-900, y:0}
+      ];
 
+      const tl = gsap.timeline({ 
+        onComplete: () => document.getElementById('intro-screen').classList.add('fade-out') 
+      });
+
+      // 1. الدخول من أعلى حافة الشاشة
       charElements.forEach((el, index) => {
-        const randomAngle = (index / charElements.length) * Math.PI * 4;
-        const radius = 180 + Math.random() * 80;
-        gsap.set(el, { y: -500 - (index * 30), x: Math.cos(randomAngle)*radius, z: Math.sin(randomAngle)*radius, opacity: 0, scale: 0.2 });
+        gsap.set(el, { 
+          y: -window.innerHeight, 
+          x: (index - charElements.length / 2) * 15, 
+          z: -200, 
+          opacity: 0, 
+          scale: 0.3,
+          rotationX: 90
+        });
       });
       gsap.set(subtitle, { opacity: 0, y: 20 });
 
-      tl.to(charElements, { duration: 2.8, x: 0, y: 0, z: 0, opacity: 1, scale: 1, stagger: 0.09, ease: "power2.out" });
-      tl.to(subtitle, { duration: 1.2, opacity: 1, y: 0, ease: "power2.out" });
-      tl.to(subtitle, { duration: 1.2, opacity: 0, y: -20, ease: "power1.in" }, "+=3.8");
+      // 2. هبوط الحروف إلى المنتصف
+      tl.to(charElements, { 
+        duration: 1.8, 
+        x: 0, 
+        y: 0, 
+        z: 0, 
+        rotationX: 0,
+        opacity: 1, 
+        scale: 1, 
+        stagger: 0.06, 
+        ease: "back.out(1.2)" 
+      });
 
+      // 3. ظهور ثم اختفاء الـ Slogan
+      tl.to(subtitle, { duration: 1.0, opacity: 1, y: 0, ease: "power2.out" }, "-=0.4");
+      tl.to(subtitle, { duration: 1.0, opacity: 0, y: -20, ease: "power1.in" }, "+=3.5");
+
+      // 4. الخروج التورنيدو
       charElements.forEach((el, index) => {
         const dir = directions[index % directions.length];
-        tl.to(el, { duration: 1.5, x: dir.x, y: dir.y, opacity: 0, scale: 0.5, ease: "power1.inOut" }, index === 0 ? "scatter" : `-=1.35`);
+        tl.to(el, { 
+          duration: 1.5, 
+          x: dir.x, 
+          y: dir.y, 
+          opacity: 0, 
+          scale: 0.5, 
+          ease: "power1.inOut" 
+        }, index === 0 ? "scatter" : `-=1.35`);
       });
     }
     window.addEventListener('DOMContentLoaded', runTornadoIntro);
