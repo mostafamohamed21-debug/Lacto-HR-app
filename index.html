@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -6,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LM HR - Lacto HR Hub</title>
   
-  <!-- App Manifest & Branding -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -14,15 +12,16 @@
   <meta name="apple-mobile-web-app-title" content="LM HR">
   <link rel="apple-touch-icon" href="logo.png">
   <link rel="icon" type="image/png" href="logo.png">
-  <!-- GSAP Library & Tools -->
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&display=swap');
+    
     :root {
       --bg: #0b0f19;
       --card-bg: rgba(15, 23, 42, 0.78);
@@ -34,6 +33,7 @@
       --success: #10b981;
       --muted: #cbd5e1;
     }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -41,6 +41,7 @@
       font-family: 'Cairo', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
+
     body {
       background: linear-gradient(rgba(11, 15, 25, 0.78), rgba(11, 15, 25, 0.88)), url('background.jpg');
       background-size: cover;
@@ -53,9 +54,9 @@
       flex-direction: column;
       align-items: center;
       padding: 1.5rem 1rem 3rem 1rem;
-      perspective: 1000px;
       overflow-x: hidden;
     }
+
     /* Intro Screen */
     #intro-screen {
       position: fixed;
@@ -73,8 +74,6 @@
       justify-content: center;
       align-items: center;
       z-index: 9999;
-      perspective: 1200px;
-      overflow: hidden;
       transition: opacity 1.2s ease, visibility 1.2s ease;
     }
     #intro-screen.fade-out {
@@ -106,7 +105,6 @@
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
       display: inline-block;
     }
     .intro-space { width: 0.4rem; }
@@ -114,15 +112,14 @@
       font-family: 'Great Vibes', cursive;
       font-size: clamp(1.5rem, 5vw, 2.5rem);
       color: #38bdf8;
-      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
       opacity: 0;
       line-height: 1.4;
       width: 100%;
       text-align: center;
       white-space: nowrap;
     }
-    
-    /* Main App Layout & Full-Width Header */
+
+    /* Header & Navbar */
     .app-header {
       width: 100vw;
       background: #0d1527;
@@ -157,7 +154,8 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    
+
+    /* Fixed Language Dropdown Position */
     .lang-dropdown-container { 
       position: relative; 
       display: flex;
@@ -175,7 +173,6 @@
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      backdrop-filter: blur(12px);
       outline: none;
     }
     .lang-dropdown-menu {
@@ -188,7 +185,6 @@
       display: none;
       z-index: 300;
       min-width: 130px;
-      backdrop-filter: blur(16px);
       overflow: hidden;
     }
     [dir="rtl"] .lang-dropdown-menu { left: 0; right: auto; }
@@ -202,11 +198,11 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      transition: background 0.2s;
     }
     .lang-option:hover { background: rgba(56, 189, 248, 0.3); color: #38bdf8; }
-    
+
     .container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 1rem; }
+    
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
@@ -214,9 +210,10 @@
       -webkit-backdrop-filter: blur(16px);
       padding: 1.75rem 1.5rem;
       border-radius: 1.5rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
       text-align: center;
     }
+
     input {
       width: 100%;
       padding: 0.9rem 1rem;
@@ -230,7 +227,8 @@
       outline: none;
     }
     input:focus { border-color: #38bdf8; box-shadow: 0 0 15px var(--accent-glow); }
-    
+
+    /* Fixed Password Container & Toggle Button */
     .password-container { 
       position: relative; 
       width: 100%; 
@@ -238,8 +236,17 @@
       display: flex;
       align-items: center;
     }
-    .password-container input { margin: 0; padding-right: 3rem; padding-left: 1rem; }
-    [dir="ltr"] .password-container input { padding-right: 1rem; padding-left: 3rem; }
+    .password-container input { 
+      margin: 0; 
+      padding-right: 3rem; 
+      padding-left: 1rem; 
+      text-align: right;
+    }
+    [dir="ltr"] .password-container input { 
+      padding-right: 1rem; 
+      padding-left: 3rem; 
+      text-align: left;
+    }
     .toggle-password {
       position: absolute;
       top: 50%;
@@ -260,29 +267,45 @@
     }
     [dir="ltr"] .toggle-password { right: auto; left: 0.75rem; }
     .toggle-password svg { width: 20px; height: 20px; fill: currentColor; }
-    
+
     .checkbox-container {
-      display: flex; align-items: center; justify-content: flex-start;
-      gap: 0.5rem; margin: 0.75rem 0; font-size: 0.85rem; color: var(--muted); cursor: pointer;
+      display: flex; 
+      align-items: center; 
+      justify-content: flex-start;
+      gap: 0.5rem; 
+      margin: 0.75rem 0; 
+      font-size: 0.85rem; 
+      color: var(--muted); 
+      cursor: pointer;
     }
     .checkbox-container input[type="checkbox"] { width: 18px; height: 18px; accent-color: #38bdf8; margin: 0; }
+
     button {
-      width: 100%; padding: 0.95rem; border-radius: 1.25rem; border: none;
+      width: 100%; 
+      padding: 0.95rem; 
+      border-radius: 1.25rem; 
+      border: none;
       background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
-      color: #0b0f19; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 0.85rem;
+      color: #0b0f19; 
+      font-weight: 700; 
+      font-size: 1rem; 
+      cursor: pointer; 
+      margin-top: 0.85rem;
       box-shadow: 0 8px 0 #026595, 0 12px 20px rgba(0, 0, 0, 0.4);
       transition: all 0.15s ease;
     }
     button:active { transform: translateY(6px); box-shadow: 0 2px 0 #026595; }
+    
     .btn-danger {
       background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
       box-shadow: 0 8px 0 #991b1b, 0 12px 20px rgba(220, 38, 38, 0.3);
       color: #fff;
     }
     .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
-    .hidden { display: none !important; }
     
-    /* Full-Width User Greeting Header */
+    .hidden { display: none !important; }
+
+    /* Dashboard & Header */
     .user-header-card {
       width: 100vw;
       position: relative;
@@ -315,109 +338,69 @@
       color: #38bdf8; font-size: 0.8rem; font-weight: 700;
       display: inline-block; margin-top: 0.1rem;
     }
-    
-    /* Notification Container with Popup */
+
+    /* Notifications */
     .notification-wrapper {
       position: relative;
       display: inline-block;
     }
     .notification-btn {
-      width: 45px;
-      height: 45px;
+      width: 45px; height: 45px;
       background: #1e293b;
       border: 1px solid rgba(56, 189, 248, 0.4);
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      position: relative;
-      color: #38bdf8;
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
-      transition: transform 0.2s;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; position: relative; color: #38bdf8;
     }
-    .notification-btn:hover { transform: scale(1.05); }
     .notification-btn svg { width: 22px; height: 22px; fill: currentColor; }
     .notification-badge {
-      position: absolute;
-      top: 2px;
-      right: 2px;
-      width: 10px;
-      height: 10px;
-      background: #ef4444;
-      border-radius: 50%;
-      border: 2px solid #0d1527;
+      position: absolute; top: 2px; right: 2px;
+      width: 10px; height: 10px; background: #ef4444;
+      border-radius: 50%; border: 2px solid #0d1527;
     }
-    
     .notification-popup {
-      position: absolute;
-      top: 0;
-      left: calc(100% + 12px);
+      position: absolute; top: 0; left: calc(100% + 12px);
       background: rgba(15, 23, 42, 0.98);
       border: 1px solid rgba(56, 189, 248, 0.4);
-      border-radius: 1rem;
-      padding: 0.75rem 1rem;
-      width: 210px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
-      backdrop-filter: blur(12px);
-      z-index: 400;
-      display: none;
-      text-align: right;
+      border-radius: 1rem; padding: 0.75rem 1rem; width: 210px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6); display: none; text-align: right; z-index: 400;
     }
     [dir="ltr"] .notification-popup { left: auto; right: calc(100% + 12px); text-align: left; }
     .notification-popup.show { display: block; }
     .notification-popup-title { font-size: 0.75rem; font-weight: 800; color: #38bdf8; margin-bottom: 0.2rem; }
     .notification-popup-desc { font-size: 0.7rem; color: var(--muted); line-height: 1.4; }
-    
-    /* Fingerprint Check-in Card */
+
+    /* Checkin Card */
     .checkin-card {
       background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(15, 23, 42, 0.95));
       border: 1px solid rgba(56, 189, 248, 0.5);
       border-radius: 1.5rem;
       padding: 0.75rem 1.25rem;
       text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.6), inset 0 0 15px rgba(56, 189, 248, 0.2);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
       cursor: pointer;
-      transition: all 0.3s ease;
       color: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 0.3rem;
-      position: relative;
-      z-index: 1;
     }
-    .checkin-card:hover { border-color: #38bdf8; box-shadow: 0 10px 25px rgba(0,0,0,0.6), inset 0 0 20px rgba(56, 189, 248, 0.3); }
     .checkin-top-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      padding: 0 0.2rem;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #38bdf8;
+      display: flex; justify-content: space-between; align-items: center; width: 100%;
+      font-size: 0.75rem; font-weight: 700; color: #38bdf8;
     }
     .checkin-main-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      padding: 0.2rem 0.5rem;
+      display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0.2rem 0.5rem;
     }
     .fingerprint-icon-wrap {
-      width: 45px; height: 45px;
-      background: rgba(56, 189, 248, 0.2);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      color: #38bdf8;
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+      width: 45px; height: 45px; background: rgba(56, 189, 248, 0.2);
+      border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; color: #38bdf8;
     }
     .fingerprint-icon-wrap svg { width: 24px; height: 24px; fill: currentColor; }
     .checkin-status-text { font-size: 0.8rem; font-weight: 700; color: var(--text); }
-    
-    /* Updated 5-Slides Slider */
+
+    /* Slider Card */
     .announcement-card {
       background: rgba(15, 23, 42, 0.8);
       border: 1px solid var(--border-color);
@@ -426,8 +409,6 @@
       text-align: right;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      cursor: grab;
     }
     [dir="ltr"] .announcement-card { text-align: left; }
     .slider-track { display: flex; transition: transform 0.6s ease-in-out; width: 100%; }
@@ -442,93 +423,49 @@
     .slider-dots { display: flex; justify-content: center; gap: 0.35rem; align-items: center; margin-top: 0.5rem; }
     .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s; }
     .dot.active { width: 18px; border-radius: 4px; background: #38bdf8; }
-    
-    /* Summaries Grid */
-    .summaries-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.85rem;
-    }
+
+    /* Summaries & Services */
+    .summaries-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
     .summary-card {
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid var(--border-color);
-      border-radius: 1.25rem;
-      padding: 1rem;
-      text-align: right;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      background: rgba(15, 23, 42, 0.85); border: 1px solid var(--border-color);
+      border-radius: 1.25rem; padding: 1rem; text-align: right;
     }
     [dir="ltr"] .summary-card { text-align: left; }
     .summary-title { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.3rem; font-weight: 600; }
     .summary-value { font-size: 1.1rem; font-weight: 800; color: #38bdf8; }
-    
-    /* Rearranged Services Grid (No overlapping, clean layout) */
-    .services-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-top: 0.5rem;
-    }
+
+    .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem; }
     .service-btn {
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid var(--border-color);
-      border-radius: 1.25rem;
-      padding: 1.2rem 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-      transition: all 0.2s ease;
+      background: rgba(15, 23, 42, 0.85); border: 1px solid var(--border-color);
+      border-radius: 1.25rem; padding: 1.2rem 1rem; display: flex;
+      flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
       min-height: 110px;
     }
     .service-btn:hover { border-color: #38bdf8; transform: translateY(-3px); }
     .service-icon-box {
       width: 44px; height: 44px; border-radius: 1rem;
       background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3);
-      color: #38bdf8; display: flex; align-items: center; justify-content: center;
-      margin-bottom: 0.5rem;
+      color: #38bdf8; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;
     }
     .service-icon-box svg { width: 22px; height: 22px; fill: currentColor; }
     .service-title { font-size: 0.85rem; font-weight: 700; color: var(--text); text-align: center; }
-    
-    /* Career Banner */
+
     .career-card {
       background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(15, 23, 42, 0.9));
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      border-radius: 1.25rem;
-      padding: 1.1rem 1.25rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      transition: all 0.2s ease;
+      border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 1.25rem;
+      padding: 1.1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer;
     }
-    .career-card:hover { border-color: #38bdf8; transform: translateY(-2px); }
-    
-    /* ID Card & Sub-pages with Fixed Back Buttons */
+
     .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
     .back-btn { 
-      background: rgba(51, 65, 85, 0.9); 
-      border: 1px solid var(--border-color); 
-      width: auto !important; 
-      padding: 0.5rem 1.1rem !important; 
-      font-size: 0.85rem !important; 
-      font-weight: 700;
-      margin: 0 !important; 
-      border-radius: 0.8rem; 
-      cursor: pointer;
-      color: var(--text);
-      box-shadow: none !important;
+      background: rgba(51, 65, 85, 0.9); border: 1px solid var(--border-color); 
+      width: auto !important; padding: 0.5rem 1.1rem !important; font-size: 0.85rem !important; 
+      font-weight: 700; margin: 0 !important; border-radius: 0.8rem; cursor: pointer; color: var(--text); 
     }
-    .back-btn:hover { background: rgba(56, 189, 248, 0.2); border-color: #38bdf8; }
-    
+
     .id-card {
       background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(11, 15, 25, 0.98));
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      border-radius: 1.5rem; padding: 1.5rem; position: relative;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 1.5rem; padding: 1.5rem; text-align: center;
     }
     .profile-img { width: 95px; height: 95px; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover; margin: 0 auto 0.75rem auto; display: block; }
     .info-grid {
@@ -541,96 +478,38 @@
     .info-val { font-weight: 700; color: var(--text); }
     .qr-container { background: #fff; padding: 0.65rem; border-radius: 1rem; display: inline-block; }
 
-    /* Active Chatbot Floating Widget Styles */
+    /* Chatbot Widget */
     #chatbot-fab {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 55px;
-      height: 55px;
+      position: fixed; bottom: 20px; right: 20px; width: 55px; height: 55px;
       background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #0b0f19;
-      cursor: pointer;
-      box-shadow: 0 8px 25px rgba(56, 189, 248, 0.5);
-      z-index: 9998;
-      transition: transform 0.2s ease;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      color: #0b0f19; cursor: pointer; box-shadow: 0 8px 25px rgba(56, 189, 248, 0.5); z-index: 9998;
     }
     [dir="ltr"] #chatbot-fab { right: 20px; left: auto; }
-    #chatbot-fab:hover { transform: scale(1.1); }
     #chatbot-fab svg { width: 28px; height: 28px; fill: currentColor; }
-    
+
     #chatbot-window {
-      position: fixed;
-      bottom: 85px;
-      right: 20px;
-      width: 330px;
-      max-width: calc(100vw - 40px);
-      height: 430px;
-      background: rgba(15, 23, 42, 0.96);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      border-radius: 1.25rem;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-      backdrop-filter: blur(16px);
-      display: none;
-      flex-direction: column;
-      z-index: 9999;
-      overflow: hidden;
+      position: fixed; bottom: 85px; right: 20px; width: 330px; max-width: calc(100vw - 40px);
+      height: 430px; background: rgba(15, 23, 42, 0.96); border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 1.25rem; box-shadow: 0 15px 35px rgba(0,0,0,0.6); display: none; flex-direction: column; z-index: 9999; overflow: hidden;
     }
     [dir="ltr"] #chatbot-window { right: 20px; left: auto; }
     #chatbot-window.show { display: flex; }
     .chatbot-header {
-      background: rgba(30, 41, 59, 0.9);
-      padding: 0.75rem 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border-color);
+      background: rgba(30, 41, 59, 0.9); padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color);
     }
     .chatbot-title { font-size: 0.85rem; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 0.4rem; }
-    .chatbot-close { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.1rem; width: auto; margin:0; padding:0; box-shadow:none !important; }
-    .chatbot-messages {
-      flex: 1;
-      padding: 0.75rem;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      font-size: 0.8rem;
-    }
-    .chat-msg {
-      max-width: 80%;
-      padding: 0.5rem 0.75rem;
-      border-radius: 0.75rem;
-      line-height: 1.4;
-    }
-    .chat-msg.bot { background: rgba(30, 41, 59, 0.8); color: var(--text); align-self: flex-start; border-bottom-left-radius: 2px; }
-    .chat-msg.user { background: #0284c7; color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
-    .chatbot-input-area {
-      padding: 0.6rem;
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      gap: 0.4rem;
-      background: rgba(11, 15, 25, 0.9);
-    }
-    .chatbot-input-area input {
-      margin: 0;
-      padding: 0.5rem 0.75rem;
-      font-size: 0.8rem;
-      text-align: right;
-    }
+    .chatbot-close { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.1rem; }
+    .chatbot-messages { flex: 1; padding: 0.75rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.8rem; }
+    .chat-msg { max-width: 80%; padding: 0.5rem 0.75rem; border-radius: 0.75rem; line-height: 1.4; }
+    .chat-msg.bot { background: rgba(30, 41, 59, 0.8); color: var(--text); align-self: flex-start; }
+    .chat-msg.user { background: #0284c7; color: #fff; align-self: flex-end; }
+    .chatbot-input-area { padding: 0.6rem; border-top: 1px solid var(--border-color); display: flex; gap: 0.4rem; background: rgba(11, 15, 25, 0.9); }
+    .chatbot-input-area input { margin: 0; padding: 0.5rem 0.75rem; font-size: 0.8rem; text-align: right; }
     [dir="ltr"] .chatbot-input-area input { text-align: left; }
-    .chatbot-send-btn {
-      width: auto !important;
-      margin: 0 !important;
-      padding: 0.5rem 0.9rem !important;
-      font-size: 0.8rem !important;
-      border-radius: 0.75rem !important;
-    }
+    .chatbot-send-btn { width: auto !important; margin: 0 !important; padding: 0.5rem 0.9rem !important; font-size: 0.8rem !important; border-radius: 0.75rem !important; }
   </style>
+
   <script>
     let wakeLock = null;
     async function requestWakeLock() {
@@ -645,6 +524,7 @@
   </script>
 </head>
 <body>
+
   <!-- Intro Screen -->
   <div id="intro-screen">
     <div class="intro-content-wrapper">
@@ -653,7 +533,7 @@
     </div>
   </div>
   
-  <!-- App Header (Full Width with Logo and Language Selector) -->
+  <!-- App Header -->
   <div class="app-header">
     <div class="brand-container">
       <img src="logo.png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
@@ -687,6 +567,7 @@
           </svg>
         </button>
       </div>
+
       <label class="checkbox-container">
         <input type="checkbox" id="rememberMe">
         <span id="t-remember">تذكرني</span>
@@ -698,7 +579,6 @@
     
     <!-- 2. Dashboard View -->
     <div id="view-dashboard" class="hidden">
-      <!-- Full-Width User Greeting Header -->
       <div class="user-header-card">
         <div class="user-header-right">
           <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
@@ -720,7 +600,7 @@
         </div>
       </div>
       
-      <!-- Fingerprint Check-in Card -->
+      <!-- Checkin Card -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="checkin-top-row">
           <span style="font-size: 0.85rem; font-weight: 800;">Sign In</span>
@@ -738,7 +618,7 @@
         </div>
       </div>
       
-      <!-- Company Announcements Slider (Updated to 5 Slides) -->
+      <!-- Announcements Slider -->
       <div class="announcement-card" id="announcementCard">
         <div class="slider-track" id="sliderTrack">
           <div class="slide-item">
@@ -786,7 +666,7 @@
         </div>
       </div>
       
-      <!-- Summaries Grid -->
+      <!-- Summaries -->
       <div class="summaries-grid">
         <div class="summary-card">
           <div class="summary-title" id="t-sumLeaves">رصيد الإجازات</div>
@@ -802,7 +682,7 @@
         </div>
       </div>
       
-      <!-- Services Grid (Rearranged and properly aligned) -->
+      <!-- Services Grid -->
       <div class="services-grid">
         <div class="service-btn" onclick="showPage('view-leaves')">
           <div class="service-icon-box">
@@ -830,14 +710,14 @@
         </div>
       </div>
       
-      <!-- Career Opportunities Banner -->
       <div class="career-card" onclick="alert(currentLang === 'ar' ? 'قريباً: استعراض الوظائف الداخلية والترقيات المتاحة.' : 'Coming Soon: Browse internal jobs and available promotions.')">
         <div style="text-align: right;" id="careerTextWrapper">
           <div id="t-careerTitle" style="font-weight: 700; font-size: 0.9rem; color: #38bdf8;">الفرص الوظيفية الشاغرة</div>
           <div id="t-careerDesc" style="font-size: 0.75rem; color: var(--muted);">استكشف الوظائف الداخلية المتاحة للترقي</div>
         </div>
-        <span style="font-size: 1.2rem; color: #38bdf8;" id="careerArrow">➔</span>
+        <span style="font-size: 1.2rem; color: #38bdf8;">➔</span>
       </div>
+      
       <button id="t-logoutBtn" onclick="logout()" class="btn-danger">تسجيل الخروج</button>
     </div>
     
@@ -894,7 +774,7 @@
     </div>
   </div>
 
-  <!-- Active Chatbot Floating Widget -->
+  <!-- Chatbot Widget -->
   <div id="chatbot-fab" onclick="toggleChatbot()" title="مساعد الرتات / Chatbot">
     <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
   </div>
@@ -904,16 +784,15 @@
       <button class="chatbot-close" onclick="toggleChatbot()">✕</button>
     </div>
     <div class="chatbot-messages" id="chatbotMessages">
-      <div class="chat-msg bot" id="t-botWelcome">أهلاً بك! كيف يمكنني مساعدتك اليوم في خدمات الموارد البشرية؟ / Hello! How can I help you today?</div>
+      <div class="chat-msg bot" id="t-botWelcome">أهلاً بك! كيف يمكنني مساعدتك اليوم في خدمات الموارد البشرية؟</div>
     </div>
     <div class="chatbot-input-area">
-      <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا... / Type here..." onkeypress="handleChatKeyPress(event)">
+      <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..." onkeypress="handleChatKeyPress(event)">
       <button class="chatbot-send-btn" onclick="sendChatMessage()" id="t-sendBtn">إرسال</button>
     </div>
   </div>
 
   <script>
-    /* Leaf Fall Animation */
     function runLeafFallIntro() {
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
@@ -934,57 +813,25 @@
           charElements.push(span);
         }
       }
-      const directions = [
-        {x:-900, y:-700}, {x:0, y:-900}, {x:900, y:-700}, 
-        {x:900, y:0}, {x:900, y:700}, {x:0, y:900}, 
-        {x:-900, y:700}, {x:-900, y:0}
-      ];
       charElements.forEach((el) => {
-        const randomX = (Math.random() - 0.5) * 400; 
-        const randomRotation = (Math.random() - 0.5) * 720;
-        gsap.set(el, { 
-          y: -250, 
-          x: randomX, 
-          rotation: randomRotation, 
-          opacity: 0, 
-          scale: 0.8 
-        });
+        gsap.set(el, { y: -250, x: (Math.random() - 0.5) * 400, rotation: (Math.random() - 0.5) * 720, opacity: 0, scale: 0.8 });
       });
       gsap.set(subtitle, { opacity: 0, y: 20 });
-      const tl = gsap.timeline({ 
-        onComplete: () => document.getElementById('intro-screen').classList.add('fade-out') 
-      });
-      tl.to(charElements, { 
-        duration: 1.5, 
-        x: 0, 
-        y: 0, 
-        rotation: 360, 
-        opacity: 1, 
-        scale: 1, 
-        stagger: 0.08, 
-        ease: "power2.out" 
-      });
+      const tl = gsap.timeline({ onComplete: () => document.getElementById('intro-screen').classList.add('fade-out') });
+      tl.to(charElements, { duration: 1.5, x: 0, y: 0, rotation: 360, opacity: 1, scale: 1, stagger: 0.08, ease: "power2.out" });
       tl.to(subtitle, { duration: 1.2, opacity: 1, y: 0, ease: "power2.out" }, "-=0.8");
       tl.to(subtitle, { duration: 1.2, opacity: 0, y: -20, ease: "power1.in" }, "+=2.0");
       charElements.forEach((el, index) => {
-        const dir = directions[index % directions.length];
-        tl.to(el, { 
-          duration: 1.5, 
-          x: dir.x, 
-          y: dir.y, 
-          opacity: 0, 
-          scale: 0.5, 
-          ease: "power1.inOut" 
-        }, index === 0 ? "scatter" : `-=1.35`);
+        tl.to(el, { duration: 1.5, x: 0, y: -900, opacity: 0, scale: 0.5, ease: "power1.inOut" }, index === 0 ? "scatter" : `-=1.35`);
       });
     }
     window.addEventListener('DOMContentLoaded', runLeafFallIntro);
+
     function togglePasswordVisibility() {
       const pass = document.getElementById('empPass');
       pass.type = (pass.type === 'password') ? 'text' : 'password';
     }
-    
-    /* Firebase & App Logic */
+
     const firebaseConfig = {
       apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
       authDomain: "lacto-hr-system.firebaseapp.com",
@@ -999,7 +846,7 @@
     let currentUserData = null;
     let currentEmpCode = "";
     let currentLang = localStorage.getItem('lacto_lang') || 'ar';
-    
+
     const translations = {
       ar: {
         inputCode: "كود الموظف",
@@ -1034,7 +881,6 @@
         descPayroll: "قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.",
         titleDir: "دليل التواصل",
         descDir: "أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.",
-        checkinPending: "جاري تحديد الموقع الجغرافي...",
         popupTitle: "تنبيهات النظام",
         popupDesc: "لا توجد إشعارات جديدة. تم تفعيل النظام بنجاح!",
         botName: "مساعد LM HR الذكي",
@@ -1082,7 +928,6 @@
         descPayroll: "Coming Soon: Check your monthly payslip as soon as it is issued.",
         titleDir: "Contact Directory",
         descDir: "Emergency numbers, medical clinic, and HR office contacts.",
-        checkinPending: "Locating via GPS...",
         popupTitle: "System Alerts",
         popupDesc: "No new notifications. System activated successfully!",
         botName: "LM HR Smart Assistant",
@@ -1127,23 +972,12 @@
       document.getElementById('t-saveCardBtn').innerText = t.saveCardBtn;
       document.getElementById('t-popupTitle').innerText = t.popupTitle;
       document.getElementById('t-popupDesc').innerText = t.popupDesc;
-      
       document.getElementById('t-botName').innerText = t.botName;
       document.getElementById('t-botWelcome').innerText = t.botWelcome;
       document.getElementById('t-sendBtn').innerText = t.sendBtn;
       document.getElementById('chatInput').placeholder = t.chatPlaceholder;
-      
-      const careerTextWrap = document.getElementById('careerTextWrapper');
-      const careerArrow = document.getElementById('careerArrow');
-      if (currentLang === 'en') {
-        careerTextWrap.style.textAlign = 'left';
-        careerArrow.innerText = '➔';
-      } else {
-        careerTextWrap.style.textAlign = 'right';
-        careerArrow.innerText = '➔';
-      }
       document.getElementById('dash-greeting').innerText = t.greeting;
-      
+
       ['t-backBtn1', 't-backBtn2', 't-backBtn3', 't-backBtn4'].forEach(id => {
         const btn = document.getElementById(id);
         if(btn) btn.innerText = t.backBtn;
@@ -1154,7 +988,7 @@
       document.getElementById('t-descPayroll').innerText = t.descPayroll;
       document.getElementById('t-titleDir').innerText = t.titleDir;
       document.getElementById('t-descDir').innerText = t.descDir;
-      
+
       t.slides.forEach((slide, idx) => {
         const titleEl = document.querySelector(`.slide-title-${idx + 1}`);
         const badgeEl = document.querySelector(`.slide-badge-${idx + 1}`);
@@ -1165,120 +999,56 @@
       });
     }
 
-    // Toggle Notification Popup
     function toggleNotificationPopup(event) {
       event.stopPropagation();
-      const popup = document.getElementById('notificationPopup');
-      popup.classList.toggle('show');
+      document.getElementById('notificationPopup').classList.toggle('show');
     }
     window.addEventListener('click', () => {
       const popup = document.getElementById('notificationPopup');
-      if (popup && popup.classList.contains('show')) {
-        popup.classList.remove('show');
-      }
+      if (popup && popup.classList.contains('show')) popup.classList.remove('show');
     });
 
-    // Chatbot Toggle & Messaging Logic (Bilingual Arabic & English)
     function toggleChatbot() {
-      const chatWin = document.getElementById('chatbot-window');
-      chatWin.classList.toggle('show');
+      document.getElementById('chatbot-window').classList.toggle('show');
     }
-
-    function handleChatKeyPress(e) {
-      if (e.key === 'Enter') {
-        sendChatMessage();
-      }
-    }
-
+    function handleChatKeyPress(e) { if (e.key === 'Enter') sendChatMessage(); }
     function sendChatMessage() {
       const input = document.getElementById('chatInput');
       const text = input.value.trim();
       if (!text) return;
-
       const messagesContainer = document.getElementById('chatbotMessages');
       
-      // Append User Message
       const userMsg = document.createElement('div');
       userMsg.className = 'chat-msg user';
       userMsg.innerText = text;
       messagesContainer.appendChild(userMsg);
       input.value = '';
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-      // Bot Response Simulation
+      
       setTimeout(() => {
         const botMsg = document.createElement('div');
         botMsg.className = 'chat-msg bot';
-        
-        const lowerText = text.toLowerCase();
-        if (currentLang === 'ar') {
-          if (lowerText.includes('إجازة') || lowerText.includes('اجازات')) {
-            botMsg.innerText = "يمكنك متابعة رصيد إجازاتك من الشاشة الرئيسية (21 يوم) أو الدخول لقسم طلبات الإجازات.";
-          } else if (lowerText.includes('مرتب') || lowerText.includes('راتب')) {
-            botMsg.innerText = "يتم إتاحة مفردات المرتب فور إصدارها من إدارة الرواتب شهرياً.";
-          } else if (lowerText.includes('hello') || lowerText.includes('hi')) {
-            botMsg.innerText = "Hello! How can I assist you with LM HR services?";
-          } else {
-            botMsg.innerText = "شكراً لتواصلك! تم تسجيل استفسارك وسيتم الرد عليك قريباً من قبل ممثل الموارد البشرية.";
-          }
-        } else {
-          if (lowerText.includes('leave') || lowerText.includes('vacation')) {
-            botMsg.innerText = "You can check your leave balance (21 days) on the main dashboard or via the Leaves section.";
-          } else if (lowerText.includes('salary') || lowerText.includes('pay')) {
-            botMsg.innerText = "Payslips are updated monthly as soon as they are issued by the payroll department.";
-          } else {
-            botMsg.innerText = "Thank you for your message! Your query has been noted and HR will follow up with you.";
-          }
-        }
-
+        botMsg.innerText = currentLang === 'ar' ? "شكراً لتواصلك! سيتم الرد عليك قريباً من قبل ممثل الموارد البشرية." : "Thank you! HR will follow up with you shortly.";
         messagesContainer.appendChild(botMsg);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
       }, 600);
     }
 
-    // 5-Slides Slider Logic
     let currentSlideIndex = 0;
     const totalSlides = 5;
     let slideInterval;
     function showSlide(index) {
       currentSlideIndex = (index + totalSlides) % totalSlides;
-      const track = document.getElementById('sliderTrack');
-      track.style.transform = `translateX(${currentSlideIndex * (currentLang === 'ar' ? 100 : -100)}%)`;
-      
-      const dots = document.querySelectorAll('.dot');
-      dots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentSlideIndex);
-      });
+      document.getElementById('sliderTrack').style.transform = `translateX(${currentSlideIndex * (currentLang === 'ar' ? 100 : -100)}%)`;
+      document.querySelectorAll('.dot').forEach((dot, i) => dot.classList.toggle('active', i === currentSlideIndex));
     }
-    function currentSlide(index) {
-      showSlide(index);
-      resetSlideTimer();
-    }
-    function nextSlide() {
-      showSlide(currentSlideIndex + 1);
-    }
-    function resetSlideTimer() {
-      clearInterval(slideInterval);
-      slideInterval = setInterval(nextSlide, 5500);
-    }
-    let touchStartX = 0;
-    const cardEl = document.getElementById('announcementCard');
-    cardEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; clearInterval(slideInterval); });
-    cardEl.addEventListener('touchend', e => {
-      let touchEndX = e.changedTouches[0].clientX;
-      if (touchStartX - touchEndX > 50) {
-        nextSlide();
-      } else if (touchEndX - touchStartX > 50) {
-        showSlide(currentSlideIndex - 1);
-      }
-      resetSlideTimer();
-    });
+    function currentSlide(index) { showSlide(index); resetSlideTimer(); }
+    function nextSlide() { showSlide(currentSlideIndex + 1); }
+    function resetSlideTimer() { clearInterval(slideInterval); slideInterval = setInterval(nextSlide, 5500); }
 
     window.addEventListener('DOMContentLoaded', () => {
       selectLanguage(currentLang);
       resetSlideTimer();
-      
-      // Auto-retrieve saved credentials if Remember Me was active
       const savedCode = localStorage.getItem('lacto_saved_code');
       const savedPass = localStorage.getItem('lacto_saved_pass');
       if (savedCode && savedPass) {
@@ -1291,16 +1061,15 @@
     const COMPANY_LAT = 30.235154;
     const COMPANY_LNG = 31.743997;
     const ALLOWED_RADIUS_METERS = 75;
+
     function calculateDistance(lat1, lon1, lat2, lon2) {
       const R = 6371e3;
       const dLat = (lat2 - lat1) * Math.PI / 180;
       const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                Math.sin(dLon/2) * Math.sin(dLon/2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      return R * c;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+      return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
     }
+
     function verifyLocationAndCheckIn() {
       const statusText = document.getElementById('checkinStatusText');
       statusText.innerText = currentLang === 'ar' ? "جاري تفعيل الـ GPS..." : "Activating GPS...";
@@ -1310,21 +1079,18 @@
       }
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
-          const distance = calculateDistance(userLat, userLng, COMPANY_LAT, COMPANY_LNG);
+          const distance = calculateDistance(position.coords.latitude, position.coords.longitude, COMPANY_LAT, COMPANY_LNG);
           if (distance <= ALLOWED_RADIUS_METERS) {
             statusText.innerText = currentLang === 'ar' ? `تم تسجيل الحضور بنجاح! (${Math.round(distance)} متر)` : `Check-in successful! (${Math.round(distance)}m)`;
           } else {
             statusText.innerText = currentLang === 'ar' ? `خارج نطاق الشركة (${Math.round(distance)} متر)` : `Outside range (${Math.round(distance)}m)`;
           }
         },
-        (error) => {
-          statusText.innerText = currentLang === 'ar' ? "تعذر الحصول على موقعك." : "Unable to retrieve location.";
-        },
+        () => { statusText.innerText = currentLang === 'ar' ? "تعذر الحصول على موقعك." : "Unable to retrieve location."; },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     }
+
     function showPage(pageId) {
       ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory'].forEach(id => {
         document.getElementById(id).classList.add('hidden');
@@ -1339,6 +1105,7 @@
       const rememberMe = document.getElementById('rememberMe').checked;
       const errorEl = document.getElementById('error');
       if (!code) { errorEl.innerText = currentLang === 'ar' ? "يرجى إدخال كود الموظف" : "Please enter employee code"; return; }
+      
       db.ref('users/' + code).once('value').then((snapshot) => {
         if (snapshot.exists()) {
           const user = snapshot.val();
@@ -1357,16 +1124,17 @@
             localStorage.removeItem('lacto_saved_code');
             localStorage.removeItem('lacto_saved_pass');
           }
+          
           document.getElementById('dash-name').innerText = user.name || "--";
           document.getElementById('dash-code-val').innerText = code;
           document.getElementById('dash-avatar').src = user.photo || "https://i.pravatar.cc/150?img=12";
-          
           document.getElementById('userName').innerText = user.name || "--";
           document.getElementById('userJob').innerText = user.job || "--";
           document.getElementById('userDept').innerText = user.dept || "--";
           document.getElementById('userCodeVal').innerText = code;
           document.getElementById('userNID').innerText = user.nationalId || "--";
           document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
+          
           document.getElementById('qrcode').innerHTML = "";
           new QRCode(document.getElementById("qrcode"), { text: window.location.origin + window.location.pathname + "?emp=" + code, width: 85, height: 85 });
           
@@ -1386,14 +1154,12 @@
         link.click();
       });
     }
+
     function logout() { window.location.reload(); }
-    
     function toggleLangMenu() { document.getElementById('langMenu').classList.toggle('show'); }
-    
+
     function selectLanguage(lang) {
-      if(document.getElementById('langMenu').classList.contains('show')) {
-        toggleLangMenu();
-      }
+      if(document.getElementById('langMenu').classList.contains('show')) toggleLangMenu();
       currentLang = lang;
       localStorage.setItem('lacto_lang', lang);
       document.documentElement.lang = lang;
