@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -138,7 +137,6 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
     body { padding-top: 4.5rem; }
-
     .brand-container {
       display: flex;
       align-items: center;
@@ -160,7 +158,7 @@
     
     .lang-dropdown-container { 
       position: relative; 
-      display: flex;
+      display: inline-flex;
       align-items: center;
     }
     .lang-dropdown-btn {
@@ -177,6 +175,9 @@
       gap: 0.4rem;
       backdrop-filter: blur(12px);
       outline: none;
+      box-shadow: none;
+      margin: 0;
+      width: auto;
     }
     .lang-dropdown-menu {
       position: absolute;
@@ -238,16 +239,20 @@
       display: flex;
       align-items: center;
     }
-    .password-container input { margin: 0; padding-right: 3rem; padding-left: 1rem; }
-    [dir="ltr"] .password-container input { padding-right: 1rem; padding-left: 3rem; }
+    .password-container input { 
+      margin: 0; 
+      width: 100%;
+    }
+    [dir="rtl"] .password-container input { padding-left: 3rem; padding-right: 1rem; text-align: right; }
+    [dir="ltr"] .password-container input { padding-right: 3rem; padding-left: 1rem; text-align: left; }
+    
     .toggle-password {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      right: 0.75rem;
-      width: 30px;
-      height: 30px;
-      background: none; 
+      width: 36px;
+      height: 36px;
+      background: transparent; 
       border: none; 
       cursor: pointer; 
       color: var(--muted);
@@ -257,8 +262,10 @@
       z-index: 10;
       margin: 0;
       padding: 0;
+      box-shadow: none;
     }
-    [dir="ltr"] .toggle-password { right: auto; left: 0.75rem; }
+    [dir="rtl"] .toggle-password { left: 0.5rem; right: auto; }
+    [dir="ltr"] .toggle-password { right: 0.5rem; left: auto; }
     .toggle-password svg { width: 20px; height: 20px; fill: currentColor; }
     
     .checkbox-container {
@@ -540,7 +547,6 @@
     .info-label { color: var(--muted); font-size: 0.75rem; margin-bottom: 0.1rem; }
     .info-val { font-weight: 700; color: var(--text); }
     .qr-container { background: #fff; padding: 0.65rem; border-radius: 1rem; display: inline-block; }
-
     /* Active Chatbot Floating Widget Styles */
     #chatbot-fab {
       position: fixed;
@@ -670,7 +676,6 @@
       </div>
     </div>
   </div>
-
   <div class="container">
     <!-- 1. Login View -->
     <div id="view-login" class="card">
@@ -802,7 +807,7 @@
         </div>
       </div>
       
-      <!-- Services Grid (Rearranged and properly aligned) -->
+      <!-- Services Grid -->
       <div class="services-grid">
         <div class="service-btn" onclick="showPage('view-leaves')">
           <div class="service-icon-box">
@@ -893,7 +898,6 @@
       <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;" id="t-descDir">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
     </div>
   </div>
-
   <!-- Active Chatbot Floating Widget -->
   <div id="chatbot-fab" onclick="toggleChatbot()" title="مساعد الرتات / Chatbot">
     <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
@@ -911,9 +915,8 @@
       <button class="chatbot-send-btn" onclick="sendChatMessage()" id="t-sendBtn">إرسال</button>
     </div>
   </div>
-
   <script>
-    /* Leaf Fall Animation */
+    /* Leaf Fall Intro - UNTOUCHED */
     function runLeafFallIntro() {
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
@@ -979,6 +982,7 @@
       });
     }
     window.addEventListener('DOMContentLoaded', runLeafFallIntro);
+    
     function togglePasswordVisibility() {
       const pass = document.getElementById('empPass');
       pass.type = (pass.type === 'password') ? 'text' : 'password';
@@ -1098,7 +1102,7 @@
         ]
       }
     };
-
+    
     function updateContentTranslations() {
       const t = translations[currentLang];
       document.getElementById('empCode').placeholder = t.inputCode;
@@ -1165,7 +1169,6 @@
       });
     }
 
-    // Toggle Notification Popup
     function toggleNotificationPopup(event) {
       event.stopPropagation();
       const popup = document.getElementById('notificationPopup');
@@ -1178,26 +1181,21 @@
       }
     });
 
-    // Chatbot Toggle & Messaging Logic (Bilingual Arabic & English)
     function toggleChatbot() {
       const chatWin = document.getElementById('chatbot-window');
       chatWin.classList.toggle('show');
     }
-
     function handleChatKeyPress(e) {
       if (e.key === 'Enter') {
         sendChatMessage();
       }
     }
-
     function sendChatMessage() {
       const input = document.getElementById('chatInput');
       const text = input.value.trim();
       if (!text) return;
-
       const messagesContainer = document.getElementById('chatbotMessages');
       
-      // Append User Message
       const userMsg = document.createElement('div');
       userMsg.className = 'chat-msg user';
       userMsg.innerText = text;
@@ -1205,7 +1203,6 @@
       input.value = '';
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-      // Bot Response Simulation
       setTimeout(() => {
         const botMsg = document.createElement('div');
         botMsg.className = 'chat-msg bot';
@@ -1230,13 +1227,11 @@
             botMsg.innerText = "Thank you for your message! Your query has been noted and HR will follow up with you.";
           }
         }
-
         messagesContainer.appendChild(botMsg);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
       }, 600);
     }
 
-    // 5-Slides Slider Logic
     let currentSlideIndex = 0;
     const totalSlides = 5;
     let slideInterval;
@@ -1325,6 +1320,7 @@
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     }
+
     function showPage(pageId) {
       ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory'].forEach(id => {
         document.getElementById(id).classList.add('hidden');
@@ -1386,7 +1382,13 @@
         link.click();
       });
     }
-    function logout() { window.location.reload(); }
+
+    function logout() { 
+      // مسح بيانات تسجيل الدخول عند عمل Logout تماماً لضمان طلبها من جديد عند إعادة الفتح
+      localStorage.removeItem('lacto_saved_code');
+      localStorage.removeItem('lacto_saved_pass');
+      window.location.reload(); 
+    }
     
     function toggleLangMenu() { document.getElementById('langMenu').classList.toggle('show'); }
     
