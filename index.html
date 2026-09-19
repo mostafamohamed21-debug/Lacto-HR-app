@@ -98,7 +98,6 @@
       align-items: center;
       direction: ltr;
     }
-    /* تصغير حجم خط لاكتو مصر */
     .intro-char {
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: clamp(1.2rem, 4vw, 1.8rem);
@@ -110,7 +109,6 @@
       display: inline-block;
     }
     .intro-space { width: 0.4rem; }
-    /* الجملة بعرض الصفحة */
     .intro-subtitle {
       font-family: 'Great Vibes', cursive;
       font-size: clamp(1.5rem, 5vw, 2.5rem);
@@ -149,12 +147,17 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .lang-dropdown-container { position: relative; }
+    
+    /* ضبط تنسيق زر اللغة ومكانه بشكل مضبوط */
+    .lang-dropdown-container { 
+      position: relative; 
+      display: inline-block;
+    }
     .lang-dropdown-btn {
       background: rgba(30, 41, 59, 0.75);
       border: 1px solid var(--border-color);
       color: var(--text);
-      padding: 0.4rem 0.8rem;
+      padding: 0.45rem 0.85rem;
       border-radius: 1rem;
       font-size: 0.8rem;
       font-weight: 700;
@@ -163,10 +166,11 @@
       align-items: center;
       gap: 0.4rem;
       backdrop-filter: blur(12px);
+      transition: all 0.2s ease;
     }
     .lang-dropdown-menu {
       position: absolute;
-      top: 115%;
+      top: 120%;
       right: 0;
       background: rgba(15, 23, 42, 0.95);
       border: 1px solid var(--border-color);
@@ -176,8 +180,12 @@
       z-index: 200;
       min-width: 130px;
       backdrop-filter: blur(16px);
+      overflow: hidden;
     }
-    [dir="ltr"] .lang-dropdown-menu { right: auto; left: 0; }
+    [dir="ltr"] .lang-dropdown-menu { 
+      right: auto; 
+      left: 0; 
+    }
     .lang-dropdown-menu.show { display: block; }
     .lang-option {
       padding: 0.7rem 1rem;
@@ -187,8 +195,10 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      transition: background 0.2s;
     }
     .lang-option:hover { background: rgba(2, 132, 199, 0.3); color: #38bdf8; }
+    
     .container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 1rem; }
     .card {
       background: var(--card-bg);
@@ -214,7 +224,6 @@
     }
     input:focus { border-color: #38bdf8; box-shadow: 0 0 15px var(--accent-glow); }
     
-    /* منع إزاحة زرار كلمة السر والتنسيق */
     .password-container { 
       position: relative; 
       width: 100%; 
@@ -418,10 +427,10 @@
     }
     .career-card:hover { border-color: #38bdf8; transform: translateY(-2px); }
     
-    /* Floating Chat Button - رفع زر الرسائل الفلوتنج بوضوح لعدم الاقتطاع */
+    /* Floating Chat Button - رفع الزر بوضوح لعدم الاقتطاع واقتطاع الشاشة bottom: 4rem */
     .chat-float-btn {
       position: fixed;
-      bottom: 2.8rem;
+      bottom: 4rem;
       left: 1.5rem;
       width: 58px;
       height: 58px;
@@ -444,7 +453,7 @@
     /* Chat Popup Box UI */
     .chat-popup {
       position: fixed;
-      bottom: 7.2rem;
+      bottom: 8.5rem;
       left: 1.5rem;
       width: 320px;
       max-width: calc(100vw - 3rem);
@@ -593,6 +602,7 @@
       </div>
     </div>
   </div>
+
   <div class="container">
     <!-- 1. Login View -->
     <div id="view-login" class="card">
@@ -827,7 +837,6 @@
         {x:-900, y:700}, {x:-900, y:0}
       ];
 
-      // تهيئة الحروف مشتتة أعلى حافة الشاشة
       charElements.forEach((el) => {
         const randomX = (Math.random() - 0.5) * 400; 
         const randomRotation = (Math.random() - 0.5) * 720;
@@ -846,7 +855,6 @@
         onComplete: () => document.getElementById('intro-screen').classList.add('fade-out') 
       });
 
-      // حركة دخول بسقوط أوراق الشجر بطيئة (1.5s) تماثل سرعة الخروج
       tl.to(charElements, { 
         duration: 1.5, 
         x: 0, 
@@ -861,7 +869,6 @@
       tl.to(subtitle, { duration: 1.2, opacity: 1, y: 0, ease: "power2.out" }, "-=0.8");
       tl.to(subtitle, { duration: 1.2, opacity: 0, y: -20, ease: "power1.in" }, "+=2.0");
 
-      // حركة الخروج المشتتة بنفس سرعة وتوقيت الدخول (1.5s)
       charElements.forEach((el, index) => {
         const dir = directions[index % directions.length];
         tl.to(el, { 
@@ -984,7 +991,7 @@
       }
     };
 
-    // تطبيق زر اللغة الشامل على جميع النصوص والمكونات
+    // تطبيق زر اللغة الشامل بما فيها تحية مساء الخير
     function updateContentTranslations() {
       const t = translations[currentLang];
       
@@ -1009,6 +1016,8 @@
       document.getElementById('t-lblCode').innerText = t.lblCode;
       document.getElementById('t-lblNID').innerText = t.lblNID;
       document.getElementById('t-saveCardBtn').innerText = t.saveCardBtn;
+      
+      // تغيير التحية طبقاً للغة المحددة
       document.getElementById('dash-greeting').innerText = t.greeting;
       
       ['t-backBtn1', 't-backBtn2', 't-backBtn3', 't-backBtn4'].forEach(id => {
