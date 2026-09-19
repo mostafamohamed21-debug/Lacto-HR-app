@@ -275,7 +275,7 @@
     .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
     .hidden { display: none !important; }
     
-    /* Dashboard UI - Updated Header matching the requested image style with Lighting Baby Blue */
+    /* Dashboard UI - Header */
     .user-header-card {
       background: #0d1527;
       border: 1px solid rgba(56, 189, 248, 0.3);
@@ -303,7 +303,7 @@
       display: inline-block; margin-top: 0.2rem;
     }
     
-    /* Notification Button updated and independent */
+    /* Notification Button */
     .notification-btn {
       width: 50px;
       height: 50px;
@@ -332,14 +332,14 @@
       border: 2px solid #0d1527;
     }
 
-    /* Fingerprint Card - Updated matching the requested style with Lighting Baby Blue */
+    /* Fingerprint Card - Updated to Lighting Baby Blue */
     .checkin-card {
-      background: #10b981; /* Green Sign-In bar matching the screenshot style */
-      border: 1px solid rgba(56, 189, 248, 0.4);
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(15, 23, 42, 0.95));
+      border: 1px solid rgba(56, 189, 248, 0.5);
       border-radius: 1.5rem;
       padding: 1.25rem;
       text-align: center;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 0 15px rgba(56, 189, 248, 0.2);
       cursor: pointer;
       transition: all 0.3s ease;
       color: #fff;
@@ -348,6 +348,7 @@
       align-items: center;
       gap: 0.5rem;
     }
+    .checkin-card:hover { border-color: #38bdf8; box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 0 25px rgba(56, 189, 248, 0.3); }
     .checkin-top-row {
       display: flex;
       justify-content: space-between;
@@ -356,6 +357,7 @@
       padding: 0 0.5rem;
       font-size: 0.85rem;
       font-weight: 700;
+      color: #38bdf8;
     }
     .checkin-main-content {
       display: flex;
@@ -366,13 +368,15 @@
     }
     .fingerprint-icon-wrap {
       width: 65px; height: 65px;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(56, 189, 248, 0.2);
+      border: 1px solid rgba(56, 189, 248, 0.4);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      color: #fff;
+      color: #38bdf8;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
     }
     .fingerprint-icon-wrap svg { width: 36px; height: 36px; fill: currentColor; }
-    .checkin-status-text { font-size: 0.9rem; font-weight: 700; color: #fff; }
+    .checkin-status-text { font-size: 0.9rem; font-weight: 700; color: var(--text); }
     
     /* Company Announcements Slider */
     .announcement-card {
@@ -549,7 +553,7 @@
     
     <!-- 2. Dashboard View -->
     <div id="view-dashboard" class="hidden">
-      <!-- User Greeting Header (Updated matching screenshot layout with Notification Bell) -->
+      <!-- User Greeting Header -->
       <div class="user-header-card">
         <div class="user-header-right">
           <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
@@ -565,7 +569,7 @@
         </div>
       </div>
       
-      <!-- Fingerprint Check-in Card (Updated matching screenshot layout) -->
+      <!-- Fingerprint Check-in Card (Updated to Lighting Baby Blue) -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="checkin-top-row">
           <span style="font-size: 1rem; font-weight: 800;">Sign In</span>
