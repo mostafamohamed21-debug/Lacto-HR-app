@@ -121,34 +121,46 @@
       white-space: nowrap;
     }
     
-    /* Main App Layout & Full-Width Header */
-    .app-header {
+    /* Main App Layout & Full-Width Header (Your Design Proposal Integrated) */
+    .app-header-container {
       width: 100vw;
+      position: relative;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
       background: #0d1527;
       border-bottom: 1px solid rgba(56, 189, 248, 0.3);
       padding: 0.75rem 1rem;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      flex-direction: column;
+      gap: 0.6rem;
       position: fixed;
       top: 0;
       left: 0;
       z-index: 1000;
       box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
-    body { padding-top: 4.5rem; }
-    .brand-container {
+    body { padding-top: 6.5rem; }
+    
+    .top-nav-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .logo-section {
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
-    .brand-logo {
+    .company-logo {
       width: 32px;
       height: 32px;
       object-fit: contain;
       border-radius: 8px;
     }
-    .brand-title {
+    .app-title {
       font-size: 1.2rem;
       font-weight: 800;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
@@ -156,16 +168,11 @@
       -webkit-text-fill-color: transparent;
     }
     
-    .lang-dropdown-container { 
-      position: relative; 
-      display: inline-flex;
-      align-items: center;
-    }
-    .lang-dropdown-btn {
+    .lang-selector {
       background: rgba(30, 41, 59, 0.75);
       border: 1px solid var(--border-color);
       color: var(--text);
-      padding: 0.45rem 0.85rem;
+      padding: 0.4rem 0.75rem;
       border-radius: 1rem;
       font-size: 0.8rem;
       font-weight: 700;
@@ -174,10 +181,90 @@
       align-items: center;
       gap: 0.4rem;
       backdrop-filter: blur(12px);
-      outline: none;
-      box-shadow: none;
-      margin: 0;
-      width: auto;
+    }
+    
+    .employee-profile-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding-top: 0.2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .employee-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .avatar-container {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 2px solid #38bdf8;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .employee-avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .text-details {
+      display: flex;
+      flex-direction: column;
+      text-align: right;
+    }
+    [dir="ltr"] .text-details { text-align: left; }
+    .greeting-text {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+    .employee-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .employee-id {
+      font-size: 0.75rem;
+      color: #38bdf8;
+      font-weight: 700;
+    }
+    
+    .notification-btn-wrapper {
+      position: relative;
+    }
+    .notification-btn {
+      width: 40px;
+      height: 40px;
+      background: #1e293b;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      color: #38bdf8;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+      transition: transform 0.2s;
+    }
+    .notification-btn:hover { transform: scale(1.05); }
+    .bell-icon { font-size: 1.1rem; }
+    .badge-dot {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 8px;
+      height: 8px;
+      background: #ef4444;
+      border-radius: 50%;
+      border: 2px solid #0d1527;
+    }
+    
+    .lang-dropdown-container { 
+      position: relative; 
+      display: inline-flex;
+      align-items: center;
     }
     .lang-dropdown-menu {
       position: absolute;
@@ -289,77 +376,10 @@
     .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
     .hidden { display: none !important; }
     
-    /* Full-Width User Greeting Header */
-    .user-header-card {
-      width: 100vw;
-      position: relative;
-      left: 50%;
-      right: 50%;
-      margin-left: -50vw;
-      margin-right: -50vw;
-      background: #0d1527;
-      border-bottom: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 1rem 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      margin-bottom: 0.5rem;
-      z-index: 2;
-    }
-    .user-header-right {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-      text-align: right;
-    }
-    [dir="ltr"] .user-header-right { text-align: left; }
-    .header-avatar {
-      width: 55px; height: 55px; border-radius: 50%;
-      border: 2px solid #38bdf8; object-fit: cover;
-    }
-    .code-badge-pill {
-      color: #38bdf8; font-size: 0.8rem; font-weight: 700;
-      display: inline-block; margin-top: 0.1rem;
-    }
-    
-    /* Notification Container with Popup */
-    .notification-wrapper {
-      position: relative;
-      display: inline-block;
-    }
-    .notification-btn {
-      width: 45px;
-      height: 45px;
-      background: #1e293b;
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      position: relative;
-      color: #38bdf8;
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
-      transition: transform 0.2s;
-    }
-    .notification-btn:hover { transform: scale(1.05); }
-    .notification-btn svg { width: 22px; height: 22px; fill: currentColor; }
-    .notification-badge {
-      position: absolute;
-      top: 2px;
-      right: 2px;
-      width: 10px;
-      height: 10px;
-      background: #ef4444;
-      border-radius: 50%;
-      border: 2px solid #0d1527;
-    }
-    
     .notification-popup {
       position: absolute;
-      top: 0;
-      left: calc(100% + 12px);
+      top: calc(100% + 10px);
+      left: 0;
       background: rgba(15, 23, 42, 0.98);
       border: 1px solid rgba(56, 189, 248, 0.4);
       border-radius: 1rem;
@@ -371,7 +391,7 @@
       display: none;
       text-align: right;
     }
-    [dir="ltr"] .notification-popup { left: auto; right: calc(100% + 12px); text-align: left; }
+    [dir="ltr"] .notification-popup { left: auto; right: 0; text-align: left; }
     .notification-popup.show { display: block; }
     .notification-popup-title { font-size: 0.75rem; font-weight: 800; color: #38bdf8; margin-bottom: 0.2rem; }
     .notification-popup-desc { font-size: 0.7rem; color: var(--muted); line-height: 1.4; }
@@ -468,7 +488,7 @@
     .summary-title { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.3rem; font-weight: 600; }
     .summary-value { font-size: 1.1rem; font-weight: 800; color: #38bdf8; }
     
-    /* Rearranged Services Grid (No overlapping, clean layout) */
+    /* Services Grid */
     .services-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -514,7 +534,7 @@
     }
     .career-card:hover { border-color: #38bdf8; transform: translateY(-2px); }
     
-    /* ID Card & Sub-pages with Fixed Back Buttons */
+    /* ID Card & Sub-pages */
     .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
     .back-btn { 
       background: rgba(51, 65, 85, 0.9); 
@@ -547,6 +567,7 @@
     .info-label { color: var(--muted); font-size: 0.75rem; margin-bottom: 0.1rem; }
     .info-val { font-weight: 700; color: var(--text); }
     .qr-container { background: #fff; padding: 0.65rem; border-radius: 1rem; display: inline-block; }
+    
     /* Active Chatbot Floating Widget Styles */
     #chatbot-fab {
       position: fixed;
@@ -659,24 +680,53 @@
     </div>
   </div>
   
-  <!-- App Header (Full Width with Logo and Language Selector) -->
-  <div class="app-header">
-    <div class="brand-container">
-      <img src="logo.png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
-      <div class="brand-title">LM HR</div>
+  <!-- App Header (Integrated Your Proposed Header Design) -->
+  <div class="app-header-container">
+    <!-- Row 1: Logo & Language Selector -->
+    <div class="top-nav-row">
+      <div class="logo-section">
+        <img src="logo.png" alt="Logo" class="company-logo" onerror="this.style.display='none'">
+        <span class="app-title">LM HR</span>
+      </div>
+      <div class="lang-dropdown-container">
+        <div class="lang-selector" onclick="toggleLangMenu()">
+          <span class="lang-icon">🌐</span>
+          <span id="current-lang-text">العربية</span>
+          <span class="arrow-down">▼</span>
+        </div>
+        <div class="lang-dropdown-menu" id="langMenu">
+          <div class="lang-option" onclick="selectLanguage('ar')">🇪🇬 العربية</div>
+          <div class="lang-option" onclick="selectLanguage('en')">🇬🇧 English</div>
+        </div>
+      </div>
     </div>
-    
-    <div class="lang-dropdown-container">
-      <button class="lang-dropdown-btn" onclick="toggleLangMenu()">
-        🌐 <span id="current-lang-text">العربية</span> ▼
-      </button>
-      <div class="lang-dropdown-menu" id="langMenu">
-        <div class="lang-option" onclick="selectLanguage('ar')">🇪🇬 العربية</div>
-        <div class="lang-option" onclick="selectLanguage('en')">🇬🇧 English</div>
+
+    <!-- Row 2: Employee Profile Section -->
+    <div class="employee-profile-row">
+      <div class="employee-info">
+        <div class="avatar-container">
+          <img id="dash-avatar" src="https://i.pravatar.cc/150?img=12" alt="Employee Photo" class="employee-avatar">
+        </div>
+        <div class="text-details">
+          <div class="greeting-text" id="dash-greeting">Good evening 🌙</div>
+          <div class="employee-name" id="dash-name">--</div>
+          <div class="employee-id"><span id="t-codeLabel">ID:</span> <span id="dash-code-val">--</span></div>
+        </div>
+      </div>
+      <div class="notification-btn-wrapper">
+        <button class="notification-btn" onclick="toggleNotificationPopup(event)" title="الإشعارات">
+          <span class="bell-icon">🔔</span>
+          <span class="badge-dot"></span>
+        </button>
+        <div class="notification-popup" id="notificationPopup">
+          <div class="notification-popup-title" id="t-popupTitle">تنبيهات النظام</div>
+          <div class="notification-popup-desc" id="t-popupDesc">لا توجد إشعارات جديدة. تم تفعيل النظام بنجاح!</div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="container">
+
+  <div class="container" style="margin-top: 1rem;">
     <!-- 1. Login View -->
     <div id="view-login" class="card">
       <h2 style="font-size: 1.5rem; margin-bottom: 0.2rem;">LM HR Hub</h2>
@@ -702,29 +752,7 @@
     </div>
     
     <!-- 2. Dashboard View -->
-    <div id="view-dashboard" class="hidden">
-      <!-- Full-Width User Greeting Header -->
-      <div class="user-header-card">
-        <div class="user-header-right">
-          <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
-          <div>
-            <div id="dash-greeting" style="font-size: 0.75rem; color: var(--muted);">مساء الخير 🌙</div>
-            <h3 id="dash-name" style="margin: 0; font-size: 0.95rem; font-weight: 700;">--</h3>
-            <div class="code-badge-pill"><span id="t-codeLabel">ID:</span> <span id="dash-code-val">--</span></div>
-          </div>
-        </div>
-        <div class="notification-wrapper">
-          <div class="notification-btn" onclick="toggleNotificationPopup(event)" title="الإشعارات">
-            <div class="notification-badge"></div>
-            <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4v6z"/></svg>
-          </div>
-          <div class="notification-popup" id="notificationPopup">
-            <div class="notification-popup-title" id="t-popupTitle">تنبيهات النظام</div>
-            <div class="notification-popup-desc" id="t-popupDesc">لا توجد إشعارات جديدة. تم تفعيل النظام بنجاح!</div>
-          </div>
-        </div>
-      </div>
-      
+    <div id="view-dashboard" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
       <!-- Fingerprint Check-in Card -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="checkin-top-row">
@@ -743,7 +771,7 @@
         </div>
       </div>
       
-      <!-- Company Announcements Slider (Updated to 5 Slides) -->
+      <!-- Company Announcements Slider -->
       <div class="announcement-card" id="announcementCard">
         <div class="slider-track" id="sliderTrack">
           <div class="slide-item">
@@ -898,6 +926,7 @@
       <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;" id="t-descDir">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
     </div>
   </div>
+
   <!-- Active Chatbot Floating Widget -->
   <div id="chatbot-fab" onclick="toggleChatbot()" title="مساعد الرتات / Chatbot">
     <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
@@ -915,6 +944,7 @@
       <button class="chatbot-send-btn" onclick="sendChatMessage()" id="t-sendBtn">إرسال</button>
     </div>
   </div>
+
   <script>
     /* Leaf Fall Intro - UNTOUCHED */
     function runLeafFallIntro() {
@@ -1142,9 +1172,11 @@
       if (currentLang === 'en') {
         careerTextWrap.style.textAlign = 'left';
         careerArrow.innerText = '➔';
+        document.getElementById('current-lang-text').innerText = "English";
       } else {
         careerTextWrap.style.textAlign = 'right';
         careerArrow.innerText = '➔';
+        document.getElementById('current-lang-text').innerText = "العربية";
       }
       document.getElementById('dash-greeting').innerText = t.greeting;
       
@@ -1168,6 +1200,7 @@
         if(descEl) descEl.innerText = slide.desc;
       });
     }
+
     function toggleNotificationPopup(event) {
       event.stopPropagation();
       const popup = document.getElementById('notificationPopup');
@@ -1179,6 +1212,7 @@
         popup.classList.remove('show');
       }
     });
+
     function toggleChatbot() {
       const chatWin = document.getElementById('chatbot-window');
       chatWin.classList.toggle('show');
@@ -1228,6 +1262,7 @@
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
       }, 600);
     }
+
     let currentSlideIndex = 0;
     const totalSlides = 5;
     let slideInterval;
@@ -1254,21 +1289,23 @@
     }
     let touchStartX = 0;
     const cardEl = document.getElementById('announcementCard');
-    cardEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; clearInterval(slideInterval); });
-    cardEl.addEventListener('touchend', e => {
-      let touchEndX = e.changedTouches[0].clientX;
-      if (touchStartX - touchEndX > 50) {
-        nextSlide();
-      } else if (touchEndX - touchStartX > 50) {
-        showSlide(currentSlideIndex - 1);
-      }
-      resetSlideTimer();
-    });
+    if(cardEl) {
+      cardEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; clearInterval(slideInterval); });
+      cardEl.addEventListener('touchend', e => {
+        let touchEndX = e.changedTouches[0].clientX;
+        if (touchStartX - touchEndX > 50) {
+          nextSlide();
+        } else if (touchEndX - touchStartX > 50) {
+          showSlide(currentSlideIndex - 1);
+        }
+        resetSlideTimer();
+      });
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       selectLanguage(currentLang);
       resetSlideTimer();
       
-      // Auto-retrieve saved credentials if Remember Me was active
       const savedCode = localStorage.getItem('lacto_saved_code');
       const savedPass = localStorage.getItem('lacto_saved_pass');
       if (savedCode && savedPass) {
@@ -1277,6 +1314,7 @@
         document.getElementById('rememberMe').checked = true;
       }
     });
+
     const COMPANY_LAT = 30.235154;
     const COMPANY_LNG = 31.743997;
     const ALLOWED_RADIUS_METERS = 75;
@@ -1314,6 +1352,7 @@
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     }
+
     function showPage(pageId) {
       ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory'].forEach(id => {
         document.getElementById(id).classList.add('hidden');
@@ -1321,6 +1360,7 @@
       document.getElementById(pageId).classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
     function login() {
       const code = document.getElementById('empCode').value.trim();
       const pass = document.getElementById('empPass').value.trim();
@@ -1345,6 +1385,8 @@
             localStorage.removeItem('lacto_saved_code');
             localStorage.removeItem('lacto_saved_pass');
           }
+          
+          // تحديث بيانات الهيدر الجديد تلقائياً عند تسجيل الدخول
           document.getElementById('dash-name').innerText = user.name || "--";
           document.getElementById('dash-code-val').innerText = code;
           document.getElementById('dash-avatar').src = user.photo || "https://i.pravatar.cc/150?img=12";
@@ -1365,6 +1407,7 @@
         }
       });
     }
+
     function downloadCard() {
       html2canvas(document.getElementById('myCardToDownload'), { useCORS: true, scale: 2 }).then(canvas => {
         const link = document.createElement('a');
@@ -1373,8 +1416,8 @@
         link.click();
       });
     }
+
     function logout() { 
-      // مسح بيانات تسجيل الدخول عند عمل Logout تماماً لضمان طلبها من جديد عند إعادة الفتح
       localStorage.removeItem('lacto_saved_code');
       localStorage.removeItem('lacto_saved_pass');
       window.location.reload(); 
@@ -1390,7 +1433,6 @@
       localStorage.setItem('lacto_lang', lang);
       document.documentElement.lang = lang;
       document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
-      document.getElementById('current-lang-text').innerText = (lang === 'ar') ? "العربية" : "English";
       updateContentTranslations();
       showSlide(currentSlideIndex);
     }
