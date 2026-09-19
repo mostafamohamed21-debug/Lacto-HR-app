@@ -27,12 +27,11 @@
       --card-bg: rgba(15, 23, 42, 0.78);
       --border-color: rgba(255, 255, 255, 0.16);
       --text: #f8fafc;
-      --accent: #0284c7;
+      --accent: #38bdf8; /* Lighting Baby Blue */
       --accent-glow: rgba(56, 189, 248, 0.4);
       --danger: #ef4444;
       --success: #10b981;
       --muted: #cbd5e1;
-      --baby-blue: #a5f3fc; /* Light Baby Blue المستخدم لتصميم كارت الترحيب والبصمة */
     }
     * {
       box-sizing: border-box;
@@ -197,7 +196,7 @@
       gap: 0.5rem;
       transition: background 0.2s;
     }
-    .lang-option:hover { background: rgba(2, 132, 199, 0.3); color: #38bdf8; }
+    .lang-option:hover { background: rgba(56, 189, 248, 0.3); color: #38bdf8; }
     
     .container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 1rem; }
     .card {
@@ -259,34 +258,34 @@
       display: flex; align-items: center; justify-content: flex-start;
       gap: 0.5rem; margin: 0.75rem 0; font-size: 0.85rem; color: var(--muted); cursor: pointer;
     }
-    .checkbox-container input[type="checkbox"] { width: 18px; height: 18px; accent-color: #0284c7; margin: 0; }
+    .checkbox-container input[type="checkbox"] { width: 18px; height: 18px; accent-color: #38bdf8; margin: 0; }
     button {
       width: 100%; padding: 0.95rem; border-radius: 1.25rem; border: none;
-      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-      color: #fff; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 0.85rem;
-      box-shadow: 0 8px 0 #024e77, 0 12px 20px rgba(0, 0, 0, 0.4);
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      color: #0b0f19; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 0.85rem;
+      box-shadow: 0 8px 0 #026595, 0 12px 20px rgba(0, 0, 0, 0.4);
       transition: all 0.15s ease;
     }
-    button:active { transform: translateY(6px); box-shadow: 0 2px 0 #024e77; }
+    button:active { transform: translateY(6px); box-shadow: 0 2px 0 #026595; }
     .btn-danger {
       background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
       box-shadow: 0 8px 0 #991b1b, 0 12px 20px rgba(220, 38, 38, 0.3);
+      color: #fff;
     }
     .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
     .hidden { display: none !important; }
     
-    /* Dashboard UI - تم تحديث كارت الترحيب وزر النوتيفيكيشن */
+    /* Dashboard UI - Updated Header matching the requested image style with Lighting Baby Blue */
     .user-header-card {
-      background: linear-gradient(135deg, var(--baby-blue) 0%, #38bdf8 100%); /* Light Baby Blue */
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      backdrop-filter: blur(16px);
-      padding: 1.2rem 1.25rem;
-      border-radius: 1.75rem;
+      background: #0d1527;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 1.5rem;
+      padding: 1.25rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 15px 30px rgba(2, 132, 199, 0.35);
-      color: #0b0f19;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      position: relative;
     }
     .user-header-right {
       display: flex;
@@ -297,73 +296,83 @@
     [dir="ltr"] .user-header-right { text-align: left; }
     .header-avatar {
       width: 60px; height: 60px; border-radius: 50%;
-      border: 3px solid #ffffff; object-fit: cover;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      border: 2px solid #38bdf8; object-fit: cover;
     }
     .code-badge-pill {
-      background: rgba(11, 15, 25, 0.15);
-      border: 1px solid rgba(11, 15, 25, 0.25);
-      color: #0b0f19; padding: 0.2rem 0.75rem;
-      border-radius: 2rem; font-size: 0.78rem; font-weight: 800;
-      display: inline-block; margin-top: 0.3rem;
+      color: #38bdf8; font-size: 0.85rem; font-weight: 700;
+      display: inline-block; margin-top: 0.2rem;
     }
     
-    /* زر النوتيفيكيشن الحقيقي الجديد في الهيدر */
-    .notif-btn-header {
-      width: 48px;
-      height: 48px;
-      background: rgba(11, 15, 25, 0.15);
-      border: 1px solid rgba(11, 15, 25, 0.25);
+    /* Notification Button updated and independent */
+    .notification-btn {
+      width: 50px;
+      height: 50px;
+      background: #1e293b;
+      border: 1px solid rgba(56, 189, 248, 0.4);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #0b0f19;
       cursor: pointer;
       position: relative;
+      color: #38bdf8;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
       transition: transform 0.2s;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
-    .notif-btn-header:hover { transform: scale(1.08); }
-    .notif-btn-header svg { width: 24px; height: 24px; fill: currentColor; }
-    .notif-badge-dot {
+    .notification-btn:hover { transform: scale(1.05); }
+    .notification-btn svg { width: 24px; height: 24px; fill: currentColor; }
+    .notification-badge {
       position: absolute;
-      top: 10px;
-      right: 12px;
-      width: 10px;
-      height: 10px;
-      background-color: #ef4444;
-      border: 2px solid #fff;
+      top: 2px;
+      right: 2px;
+      width: 12px;
+      height: 12px;
+      background: #ef4444;
       border-radius: 50%;
+      border: 2px solid #0d1527;
     }
-    [dir="ltr"] .notif-badge-dot { right: auto; left: 12px; }
 
-    /* Fingerprint Card - تم تحديثه ليطابق لون Light Baby Blue */
+    /* Fingerprint Card - Updated matching the requested style with Lighting Baby Blue */
     .checkin-card {
-      background: linear-gradient(135deg, var(--baby-blue) 0%, #0284c7 100%);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      border-radius: 1.75rem;
-      padding: 1.5rem 1.25rem;
+      background: #10b981; /* Green Sign-In bar matching the screenshot style */
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 1.5rem;
+      padding: 1.25rem;
       text-align: center;
-      box-shadow: 0 15px 35px rgba(2, 132, 199, 0.3), inset 0 1px 1px rgba(255,255,255,0.4);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
       cursor: pointer;
       transition: all 0.3s ease;
-      color: #0b0f19;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
     }
-    .checkin-card:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(2, 132, 199, 0.4); }
+    .checkin-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 0 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .checkin-main-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.5rem;
+    }
     .fingerprint-icon-wrap {
-      width: 70px; height: 70px;
-      background: rgba(11, 15, 25, 0.12);
-      border: 2px solid rgba(11, 15, 25, 0.25);
+      width: 65px; height: 65px;
+      background: rgba(255, 255, 255, 0.15);
       border-radius: 50%;
-      margin: 0 auto 0.75rem auto;
       display: flex; align-items: center; justify-content: center;
-      color: #0b0f19;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+      color: #fff;
     }
-    .fingerprint-icon-wrap svg { width: 34px; height: 34px; fill: currentColor; }
-    .checkin-status-text { font-size: 0.9rem; font-weight: 800; color: #0b0f19; }
-    .checkin-status-text.success { color: #064e3b; }
+    .fingerprint-icon-wrap svg { width: 36px; height: 36px; fill: currentColor; }
+    .checkin-status-text { font-size: 0.9rem; font-weight: 700; color: #fff; }
     
     /* Company Announcements Slider */
     .announcement-card {
@@ -431,7 +440,7 @@
     .service-btn:hover { border-color: #38bdf8; transform: translateY(-3px); }
     .service-icon-box {
       width: 44px; height: 44px; border-radius: 1rem;
-      background: rgba(2, 132, 199, 0.15); border: 1px solid rgba(56, 189, 248, 0.3);
+      background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3);
       color: #38bdf8; display: flex; align-items: center; justify-content: center;
       margin-bottom: 0.5rem;
     }
@@ -440,7 +449,7 @@
     
     /* Career Banner */
     .career-card {
-      background: linear-gradient(135deg, rgba(2, 132, 199, 0.2), rgba(15, 23, 42, 0.9));
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(15, 23, 42, 0.9));
       border: 1px solid rgba(56, 189, 248, 0.4);
       border-radius: 1.25rem;
       padding: 1.1rem 1.25rem;
@@ -452,171 +461,6 @@
       transition: all 0.2s ease;
     }
     .career-card:hover { border-color: #38bdf8; transform: translateY(-2px); }
-    
-    /* Floating Chat Button */
-    .chat-float-btn {
-      position: fixed;
-      bottom: 4rem;
-      left: 1.5rem;
-      width: 58px;
-      height: 58px;
-      background: linear-gradient(135deg, #0284c7, #0369a1);
-      border-radius: 50%;
-      border: 2px solid rgba(56, 189, 248, 0.6);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.5);
-      cursor: pointer;
-      z-index: 1000;
-      transition: transform 0.2s;
-    }
-    [dir="ltr"] .chat-float-btn { left: auto; right: 1.5rem; }
-    .chat-float-btn:hover { transform: scale(1.08); }
-    .chat-float-btn svg { width: 26px; height: 26px; fill: currentColor; }
-    
-    /* Chat Popup Box UI */
-    .chat-popup {
-      position: fixed;
-      bottom: 8.5rem;
-      left: 1.5rem;
-      width: 320px;
-      max-width: calc(100vw - 3rem);
-      height: 420px;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid var(--border-color);
-      border-radius: 1.5rem;
-      backdrop-filter: blur(16px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-      z-index: 1001;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }
-    [dir="ltr"] .chat-popup { left: auto; right: 1.5rem; }
-    .chat-header {
-      background: linear-gradient(135deg, #0284c7, #0369a1);
-      padding: 0.85rem 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.9rem;
-    }
-    .chat-close-btn {
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 1.2rem;
-      cursor: pointer;
-      width: auto;
-      padding: 0;
-      margin: 0;
-      box-shadow: none;
-    }
-    .chat-body {
-      flex: 1;
-      padding: 1rem;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-    .chat-msg {
-      max-width: 80%;
-      padding: 0.6rem 0.85rem;
-      border-radius: 1rem;
-      font-size: 0.82rem;
-      line-height: 1.4;
-    }
-    .chat-msg.bot {
-      background: rgba(30, 41, 59, 0.9);
-      color: var(--text);
-      align-self: flex-start;
-      border-bottom-left-radius: 0.2rem;
-      border: 1px solid var(--border-color);
-    }
-    .chat-msg.user {
-      background: #0284c7;
-      color: #fff;
-      align-self: flex-end;
-      border-bottom-right-radius: 0.2rem;
-    }
-    .chat-footer {
-      padding: 0.6rem;
-      background: rgba(11, 15, 25, 0.8);
-      display: flex;
-      gap: 0.5rem;
-      border-top: 1px solid var(--border-color);
-    }
-    .chat-footer input {
-      margin: 0;
-      padding: 0.6rem 0.85rem;
-      font-size: 0.82rem;
-      text-align: start;
-      border-radius: 0.8rem;
-    }
-    .chat-footer button {
-      width: auto;
-      margin: 0;
-      padding: 0.6rem 1rem;
-      font-size: 0.82rem;
-      border-radius: 0.8rem;
-      box-shadow: none;
-    }
-
-    /* نافذة الإشعارات الحقيقية المنبثقة */
-    .notif-popup {
-      position: fixed;
-      bottom: 8.5rem;
-      right: 1.5rem;
-      width: 320px;
-      max-width: calc(100vw - 3rem);
-      height: 380px;
-      background: rgba(15, 23, 42, 0.97);
-      border: 1px solid var(--border-color);
-      border-radius: 1.5rem;
-      backdrop-filter: blur(16px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-      z-index: 1002;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    [dir="rtl"] .notif-popup { right: 1.5rem; left: auto; }
-    .notif-header {
-      background: linear-gradient(135deg, #0284c7, #0369a1);
-      padding: 0.85rem 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.9rem;
-    }
-    .notif-body {
-      flex: 1;
-      padding: 1rem;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      text-align: right;
-    }
-    [dir="ltr"] .notif-body { text-align: left; }
-    .notif-item {
-      background: rgba(30, 41, 59, 0.75);
-      border: 1px solid var(--border-color);
-      padding: 0.75rem;
-      border-radius: 1rem;
-      font-size: 0.82rem;
-      color: var(--text);
-      line-height: 1.4;
-    }
-    .notif-item span { display: block; font-size: 0.7rem; color: var(--muted); margin-top: 0.3rem; }
     
     /* ID Card & Sub-pages */
     .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
@@ -705,29 +549,38 @@
     
     <!-- 2. Dashboard View -->
     <div id="view-dashboard" class="hidden">
-      <!-- User Greeting Header (تم تحديث التصميم واللون والتنبيهات) -->
+      <!-- User Greeting Header (Updated matching screenshot layout with Notification Bell) -->
       <div class="user-header-card">
         <div class="user-header-right">
           <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
           <div>
-            <div id="dash-greeting" style="font-size: 0.8rem; color: #0b0f19; font-weight: 600;">مساء الخير 🌙</div>
-            <h3 id="dash-name" style="margin: 0; font-size: 1rem; font-weight: 800; color: #0b0f19;">--</h3>
-            <div class="code-badge-pill"><span id="t-codeLabel">كود:</span> <span id="dash-code-val">--</span></div>
+            <div id="dash-greeting" style="font-size: 0.8rem; color: var(--muted);">مساء الخير 🌙</div>
+            <h3 id="dash-name" style="margin: 0; font-size: 1rem; font-weight: 700;">--</h3>
+            <div class="code-badge-pill"><span id="t-codeLabel">ID:</span> <span id="dash-code-val">--</span></div>
           </div>
         </div>
-        <!-- زر النوتيفيكيشن الحقيقي المضاف بناءً على طلبك -->
-        <div class="notif-btn-header" onclick="toggleNotifPopup()" title="الإشعارات">
-          <span class="notif-badge-dot"></span>
+        <div class="notification-btn" onclick="triggerNotification()" title="الإشعارات">
+          <div class="notification-badge"></div>
           <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4v6z"/></svg>
         </div>
       </div>
       
-      <!-- Fingerprint Check-in Card (تم تحديثه للون Light Baby Blue المماثل للصورة) -->
+      <!-- Fingerprint Check-in Card (Updated matching screenshot layout) -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
-        <div class="fingerprint-icon-wrap">
-          <svg viewBox="0 0 24 24"><path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 13.9 3 12 3s-3.66.42-5.58 1.41c-.15.08-.33.05-.45-.07-.12-.12-.15-.31-.07-.46C7.94 2.76 9.9 2.25 12 2.25s4.06.51 6.1 1.63c.15.08.21.27.13.43-.05.1-.15.16-.25.16zM12 9c-1.1 0-2 .9-2 2 0 .55.22 1.05.59 1.42l.98.98c.37.37.87.59 1.42.59 1.1 0 2-.9 2-2 0-1.1-.9-2-2-2zm6.75 3.75c-.41 0-.75.34-.75.75 0 2.9-2.35 5.25-5.25 5.25S7.5 16.4 7.5 13.5c0-.41-.34-.75-.75-.75s-.75.34-.75.75c0 3.79 3.09 6.88 6.88 6.88s6.88-3.09 6.88-6.88c0-.41-.34-.75-.75-.75z"/></svg>
+        <div class="checkin-top-row">
+          <span style="font-size: 1rem; font-weight: 800;">Sign In</span>
+          <div style="display: flex; gap: 1rem; font-size: 0.75rem;">
+            <span>Working Hours ⏱️ 00:00</span>
+            <span>Out 🚪 00:00</span>
+            <span>In 📥 00:00</span>
+          </div>
         </div>
-        <div id="checkinStatusText" class="checkin-status-text">جاري تحديد الموقع الجغرافي...</div>
+        <div class="checkin-main-content">
+          <div id="checkinStatusText" class="checkin-status-text">جاري تحديد الموقع الجغرافي...</div>
+          <div class="fingerprint-icon-wrap">
+            <svg viewBox="0 0 24 24"><path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 13.9 3 12 3s-3.66.42-5.58 1.41c-.15.08-.33.05-.45-.07-.12-.12-.15-.31-.07-.46C7.94 2.76 9.9 2.25 12 2.25s4.06.51 6.1 1.63c.15.08.21.27.13.43-.05.1-.15.16-.25.16zM12 9c-1.1 0-2 .9-2 2 0 .55.22 1.05.59 1.42l.98.98c.37.37.87.59 1.42.59 1.1 0 2-.9 2-2 0-1.1-.9-2-2-2zm6.75 3.75c-.41 0-.75.34-.75.75 0 2.9-2.35 5.25-5.25 5.25S7.5 16.4 7.5 13.5c0-.41-.34-.75-.75-.75s-.75.34-.75.75c0 3.79 3.09 6.88 6.88 6.88s6.88-3.09 6.88-6.88c0-.41-.34-.75-.75-.75z"/></svg>
+          </div>
+        </div>
       </div>
       
       <!-- Company Announcements Slider Card -->
@@ -826,7 +679,7 @@
       <div class="id-card" id="myCardToDownload">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1rem;">
           <span style="font-weight: 800; font-size: 0.85rem; color: #38bdf8;">LACTO MISR S.A.E</span>
-          <span style="font-size: 0.65rem; background: rgba(2, 132, 199, 0.4); border: 1px solid var(--accent); color: #38bdf8; padding: 0.15rem 0.5rem; border-radius: 0.5rem; font-weight: 600;">VERIFIED</span>
+          <span style="font-size: 0.65rem; background: rgba(56, 189, 248, 0.4); border: 1px solid #38bdf8; color: #38bdf8; padding: 0.15rem 0.5rem; border-radius: 0.5rem; font-weight: 600;">VERIFIED</span>
         </div>
         <img id="userPhoto" class="profile-img" crossorigin="anonymous" src="" alt="User">
         <h3 id="userName" style="margin:0 0 0.2rem 0; font-size: 1.1rem;">--</h3>
@@ -839,7 +692,7 @@
         </div>
         <div class="qr-container"><div id="qrcode"></div></div>
       </div>
-      <button id="t-saveCardBtn" onclick="downloadCard()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); margin-top:1rem;">حفظ الكارت كصورة</button>
+      <button id="t-saveCardBtn" onclick="downloadCard()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); margin-top:1rem; color:#fff;">حفظ الكارت كصورة</button>
     </div>
     
     <!-- 4. Leaves View -->
@@ -867,46 +720,6 @@
         <span style="font-weight: 700;" id="t-titleDir">دليل التواصل</span>
       </div>
       <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;" id="t-descDir">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
-    </div>
-  </div>
-
-  <!-- Floating Chat Button -->
-  <div class="chat-float-btn" onclick="toggleChatPopup()" title="شات الدعم الفني">
-    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
-  </div>
-
-  <!-- Real Chatbot Popup Box -->
-  <div class="chat-popup hidden" id="chatPopup">
-    <div class="chat-header">
-      <span id="chat-title-text">المساعد الذكي (HR Bot)</span>
-      <button class="chat-close-btn" onclick="toggleChatPopup()">✕</button>
-    </div>
-    <div class="chat-body" id="chatBody"></div>
-    <div class="chat-footer">
-      <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..." onkeypress="if(event.key==='Enter') sendChatMessage()">
-      <button onclick="sendChatMessage()" id="chat-send-btn">إرسال</button>
-    </div>
-  </div>
-
-  <!-- نافذة الإشعارات الحقيقية المنبثقة -->
-  <div class="notif-popup hidden" id="notifPopup">
-    <div class="notif-header">
-      <span id="notif-title-text">الإشعارات والتنبيهات</span>
-      <button class="chat-close-btn" onclick="toggleNotifPopup()">✕</button>
-    </div>
-    <div class="notif-body" id="notifBody">
-      <div class="notif-item">
-        تم تحديث رصيد إجازاتك السنوية بنجاح.
-        <span>منذ ساعتين</span>
-      </div>
-      <div class="notif-item">
-        تذكير: يرجى تسجيل بصمة الحضور اليومية في المواعيد الرسمية.
-        <span>منذ 5 ساعات</span>
-      </div>
-      <div class="notif-item">
-        أهلاً بك في بوابة لكتومصر الرقمية LM HR Hub.
-        <span>منذ يوم</span>
-      </div>
     </div>
   </div>
 
@@ -981,6 +794,7 @@
       const pass = document.getElementById('empPass');
       pass.type = (pass.type === 'password') ? 'text' : 'password';
     }
+    
     // Firebase & App Logic
     const firebaseConfig = {
       apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
@@ -996,6 +810,7 @@
     let currentUserData = null;
     let currentEmpCode = "";
     let currentLang = localStorage.getItem('lacto_lang') || 'ar';
+    
     const translations = {
       ar: {
         inputCode: "كود الموظف",
@@ -1003,7 +818,7 @@
         subtitle: "بوابة الموظفين الرقمية",
         remember: "تذكرني",
         loginBtn: "دخول الحساب",
-        codeLabel: "كود:",
+        codeLabel: "ID:",
         sumLeaves: "رصيد الإجازات",
         valLeaves: "21 يوم",
         sumPermissions: "الأذونات المتاحة",
@@ -1022,10 +837,6 @@
         lblCode: "كود الموظف",
         lblNID: "الرقم القومي",
         saveCardBtn: "حفظ الكارت كصورة",
-        chatTitle: "المساعد الذكي (HR Bot)",
-        chatPlaceholder: "اكتب سؤالك هنا...",
-        chatSend: "إرسال",
-        chatWelcome: "مرحباً بك! أنا مساعد الموارد البشرية الذكي. كيف يمكنني مساعدتك اليوم؟",
         greeting: "مساء الخير 🌙",
         backBtn: "← رجوع",
         titleLeaves: "خدمة الإجازات",
@@ -1047,7 +858,7 @@
         subtitle: "Digital Employee Portal",
         remember: "Remember Me",
         loginBtn: "Sign In",
-        codeLabel: "Code:",
+        codeLabel: "ID:",
         sumLeaves: "Leave Balance",
         valLeaves: "21 Days",
         sumPermissions: "Available Permissions",
@@ -1066,10 +877,6 @@
         lblCode: "Employee Code",
         lblNID: "National ID",
         saveCardBtn: "Save ID Card as Image",
-        chatTitle: "HR Assistant Bot",
-        chatPlaceholder: "Type your question...",
-        chatSend: "Send",
-        chatWelcome: "Welcome! I am your HR Smart Assistant. How can I help you today?",
         greeting: "Good evening 🌙",
         backBtn: "← Back",
         titleLeaves: "Leaves Service",
@@ -1086,10 +893,9 @@
         ]
       }
     };
-    
+
     function updateContentTranslations() {
       const t = translations[currentLang];
-      
       document.getElementById('empCode').placeholder = t.inputCode;
       document.getElementById('empPass').placeholder = t.inputPass;
       document.getElementById('t-subtitle').innerText = t.subtitle;
@@ -1137,9 +943,6 @@
       document.getElementById('t-titleDir').innerText = t.titleDir;
       document.getElementById('t-descDir').innerText = t.descDir;
       
-      document.getElementById('chat-title-text').innerText = t.chatTitle;
-      document.getElementById('chatInput').placeholder = t.chatPlaceholder;
-      document.getElementById('chat-send-btn').innerText = t.chatSend;
       t.slides.forEach((slide, idx) => {
         const titleEl = document.querySelector(`.slide-title-${idx + 1}`);
         const badgeEl = document.querySelector(`.slide-badge-${idx + 1}`);
@@ -1148,65 +951,15 @@
         if(badgeEl) badgeEl.innerText = slide.badge;
         if(descEl) descEl.innerText = slide.desc;
       });
-      
-      const chatBody = document.getElementById('chatBody');
-      chatBody.innerHTML = `<div class="chat-msg bot">${t.chatWelcome}</div>`;
     }
 
-    function toggleChatPopup() {
-      const popup = document.getElementById('chatPopup');
-      popup.classList.toggle('hidden');
-    }
-
-    // دالة التحكم في نافذة الإشعارات الحقيقية
-    function toggleNotifPopup() {
-      const popup = document.getElementById('notifPopup');
-      popup.classList.toggle('hidden');
-    }
-
-    function sendChatMessage() {
-      const input = document.getElementById('chatInput');
-      const text = input.value.trim();
-      if (!text) return;
-      const chatBody = document.getElementById('chatBody');
-      
-      const userMsg = document.createElement('div');
-      userMsg.className = 'chat-msg user';
-      userMsg.innerText = text;
-      chatBody.appendChild(userMsg);
-      input.value = '';
-      chatBody.scrollTop = chatBody.scrollHeight;
-      setTimeout(() => {
-        const botMsg = document.createElement('div');
-        botMsg.className = 'chat-msg bot';
-        
-        let response = "";
-        const lowerText = text.toLowerCase();
-        if (currentLang === 'ar') {
-          if (lowerText.includes('إجازة') || lowerText.includes('اجازة')) {
-            response = "يمكنك متابعة رصيد إجازاتك من الشاشة الرئيسية، كما يمكنك تقديم طلب إجازة عبر قسم 'طلبات الإجازات'.";
-          } else if (lowerText.includes('مرتب') || lowerText.includes('راتب')) {
-            response = "بيان المرتبات محمي، يمكنك الاطلاع على مفردات المرتب من قسم 'مفردات المرتب' فور صدورها.";
-          } else if (lowerText.includes('حضور') || lowerText.includes('بصمة')) {
-            response = "تسجيل الحضور يعتمد على الـ GPS، يرجى الضغط على كارت البصمة في الشاشة الرئيسية وأنت داخل نطاق الشركة.";
-          } else {
-            response = "شكراً لتواصلك معنا. تم استلام استفسارك وسيقوم فريق الموارد البشرية بالرد عليك في أقرب وقت.";
-          }
-        } else {
-          if (lowerText.includes('leave') || lowerText.includes('vacation')) {
-            response = "You can view your leave balance on the main dashboard, or submit requests via 'Leave Requests'.";
-          } else if (lowerText.includes('salary') || lowerText.includes('payroll')) {
-            response = "Payroll details are encrypted. You can check your payslip under the 'Payroll' section once issued.";
-          } else if (lowerText.includes('checkin') || lowerText.includes('attendance')) {
-            response = "Attendance relies on GPS location. Please tap the fingerprint card on the dashboard while inside company range.";
-          } else {
-            response = "Thank you for reaching out. Your inquiry has been received and our HR team will respond shortly.";
-          }
-        }
-        botMsg.innerText = response;
-        chatBody.appendChild(botMsg);
-        chatBody.scrollTop = chatBody.scrollHeight;
-      }, 600);
+    // Real Notification Function (Independent of Chat)
+    function triggerNotification() {
+      if (currentLang === 'ar') {
+        alert("لا توجد إشعارات جديدة حالياً. تم تفعيل نظام الإشعارات بنجاح!");
+      } else {
+        alert("No new notifications at the moment. Notification system successfully activated!");
+      }
     }
 
     let currentSlideIndex = 0;
@@ -1249,6 +1002,7 @@
       selectLanguage(currentLang);
       resetSlideTimer();
     });
+
     const COMPANY_LAT = 30.235154;
     const COMPANY_LNG = 31.743997;
     const ALLOWED_RADIUS_METERS = 75;
@@ -1264,9 +1018,9 @@
     }
     function verifyLocationAndCheckIn() {
       const statusText = document.getElementById('checkinStatusText');
-      statusText.innerText = currentLang === 'ar' ? "جاري تفعيل نظام الـ GPS والتحقق من النطاق..." : "Activating GPS and verifying location...";
+      statusText.innerText = currentLang === 'ar' ? "جاري تفعيل الـ GPS..." : "Activating GPS...";
       if (!navigator.geolocation) {
-        statusText.innerText = currentLang === 'ar' ? "متصفحك لا يدعم تحديد الموقع الجغرافي." : "Geolocation is not supported by your browser.";
+        statusText.innerText = currentLang === 'ar' ? "متصفحك لا يدعم الـ GPS." : "Geolocation not supported.";
         return;
       }
       navigator.geolocation.getCurrentPosition(
@@ -1275,16 +1029,13 @@
           const userLng = position.coords.longitude;
           const distance = calculateDistance(userLat, userLng, COMPANY_LAT, COMPANY_LNG);
           if (distance <= ALLOWED_RADIUS_METERS) {
-            statusText.className = "checkin-status-text success";
-            statusText.innerText = currentLang === 'ar' ? `تم تسجيل الحضور بنجاح! أنت في نطاق الشركة (${Math.round(distance)} متر)` : `Check-in successful! Within company range (${Math.round(distance)}m)`;
+            statusText.innerText = currentLang === 'ar' ? `تم تسجيل الحضور بنجاح! (${Math.round(distance)} متر)` : `Check-in successful! (${Math.round(distance)}m)`;
           } else {
-            statusText.className = "checkin-status-text";
-            statusText.innerText = currentLang === 'ar' ? `عذراً، أنت خارج نطاق الشركة (${Math.round(distance)} متر)` : `Sorry, you are outside company range (${Math.round(distance)}m)`;
+            statusText.innerText = currentLang === 'ar' ? `خارج نطاق الشركة (${Math.round(distance)} متر)` : `Outside range (${Math.round(distance)}m)`;
           }
         },
         (error) => {
-          statusText.className = "checkin-status-text";
-          statusText.innerText = currentLang === 'ar' ? "تعذر الحصول على موقعك. تأكد من تفعيل الـ GPS." : "Unable to retrieve location. Please enable GPS.";
+          statusText.innerText = currentLang === 'ar' ? "تعذر الحصول على موقعك." : "Unable to retrieve location.";
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
