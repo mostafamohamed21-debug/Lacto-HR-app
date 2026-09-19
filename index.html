@@ -1168,7 +1168,6 @@
         if(descEl) descEl.innerText = slide.desc;
       });
     }
-
     function toggleNotificationPopup(event) {
       event.stopPropagation();
       const popup = document.getElementById('notificationPopup');
@@ -1180,7 +1179,6 @@
         popup.classList.remove('show');
       }
     });
-
     function toggleChatbot() {
       const chatWin = document.getElementById('chatbot-window');
       chatWin.classList.toggle('show');
@@ -1202,7 +1200,6 @@
       messagesContainer.appendChild(userMsg);
       input.value = '';
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
       setTimeout(() => {
         const botMsg = document.createElement('div');
         botMsg.className = 'chat-msg bot';
@@ -1231,7 +1228,6 @@
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
       }, 600);
     }
-
     let currentSlideIndex = 0;
     const totalSlides = 5;
     let slideInterval;
@@ -1268,7 +1264,6 @@
       }
       resetSlideTimer();
     });
-
     window.addEventListener('DOMContentLoaded', () => {
       selectLanguage(currentLang);
       resetSlideTimer();
@@ -1282,7 +1277,6 @@
         document.getElementById('rememberMe').checked = true;
       }
     });
-
     const COMPANY_LAT = 30.235154;
     const COMPANY_LNG = 31.743997;
     const ALLOWED_RADIUS_METERS = 75;
@@ -1320,7 +1314,6 @@
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     }
-
     function showPage(pageId) {
       ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory'].forEach(id => {
         document.getElementById(id).classList.add('hidden');
@@ -1328,7 +1321,6 @@
       document.getElementById(pageId).classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-
     function login() {
       const code = document.getElementById('empCode').value.trim();
       const pass = document.getElementById('empPass').value.trim();
@@ -1373,7 +1365,6 @@
         }
       });
     }
-
     function downloadCard() {
       html2canvas(document.getElementById('myCardToDownload'), { useCORS: true, scale: 2 }).then(canvas => {
         const link = document.createElement('a');
@@ -1382,7 +1373,6 @@
         link.click();
       });
     }
-
     function logout() { 
       // مسح بيانات تسجيل الدخول عند عمل Logout تماماً لضمان طلبها من جديد عند إعادة الفتح
       localStorage.removeItem('lacto_saved_code');
