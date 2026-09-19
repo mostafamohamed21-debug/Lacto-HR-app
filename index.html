@@ -98,10 +98,9 @@
       align-items: center;
       direction: ltr;
     }
-    /* تصغير حجم خط لاكتو مصر */
     .intro-char {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: clamp(1rem, 3.5vw, 1.5rem);
+      font-size: clamp(1.2rem, 4vw, 1.8rem);
       font-weight: 800;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text;
@@ -110,10 +109,9 @@
       display: inline-block;
     }
     .intro-space { width: 0.4rem; }
-    /* ضبط الجملة لتكون بعرض الصفحة */
     .intro-subtitle {
       font-family: 'Great Vibes', cursive;
-      font-size: clamp(1.2rem, 4vw, 2.2rem);
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
       color: #38bdf8;
       text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
       opacity: 0;
@@ -163,6 +161,9 @@
       align-items: center;
       gap: 0.4rem;
       backdrop-filter: blur(12px);
+      box-shadow: none;
+      width: auto;
+      margin: 0;
     }
     .lang-dropdown-menu {
       position: absolute;
@@ -214,7 +215,7 @@
     }
     input:focus { border-color: #38bdf8; box-shadow: 0 0 15px var(--accent-glow); }
     
-    /* ضبط محاذاة عناصر تسجيل الدخول لتجنب الإزاحة */
+    /* ضبط محاذاة حقل تسجيل الدخول بدون إزاحة */
     .password-container { 
       position: relative; 
       width: 100%; 
@@ -328,6 +329,7 @@
     .fingerprint-icon-wrap svg { width: 34px; height: 34px; fill: currentColor; }
     .checkin-status-text { font-size: 0.9rem; font-weight: 700; color: #ef4444; }
     .checkin-status-text.success { color: #10b981; }
+    
     /* Company Announcements Slider */
     .announcement-card {
       background: rgba(15, 23, 42, 0.8);
@@ -353,6 +355,7 @@
     .slider-dots { display: flex; justify-content: center; gap: 0.35rem; align-items: center; margin-top: 0.5rem; }
     .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s; }
     .dot.active { width: 18px; border-radius: 4px; background: #38bdf8; }
+    
     /* Summaries & Stats Grid */
     .summaries-grid {
       display: grid;
@@ -370,6 +373,7 @@
     [dir="ltr"] .summary-card { text-align: left; }
     .summary-title { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.3rem; font-weight: 600; }
     .summary-value { font-size: 1.1rem; font-weight: 800; color: #38bdf8; }
+    
     /* Services Grid */
     .services-grid {
       display: grid;
@@ -398,6 +402,7 @@
     }
     .service-icon-box svg { width: 22px; height: 22px; fill: currentColor; }
     .service-title { font-size: 0.82rem; font-weight: 700; color: var(--text); }
+    
     /* Career Opportunities Banner Card */
     .career-card {
       background: linear-gradient(135deg, rgba(2, 132, 199, 0.2), rgba(15, 23, 42, 0.9));
@@ -412,11 +417,15 @@
       transition: all 0.2s ease;
     }
     .career-card:hover { border-color: #38bdf8; transform: translateY(-2px); }
-    
-    /* Floating Chat Button - رفع موقع الزر ليكون داخل نطاق الشاشة بوضوح */
+    .career-card-text { text-align: right; }
+    [dir="ltr"] .career-card-text { text-align: left; }
+    .career-arrow { font-size: 1.2rem; color: #38bdf8; transition: transform 0.2s; }
+    [dir="ltr"] .career-arrow { transform: rotate(180deg); }
+
+    /* Floating Chat Button - مرفوع بداخل الشاشة مع محاذاة أفقية متجاوبة */
     .chat-float-btn {
       position: fixed;
-      bottom: 5rem;
+      bottom: 2rem;
       left: 1.5rem;
       width: 55px;
       height: 55px;
@@ -439,7 +448,7 @@
     /* Chat Popup Box UI */
     .chat-popup {
       position: fixed;
-      bottom: 9rem;
+      bottom: 6rem;
       left: 1.5rem;
       width: 320px;
       max-width: calc(100vw - 3rem);
@@ -562,7 +571,7 @@
   </script>
 </head>
 <body>
-  <!-- Intro Screen with Leaf Fall Animation from Top Edge Only -->
+  <!-- Intro Screen with Leaf Fall Animation -->
   <div id="intro-screen">
     <div class="intro-content-wrapper">
       <div class="intro-title-container" id="introTitle"></div>
@@ -587,6 +596,7 @@
       </div>
     </div>
   </div>
+
   <div class="container">
     <!-- 1. Login View -->
     <div id="view-login" class="card">
@@ -611,6 +621,7 @@
       <button id="t-loginBtn" onclick="login()">دخول الحساب</button>
       <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.85rem; font-weight: bold;"></p>
     </div>
+
     <!-- 2. Dashboard View -->
     <div id="view-dashboard" class="hidden">
       <!-- User Greeting Header -->
@@ -666,15 +677,15 @@
       <div class="summaries-grid">
         <div class="summary-card">
           <div class="summary-title" id="t-sumLeaves">رصيد الإجازات</div>
-          <div class="summary-value">21 يوم</div>
+          <div class="summary-value" id="t-valLeaves">21 يوم</div>
         </div>
         <div class="summary-card">
           <div class="summary-title" id="t-sumPermissions">الأذونات المتاحة</div>
-          <div class="summary-value">3 أذونات</div>
+          <div class="summary-value" id="t-valPermissions">3 أذونات</div>
         </div>
         <div class="summary-card" style="grid-column: span 2;">
           <div class="summary-title" id="t-sumSalary">صافي آخر مرتب</div>
-          <div class="summary-value">محفوظ وآمن 🔒</div>
+          <div class="summary-value" id="t-valSalary">محفوظ وآمن 🔒</div>
         </div>
       </div>
       <!-- Services Grid -->
@@ -705,19 +716,20 @@
         </div>
       </div>
       <!-- Career Opportunities Banner -->
-      <div class="career-card" onclick="alert('قريباً: استعراض الوظائف الداخلية والترقيات المتاحة.')">
-        <div style="text-align: right;">
+      <div class="career-card" onclick="alert(currentLang==='ar'?'قريباً: استعراض الوظائف الداخلية والترقيات المتاحة.':'Coming Soon: View internal job postings and promotion opportunities.')">
+        <div class="career-card-text">
           <div id="t-careerTitle" style="font-weight: 700; font-size: 0.9rem; color: #38bdf8;">الفرص الوظيفية الشاغرة</div>
           <div id="t-careerDesc" style="font-size: 0.75rem; color: var(--muted);">استكشف الوظائف الداخلية المتاحة للترقي</div>
         </div>
-        <span style="font-size: 1.2rem; color: #38bdf8;">➔</span>
+        <span class="career-arrow">➔</span>
       </div>
       <button id="t-logoutBtn" onclick="logout()" class="btn-danger">تسجيل الخروج</button>
     </div>
+
     <!-- 3. ID Card View -->
     <div id="view-id-card" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
+        <button class="back-btn" id="t-backBtn1" onclick="showPage('view-dashboard')">← رجوع</button>
         <span id="t-cardTitle" style="font-weight: 700; font-size: 0.9rem;">الكارت الرقمي</span>
       </div>
       <div class="id-card" id="myCardToDownload">
@@ -738,51 +750,55 @@
       </div>
       <button id="t-saveCardBtn" onclick="downloadCard()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); margin-top:1rem;">حفظ الكارت كصورة</button>
     </div>
+
     <!-- 4. Leaves View -->
     <div id="view-leaves" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span style="font-weight: 700;">خدمة الإجازات</span>
+        <button class="back-btn" id="t-backBtn2" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span style="font-weight: 700;" id="t-pageLeavesTitle">خدمة الإجازات</span>
       </div>
-      <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.</p>
+      <p id="t-leavesDesc" style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.</p>
     </div>
+
     <!-- 5. Payroll View -->
     <div id="view-payroll" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span style="font-weight: 700;">مفردات المرتب</span>
+        <button class="back-btn" id="t-backBtn3" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span style="font-weight: 700;" id="t-pagePayTitle">مفردات المرتب</span>
       </div>
-      <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.</p>
+      <p id="t-payDesc" style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.</p>
     </div>
+
     <!-- 6. Directory View -->
     <div id="view-directory" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
-        <span style="font-weight: 700;">دليل التواصل</span>
+        <button class="back-btn" id="t-backBtn4" onclick="showPage('view-dashboard')">← رجوع</button>
+        <span style="font-weight: 700;" id="t-pageDirTitle">دليل التواصل</span>
       </div>
-      <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
+      <p id="t-dirDesc" style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
     </div>
   </div>
-  <!-- Floating Chat Button (مرفوع وفلوتنج داخل نطاق الشاشة) -->
+
+  <!-- Floating Chat Button (مرفوع ومضبوط في الاتجاهين) -->
   <div class="chat-float-btn" onclick="toggleChatPopup()" title="شات الدعم الفني">
     <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
   </div>
-  <!-- Real Chatbot Popup Box (يدعم اللغتين) -->
+
+  <!-- Real Chatbot Popup Box (يدعم اللغتين الكاملتين) -->
   <div class="chat-popup hidden" id="chatPopup">
     <div class="chat-header">
       <span id="chat-title-text">المساعد الذكي (HR Bot)</span>
       <button class="chat-close-btn" onclick="toggleChatPopup()">✕</button>
     </div>
-    <div class="chat-body" id="chatBody">
-      <!-- Initialized dynamically based on current language -->
-    </div>
+    <div class="chat-body" id="chatBody"></div>
     <div class="chat-footer">
       <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..." onkeypress="if(event.key==='Enter') sendChatMessage()">
       <button onclick="sendChatMessage()" id="chat-send-btn">إرسال</button>
     </div>
   </div>
+
   <script>
-    // Leaf Fall Entrance Animation (Slow, rotating 360 deg, falling from top edge)
+    // Leaf Fall Animation for Intro Text
     function runLeafFallIntro() {
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
@@ -807,12 +823,11 @@
         {x:900, y:0}, {x:900, y:700}, {x:0, y:900}, 
         {x:-900, y:700}, {x:-900, y:0}
       ];
-      // تهيئة الحروف من حافة الشاشة العلوية فقط لتساقط أوراق الشجر
       charElements.forEach((el) => {
-        const randomX = (Math.random() - 0.5) * 200; 
-        const randomRotation = (Math.random() - 0.5) * 360;
+        const randomX = (Math.random() - 0.5) * 300; 
+        const randomRotation = (Math.random() - 0.5) * 720;
         gsap.set(el, { 
-          y: -window.innerHeight / 2 - 50, // البدء من حافة الشاشة العلوية فقط
+          y: -150, 
           x: randomX, 
           rotation: randomRotation, 
           opacity: 0, 
@@ -823,7 +838,6 @@
       const tl = gsap.timeline({ 
         onComplete: () => document.getElementById('intro-screen').classList.add('fade-out') 
       });
-      // حركة دخول بطيئة تشبه سقوط أوراق الشجر ودوران الحروف 360 درجة
       tl.to(charElements, { 
         duration: 3.5, 
         x: 0, 
@@ -836,7 +850,6 @@
       });
       tl.to(subtitle, { duration: 1.2, opacity: 1, y: 0, ease: "power2.out" }, "-=1.0");
       tl.to(subtitle, { duration: 1.2, opacity: 0, y: -20, ease: "power1.in" }, "+=2.5");
-      // حركة الخروج البركانية/المشتتة الأصليّة دون تعديل
       charElements.forEach((el, index) => {
         const dir = directions[index % directions.length];
         tl.to(el, { 
@@ -850,10 +863,12 @@
       });
     }
     window.addEventListener('DOMContentLoaded', runLeafFallIntro);
+
     function togglePasswordVisibility() {
       const pass = document.getElementById('empPass');
       pass.type = (pass.type === 'password') ? 'text' : 'password';
     }
+
     // Firebase & App Logic
     const firebaseConfig = {
       apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
@@ -869,15 +884,22 @@
     let currentUserData = null;
     let currentEmpCode = "";
     let currentLang = localStorage.getItem('lacto_lang') || 'ar';
+
     const translations = {
       ar: {
+        empCodePlaceholder: "كود الموظف",
+        empPassPlaceholder: "كلمة السر",
         subtitle: "بوابة الموظفين الرقمية",
         remember: "تذكرني",
         loginBtn: "دخول الحساب",
         codeLabel: "كود:",
+        greeting: "مساء الخير 🌙",
         sumLeaves: "رصيد الإجازات",
+        valLeaves: "21 يوم",
         sumPermissions: "الأذونات المتاحة",
+        valPermissions: "3 أذونات",
         sumSalary: "صافي آخر مرتب",
+        valSalary: "محفوظ وآمن 🔒",
         btnLeaves: "طلبات الإجازات",
         btnID: "كارت الهوية",
         btnPay: "مفردات المرتب",
@@ -890,6 +912,13 @@
         lblCode: "كود الموظف",
         lblNID: "الرقم القومي",
         saveCardBtn: "حفظ الكارت كصورة",
+        backBtn: "← رجوع",
+        pageLeavesTitle: "خدمة الإجازات",
+        leavesDesc: "قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.",
+        pagePayTitle: "مفردات المرتب",
+        payDesc: "قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.",
+        pageDirTitle: "دليل التواصل",
+        dirDesc: "أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.",
         chatTitle: "المساعد الذكي (HR Bot)",
         chatPlaceholder: "اكتب سؤالك هنا...",
         chatSend: "إرسال",
@@ -901,13 +930,19 @@
         ]
       },
       en: {
+        empCodePlaceholder: "Employee Code",
+        empPassPlaceholder: "Password",
         subtitle: "Digital Employee Portal",
         remember: "Remember Me",
         loginBtn: "Sign In",
         codeLabel: "Code:",
+        greeting: "Good Evening 🌙",
         sumLeaves: "Leave Balance",
+        valLeaves: "21 Days",
         sumPermissions: "Available Permissions",
+        valPermissions: "3 Permissions",
         sumSalary: "Last Net Salary",
+        valSalary: "Secured & Safe 🔒",
         btnLeaves: "Leave Requests",
         btnID: "ID Card",
         btnPay: "Payroll",
@@ -920,6 +955,13 @@
         lblCode: "Employee Code",
         lblNID: "National ID",
         saveCardBtn: "Save ID Card as Image",
+        backBtn: "Back →",
+        pageLeavesTitle: "Leave Services",
+        leavesDesc: "Coming Soon: Submit leave & permission requests directly for manager approval.",
+        pagePayTitle: "Payroll Statement",
+        payDesc: "Coming Soon: Check monthly payslip statements as soon as issued.",
+        pageDirTitle: "Contact Directory",
+        dirDesc: "Emergency numbers, medical clinic, and HR department contacts.",
         chatTitle: "HR Assistant Bot",
         chatPlaceholder: "Type your question...",
         chatSend: "Send",
@@ -931,15 +973,22 @@
         ]
       }
     };
+
     function updateContentTranslations() {
       const t = translations[currentLang];
+      document.getElementById('empCode').placeholder = t.empCodePlaceholder;
+      document.getElementById('empPass').placeholder = t.empPassPlaceholder;
       document.getElementById('t-subtitle').innerText = t.subtitle;
       document.getElementById('t-remember').innerText = t.remember;
       document.getElementById('t-loginBtn').innerText = t.loginBtn;
       document.getElementById('t-codeLabel').innerText = t.codeLabel;
+      document.getElementById('dash-greeting').innerText = t.greeting;
       document.getElementById('t-sumLeaves').innerText = t.sumLeaves;
+      document.getElementById('t-valLeaves').innerText = t.valLeaves;
       document.getElementById('t-sumPermissions').innerText = t.sumPermissions;
+      document.getElementById('t-valPermissions').innerText = t.valPermissions;
       document.getElementById('t-sumSalary').innerText = t.sumSalary;
+      document.getElementById('t-valSalary').innerText = t.valSalary;
       document.getElementById('t-btnLeaves').innerText = t.btnLeaves;
       document.getElementById('t-btnID').innerText = t.btnID;
       document.getElementById('t-btnPay').innerText = t.btnPay;
@@ -953,10 +1002,22 @@
       document.getElementById('t-lblNID').innerText = t.lblNID;
       document.getElementById('t-saveCardBtn').innerText = t.saveCardBtn;
       
+      ['t-backBtn1', 't-backBtn2', 't-backBtn3', 't-backBtn4'].forEach(id => {
+        document.getElementById(id).innerText = t.backBtn;
+      });
+
+      document.getElementById('t-pageLeavesTitle').innerText = t.pageLeavesTitle;
+      document.getElementById('t-leavesDesc').innerText = t.leavesDesc;
+      document.getElementById('t-pagePayTitle').innerText = t.pagePayTitle;
+      document.getElementById('t-payDesc').innerText = t.payDesc;
+      document.getElementById('t-pageDirTitle').innerText = t.pageDirTitle;
+      document.getElementById('t-dirDesc').innerText = t.dirDesc;
+
       // الشات بوت
       document.getElementById('chat-title-text').innerText = t.chatTitle;
       document.getElementById('chatInput').placeholder = t.chatPlaceholder;
       document.getElementById('chat-send-btn').innerText = t.chatSend;
+
       t.slides.forEach((slide, idx) => {
         const titleEl = document.querySelector(`.slide-title-${idx + 1}`);
         const badgeEl = document.querySelector(`.slide-badge-${idx + 1}`);
@@ -965,32 +1026,31 @@
         if(badgeEl) badgeEl.innerText = slide.badge;
         if(descEl) descEl.innerText = slide.desc;
       });
-      
-      // تهيئة أول رسالة في الشات
+
+      // تهيئة الشات بوت حسب اللغة
       const chatBody = document.getElementById('chatBody');
-      if (chatBody.children.length <= 1) {
-        chatBody.innerHTML = `<div class="chat-msg bot">${t.chatWelcome}</div>`;
-      }
+      chatBody.innerHTML = `<div class="chat-msg bot">${t.chatWelcome}</div>`;
     }
+
     /* Chatbot Logic */
     function toggleChatPopup() {
       const popup = document.getElementById('chatPopup');
       popup.classList.toggle('hidden');
     }
+
     function sendChatMessage() {
       const input = document.getElementById('chatInput');
       const text = input.value.trim();
       if (!text) return;
       const chatBody = document.getElementById('chatBody');
       
-      // إضافة رسالة المستخدم
       const userMsg = document.createElement('div');
       userMsg.className = 'chat-msg user';
       userMsg.innerText = text;
       chatBody.appendChild(userMsg);
       input.value = '';
       chatBody.scrollTop = chatBody.scrollHeight;
-      // رد الشات بوت الذكي
+
       setTimeout(() => {
         const botMsg = document.createElement('div');
         botMsg.className = 'chat-msg bot';
@@ -1023,10 +1083,12 @@
         chatBody.scrollTop = chatBody.scrollHeight;
       }, 600);
     }
+
     // Announcement Slider Logic
     let currentSlideIndex = 0;
     const totalSlides = 3;
     let slideInterval;
+
     function showSlide(index) {
       currentSlideIndex = (index + totalSlides) % totalSlides;
       const track = document.getElementById('sliderTrack');
@@ -1037,17 +1099,21 @@
         dot.classList.toggle('active', i === currentSlideIndex);
       });
     }
+
     function currentSlide(index) {
       showSlide(index);
       resetSlideTimer();
     }
+
     function nextSlide() {
       showSlide(currentSlideIndex + 1);
     }
+
     function resetSlideTimer() {
       clearInterval(slideInterval);
       slideInterval = setInterval(nextSlide, 5500);
     }
+
     let touchStartX = 0;
     const cardEl = document.getElementById('announcementCard');
     cardEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; clearInterval(slideInterval); });
@@ -1060,14 +1126,12 @@
       }
       resetSlideTimer();
     });
-    window.addEventListener('DOMContentLoaded', () => {
-      selectLanguage(currentLang);
-      resetSlideTimer();
-    });
+
     // Geo-Location Verification
     const COMPANY_LAT = 30.235154;
     const COMPANY_LNG = 31.743997;
     const ALLOWED_RADIUS_METERS = 75;
+
     function calculateDistance(lat1, lon1, lat2, lon2) {
       const R = 6371e3;
       const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -1078,6 +1142,7 @@
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
       return R * c;
     }
+
     function verifyLocationAndCheckIn() {
       const statusText = document.getElementById('checkinStatusText');
       statusText.innerText = currentLang === 'ar' ? "جاري تفعيل نظام الـ GPS والتحقق من النطاق..." : "Activating GPS and verifying location...";
@@ -1105,12 +1170,14 @@
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     }
+
     function showPage(pageId) {
       ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory'].forEach(id => {
         document.getElementById(id).classList.add('hidden');
       });
       document.getElementById(pageId).classList.remove('hidden');
     }
+
     function login() {
       const code = document.getElementById('empCode').value.trim();
       const pass = document.getElementById('empPass').value.trim();
@@ -1155,7 +1222,11 @@
         }
       });
     }
+
     window.addEventListener('DOMContentLoaded', () => {
+      selectLanguage(currentLang);
+      resetSlideTimer();
+
       const savedCode = localStorage.getItem('lacto_saved_code');
       const savedPass = localStorage.getItem('lacto_saved_pass');
       if (savedCode && savedPass) {
@@ -1164,6 +1235,7 @@
         document.getElementById('rememberMe').checked = true;
       }
     });
+
     function downloadCard() {
       html2canvas(document.getElementById('myCardToDownload'), { useCORS: true, scale: 2 }).then(canvas => {
         const link = document.createElement('a');
@@ -1172,6 +1244,7 @@
         link.click();
       });
     }
+
     function logout() { window.location.reload(); }
     
     function toggleLangMenu() { document.getElementById('langMenu').classList.toggle('show'); }
