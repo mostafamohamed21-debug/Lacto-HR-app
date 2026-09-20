@@ -121,7 +121,7 @@
       white-space: nowrap;
     }
     
-    /* App Header بدون أي خطوط فاصلة تماماً */
+    /* App Header */
     .app-header {
       width: 100vw;
       background: #0d1527;
@@ -285,7 +285,7 @@
     .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
     .hidden { display: none !important; }
     
-    /* كارت الترحيب بعرض الشاشة بالكامل وبدون خط علوي فاصل */
+    /* كارت الترحيب بعرض الشاشة بالكامل مع خط سفلي بارز وواضح */
     .user-profile-card {
       width: 100vw;
       position: relative;
@@ -293,15 +293,15 @@
       right: 50%;
       margin-left: -50vw;
       margin-right: -50vw;
-      background: rgba(15, 23, 42, 0.92);
+      background: rgba(15, 23, 42, 0.95);
       border-top: none;
-      border-bottom: 1px solid rgba(56, 189, 248, 0.25);
+      border-bottom: 2px solid rgba(56, 189, 248, 0.6); /* خط كارت الترحيب البارز */
       border-left: none;
       border-right: none;
       border-radius: 0 0 1.5rem 1.5rem;
       padding: 1.15rem 1.5rem;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-      margin-bottom: 0.5rem;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+      margin-bottom: 0;
       z-index: 2;
       display: flex;
       flex-direction: column;
@@ -393,35 +393,76 @@
     .notification-popup-title { font-size: 0.75rem; font-weight: 800; color: #38bdf8; margin-bottom: 0.2rem; }
     .notification-popup-desc { font-size: 0.7rem; color: var(--muted); line-height: 1.4; }
     
-    /* Fingerprint Check-in Card */
+    /* تـركاية كارت البصمة المتداخل مع خط كارت الترحيب والزراير بالدوائر واللون الأزرق المضيء */
     .checkin-card {
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(15, 23, 42, 0.95));
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(15, 23, 42, 0.95));
       border: 1px solid rgba(56, 189, 248, 0.5);
+      border-top: 2px solid #38bdf8; /* خط علوي واضح ومميز لكارت البصمة */
       border-radius: 1.5rem;
-      padding: 0.75rem 1.25rem;
+      padding: 0.85rem 1.25rem;
       text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.6), inset 0 0 15px rgba(56, 189, 248, 0.2);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.6), inset 0 0 15px rgba(56, 189, 248, 0.2);
       cursor: pointer;
       transition: all 0.3s ease;
       color: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.3rem;
+      gap: 0.4rem;
       position: relative;
-      z-index: 1;
+      margin-top: -12px; /* تداخل من عند الـ Top border مع كارت الترحيب */
+      z-index: 3;
     }
-    .checkin-card:hover { border-color: #38bdf8; box-shadow: 0 10px 25px rgba(0,0,0,0.6), inset 0 0 20px rgba(56, 189, 248, 0.3); }
+    .checkin-card:hover { border-color: #38bdf8; box-shadow: 0 15px 30px rgba(0,0,0,0.6), inset 0 0 20px rgba(56, 189, 248, 0.3); }
+    
     .checkin-top-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
       padding: 0 0.2rem;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #38bdf8;
     }
+
+    /* حاوية الزراير والدوائر والكلمات المضيئة باللون الأزرق */
+    .attendance-action-buttons {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+    }
+    .action-btn-item {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+    }
+    
+    /* تصميم الدايرتين (الأخضر على اليمين والأحمر على الشمال) */
+    .indicator-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+    .dot-green {
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981, 0 0 15px #10b981;
+      border: 1px solid #34d399;
+    }
+    .dot-red {
+      background: #ef4444;
+      box-shadow: 0 0 8px #ef4444, 0 0 15px #ef4444;
+      border: 1px solid #f87171;
+    }
+
+    /* النصوص بجانب الدوائر باللون الأزرق المضيء */
+    .glowing-action-text {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #38bdf8;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.6), 0 0 20px rgba(56, 189, 248, 0.4);
+      letter-spacing: 0.5px;
+    }
+
     .checkin-main-content {
       display: flex;
       align-items: center;
@@ -452,6 +493,7 @@
       overflow: hidden;
       box-shadow: 0 10px 25px rgba(0,0,0,0.3);
       cursor: grab;
+      margin-top: 0.5rem;
     }
     [dir="ltr"] .announcement-card { text-align: left; }
     .slider-track { display: flex; transition: transform 0.6s ease-in-out; width: 100%; }
@@ -677,7 +719,7 @@
     </div>
   </div>
   
-  <!-- App Header (Full Width Without Border Bottom) -->
+  <!-- App Header -->
   <div class="app-header">
     <div class="brand-container">
       <img src="logo.png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
@@ -724,7 +766,7 @@
     <div id="view-dashboard" class="hidden"></div>
   </div>
 
-  <!-- كارت الترحيب بالمستخدم المدمج بعرض الشاشة الكاملة وبدون خط علوي -->
+  <!-- كارت الترحيب بالمستخدم المدمج بعرض الشاشة الكاملة مع الخط السفلي البارز -->
   <div id="dashboard-header-container" class="hidden">
     <div class="user-profile-card">
       <div class="profile-top-row">
@@ -753,18 +795,24 @@
   <!-- باقي محتوى الداشبورد -->
   <div class="container">
     <div id="dashboard-content-container" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
-      <!-- Fingerprint Check-in Card -->
+      <!-- كارت البصمة المتداخل مع الزراير والدوائر والكلمات المضيئة باللون الأزرق حسب طلبك -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="checkin-top-row">
-          <span style="font-size: 0.85rem; font-weight: 800;">Sign In</span>
-          <div style="display: flex; gap: 0.75rem; font-size: 0.7rem;">
-            <span>Working Hours ⏱️ 00:00</span>
-            <span>Out 🚪 00:00</span>
-            <span>In 📥 00:00</span>
+          <span style="font-size: 0.8rem; font-weight: 700; color: #38bdf8;">Working Hours ⏱️ 00:00</span>
+          <!-- الزراير بالدوائر والكلمات المضيئة باللون الأزرق -->
+          <div class="attendance-action-buttons">
+            <div class="action-btn-item">
+              <span class="glowing-action-text">Check In</span>
+              <div class="indicator-dot dot-green"></div>
+            </div>
+            <div class="action-btn-item">
+              <span class="glowing-action-text">Check Out</span>
+              <div class="indicator-dot dot-red"></div>
+            </div>
           </div>
         </div>
         <div class="checkin-main-content">
-          <div id="checkinStatusText" class="checkin-status-text">جاري تحديد الموقع الجغرافي...</div>
+          <div id="checkinStatusText" class="checkin-status-text">اضغط هنا لتفعيل بصمة الـ GPS</div>
           <div class="fingerprint-icon-wrap">
             <svg viewBox="0 0 24 24"><path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 13.9 3 12 3s-3.66.42-5.58 1.41c-.15.08-.33.05-.45-.07-.12-.12-.15-.31-.07-.46C7.94 2.76 9.9 2.25 12 2.25s4.06.51 6.1 1.63c.15.08.21.27.13.43-.05.1-.15.16-.25.16zM12 9c-1.1 0-2 .9-2 2 0 .55.22 1.05.59 1.42l.98.98c.37.37.87.59 1.42.59 1.1 0 2-.9 2-2 0-1.1-.9-2-2-2zm6.75 3.75c-.41 0-.75.34-.75.75 0 2.9-2.35 5.25-5.25 5.25S7.5 16.4 7.5 13.5c0-.41-.34-.75-.75-.75s-.75.34-.75.75c0 3.79 3.09 6.88 6.88 6.88s6.88-3.09 6.88-6.88c0-.41-.34-.75-.75-.75z"/></svg>
           </div>
@@ -1067,7 +1115,7 @@
         descPayroll: "قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.",
         titleDir: "دليل التواصل",
         descDir: "أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.",
-        checkinPending: "جاري تحديد الموقع الجغرافي...",
+        checkinPending: "اضغط هنا لتفعيل بصمة الـ GPS",
         popupTitle: "تنبيهات النظام",
         popupDesc: "لا توجد إشعارات جديدة. تم تفعيل النظام بنجاح!",
         botName: "مساعد LM HR الذكي",
@@ -1114,7 +1162,7 @@
         descPayroll: "Coming Soon: Check your monthly payslip as soon as it is issued.",
         titleDir: "Contact Directory",
         descDir: "Emergency numbers, medical clinic, and HR office contacts.",
-        checkinPending: "Locating via GPS...",
+        checkinPending: "Tap here for GPS check-in",
         popupTitle: "System Alerts",
         popupDesc: "No new notifications. System activated successfully!",
         botName: "LM HR Smart Assistant",
@@ -1199,7 +1247,7 @@
         careerArrow.innerText = '➔';
       }
       
-      updateDynamicGreeting(); // تحديث التحية بناءً على الوقت الحالي
+      updateDynamicGreeting();
       
       ['t-backBtn1', 't-backBtn2', 't-backBtn3', 't-backBtn4'].forEach(id => {
         const btn = document.getElementById(id);
@@ -1336,6 +1384,7 @@
     const COMPANY_LAT = 30.235154;
     const COMPANY_LNG = 31.743997;
     const ALLOWED_RADIUS_METERS = 75;
+
     function calculateDistance(lat1, lon1, lat2, lon2) {
       const R = 6371e3;
       const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -1346,22 +1395,27 @@
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
       return R * c;
     }
+
     function verifyLocationAndCheckIn() {
       const statusText = document.getElementById('checkinStatusText');
       statusText.innerText = currentLang === 'ar' ? "جاري تفعيل الـ GPS..." : "Activating GPS...";
+      
       if (!navigator.geolocation) {
         statusText.innerText = currentLang === 'ar' ? "متصفحك لا يدعم الـ GPS." : "Geolocation not supported.";
         return;
       }
+      
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const userLat = position.coords.latitude;
           const userLng = position.coords.longitude;
           const distance = calculateDistance(userLat, userLng, COMPANY_LAT, COMPANY_LNG);
+          
           if (distance <= ALLOWED_RADIUS_METERS) {
-            statusText.innerText = currentLang === 'ar' ? `تم تسجيل الحضور بنجاح! (${Math.round(distance)} متر)` : `Check-in successful! (${Math.round(distance)}m)`;
+            const timeStr = new Date().toLocaleTimeString();
+            statusText.innerText = currentLang === 'ar' ? `✅ تم تسجيل الحضور بنجاح الساعة ${timeStr}` : `✅ Check-in successful at ${timeStr}`;
           } else {
-            statusText.innerText = currentLang === 'ar' ? `خارج نطاق الشركة (${Math.round(distance)} متر)` : `Outside range (${Math.round(distance)}m)`;
+            statusText.innerText = currentLang === 'ar' ? `❌ خارج نطاق الشركة (${Math.round(distance)} متر)` : `❌ Outside range (${Math.round(distance)}m)`;
           }
         },
         (error) => {
@@ -1384,11 +1438,11 @@
         document.getElementById('view-dashboard').classList.remove('hidden');
         if(headerCard) headerCard.classList.remove('hidden');
         if(contentCard) contentCard.classList.remove('hidden');
-        updateDynamicGreeting(); // تحديث التحية فور الدخول للداشبورد
+        updateDynamicGreeting();
       } else {
         document.getElementById('view-dashboard').classList.add('hidden');
         if(headerCard) headerCard.classList.add('hidden');
-        if(contentCard) headerCard.classList.add('hidden');
+        if(contentCard) contentCard.classList.add('hidden');
         document.getElementById(pageId).classList.remove('hidden');
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1399,7 +1453,7 @@
       const pass = document.getElementById('empPass').value.trim();
       const rememberMe = document.getElementById('rememberMe').checked;
       const errorEl = document.getElementById('error');
-      if (!code) { errorEl.innerText = currentLang === 'ar' ? "يرجى إدخال كود الموظف" : "Please enter employee code"; return; }
+      if (!code) { errorEl.innerText = currentLang === 'ar' ? "يرجى إدخال كود الموظف" : "Please employee code"; return; }
       db.ref('users/' + code).once('value').then((snapshot) => {
         if (snapshot.exists()) {
           const user = snapshot.val();
