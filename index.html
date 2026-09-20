@@ -121,22 +121,6 @@
       white-space: nowrap;
     }
     
-    /* Main App Layout & Full-Width Header */
-    .app-header {
-      width: 100vw;
-      background: #0d1527;
-      border-bottom: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 0.75rem 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1000;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-    }
-    body { padding-top: 4.5rem; }
     .brand-container {
       display: flex;
       align-items: center;
@@ -289,7 +273,7 @@
     .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
     .hidden { display: none !important; }
     
-    /* Full-Width User Greeting Header */
+    /* Updated Full-Width User Greeting Header Matching Mockup Design */
     .user-header-card {
       width: 100vw;
       position: relative;
@@ -301,11 +285,23 @@
       border-bottom: 1px solid rgba(56, 189, 248, 0.3);
       padding: 1rem 1.5rem;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      flex-direction: column;
+      gap: 0.85rem;
       box-shadow: 0 5px 15px rgba(0,0,0,0.3);
       margin-bottom: 0.5rem;
       z-index: 2;
+    }
+    .user-header-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .user-header-main-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
     }
     .user-header-right {
       display: flex;
@@ -376,25 +372,25 @@
     .notification-popup-title { font-size: 0.75rem; font-weight: 800; color: #38bdf8; margin-bottom: 0.2rem; }
     .notification-popup-desc { font-size: 0.7rem; color: var(--muted); line-height: 1.4; }
     
-    /* Fingerprint Check-in Card */
+    /* Fingerprint Check-in Card (Updated to Glow Blue matching Mockup Style) */
     .checkin-card {
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(15, 23, 42, 0.95));
-      border: 1px solid rgba(56, 189, 248, 0.5);
-      border-radius: 1.5rem;
-      padding: 0.75rem 1.25rem;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.35), rgba(15, 23, 42, 0.95));
+      border: 1px solid rgba(56, 189, 248, 0.7);
+      border-radius: 2rem;
+      padding: 1rem 1.25rem;
       text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.6), inset 0 0 15px rgba(56, 189, 248, 0.2);
+      box-shadow: 0 10px 30px rgba(56, 189, 248, 0.25), inset 0 0 20px rgba(56, 189, 248, 0.3);
       cursor: pointer;
       transition: all 0.3s ease;
       color: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.3rem;
+      gap: 0.4rem;
       position: relative;
       z-index: 1;
     }
-    .checkin-card:hover { border-color: #38bdf8; box-shadow: 0 10px 25px rgba(0,0,0,0.6), inset 0 0 20px rgba(56, 189, 248, 0.3); }
+    .checkin-card:hover { border-color: #38bdf8; box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4), inset 0 0 25px rgba(56, 189, 248, 0.4); }
     .checkin-top-row {
       display: flex;
       justify-content: space-between;
@@ -414,12 +410,12 @@
     }
     .fingerprint-icon-wrap {
       width: 45px; height: 45px;
-      background: rgba(56, 189, 248, 0.2);
-      border: 1px solid rgba(56, 189, 248, 0.4);
+      background: rgba(56, 189, 248, 0.25);
+      border: 1px solid rgba(56, 189, 248, 0.5);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       color: #38bdf8;
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
     }
     .fingerprint-icon-wrap svg { width: 24px; height: 24px; fill: currentColor; }
     .checkin-status-text { font-size: 0.8rem; font-weight: 700; color: var(--text); }
@@ -659,23 +655,6 @@
     </div>
   </div>
   
-  <!-- App Header (Full Width with Logo and Language Selector) -->
-  <div class="app-header">
-    <div class="brand-container">
-      <img src="logo.png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
-      <div class="brand-title">LM HR</div>
-    </div>
-    
-    <div class="lang-dropdown-container">
-      <button class="lang-dropdown-btn" onclick="toggleLangMenu()">
-        🌐 <span id="current-lang-text">العربية</span> ▼
-      </button>
-      <div class="lang-dropdown-menu" id="langMenu">
-        <div class="lang-option" onclick="selectLanguage('ar')">🇪🇬 العربية</div>
-        <div class="lang-option" onclick="selectLanguage('en')">🇬🇧 English</div>
-      </div>
-    </div>
-  </div>
   <div class="container">
     <!-- 1. Login View -->
     <div id="view-login" class="card">
@@ -703,29 +682,47 @@
     
     <!-- 2. Dashboard View -->
     <div id="view-dashboard" class="hidden">
-      <!-- Full-Width User Greeting Header -->
+      <!-- Full-Width User Greeting Header Matching Mockup Layout -->
       <div class="user-header-card">
-        <div class="user-header-right">
-          <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
-          <div>
-            <div id="dash-greeting" style="font-size: 0.75rem; color: var(--muted);">مساء الخير 🌙</div>
-            <h3 id="dash-name" style="margin: 0; font-size: 0.95rem; font-weight: 700;">--</h3>
-            <div class="code-badge-pill"><span id="t-codeLabel">ID:</span> <span id="dash-code-val">--</span></div>
+        <div class="user-header-top-row">
+          <div class="brand-container">
+            <img src="logo.png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
+            <div class="brand-title">LM HR</div>
+          </div>
+          <div class="lang-dropdown-container">
+            <button class="lang-dropdown-btn" onclick="toggleLangMenu()">
+              🌐 <span id="current-lang-text">العربية</span> ▼
+            </button>
+            <div class="lang-dropdown-menu" id="langMenu">
+              <div class="lang-option" onclick="selectLanguage('ar')">🇪🇬 العربية</div>
+              <div class="lang-option" onclick="selectLanguage('en')">🇬🇧 English</div>
+            </div>
           </div>
         </div>
-        <div class="notification-wrapper">
-          <div class="notification-btn" onclick="toggleNotificationPopup(event)" title="الإشعارات">
-            <div class="notification-badge"></div>
-            <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4v6z"/></svg>
+        
+        <div class="user-header-main-row">
+          <div class="user-header-right">
+            <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
+            <div>
+              <div id="dash-greeting" style="font-size: 0.75rem; color: var(--muted);">مساء الخير 🌙</div>
+              <h3 id="dash-name" style="margin: 0; font-size: 0.95rem; font-weight: 700;">--</h3>
+              <div class="code-badge-pill"><span id="t-codeLabel">ID:</span> <span id="dash-code-val">--</span></div>
+            </div>
           </div>
-          <div class="notification-popup" id="notificationPopup">
-            <div class="notification-popup-title" id="t-popupTitle">تنبيهات النظام</div>
-            <div class="notification-popup-desc" id="t-popupDesc">لا توجد إشعارات جديدة. تم تفعيل النظام بنجاح!</div>
+          <div class="notification-wrapper">
+            <div class="notification-btn" onclick="toggleNotificationPopup(event)" title="الإشعارات">
+              <div class="notification-badge"></div>
+              <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4v6z"/></svg>
+            </div>
+            <div class="notification-popup" id="notificationPopup">
+              <div class="notification-popup-title" id="t-popupTitle">تنبيهات النظام</div>
+              <div class="notification-popup-desc" id="t-popupDesc">لا توجد إشعارات جديدة. تم تفعيل النظام بنجاح!</div>
+            </div>
           </div>
         </div>
       </div>
       
-      <!-- Fingerprint Check-in Card -->
+      <!-- Fingerprint Check-in Card (Glow Blue Design) -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="checkin-top-row">
           <span style="font-size: 0.85rem; font-weight: 800;">Sign In</span>
@@ -1273,7 +1270,6 @@
       selectLanguage(currentLang);
       resetSlideTimer();
       
-      // Auto-retrieve saved credentials if Remember Me was active
       const savedCode = localStorage.getItem('lacto_saved_code');
       const savedPass = localStorage.getItem('lacto_saved_pass');
       if (savedCode && savedPass) {
@@ -1334,7 +1330,7 @@
       const pass = document.getElementById('empPass').value.trim();
       const rememberMe = document.getElementById('rememberMe').checked;
       const errorEl = document.getElementById('error');
-      if (!code) { errorEl.innerText = currentLang === 'ar' ? "يرجى إدخال كود الموظف" : "Please enter employee code"; return; }
+      if (!code) { errorEl.innerText = currentLang === 'ar' ? "يرجى إدخال كود الموظف" : "Please employee code"; return; }
       db.ref('users/' + code).once('value').then((snapshot) => {
         if (snapshot.exists()) {
           const user = snapshot.val();
@@ -1384,7 +1380,6 @@
     }
 
     function logout() { 
-      // مسح بيانات تسجيل الدخول عند عمل Logout تماماً لضمان طلبها من جديد عند إعادة الفتح
       localStorage.removeItem('lacto_saved_code');
       localStorage.removeItem('lacto_saved_pass');
       window.location.reload(); 
