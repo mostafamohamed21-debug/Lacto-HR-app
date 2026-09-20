@@ -492,7 +492,7 @@
     .fingerprint-icon-wrap svg { width: 24px; height: 24px; fill: currentColor; }
     .checkin-status-text { font-size: 0.8rem; font-weight: 700; color: var(--text); }
     
-    /* Announcement Slider - حل نهائي لمنع التداخل تماماً واستقلال كل شريحة */
+    /* Announcement Slider - نظام انتقال احترافي (Fade & Switch) عالي الاستقرار لمنع التداخل تماماً */
     .announcement-card {
       background: rgba(15, 23, 42, 0.85);
       border: 1px solid var(--border-color);
@@ -503,23 +503,36 @@
       overflow: hidden;
       box-shadow: 0 10px 25px rgba(0,0,0,0.3);
       margin-top: 0.5rem;
+      min-height: 110px;
     }
     [dir="ltr"] .announcement-card { text-align: left; }
-    .slider-track {
-      display: flex;
-      flex-wrap: nowrap;
-      width: 600%; /* 6 slides * 100% */
-      transition: transform 0.4s ease-in-out;
-      direction: ltr; /* حل نهائي لثبات حركة الشرائح و عدم التداخل في اللغة العربية والإنجليزية */
+    
+    .slides-container {
+      position: relative;
+      width: 100%;
+      min-height: 75px;
     }
     .slide-item {
-      width: 16.6666%; /* 100% / 6 */
-      flex: 0 0 16.6666%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      width: 100%;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+      transform: scale(0.97);
       cursor: pointer;
-      padding: 0 0.2rem;
-      text-align: right;
+      pointer-events: none;
     }
-    [dir="ltr"] .slide-item { text-align: left; }
+    .slide-item.active {
+      position: relative;
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+    
     .announcement-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
     .announcement-title { font-size: 1rem; font-weight: 700; color: var(--text); }
     .announcement-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; margin-bottom: 0.75rem; }
@@ -842,11 +855,11 @@
         </div>
       </div>
       
-      <!-- Company Announcements Slider -->
+      <!-- Company Announcements Slider (نظام الانتقال بالـ Fade الثابت والمستقل) -->
       <div class="announcement-card" id="announcementCard">
-        <div class="slider-track" id="sliderTrack">
+        <div class="slides-container" id="slidesContainer">
           <!-- Slide 1: أخبار الشركة -->
-          <div class="slide-item" onclick="showComingSoon()">
+          <div class="slide-item active" onclick="showComingSoon()">
             <div class="announcement-top">
               <span class="announcement-title slide-title-1">أخبار الشركة</span>
             </div>
@@ -1410,18 +1423,24 @@
     let currentSlideIndex = 0;
     const totalSlides = 6;
     let slideInterval;
+
     function showSlide(index) {
       currentSlideIndex = (index + totalSlides) % totalSlides;
-      const track = document.getElementById('sliderTrack');
-      const percentage = currentSlideIndex * (100 / totalSlides);
-      // استخدام اتجاه LTR للحساب لضمان حركة مثالية وثابتة تماماً لجميع الشرائح دون تداخل
-      track.style.transform = `translateX(-${percentage}%)`;
+      const slides = document.querySelectorAll('.slide-item');
+      slides.forEach((slide, i) => {
+        if (i === currentSlideIndex) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
       
       const dots = document.querySelectorAll('.dot');
       dots.forEach((dot, i) => {
         dot.classList.toggle('active', i === currentSlideIndex);
       });
     }
+
     function currentSlide(index) {
       showSlide(index);
       resetSlideTimer();
@@ -1438,9 +1457,9 @@
     cardEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; clearInterval(slideInterval); });
     cardEl.addEventListener('touchend', e => {
       let touchEndX = e.changedTouches[0].clientX;
-      if (touchStartX - touchEndX > 50) {
+      if (touchStartX - touchEndX > 40) {
         nextSlide();
-      } else if (touchEndX - touchStartX > 50) {
+      } else if (touchEndX - touchStartX > 40) {
         showSlide(currentSlideIndex - 1);
       }
       resetSlideTimer();
@@ -1553,8 +1572,8 @@
     }
 
     function showPage(pageId) {
-      // التمرير الفوري لأعلى الشاشة لضمان ظهور الصفحة الجديدة في المكان الصحيح مباشرة
-      window.scrollTo(0, 0);
+      // التمرير الفوري لأعلى الشاشة بدقة تامة لتظهر الصفحات الجديدة في المكان الصحيح مباشرة
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
       
       ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory', 
        'view-coming-soon', 'view-suggestion-page'].forEach(id => {
@@ -1573,7 +1592,7 @@
       } else {
         document.getElementById('view-dashboard').classList.add('hidden');
         if(headerCard) headerCard.classList.add('hidden');
-        if(contentCard) contentCard.classList.add('hidden');
+        if(contentCard) headerCard.classList.add('hidden');
         document.getElementById(pageId).classList.remove('hidden');
         
         if (pageId === 'view-suggestion-page' && currentUserData) {
@@ -1583,7 +1602,7 @@
           document.getElementById('sugMsg').innerText = '';
         }
       }
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     }
 
     function submitSuggestion() {
