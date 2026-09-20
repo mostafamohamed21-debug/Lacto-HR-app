@@ -285,7 +285,7 @@
     .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
     .hidden { display: none !important; }
     
-    /* كارت الترحيب: خطوط الأطراف مع الانحناءات الملتفة تماماً حول كارت البصمة */
+    /* كارت الترحيب: بدون خطوط مستقيمة، مع منحنيات SVG مقوسة للأعلى تماماً مثل الرسمة الحمراء */
     .user-profile-card {
       width: 100vw;
       position: relative;
@@ -296,52 +296,25 @@
       background: rgba(15, 23, 42, 0.95);
       border: none;
       border-radius: 0 0 1.5rem 1.5rem;
-      padding: 1.15rem 1.5rem;
+      padding: 1.15rem 1.5rem 1.75rem 1.5rem; /* مساحة إضافية بالأسفل لاستيعاب المنحنيات */
       box-shadow: 0 10px 25px rgba(0,0,0,0.4);
       margin-bottom: 0;
       z-index: 2;
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
+      overflow: visible;
     }
     
-    /* خطوط الأطراف والانحناءات المجهزة بالمسطرة لتطابق الصورة المطلوبة تماماً */
-    .profile-line-left {
+    /* حاوية منحنيات الـ SVG المعاكسة والمقوسة تماماً مثل الصورة المطلوبة */
+    .profile-curves-svg {
       position: absolute;
-      bottom: 0;
+      bottom: -15px;
       left: 0;
-      width: calc(50vw - min(50vw - 1rem, 210px));
-      height: 2px;
-      background: rgba(56, 189, 248, 0.85);
-    }
-    .profile-curve-left {
-      position: absolute;
-      bottom: 0;
-      left: calc(50vw - min(50vw - 1rem, 210px));
-      width: 12px;
-      height: 12px;
-      border-left: 2px solid rgba(56, 189, 248, 0.85);
-      border-top: 2px solid rgba(56, 189, 248, 0.85);
-      border-top-left-radius: 10px;
-    }
-    
-    .profile-line-right {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: calc(50vw - min(50vw - 1rem, 210px));
-      height: 2px;
-      background: rgba(56, 189, 248, 0.85);
-    }
-    .profile-curve-right {
-      position: absolute;
-      bottom: 0;
-      right: calc(50vw - min(50vw - 1rem, 210px));
-      width: 12px;
-      height: 12px;
-      border-right: 2px solid rgba(56, 189, 248, 0.85);
-      border-top: 2px solid rgba(56, 189, 248, 0.85);
-      border-top-right-radius: 10px;
+      width: 100vw;
+      height: 35px;
+      pointer-events: none;
+      z-index: 4;
     }
 
     .profile-top-row {
@@ -446,8 +419,8 @@
       align-items: center;
       gap: 0.4rem;
       position: relative;
-      margin-top: -10px;
-      z-index: 3;
+      margin-top: -15px;
+      z-index: 5;
     }
     .checkin-card:hover { border-color: #38bdf8; box-shadow: 0 15px 30px rgba(0,0,0,0.6), inset 0 0 20px rgba(56, 189, 248, 0.3); }
     
@@ -812,14 +785,14 @@
     <div id="view-dashboard" class="hidden"></div>
   </div>
 
-  <!-- كارت الترحيب بالمستخدم المدمج مع خطوط الأطراف والانحناءات الملتفة حول كارت البصمة -->
+  <!-- كارت الترحيب بالمستخدم المدمج مع منحنيات الـ SVG المعاكسة تماماً للصورة المطلوبة -->
   <div id="dashboard-header-container" class="hidden">
     <div class="user-profile-card">
-      <!-- خطوط الأطراف والانحناءات الملتفة حول كارت البصمة -->
-      <div class="profile-line-left"></div>
-      <div class="profile-curve-left"></div>
-      <div class="profile-line-right"></div>
-      <div class="profile-curve-right"></div>
+      <!-- منحنيات SVG الدقيقة (تبدأ من طرفي كارت البصمة وتصعد مقوسة للأعلى بدون أي خطوط مستقيمة) -->
+      <svg class="profile-curves-svg" viewBox="0 0 400 35" preserveAspectRatio="none">
+        <path d="M 125 5 Q 70 25, 0 30" fill="none" stroke="rgba(56, 189, 248, 0.85)" stroke-width="2.5" />
+        <path d="M 275 5 Q 330 25, 400 30" fill="none" stroke="rgba(56, 189, 248, 0.85)" stroke-width="2.5" />
+      </svg>
       
       <div class="profile-top-row">
         <div class="profile-info-group">
