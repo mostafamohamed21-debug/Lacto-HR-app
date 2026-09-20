@@ -285,7 +285,7 @@
     .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
     .hidden { display: none !important; }
     
-    /* كارت الترحيب: الخط ظاهر في الجنبين ويختفي في المنتصف فوق كارت البصمة */
+    /* كارت الترحيب: الخط ظاهر في الجنبين اليمين والشمال ومخفي في المنتصف تماماً */
     .user-profile-card {
       width: 100vw;
       position: relative;
@@ -304,7 +304,7 @@
       flex-direction: column;
       gap: 0.75rem;
     }
-    /* تريكة ظهور الخط في الجنبين فقط واختفائه في المنتصف */
+    /* التعديل الجذري للخط: ظاهر في الأطراف (الجنبين) ومخفي في المنتصف */
     .user-profile-card::after {
       content: '';
       position: absolute;
@@ -312,7 +312,14 @@
       left: 1.5rem;
       right: 1.5rem;
       height: 2px;
-      background: linear-gradient(90deg, rgba(56, 189, 248, 0.6) 0%, rgba(56, 189, 248, 0.6) 28%, transparent 28%, transparent 72%, rgba(56, 189, 248, 0.6) 72%, rgba(56, 189, 248, 0.6) 100%);
+      background: linear-gradient(90deg, 
+        rgba(56, 189, 248, 0.75) 0%, 
+        rgba(56, 189, 248, 0.75) 30%, 
+        transparent 30%, 
+        transparent 70%, 
+        rgba(56, 189, 248, 0.75) 70%, 
+        rgba(56, 189, 248, 0.75) 100%
+      );
     }
 
     .profile-top-row {
@@ -447,20 +454,20 @@
       cursor: pointer;
     }
     
-    /* نظام اللمبات: سطوع خفيف افتراضياً ومع البصمة يزيد الوهج بنسبة 100% */
+    /* نظام اللمبات بالسطوع المتوهج */
     .indicator-dot {
       width: 10px;
       height: 10px;
       border-radius: 50%;
       transition: all 0.4s ease;
-      opacity: 0.3; /* سطوع منخفض افتراضياً */
+      opacity: 0.3;
     }
     .dot-green {
       background: #10b981;
       border: 1px solid #34d399;
     }
     .dot-green.active {
-      opacity: 1; /* إضاءة كاملة وساطعة */
+      opacity: 1;
       box-shadow: 0 0 12px #10b981, 0 0 25px #10b981;
     }
     .dot-red {
@@ -468,11 +475,10 @@
       border: 1px solid #f87171;
     }
     .dot-red.active {
-      opacity: 1; /* إضاءة كاملة وساطعة */
+      opacity: 1;
       box-shadow: 0 0 12px #ef4444, 0 0 25px #ef4444;
     }
 
-    /* النصوص المضيئة باللون الأزرق */
     .glowing-action-text {
       font-size: 0.75rem;
       font-weight: 800;
@@ -813,7 +819,7 @@
   <!-- باقي محتوى الداشبورد -->
   <div class="container">
     <div id="dashboard-content-container" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
-      <!-- كارت البصمة الاحترافي (عرض Working Hours ووقت In و Out بدقة) -->
+      <!-- كارت البصمة الاحترافي -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="checkin-top-row">
           <span style="font-weight: 700; color: #38bdf8;" id="t-workingHoursTitle">Working Hours ⏱️ <span id="valWorkingHours">00:00</span></span>
@@ -830,7 +836,7 @@
         </div>
       </div>
 
-      <!-- شريط اللمبات والزراير الخارجي تحت الكارت بالسطوع المتوهج -->
+      <!-- شريط اللمبات والزراير الخارجي تحت الكارت -->
       <div class="external-attendance-bar">
         <!-- زرار/لمبة Check Out (أحمر) -->
         <div class="action-btn-item">
@@ -1426,7 +1432,6 @@
       return R * c;
     }
 
-    /* دالة ذكية لإدارة البصمة الأولى والأخيرة (First & Last Punch) وحساب Working Hours */
     function verifyLocationAndCheckIn() {
       const statusText = document.getElementById('checkinStatusText');
       const valIn = document.getElementById('valInTime');
@@ -1461,20 +1466,16 @@
               let currentTimeMs = now.getTime();
 
               if (!attData.inTime) {
-                // البصمة الأولى تعني الحضور (Check In)
                 attData.inTime = timeStr;
                 attData.inTimestamp = currentTimeMs;
                 statusText.innerText = currentLang === 'ar' ? `✅ تم تسجيل الحضور (In) بنجاح الساعة ${timeStr}` : `✅ Check-In saved at ${timeStr}`;
                 
-                // تفعيل إضاءة اللمبة الخضراء بوهج ساطع وإطفاء الحمراء
                 ledGreen.classList.add('active');
                 ledRed.classList.remove('active');
               } else {
-                // أي بصمة تالية خلال اليوم تعتبر انصراف (Check Out) لتحديث البصمة الأخيرة
                 attData.outTime = timeStr;
                 attData.outTimestamp = currentTimeMs;
 
-                // حساب إحصائية ساعات العمل بين أول بصمة وآخر بصمة
                 const diffMs = attData.outTimestamp - attData.inTimestamp;
                 const totalMins = Math.floor(diffMs / 60000);
                 const hrs = Math.floor(totalMins / 60);
@@ -1483,15 +1484,12 @@
 
                 statusText.innerText = currentLang === 'ar' ? `✅ تم تحديث بصمة الانصراف (Out) الساعة ${timeStr}` : `✅ Check-Out updated at ${timeStr}`;
                 
-                // تفعيل إضاءة اللمبة الحمراء بوهج ساطع وإطفاء الخضراء
                 ledRed.classList.add('active');
                 ledGreen.classList.remove('active');
               }
 
-              // حفظ البيانات المحدثة في فايربيس
               refPath.set(attData);
 
-              // تحديث الواجهة فوراً
               if (attData.inTime) valIn.innerText = attData.inTime;
               if (attData.outTime) valOut.innerText = attData.outTime;
               if (attData.workingHours) valWorking.innerText = attData.workingHours;
@@ -1570,7 +1568,6 @@
           
           showPage('view-dashboard');
 
-          // جلب بيانات الحضور لليوم الحالي وعرضها فور تسجيل الدخول
           const todayStr = new Date().toISOString().split('T')[0];
           db.ref('attendance/' + code + '/' + todayStr).once('value').then(attSnap => {
             if (attSnap.exists()) {
