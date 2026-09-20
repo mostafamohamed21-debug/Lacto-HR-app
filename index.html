@@ -285,7 +285,7 @@
     .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
     .hidden { display: none !important; }
     
-    /* كارت الترحيب: الخط ظاهر في الجنبين اليمين والشمال ومخفي في المنتصف تماماً */
+    /* كارت الترحيب: الخط يظهر في الأطراف (اليمين واليسار) ومفرغ تماماً من المنتصف */
     .user-profile-card {
       width: 100vw;
       position: relative;
@@ -304,22 +304,24 @@
       flex-direction: column;
       gap: 0.75rem;
     }
-    /* التعديل الجذري للخط: ظاهر في الأطراف (الجنبين) ومخفي في المنتصف */
-    .user-profile-card::after {
-      content: '';
+    
+    /* خط الطرف الأيمن */
+    .profile-line-left {
       position: absolute;
       bottom: 0;
-      left: 1.5rem;
-      right: 1.5rem;
+      left: 0;
+      width: calc(50% - 130px);
       height: 2px;
-      background: linear-gradient(90deg, 
-        rgba(56, 189, 248, 0.75) 0%, 
-        rgba(56, 189, 248, 0.75) 30%, 
-        transparent 30%, 
-        transparent 70%, 
-        rgba(56, 189, 248, 0.75) 70%, 
-        rgba(56, 189, 248, 0.75) 100%
-      );
+      background: rgba(56, 189, 248, 0.75);
+    }
+    /* خط الطرف الأيسر */
+    .profile-line-right {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: calc(50% - 130px);
+      height: 2px;
+      background: rgba(56, 189, 248, 0.75);
     }
 
     .profile-top-row {
@@ -790,9 +792,13 @@
     <div id="view-dashboard" class="hidden"></div>
   </div>
 
-  <!-- كارت الترحيب بالمستخدم المدمج بعرض الشاشة الكاملة -->
+  <!-- كارت الترحيب بالمستخدم المدمج بعرض الشاشة الكاملة مع خطوط الأطراف المنفصلة -->
   <div id="dashboard-header-container" class="hidden">
     <div class="user-profile-card">
+      <!-- الخط الأيمن والأيسر فقط (مفرغ بالمنتصف تماماً) -->
+      <div class="profile-line-left"></div>
+      <div class="profile-line-right"></div>
+      
       <div class="profile-top-row">
         <div class="profile-info-group">
           <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
@@ -819,7 +825,7 @@
   <!-- باقي محتوى الداشبورد -->
   <div class="container">
     <div id="dashboard-content-container" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
-      <!-- كارت البصمة الاحترافي -->
+      <!-- كارت البصمة الاحترافي (لا يعمل إلا بالضغط اليدوي مع GPS) -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="checkin-top-row">
           <span style="font-weight: 700; color: #38bdf8;" id="t-workingHoursTitle">Working Hours ⏱️ <span id="valWorkingHours">00:00</span></span>
@@ -829,7 +835,7 @@
           </div>
         </div>
         <div class="checkin-main-content">
-          <div id="checkinStatusText" class="checkin-status-text">اضغط هنا لتفعيل بصمة الـ GPS</div>
+          <div id="checkinStatusText" class="checkin-status-text">اضغط هنا لتفعيل بصمة الـ GPS وتسجيل الحضور/الانصراف</div>
           <div class="fingerprint-icon-wrap">
             <svg viewBox="0 0 24 24"><path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 13.9 3 12 3s-3.66.42-5.58 1.41c-.15.08-.33.05-.45-.07-.12-.12-.15-.31-.07-.46C7.94 2.76 9.9 2.25 12 2.25s4.06.51 6.1 1.63c.15.08.21.27.13.43-.05.1-.15.16-.25.16zM12 9c-1.1 0-2 .9-2 2 0 .55.22 1.05.59 1.42l.98.98c.37.37.87.59 1.42.59 1.1 0 2-.9 2-2 0-1.1-.9-2-2-2zm6.75 3.75c-.41 0-.75.34-.75.75 0 2.9-2.35 5.25-5.25 5.25S7.5 16.4 7.5 13.5c0-.41-.34-.75-.75-.75s-.75.34-.75.75c0 3.79 3.09 6.88 6.88 6.88s6.88-3.09 6.88-6.88c0-.41-.34-.75-.75-.75z"/></svg>
           </div>
@@ -1432,6 +1438,7 @@
       return R * c;
     }
 
+    /* دالة البصمة: تعمل حصرياً بالضغط اليدوي مع شرط موقع الشركة والـ GPS */
     function verifyLocationAndCheckIn() {
       const statusText = document.getElementById('checkinStatusText');
       const valIn = document.getElementById('valInTime');
@@ -1466,6 +1473,7 @@
               let currentTimeMs = now.getTime();
 
               if (!attData.inTime) {
+                // أول ضغطة يدوية = تسجيل حضور (Check In)
                 attData.inTime = timeStr;
                 attData.inTimestamp = currentTimeMs;
                 statusText.innerText = currentLang === 'ar' ? `✅ تم تسجيل الحضور (In) بنجاح الساعة ${timeStr}` : `✅ Check-In saved at ${timeStr}`;
@@ -1473,6 +1481,7 @@
                 ledGreen.classList.add('active');
                 ledRed.classList.remove('active');
               } else {
+                // أي ضغطة يدوية تالية في نفس اليوم = تحديث انصراف (Check Out)
                 attData.outTime = timeStr;
                 attData.outTimestamp = currentTimeMs;
 
@@ -1482,7 +1491,7 @@
                 const mins = totalMins % 60;
                 attData.workingHours = `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
 
-                statusText.innerText = currentLang === 'ar' ? `✅ تم تحديث بصمة الانصراف (Out) الساعة ${timeStr}` : `✅ Check-Out updated at ${timeStr}`;
+                statusText.innerText = currentLang === 'ar' ? `✅ تم تسجيل وانصراف (Out) الساعة ${timeStr}` : `✅ Check-Out recorded at ${timeStr}`;
                 
                 ledRed.classList.add('active');
                 ledGreen.classList.remove('active');
@@ -1568,6 +1577,7 @@
           
           showPage('view-dashboard');
 
+          // جلب بيانات الحضور لليوم الحالي وعرضها فقط (بدون أي تسجيل تلقائي للوقت)
           const todayStr = new Date().toISOString().split('T')[0];
           db.ref('attendance/' + code + '/' + todayStr).once('value').then(attSnap => {
             if (attSnap.exists()) {
@@ -1586,8 +1596,6 @@
               }
             }
           });
-
-          verifyLocationAndCheckIn();
         } else {
           errorEl.innerText = currentLang === 'ar' ? "كود الموظف غير مسجل!" : "Employee code not found!";
         }
