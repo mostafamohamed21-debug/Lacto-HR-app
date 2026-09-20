@@ -285,7 +285,7 @@
     .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
     .hidden { display: none !important; }
     
-    /* كارت الترحيب بعرض الشاشة بالكامل مع خط سفلي بارز وواضح */
+    /* كارت الترحيب بعرض الشاشة بالكامل وبدون خط سفلي مزعج */
     .user-profile-card {
       width: 100vw;
       position: relative;
@@ -294,13 +294,10 @@
       margin-left: -50vw;
       margin-right: -50vw;
       background: rgba(15, 23, 42, 0.95);
-      border-top: none;
-      border-bottom: 2px solid rgba(56, 189, 248, 0.6); /* خط كارت الترحيب البارز */
-      border-left: none;
-      border-right: none;
+      border: none; /* إزالة الخط السفلي تماماً بناءً على ملاحظتك */
       border-radius: 0 0 1.5rem 1.5rem;
       padding: 1.15rem 1.5rem;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
       margin-bottom: 0;
       z-index: 2;
       display: flex;
@@ -393,11 +390,10 @@
     .notification-popup-title { font-size: 0.75rem; font-weight: 800; color: #38bdf8; margin-bottom: 0.2rem; }
     .notification-popup-desc { font-size: 0.7rem; color: var(--muted); line-height: 1.4; }
     
-    /* تـركاية كارت البصمة المتداخل مع خط كارت الترحيب والزراير بالدوائر واللون الأزرق المضيء */
+    /* كارت البصمة المتداخل مع اللمبات الخارقة والزراير باللغتين */
     .checkin-card {
       background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(15, 23, 42, 0.95));
       border: 1px solid rgba(56, 189, 248, 0.5);
-      border-top: 2px solid #38bdf8; /* خط علوي واضح ومميز لكارت البصمة */
       border-radius: 1.5rem;
       padding: 0.85rem 1.25rem;
       text-align: center;
@@ -410,7 +406,7 @@
       align-items: center;
       gap: 0.4rem;
       position: relative;
-      margin-top: -12px; /* تداخل من عند الـ Top border مع كارت الترحيب */
+      margin-top: -10px;
       z-index: 3;
     }
     .checkin-card:hover { border-color: #38bdf8; box-shadow: 0 15px 30px rgba(0,0,0,0.6), inset 0 0 20px rgba(56, 189, 248, 0.3); }
@@ -423,20 +419,23 @@
       padding: 0 0.2rem;
     }
 
-    /* حاوية الزراير والدوائر والكلمات المضيئة باللون الأزرق */
-    .attendance-action-buttons {
+    /* الشريط الخارجي لللمبات والزراير تحت الكارت كما طلبت تماماً */
+    .external-attendance-bar {
       display: flex;
-      gap: 1.2rem;
+      justify-content: space-between;
       align-items: center;
+      width: 100%;
+      padding: 0.2rem 0.5rem;
+      margin-top: -0.2rem;
     }
     .action-btn-item {
       display: flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: 0.4rem;
       cursor: pointer;
     }
     
-    /* تصميم الدايرتين (الأخضر على اليمين والأحمر على الشمال) */
+    /* تصميم الدايرتين (الأخضر على اليمين والأحمر على الشمال في العربي) */
     .indicator-dot {
       width: 10px;
       height: 10px;
@@ -445,16 +444,16 @@
     }
     .dot-green {
       background: #10b981;
-      box-shadow: 0 0 8px #10b981, 0 0 15px #10b981;
+      box-shadow: 0 0 10px #10b981, 0 0 20px #10b981;
       border: 1px solid #34d399;
     }
     .dot-red {
       background: #ef4444;
-      box-shadow: 0 0 8px #ef4444, 0 0 15px #ef4444;
+      box-shadow: 0 0 10px #ef4444, 0 0 20px #ef4444;
       border: 1px solid #f87171;
     }
 
-    /* النصوص بجانب الدوائر باللون الأزرق المضيء */
+    /* النصوص بجانب الدوائر باللون الأزرق المضيء مع دعم اللغتين */
     .glowing-action-text {
       font-size: 0.75rem;
       font-weight: 800;
@@ -766,7 +765,7 @@
     <div id="view-dashboard" class="hidden"></div>
   </div>
 
-  <!-- كارت الترحيب بالمستخدم المدمج بعرض الشاشة الكاملة مع الخط السفلي البارز -->
+  <!-- كارت الترحيب بالمستخدم المدمج بعرض الشاشة الكاملة بدون أي خط سفلي -->
   <div id="dashboard-header-container" class="hidden">
     <div class="user-profile-card">
       <div class="profile-top-row">
@@ -795,20 +794,13 @@
   <!-- باقي محتوى الداشبورد -->
   <div class="container">
     <div id="dashboard-content-container" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
-      <!-- كارت البصمة المتداخل مع الزراير والدوائر والكلمات المضيئة باللون الأزرق حسب طلبك -->
+      <!-- كارت البصمة الأساسي (يحتوي Working Hours والمواعيد) -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="checkin-top-row">
-          <span style="font-size: 0.8rem; font-weight: 700; color: #38bdf8;">Working Hours ⏱️ 00:00</span>
-          <!-- الزراير بالدوائر والكلمات المضيئة باللون الأزرق -->
-          <div class="attendance-action-buttons">
-            <div class="action-btn-item">
-              <span class="glowing-action-text">Check In</span>
-              <div class="indicator-dot dot-green"></div>
-            </div>
-            <div class="action-btn-item">
-              <span class="glowing-action-text">Check Out</span>
-              <div class="indicator-dot dot-red"></div>
-            </div>
+          <span style="font-size: 0.8rem; font-weight: 700; color: #38bdf8;" id="t-workingHoursTitle">Working Hours ⏱️ 00:00</span>
+          <div style="display: flex; gap: 0.5rem; font-size: 0.7rem; color: var(--muted);">
+            <span id="t-outLabel">Out 🚪 00:00</span>
+            <span id="t-inLabel">In 📥 00:00</span>
           </div>
         </div>
         <div class="checkin-main-content">
@@ -816,6 +808,20 @@
           <div class="fingerprint-icon-wrap">
             <svg viewBox="0 0 24 24"><path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 13.9 3 12 3s-3.66.42-5.58 1.41c-.15.08-.33.05-.45-.07-.12-.12-.15-.31-.07-.46C7.94 2.76 9.9 2.25 12 2.25s4.06.51 6.1 1.63c.15.08.21.27.13.43-.05.1-.15.16-.25.16zM12 9c-1.1 0-2 .9-2 2 0 .55.22 1.05.59 1.42l.98.98c.37.37.87.59 1.42.59 1.1 0 2-.9 2-2 0-1.1-.9-2-2-2zm6.75 3.75c-.41 0-.75.34-.75.75 0 2.9-2.35 5.25-5.25 5.25S7.5 16.4 7.5 13.5c0-.41-.34-.75-.75-.75s-.75.34-.75.75c0 3.79 3.09 6.88 6.88 6.88s6.88-3.09 6.88-6.88c0-.41-.34-.75-.75-.75z"/></svg>
           </div>
+        </div>
+      </div>
+
+      <!-- شريط اللمبات والزراير الخارجي تماماً تحت الكارت (كما طلبت تماماً) -->
+      <div class="external-attendance-bar">
+        <!-- زرار/لمبة Check Out (أحمر) -->
+        <div class="action-btn-item">
+          <div class="indicator-dot dot-red"></div>
+          <span class="glowing-action-text" id="t-checkOutText">Check Out</span>
+        </div>
+        <!-- زرار/لمبة Check In (أخضر) -->
+        <div class="action-btn-item">
+          <span class="glowing-action-text" id="t-checkInText">Check In</span>
+          <div class="indicator-dot dot-green"></div>
         </div>
       </div>
       
@@ -1122,6 +1128,11 @@
         botWelcome: "أهلاً بك! كيف يمكنني مساعدتك اليوم في خدمات الموارد البشرية؟",
         sendBtn: "إرسال",
         chatPlaceholder: "اكتب سؤالك هنا...",
+        workingHoursText: "Working Hours ⏱️ 00:00",
+        outLabel: "Out 🚪 00:00",
+        inLabel: "In 📥 00:00",
+        checkInText: "Check In",
+        checkOutText: "Check Out",
         slides: [
           { title: "إعلانات الشركة", badge: "Coming Soon", desc: "أهم الأخبار، الأحداث المباشرة، والمناسبات المرتقبة بالشركة." },
           { title: "تحديثات النظام", badge: "New", desc: "ترقبوا إطلاق ميزات البصمة الجغرافية المتقدمة وطلبات الإجازات الرقمية قريباً." },
@@ -1169,6 +1180,11 @@
         botWelcome: "Hello! How can I help you today with HR services?",
         sendBtn: "Send",
         chatPlaceholder: "Type your question here...",
+        workingHoursText: "Working Hours ⏱️ 00:00",
+        outLabel: "Out 🚪 00:00",
+        inLabel: "In 📥 00:00",
+        checkInText: "Check In",
+        checkOutText: "Check Out",
         slides: [
           { title: "Company Announcements", badge: "Coming Soon", desc: "Latest news, live events, and upcoming company occasions." },
           { title: "System Updates", badge: "New", desc: "Stay tuned for the launch of advanced geo-attendance and digital leaves." },
@@ -1236,6 +1252,12 @@
       document.getElementById('t-botWelcome').innerText = t.botWelcome;
       document.getElementById('t-sendBtn').innerText = t.sendBtn;
       document.getElementById('chatInput').placeholder = t.chatPlaceholder;
+
+      document.getElementById('t-workingHoursTitle').innerText = t.workingHoursText;
+      document.getElementById('t-outLabel').innerText = t.outLabel;
+      document.getElementById('t-inLabel').innerText = t.inLabel;
+      document.getElementById('t-checkInText').innerText = t.checkInText;
+      document.getElementById('t-checkOutText').innerText = t.checkOutText;
       
       const careerTextWrap = document.getElementById('careerTextWrapper');
       const careerArrow = document.getElementById('careerArrow');
@@ -1453,7 +1475,7 @@
       const pass = document.getElementById('empPass').value.trim();
       const rememberMe = document.getElementById('rememberMe').checked;
       const errorEl = document.getElementById('error');
-      if (!code) { errorEl.innerText = currentLang === 'ar' ? "يرجى إدخال كود الموظف" : "Please employee code"; return; }
+      if (!code) { errorEl.innerText = currentLang === 'ar' ? "يرجى إدخال كود الموظف" : "Please enter employee code"; return; }
       db.ref('users/' + code).once('value').then((snapshot) => {
         if (snapshot.exists()) {
           const user = snapshot.val();
