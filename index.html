@@ -285,7 +285,7 @@
     .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
     .hidden { display: none !important; }
     
-    /* كارت الترحيب بعرض الشاشة بالكامل وبدون خط سفلي مزعج */
+    /* كارت الترحيب: الخط ظاهر في الجنبين ويختفي في المنتصف فوق كارت البصمة */
     .user-profile-card {
       width: 100vw;
       position: relative;
@@ -294,7 +294,7 @@
       margin-left: -50vw;
       margin-right: -50vw;
       background: rgba(15, 23, 42, 0.95);
-      border: none; /* إزالة الخط السفلي تماماً بناءً على ملاحظتك */
+      border: none;
       border-radius: 0 0 1.5rem 1.5rem;
       padding: 1.15rem 1.5rem;
       box-shadow: 0 10px 25px rgba(0,0,0,0.4);
@@ -304,6 +304,17 @@
       flex-direction: column;
       gap: 0.75rem;
     }
+    /* تريكة ظهور الخط في الجنبين فقط واختفائه في المنتصف */
+    .user-profile-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 1.5rem;
+      right: 1.5rem;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(56, 189, 248, 0.6) 0%, rgba(56, 189, 248, 0.6) 28%, transparent 28%, transparent 72%, rgba(56, 189, 248, 0.6) 72%, rgba(56, 189, 248, 0.6) 100%);
+    }
+
     .profile-top-row {
       display: flex;
       justify-content: space-between;
@@ -390,7 +401,7 @@
     .notification-popup-title { font-size: 0.75rem; font-weight: 800; color: #38bdf8; margin-bottom: 0.2rem; }
     .notification-popup-desc { font-size: 0.7rem; color: var(--muted); line-height: 1.4; }
     
-    /* كارت البصمة المتداخل مع اللمبات الخارقة والزراير باللغتين */
+    /* كارت البصمة المتداخل */
     .checkin-card {
       background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(15, 23, 42, 0.95));
       border: 1px solid rgba(56, 189, 248, 0.5);
@@ -417,9 +428,10 @@
       align-items: center;
       width: 100%;
       padding: 0 0.2rem;
+      font-size: 0.75rem;
     }
 
-    /* الشريط الخارجي لللمبات والزراير تحت الكارت كما طلبت تماماً */
+    /* الشريط الخارجي لللمبات والزراير تحت الكارت */
     .external-attendance-bar {
       display: flex;
       justify-content: space-between;
@@ -435,25 +447,32 @@
       cursor: pointer;
     }
     
-    /* تصميم الدايرتين (الأخضر على اليمين والأحمر على الشمال في العربي) */
+    /* نظام اللمبات: سطوع خفيف افتراضياً ومع البصمة يزيد الوهج بنسبة 100% */
     .indicator-dot {
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      transition: all 0.3s ease;
+      transition: all 0.4s ease;
+      opacity: 0.3; /* سطوع منخفض افتراضياً */
     }
     .dot-green {
       background: #10b981;
-      box-shadow: 0 0 10px #10b981, 0 0 20px #10b981;
       border: 1px solid #34d399;
+    }
+    .dot-green.active {
+      opacity: 1; /* إضاءة كاملة وساطعة */
+      box-shadow: 0 0 12px #10b981, 0 0 25px #10b981;
     }
     .dot-red {
       background: #ef4444;
-      box-shadow: 0 0 10px #ef4444, 0 0 20px #ef4444;
       border: 1px solid #f87171;
     }
+    .dot-red.active {
+      opacity: 1; /* إضاءة كاملة وساطعة */
+      box-shadow: 0 0 12px #ef4444, 0 0 25px #ef4444;
+    }
 
-    /* النصوص بجانب الدوائر باللون الأزرق المضيء مع دعم اللغتين */
+    /* النصوص المضيئة باللون الأزرق */
     .glowing-action-text {
       font-size: 0.75rem;
       font-weight: 800;
@@ -765,7 +784,7 @@
     <div id="view-dashboard" class="hidden"></div>
   </div>
 
-  <!-- كارت الترحيب بالمستخدم المدمج بعرض الشاشة الكاملة بدون أي خط سفلي -->
+  <!-- كارت الترحيب بالمستخدم المدمج بعرض الشاشة الكاملة -->
   <div id="dashboard-header-container" class="hidden">
     <div class="user-profile-card">
       <div class="profile-top-row">
@@ -794,13 +813,13 @@
   <!-- باقي محتوى الداشبورد -->
   <div class="container">
     <div id="dashboard-content-container" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
-      <!-- كارت البصمة الأساسي (يحتوي Working Hours والمواعيد) -->
+      <!-- كارت البصمة الاحترافي (عرض Working Hours ووقت In و Out بدقة) -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="checkin-top-row">
-          <span style="font-size: 0.8rem; font-weight: 700; color: #38bdf8;" id="t-workingHoursTitle">Working Hours ⏱️ 00:00</span>
-          <div style="display: flex; gap: 0.5rem; font-size: 0.7rem; color: var(--muted);">
-            <span id="t-outLabel">Out 🚪 00:00</span>
-            <span id="t-inLabel">In 📥 00:00</span>
+          <span style="font-weight: 700; color: #38bdf8;" id="t-workingHoursTitle">Working Hours ⏱️ <span id="valWorkingHours">00:00</span></span>
+          <div style="display: flex; gap: 0.75rem; color: var(--muted);">
+            <span>Out 🚪 <strong id="valOutTime" style="color:var(--text);">--:--</strong></span>
+            <span>In 📥 <strong id="valInTime" style="color:var(--text);">--:--</strong></span>
           </div>
         </div>
         <div class="checkin-main-content">
@@ -811,17 +830,17 @@
         </div>
       </div>
 
-      <!-- شريط اللمبات والزراير الخارجي تماماً تحت الكارت (كما طلبت تماماً) -->
+      <!-- شريط اللمبات والزراير الخارجي تحت الكارت بالسطوع المتوهج -->
       <div class="external-attendance-bar">
         <!-- زرار/لمبة Check Out (أحمر) -->
         <div class="action-btn-item">
-          <div class="indicator-dot dot-red"></div>
+          <div id="ledRed" class="indicator-dot dot-red"></div>
           <span class="glowing-action-text" id="t-checkOutText">Check Out</span>
         </div>
         <!-- زرار/لمبة Check In (أخضر) -->
         <div class="action-btn-item">
           <span class="glowing-action-text" id="t-checkInText">Check In</span>
-          <div class="indicator-dot dot-green"></div>
+          <div id="ledGreen" class="indicator-dot dot-green"></div>
         </div>
       </div>
       
@@ -1121,16 +1140,12 @@
         descPayroll: "قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.",
         titleDir: "دليل التواصل",
         descDir: "أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.",
-        checkinPending: "اضغط هنا لتفعيل بصمة الـ GPS",
         popupTitle: "تنبيهات النظام",
         popupDesc: "لا توجد إشعارات جديدة. تم تفعيل النظام بنجاح!",
         botName: "مساعد LM HR الذكي",
         botWelcome: "أهلاً بك! كيف يمكنني مساعدتك اليوم في خدمات الموارد البشرية؟",
         sendBtn: "إرسال",
         chatPlaceholder: "اكتب سؤالك هنا...",
-        workingHoursText: "Working Hours ⏱️ 00:00",
-        outLabel: "Out 🚪 00:00",
-        inLabel: "In 📥 00:00",
         checkInText: "Check In",
         checkOutText: "Check Out",
         slides: [
@@ -1173,16 +1188,12 @@
         descPayroll: "Coming Soon: Check your monthly payslip as soon as it is issued.",
         titleDir: "Contact Directory",
         descDir: "Emergency numbers, medical clinic, and HR office contacts.",
-        checkinPending: "Tap here for GPS check-in",
         popupTitle: "System Alerts",
         popupDesc: "No new notifications. System activated successfully!",
         botName: "LM HR Smart Assistant",
         botWelcome: "Hello! How can I help you today with HR services?",
         sendBtn: "Send",
         chatPlaceholder: "Type your question here...",
-        workingHoursText: "Working Hours ⏱️ 00:00",
-        outLabel: "Out 🚪 00:00",
-        inLabel: "In 📥 00:00",
         checkInText: "Check In",
         checkOutText: "Check Out",
         slides: [
@@ -1253,9 +1264,6 @@
       document.getElementById('t-sendBtn').innerText = t.sendBtn;
       document.getElementById('chatInput').placeholder = t.chatPlaceholder;
 
-      document.getElementById('t-workingHoursTitle').innerText = t.workingHoursText;
-      document.getElementById('t-outLabel').innerText = t.outLabel;
-      document.getElementById('t-inLabel').innerText = t.inLabel;
       document.getElementById('t-checkInText').innerText = t.checkInText;
       document.getElementById('t-checkOutText').innerText = t.checkOutText;
       
@@ -1418,9 +1426,16 @@
       return R * c;
     }
 
+    /* دالة ذكية لإدارة البصمة الأولى والأخيرة (First & Last Punch) وحساب Working Hours */
     function verifyLocationAndCheckIn() {
       const statusText = document.getElementById('checkinStatusText');
-      statusText.innerText = currentLang === 'ar' ? "جاري تفعيل الـ GPS..." : "Activating GPS...";
+      const valIn = document.getElementById('valInTime');
+      const valOut = document.getElementById('valOutTime');
+      const valWorking = document.getElementById('valWorkingHours');
+      const ledGreen = document.getElementById('ledGreen');
+      const ledRed = document.getElementById('ledRed');
+
+      statusText.innerText = currentLang === 'ar' ? "جاري تفعيل الـ GPS والتحقق من الموقع..." : "Activating GPS & verifying location...";
       
       if (!navigator.geolocation) {
         statusText.innerText = currentLang === 'ar' ? "متصفحك لا يدعم الـ GPS." : "Geolocation not supported.";
@@ -1434,14 +1449,60 @@
           const distance = calculateDistance(userLat, userLng, COMPANY_LAT, COMPANY_LNG);
           
           if (distance <= ALLOWED_RADIUS_METERS) {
-            const timeStr = new Date().toLocaleTimeString();
-            statusText.innerText = currentLang === 'ar' ? `✅ تم تسجيل الحضور بنجاح الساعة ${timeStr}` : `✅ Check-in successful at ${timeStr}`;
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const todayStr = now.toISOString().split('T')[0];
+
+            if (!currentEmpCode) return;
+
+            const refPath = db.ref('attendance/' + currentEmpCode + '/' + todayStr);
+            refPath.once('value').then(snapshot => {
+              let attData = snapshot.val() || {};
+              let currentTimeMs = now.getTime();
+
+              if (!attData.inTime) {
+                // البصمة الأولى تعني الحضور (Check In)
+                attData.inTime = timeStr;
+                attData.inTimestamp = currentTimeMs;
+                statusText.innerText = currentLang === 'ar' ? `✅ تم تسجيل الحضور (In) بنجاح الساعة ${timeStr}` : `✅ Check-In saved at ${timeStr}`;
+                
+                // تفعيل إضاءة اللمبة الخضراء بوهج ساطع وإطفاء الحمراء
+                ledGreen.classList.add('active');
+                ledRed.classList.remove('active');
+              } else {
+                // أي بصمة تالية خلال اليوم تعتبر انصراف (Check Out) لتحديث البصمة الأخيرة
+                attData.outTime = timeStr;
+                attData.outTimestamp = currentTimeMs;
+
+                // حساب إحصائية ساعات العمل بين أول بصمة وآخر بصمة
+                const diffMs = attData.outTimestamp - attData.inTimestamp;
+                const totalMins = Math.floor(diffMs / 60000);
+                const hrs = Math.floor(totalMins / 60);
+                const mins = totalMins % 60;
+                attData.workingHours = `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
+
+                statusText.innerText = currentLang === 'ar' ? `✅ تم تحديث بصمة الانصراف (Out) الساعة ${timeStr}` : `✅ Check-Out updated at ${timeStr}`;
+                
+                // تفعيل إضاءة اللمبة الحمراء بوهج ساطع وإطفاء الخضراء
+                ledRed.classList.add('active');
+                ledGreen.classList.remove('active');
+              }
+
+              // حفظ البيانات المحدثة في فايربيس
+              refPath.set(attData);
+
+              // تحديث الواجهة فوراً
+              if (attData.inTime) valIn.innerText = attData.inTime;
+              if (attData.outTime) valOut.innerText = attData.outTime;
+              if (attData.workingHours) valWorking.innerText = attData.workingHours;
+            });
+
           } else {
             statusText.innerText = currentLang === 'ar' ? `❌ خارج نطاق الشركة (${Math.round(distance)} متر)` : `❌ Outside range (${Math.round(distance)}m)`;
           }
         },
         (error) => {
-          statusText.innerText = currentLang === 'ar' ? "تعذر الحصول على موقعك." : "Unable to retrieve location.";
+          statusText.innerText = currentLang === 'ar' ? "تعذر الحصول على موقعك. تأكد من تفعيل GPS." : "Unable to retrieve location.";
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
@@ -1508,6 +1569,27 @@
           new QRCode(document.getElementById("qrcode"), { text: window.location.origin + window.location.pathname + "?emp=" + code, width: 85, height: 85 });
           
           showPage('view-dashboard');
+
+          // جلب بيانات الحضور لليوم الحالي وعرضها فور تسجيل الدخول
+          const todayStr = new Date().toISOString().split('T')[0];
+          db.ref('attendance/' + code + '/' + todayStr).once('value').then(attSnap => {
+            if (attSnap.exists()) {
+              const d = attSnap.val();
+              if (d.inTime) {
+                document.getElementById('valInTime').innerText = d.inTime;
+                document.getElementById('ledGreen').classList.add('active');
+              }
+              if (d.outTime) {
+                document.getElementById('valOutTime').innerText = d.outTime;
+                document.getElementById('ledRed').classList.add('active');
+                document.getElementById('ledGreen').classList.remove('active');
+              }
+              if (d.workingHours) {
+                document.getElementById('valWorkingHours').innerText = d.workingHours;
+              }
+            }
+          });
+
           verifyLocationAndCheckIn();
         } else {
           errorEl.innerText = currentLang === 'ar' ? "كود الموظف غير مسجل!" : "Employee code not found!";
