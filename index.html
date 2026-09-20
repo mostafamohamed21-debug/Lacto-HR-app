@@ -605,7 +605,7 @@
     .career-card:hover { border-color: #38bdf8; transform: translateY(-2px); }
     
     /* Sub-pages & ID Card */
-    .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; width: 100%; }
     .back-btn { 
       background: rgba(51, 65, 85, 0.9); 
       border: 1px solid var(--border-color); 
@@ -855,7 +855,7 @@
         </div>
       </div>
       
-      <!-- Company Announcements Slider (نظام الانتقال بالـ Fade الثابت والمستقل) -->
+      <!-- Company Announcements Slider -->
       <div class="announcement-card" id="announcementCard">
         <div class="slides-container" id="slidesContainer">
           <!-- Slide 1: أخبار الشركة -->
@@ -969,7 +969,7 @@
     <!-- 3. ID Card View -->
     <div id="view-id-card" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" id="t-backBtn1" onclick="showPage('view-dashboard')">← رجوع</button>
+        <button class="back-btn" onclick="showPage('view-dashboard')"><span id="t-backBtnID">← رجوع</span></button>
         <span id="t-cardTitle" style="font-weight: 700; font-size: 0.9rem;">الكارت الرقمي</span>
       </div>
       <div class="id-card" id="myCardToDownload" style="border-radius: 0 0 24px 24px;">
@@ -994,7 +994,7 @@
     <!-- 4. Leaves View -->
     <div id="view-leaves" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
+        <button class="back-btn" onclick="showPage('view-dashboard')"><span id="t-backBtnLeaves">← رجوع</span></button>
         <span style="font-weight: 700;" id="t-titleLeaves">خدمة الإجازات</span>
       </div>
       <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;" id="t-descLeaves">قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.</p>
@@ -1003,7 +1003,7 @@
     <!-- 5. Payroll View -->
     <div id="view-payroll" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
+        <button class="back-btn" onclick="showPage('view-dashboard')"><span id="t-backBtnPay">← رجوع</span></button>
         <span style="font-weight: 700;" id="t-titlePayroll">مفردات المرتب</span>
       </div>
       <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;" id="t-descPayroll">قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.</p>
@@ -1012,7 +1012,7 @@
     <!-- 6. Directory View -->
     <div id="view-directory" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
+        <button class="back-btn" onclick="showPage('view-dashboard')"><span id="t-backBtnDir">← رجوع</span></button>
         <span style="font-weight: 700;" id="t-titleDir">دليل التواصل</span>
       </div>
       <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;" id="t-descDir">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
@@ -1021,7 +1021,7 @@
     <!-- Coming Soon Generic View -->
     <div id="view-coming-soon" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
+        <button class="back-btn" onclick="showPage('view-dashboard')"><span id="t-backBtnCS">← رجوع</span></button>
         <span style="font-weight: 700; color: #38bdf8;" id="t-csTitle">قريباً</span>
       </div>
       <div style="padding: 2.5rem 1rem; text-align: center; display: flex; flex-direction: column; gap: 1rem; align-items: center;">
@@ -1033,15 +1033,18 @@
 
     <!-- Suggestion Page (قدم مقترحك) -->
     <div id="view-suggestion-page" class="card hidden">
-      <div class="nav-bar"><button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button><span style="font-weight:700; color:#38bdf8;">قدم مقترحك لتطوير الشركة</span></div>
-      <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;">
-        <label style="font-size: 0.75rem; color: var(--muted);">كود الموظف:</label>
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-dashboard')"><span id="t-backBtnSug">← رجوع</span></button>
+        <span style="font-weight:700; color:#38bdf8;" id="t-sugHeaderTitle">قدم مقترحك لتطوير الشركة</span>
+      </div>
+      <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;" id="sugFormWrapper">
+        <label style="font-size: 0.75rem; color: var(--muted);" id="t-sugCodeLabel">كود الموظف:</label>
         <input type="text" id="sugCode" readonly style="background: rgba(30,41,59,0.5); cursor: not-allowed;">
-        <label style="font-size: 0.75rem; color: var(--muted);">اسم الموظف:</label>
+        <label style="font-size: 0.75rem; color: var(--muted);" id="t-sugNameLabel">اسم الموظف:</label>
         <input type="text" id="sugName" readonly style="background: rgba(30,41,59,0.5); cursor: not-allowed;">
-        <label style="font-size: 0.75rem; color: var(--muted);">اكتب مقترحك (بحد أقصى 500 حرف):</label>
+        <label style="font-size: 0.75rem; color: var(--muted);" id="t-sugTextLabel">اكتب مقترحك (بحد أقصى 500 حرف):</label>
         <textarea id="sugText" rows="4" maxlength="500" placeholder="اكتب فكرتك أو مقترحك لتطوير العمل هنا..." style="resize: none;"></textarea>
-        <button onclick="submitSuggestion()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color:#fff; margin-top:0.5rem;">إرسال المقترح</button>
+        <button onclick="submitSuggestion()" id="t-sugSubmitBtn" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color:#fff; margin-top:0.5rem;">إرسال المقترح</button>
         <p id="sugMsg" style="font-size: 0.8rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
       </div>
     </div>
@@ -1180,7 +1183,7 @@
         lblCode: "كود الموظف",
         lblNID: "الرقم القومي",
         saveCardBtn: "حفظ الكارت كصورة",
-        backBtn: "← رجوع",
+        backBtn: "رجوع ←",
         titleLeaves: "خدمة الإجازات",
         descLeaves: "قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.",
         titlePayroll: "مفردات المرتب",
@@ -1200,6 +1203,12 @@
         inLabel: "حضور",
         csTitle: "قريباً",
         csDesc: "هذا القسم تحت التأسيس والتصميم وسيتم إطلاقه قريباً جداً!",
+        sugHeaderTitle: "قدم مقترحك لتطوير الشركة",
+        sugCodeLabel: "كود الموظف:",
+        sugNameLabel: "اسم الموظف:",
+        sugTextLabel: "اكتب مقترحك (بحد أقصى 500 حرف):",
+        sugPlaceholder: "اكتب فكرتك أو مقترحك لتطوير العمل هنا...",
+        sugSubmitBtn: "إرسال المقترح",
         slides: [
           { title: "أخبار الشركة", desc: "تابع أحدث المؤتمرات، فعاليات الشركة، وأبرز الأخبار الرسمية." },
           { title: "الفرص الوظيفية", desc: "استكشف الوظائف الشاغرة الداخلية وحركات الترقيات الأخيرة للموظفين." },
@@ -1254,6 +1263,12 @@
         inLabel: "In",
         csTitle: "Coming Soon",
         csDesc: "This section is under design and development and will be launched very soon!",
+        sugHeaderTitle: "Submit Your Proposal",
+        sugCodeLabel: "Employee Code:",
+        sugNameLabel: "Employee Name:",
+        sugTextLabel: "Your Proposal (Max 500 chars):",
+        sugPlaceholder: "Type your idea or suggestion here...",
+        sugSubmitBtn: "Submit Proposal",
         slides: [
           { title: "Company News", desc: "Follow latest conferences, company events and official news." },
           { title: "Career Opportunities", desc: "Explore internal vacancies and recent employee promotions." },
@@ -1332,14 +1347,32 @@
       document.getElementById('t-csTitle').innerText = t.csTitle;
       document.getElementById('t-csDesc').innerText = t.csDesc;
       
+      document.getElementById('t-backBtnID').innerText = t.backBtn;
+      document.getElementById('t-backBtnLeaves').innerText = t.backBtn;
+      document.getElementById('t-backBtnPay').innerText = t.backBtn;
+      document.getElementById('t-backBtnDir').innerText = t.backBtn;
+      document.getElementById('t-backBtnCS').innerText = t.backBtn;
+      document.getElementById('t-backBtnSug').innerText = t.backBtn;
+
+      document.getElementById('t-sugHeaderTitle').innerText = t.sugHeaderTitle;
+      document.getElementById('t-sugCodeLabel').innerText = t.sugCodeLabel;
+      document.getElementById('t-sugNameLabel').innerText = t.sugNameLabel;
+      document.getElementById('t-sugTextLabel').innerText = t.sugTextLabel;
+      document.getElementById('sugText').placeholder = t.sugPlaceholder;
+      document.getElementById('t-sugSubmitBtn').innerText = t.sugSubmitBtn;
+      
       const careerTextWrap = document.getElementById('careerTextWrapper');
       const careerArrow = document.getElementById('careerArrow');
+      const sugFormWrapper = document.getElementById('sugFormWrapper');
+
       if (currentLang === 'en') {
         careerTextWrap.style.textAlign = 'left';
         careerArrow.innerText = '➔';
+        sugFormWrapper.style.textAlign = 'left';
       } else {
         careerTextWrap.style.textAlign = 'right';
         careerArrow.innerText = '➔';
+        sugFormWrapper.style.textAlign = 'right';
       }
       
       updateDynamicGreeting();
@@ -1572,8 +1605,20 @@
     }
 
     function showPage(pageId) {
-      // التمرير الفوري لأعلى الشاشة بدقة تامة لتظهر الصفحات الجديدة في المكان الصحيح مباشرة
+      // إجبار الشاشة على الصعود لأعلى نقطة فوراً لمنع فتح الصفحات في الأسفل
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+
+      // التحكم في ظهور واختفاء زرار الشات العائم (Chatbot FAB) لتجنب تداخله مع الأزرار
+      const chatbotFab = document.getElementById('chatbot-fab');
+      const chatbotWin = document.getElementById('chatbot-window');
+      if (pageId === 'view-dashboard') {
+        if (chatbotFab) chatbotFab.style.display = 'flex';
+      } else {
+        if (chatbotFab) chatbotFab.style.display = 'none';
+        if (chatbotWin) chatbotWin.classList.remove('show');
+      }
       
       ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory', 
        'view-coming-soon', 'view-suggestion-page'].forEach(id => {
@@ -1592,7 +1637,7 @@
       } else {
         document.getElementById('view-dashboard').classList.add('hidden');
         if(headerCard) headerCard.classList.add('hidden');
-        if(contentCard) headerCard.classList.add('hidden');
+        if(contentCard) contentCard.classList.add('hidden');
         document.getElementById(pageId).classList.remove('hidden');
         
         if (pageId === 'view-suggestion-page' && currentUserData) {
@@ -1603,6 +1648,8 @@
         }
       }
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
     }
 
     function submitSuggestion() {
