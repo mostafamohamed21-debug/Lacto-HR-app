@@ -121,11 +121,11 @@
       white-space: nowrap;
     }
     
-    /* Full-Width Header بدون خط فاصل بناءً على طلبك */
+    /* Full-Width Header بدون خط فاصل */
     .app-header {
       width: 100vw;
       background: #0d1527;
-      border-bottom: none; /* تم إزالة الخط الفاصل تماماً */
+      border-bottom: none;
       padding: 0.75rem 1rem;
       display: flex;
       justify-content: space-between;
@@ -222,7 +222,7 @@
       width: 100%;
       padding: 0.9rem 1rem;
       margin: 0.5rem 0;
-      border-radius: 1.0rem;
+      border-radius: 1rem;
       border: 1px solid var(--border-color);
       background: rgba(15, 23, 42, 0.85);
       color: var(--text);
@@ -285,15 +285,24 @@
     .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
     .hidden { display: none !important; }
     
-    /* تصميم كارت الترحيب المخصص بناءً على الرسم التوضيحي */
+    /* كارت الترحيب بعرض الشاشة بالكامل (Edge-to-Edge) بناءً على طلبك وصورتك الأخيرة */
     .user-profile-card {
-      background: rgba(15, 23, 42, 0.88);
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      border-radius: 1.75rem;
-      padding: 1.25rem 1.25rem;
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+      background: rgba(15, 23, 42, 0.92);
+      border-top: 1px solid rgba(56, 189, 248, 0.35);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.35);
+      border-left: none;
+      border-right: none;
+      border-radius: 0 0 1.5rem 1.5rem;
+      padding: 1.15rem 1.5rem;
       box-shadow: 0 12px 30px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
       margin-bottom: 0.5rem;
-      position: relative;
+      z-index: 2;
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
@@ -310,8 +319,8 @@
       gap: 0.85rem;
     }
     .header-avatar {
-      width: 58px;
-      height: 58px;
+      width: 55px;
+      height: 55px;
       border-radius: 50%;
       border: 2px solid #38bdf8;
       object-fit: cover;
@@ -712,31 +721,38 @@
     </div>
     
     <!-- 2. Dashboard View -->
-    <div id="view-dashboard" class="hidden">
-      <!-- كارت الترحيب بالمستخدم المدمج الجديد -->
-      <div class="user-profile-card">
-        <div class="profile-top-row">
-          <div class="profile-info-group">
-            <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
-            <div class="profile-text-content">
-              <div id="dash-greeting" style="font-size: 0.75rem; color: var(--muted);">مساء الخير 🌙</div>
-              <h3 id="dash-name" style="margin: 0; font-size: 0.95rem; font-weight: 700;">--</h3>
-              <div class="code-badge-pill"><span id="t-codeLabel">ID:</span> <span id="dash-code-val">--</span></div>
-            </div>
+    <div id="view-dashboard" class="hidden"></div>
+  </div>
+
+  <!-- كارت الترحيب بالمستخدم المدمج الجديد بعرض الشاشة الكاملة (Edge-to-Edge) -->
+  <div id="dashboard-header-container" class="hidden">
+    <div class="user-profile-card">
+      <div class="profile-top-row">
+        <div class="profile-info-group">
+          <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
+          <div class="profile-text-content">
+            <div id="dash-greeting" style="font-size: 0.75rem; color: var(--muted);">مساء الخير 🌙</div>
+            <h3 id="dash-name" style="margin: 0; font-size: 0.95rem; font-weight: 700;">--</h3>
+            <div class="code-badge-pill"><span id="t-codeLabel">ID:</span> <span id="dash-code-val">--</span></div>
           </div>
-          <div class="notification-wrapper">
-            <div class="notification-btn" onclick="toggleNotificationPopup(event)" title="الإشعارات">
-              <div class="notification-badge"></div>
-              <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4v6z"/></svg>
-            </div>
-            <div class="notification-popup" id="notificationPopup">
-              <div class="notification-popup-title" id="t-popupTitle">تنبيهات النظام</div>
-              <div class="notification-popup-desc" id="t-popupDesc">لا توجد إشعارات جديدة. تم تفعيل النظام بنجاح!</div>
-            </div>
+        </div>
+        <div class="notification-wrapper">
+          <div class="notification-btn" onclick="toggleNotificationPopup(event)" title="الإشعارات">
+            <div class="notification-badge"></div>
+            <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4v6z"/></svg>
+          </div>
+          <div class="notification-popup" id="notificationPopup">
+            <div class="notification-popup-title" id="t-popupTitle">تنبيهات النظام</div>
+            <div class="notification-popup-desc" id="t-popupDesc">لا توجد إشعارات جديدة. تم تفعيل النظام بنجاح!</div>
           </div>
         </div>
       </div>
-      
+    </div>
+  </div>
+
+  <!-- باقي محتوى الداشبورد داخل الـ Container -->
+  <div class="container">
+    <div id="dashboard-content-container" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
       <!-- Fingerprint Check-in Card -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="checkin-top-row">
@@ -1334,9 +1350,23 @@
 
     function showPage(pageId) {
       ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory'].forEach(id => {
-        document.getElementById(id).classList.add('hidden');
+        const el = document.getElementById(id);
+        if(el) el.classList.add('hidden');
       });
-      document.getElementById(pageId).classList.remove('hidden');
+      
+      const headerCard = document.getElementById('dashboard-header-container');
+      const contentCard = document.getElementById('dashboard-content-container');
+      
+      if (pageId === 'view-dashboard') {
+        document.getElementById('view-dashboard').classList.remove('hidden');
+        if(headerCard) headerCard.classList.remove('hidden');
+        if(contentCard) contentCard.classList.remove('hidden');
+      } else {
+        document.getElementById('view-dashboard').classList.add('hidden');
+        if(headerCard) headerCard.classList.add('hidden');
+        if(contentCard) contentCard.classList.add('hidden');
+        document.getElementById(pageId).classList.remove('hidden');
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
