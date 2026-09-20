@@ -285,7 +285,7 @@
     .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
     .hidden { display: none !important; }
     
-    /* كارت الترحيب (المربع الكبير): بعرض الشاشة بحدود وإطار أنيق وبدون أي خطوط داخلية */
+    /* كارت الترحيب (المربع الكبير): إزالة الخط السفلي تماماً ليتم تغطيته بسلاسة بواسطة كارت البصمة الصغير */
     .user-profile-card {
       width: 100vw;
       position: relative;
@@ -294,8 +294,10 @@
       margin-left: -50vw;
       margin-right: -50vw;
       background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-left: 1px solid rgba(56, 189, 248, 0.35);
+      border-right: 1px solid rgba(56, 189, 248, 0.35);
       border-top: none;
+      border-bottom: none; /* تم إلغاء الخط السفلي تماماً لتتداخل الأشكال بدون أي خطوط ظاهرة تحت كارت البصمة */
       border-radius: 0 0 1.75rem 1.75rem;
       padding: 1.15rem 1.5rem 1.75rem 1.5rem;
       box-shadow: 0 15px 35px rgba(0,0,0,0.5);
@@ -392,7 +394,7 @@
     .notification-popup-title { font-size: 0.75rem; font-weight: 800; color: #38bdf8; margin-bottom: 0.2rem; }
     .notification-popup-desc { font-size: 0.7rem; color: var(--muted); line-height: 1.4; }
     
-    /* كارت البصمة المتداخل (المربع الصغير فوق طرف المربع الكبير) */
+    /* كارت البصمة المتداخل (المربع الصغير فوق المربع الكبير) */
     .checkin-card {
       background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(15, 23, 42, 0.98));
       border: 1px solid rgba(56, 189, 248, 0.5);
@@ -408,7 +410,7 @@
       align-items: center;
       gap: 0.4rem;
       position: relative;
-      margin-top: -18px; /* التداخل الطبيعي ليغطي المنتصف تماماً وتظهر الأطراف فقط */
+      margin-top: -18px; /* تداخل مظبوط ليخفي الخط السفلي تماماً ويترك الجانبين فقط */
       z-index: 5;
     }
     .checkin-card:hover { border-color: #38bdf8; box-shadow: 0 15px 30px rgba(0,0,0,0.6), inset 0 0 20px rgba(56, 189, 248, 0.3); }
@@ -774,7 +776,7 @@
     <div id="view-dashboard" class="hidden"></div>
   </div>
 
-  <!-- كارت الترحيب (المربع الكبير): يظهر بزواياه الدائرية الناعمة من الجانبين فقط ويغطيه كارت البصمة في المنتصف تماماً -->
+  <!-- كارت الترحيب (المربع الكبير): إطار جانبي فقط وبدون أي خط سفلي قاطع -->
   <div id="dashboard-header-container" class="hidden">
     <div class="user-profile-card">
       <div class="profile-top-row">
@@ -803,7 +805,7 @@
   <!-- باقي محتوى الداشبورد -->
   <div class="container">
     <div id="dashboard-content-container" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
-      <!-- كارت البصمة الاحترافي (المربع الصغير المتداخل فوق طرف المربع الكبير) -->
+      <!-- كارت البصمة الاحترافي (المربع الصغير المتداخل فوق المربع الكبير ليغطي الجزء السفلي تماماً) -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="checkin-top-row">
           <span style="font-weight: 700; color: #38bdf8;" id="t-workingHoursTitle">Working Hours ⏱️ <span id="valWorkingHours">00:00</span></span>
