@@ -284,6 +284,14 @@
       color: #fff;
     }
     .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
+    
+    .btn-success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      box-shadow: 0 8px 0 #047857, 0 12px 20px rgba(16, 185, 129, 0.3);
+      color: #fff;
+    }
+    .btn-success:active { transform: translateY(6px); box-shadow: 0 2px 0 #047857; }
+
     .hidden { display: none !important; }
     
     /* كارت الترحيب (المربع الكبير) */
@@ -988,7 +996,7 @@
         </div>
         <div class="qr-container"><div id="qrcode"></div></div>
       </div>
-      <button id="t-saveCardBtn" onclick="downloadCard()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); margin-top:1rem; color:#fff;">حفظ الكارت كصورة</button>
+      <button id="t-saveCardBtn" onclick="downloadCard()" class="btn-success" style="margin-top:1rem;">حفظ الكارت كصورة</button>
     </div>
     
     <!-- 4. Leaves View -->
@@ -1044,7 +1052,7 @@
         <input type="text" id="sugName" readonly style="background: rgba(30,41,59,0.5); cursor: not-allowed;">
         <label style="font-size: 0.75rem; color: var(--muted);" id="t-sugTextLabel">اكتب مقترحك (بحد أقصى 500 حرف):</label>
         <textarea id="sugText" rows="4" maxlength="500" placeholder="اكتب فكرتك أو مقترحك لتطوير العمل هنا..." style="resize: none;"></textarea>
-        <button onclick="submitSuggestion()" id="t-sugSubmitBtn" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color:#fff; margin-top:0.5rem;">إرسال المقترح</button>
+        <button onclick="submitSuggestion()" class="btn-success" id="t-sugSubmitBtn" style="margin-top:0.5rem;">إرسال المقترح</button>
         <p id="sugMsg" style="font-size: 0.8rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
       </div>
     </div>
@@ -1605,12 +1613,10 @@
     }
 
     function showPage(pageId) {
-      // إجبار الشاشة على الصعود لأعلى نقطة فوراً لمنع فتح الصفحات في الأسفل
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
 
-      // التحكم في ظهور واختفاء زرار الشات العائم (Chatbot FAB) لتجنب تداخله مع الأزرار
       const chatbotFab = document.getElementById('chatbot-fab');
       const chatbotWin = document.getElementById('chatbot-window');
       if (pageId === 'view-dashboard') {
