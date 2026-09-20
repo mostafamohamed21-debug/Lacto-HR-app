@@ -218,7 +218,7 @@
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
       text-align: center;
     }
-    input {
+    input, textarea {
       width: 100%;
       padding: 0.9rem 1rem;
       margin: 0.5rem 0;
@@ -227,10 +227,11 @@
       background: rgba(15, 23, 42, 0.85);
       color: var(--text);
       font-size: 0.95rem;
-      text-align: center;
+      text-align: right;
       outline: none;
     }
-    input:focus { border-color: #38bdf8; box-shadow: 0 0 15px var(--accent-glow); }
+    [dir="ltr"] input, [dir="ltr"] textarea { text-align: left; }
+    input:focus, textarea:focus { border-color: #38bdf8; box-shadow: 0 0 15px var(--accent-glow); }
     
     .password-container { 
       position: relative; 
@@ -492,9 +493,9 @@
     .fingerprint-icon-wrap svg { width: 24px; height: 24px; fill: currentColor; }
     .checkin-status-text { font-size: 0.8rem; font-weight: 700; color: var(--text); }
     
-    /* Announcement Slider */
+    /* Announcement Slider - مضبوط بدقة تامة لمنع أي تداخل */
     .announcement-card {
-      background: rgba(15, 23, 42, 0.8);
+      background: rgba(15, 23, 42, 0.85);
       border: 1px solid var(--border-color);
       border-radius: 1.5rem;
       padding: 1.25rem;
@@ -502,12 +503,11 @@
       position: relative;
       overflow: hidden;
       box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      cursor: grab;
       margin-top: 0.5rem;
     }
     [dir="ltr"] .announcement-card { text-align: left; }
-    .slider-track { display: flex; transition: transform 0.6s ease-in-out; width: 100%; }
-    .slide-item { min-width: 100%; flex-shrink: 0; }
+    .slider-track { display: flex; transition: transform 0.5s ease-in-out; width: 100%; }
+    .slide-item { flex: 0 0 100%; width: 100%; min-width: 100%; cursor: pointer; }
     .announcement-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
     .coming-soon-badge {
       background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4);
@@ -583,7 +583,7 @@
     }
     .career-card:hover { border-color: #38bdf8; transform: translateY(-2px); }
     
-    /* ID Card & Sub-pages */
+    /* Sub-pages & ID Card */
     .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
     .back-btn { 
       background: rgba(51, 65, 85, 0.9); 
@@ -776,7 +776,7 @@
     <div id="view-dashboard" class="hidden"></div>
   </div>
 
-  <!-- كارت الترحيب (المربع الكبير): إطار جانبي فقط وبدون أي خط سفلي قاطع -->
+  <!-- كارت الترحيب (المربع الكبير) -->
   <div id="dashboard-header-container" class="hidden">
     <div class="user-profile-card">
       <div class="profile-top-row">
@@ -805,7 +805,7 @@
   <!-- باقي محتوى الداشبورد -->
   <div class="container">
     <div id="dashboard-content-container" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
-      <!-- كارت البصمة الاحترافي مع ترجمة كاملة للعربية والإنجليزية -->
+      <!-- كارت البصمة -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="checkin-top-row">
           <span style="font-weight: 700; color: #38bdf8;"><span id="t-workingHoursText">ساعات العمل</span> ⏱️ <span id="valWorkingHours">00:00</span></span>
@@ -822,57 +822,68 @@
         </div>
       </div>
 
-      <!-- شريط اللمبات والزراير الخارجي تحت الكارت -->
+      <!-- شريط اللمبات والزراير الخارجي -->
       <div class="external-attendance-bar">
-        <!-- زرار/لمبة Check Out (أحمر) -->
         <div class="action-btn-item">
           <div id="ledRed" class="indicator-dot dot-red"></div>
           <span class="glowing-action-text" id="t-checkOutText">تسجيل انصراف</span>
         </div>
-        <!-- زرار/لمبة Check In (أخضر) -->
         <div class="action-btn-item">
           <span class="glowing-action-text" id="t-checkInText">تسجيل حضور</span>
           <div id="ledGreen" class="indicator-dot dot-green"></div>
         </div>
       </div>
       
-      <!-- Company Announcements Slider -->
+      <!-- Company Announcements Slider (الـ 6 شراائح المبتكرة والتفاعلية) -->
       <div class="announcement-card" id="announcementCard">
         <div class="slider-track" id="sliderTrack">
-          <div class="slide-item">
+          <!-- Slide 1: أخبار الشركة -->
+          <div class="slide-item" onclick="showPage('view-news-page')">
             <div class="announcement-top">
-              <span class="announcement-title slide-title-1">إعلانات الشركة</span>
-              <span class="coming-soon-badge slide-badge-1">Coming Soon</span>
+              <span class="announcement-title slide-title-1">أخبار الشركة</span>
+              <span class="coming-soon-badge slide-badge-1">News</span>
             </div>
-            <div class="announcement-desc slide-desc-1">أهم الأخبار، الأحداث المباشرة، والمناسبات المرتقبة بالشركة.</div>
+            <div class="announcement-desc slide-desc-1">تابع أحدث المؤتمرات، فعاليات الشركة، وأبرز الأخبار الرسمية. (اضغط للتفاصيل)</div>
           </div>
-          <div class="slide-item">
+          <!-- Slide 2: الفرص الوظيفية -->
+          <div class="slide-item" onclick="showPage('view-careers-page')">
             <div class="announcement-top">
-              <span class="announcement-title slide-title-2">تحديثات النظام</span>
-              <span class="coming-soon-badge slide-badge-2">New</span>
+              <span class="announcement-title slide-title-2">الفرص الوظيفية</span>
+              <span class="coming-soon-badge slide-badge-2">Careers</span>
             </div>
-            <div class="announcement-desc slide-desc-2">ترقبوا إطلاق ميزات البصمة الجغرافية المتقدمة وطلبات الإجازات الرقمية قريباً.</div>
+            <div class="announcement-desc slide-desc-2">استكشف الوظائف الشاغرة الداخلية وحركات الترقيات الأخيرة للموظفين. (اضغط للتفاصيل)</div>
           </div>
-          <div class="slide-item">
+          <!-- Slide 3: الموظفون المثاليون -->
+          <div class="slide-item" onclick="showPage('view-top-employees-page')">
             <div class="announcement-top">
-              <span class="announcement-title slide-title-3">دليل العاملين</span>
-              <span class="coming-soon-badge slide-badge-3">Important</span>
+              <span class="announcement-title slide-title-3">الموظفون المثاليون</span>
+              <span class="coming-soon-badge slide-badge-3">Honors</span>
             </div>
-            <div class="announcement-desc slide-desc-3">تأكد من تحديث بيانات التواصل الشخصية الخاصة بك عبر قسم الموارد البشرية.</div>
+            <div class="announcement-desc slide-desc-3">تعرف على نجوم الشهر والموظفين المثاليين المكرمين عن كل إدارة. (اضغط للتفاصيل)</div>
           </div>
-          <div class="slide-item">
+          <!-- Slide 4: اللوائح الداخلية -->
+          <div class="slide-item" onclick="showPage('view-regulations-page')">
             <div class="announcement-top">
-              <span class="announcement-title slide-title-4">السياسات الداخلية</span>
+              <span class="announcement-title slide-title-4">اللوائح الداخلية</span>
               <span class="coming-soon-badge slide-badge-4">Guide</span>
             </div>
-            <div class="announcement-desc slide-desc-4">تعرف على لوائح العمل الداخلية وسياسات الحضور والانصراف الجديدة.</div>
+            <div class="announcement-desc slide-desc-4">اططلع على لائحة تنظيم العمل، الجزاءات، والسياسات الداخلية للشركة. (اضغط للتفاصيل)</div>
           </div>
-          <div class="slide-item">
+          <!-- Slide 5: دليل العاملين وتحديثات التطبيق -->
+          <div class="slide-item" onclick="showPage('view-app-updates-page')">
             <div class="announcement-top">
-              <span class="announcement-title slide-title-5">المميزات والخدمات</span>
-              <span class="coming-soon-badge slide-badge-5">Exclusive</span>
+              <span class="announcement-title slide-title-5">دليل العاملين وتحديثات التطبيق</span>
+              <span class="coming-soon-badge slide-badge-5">Updates</span>
             </div>
-            <div class="announcement-desc slide-desc-5">استمتع بالخدمات الرقمية والعروض المقدمة خصيصاً لموظفي الشركة.</div>
+            <div class="announcement-desc slide-desc-5">آخر الإضافات والتحديثات البرمجية ومستجدات دليل العاملين. (اضغط للتفاصيل)</div>
+          </div>
+          <!-- Slide 6: قدم مقترحك (جديد تماماً) -->
+          <div class="slide-item" onclick="showPage('view-suggestion-page')">
+            <div class="announcement-top">
+              <span class="announcement-title slide-title-6">قدم مقترحك</span>
+              <span class="coming-soon-badge slide-badge-6" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); color: #10b981;">New Idea</span>
+            </div>
+            <div class="announcement-desc slide-desc-6">شاركنا برأيك وأفكارك الإبداعية لتطوير العمل بالشركة. (اضغط لتقديم مقترحك)</div>
           </div>
         </div>
         <div class="slider-dots" id="sliderDots">
@@ -881,6 +892,7 @@
           <div class="dot" onclick="currentSlide(2)"></div>
           <div class="dot" onclick="currentSlide(3)"></div>
           <div class="dot" onclick="currentSlide(4)"></div>
+          <div class="dot" onclick="currentSlide(5)"></div>
         </div>
       </div>
       
@@ -929,7 +941,7 @@
       </div>
       
       <!-- Career Opportunities Banner -->
-      <div class="career-card" onclick="alert(currentLang === 'ar' ? 'قريباً: استعراض الوظائف الداخلية والترقيات المتاحة.' : 'Coming Soon: Browse internal jobs and available promotions.')">
+      <div class="career-card" onclick="showPage('view-careers-page')">
         <div style="text-align: right;" id="careerTextWrapper">
           <div id="t-careerTitle" style="font-weight: 700; font-size: 0.9rem; color: #38bdf8;">الفرص الوظيفية الشاغرة</div>
           <div id="t-careerDesc" style="font-size: 0.75rem; color: var(--muted);">استكشف الوظائف الداخلية المتاحة للترقي</div>
@@ -967,7 +979,7 @@
     <!-- 4. Leaves View -->
     <div id="view-leaves" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" id="t-backBtn2" onclick="showPage('view-dashboard')">← رجوع</button>
+        <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
         <span style="font-weight: 700;" id="t-titleLeaves">خدمة الإجازات</span>
       </div>
       <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;" id="t-descLeaves">قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.</p>
@@ -976,7 +988,7 @@
     <!-- 5. Payroll View -->
     <div id="view-payroll" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" id="t-backBtn3" onclick="showPage('view-dashboard')">← رجوع</button>
+        <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
         <span style="font-weight: 700;" id="t-titlePayroll">مفردات المرتب</span>
       </div>
       <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;" id="t-descPayroll">قريباً: الاستعلام عن بيان مفردات المرتب الشهري فور صدوره.</p>
@@ -985,10 +997,96 @@
     <!-- 6. Directory View -->
     <div id="view-directory" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" id="t-backBtn4" onclick="showPage('view-dashboard')">← رجوع</button>
+        <button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button>
         <span style="font-weight: 700;" id="t-titleDir">دليل التواصل</span>
       </div>
       <p style="color: var(--muted); font-size: 0.85rem; padding: 1rem 0;" id="t-descDir">أرقام الطوارئ والعيادة الطبية ومكتب الموارد البشرية.</p>
+    </div>
+
+    <!-- Sub-pages for the 6 Slides -->
+    <!-- News Page -->
+    <div id="view-news-page" class="card hidden">
+      <div class="nav-bar"><button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button><span style="font-weight:700; color:#38bdf8;">أخبار الشركة والفعاليات</span></div>
+      <div style="text-align: right; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem; color: var(--muted);">
+        <div style="background: rgba(30,41,59,0.7); padding: 0.85rem; border-radius: 1rem; border: 1px solid var(--border-color);">
+          <h4 style="color: #38bdf8; margin-bottom: 0.3rem;">مؤتمر التنمية الصناعية 2026</h4>
+          <p>شاركت إدارة الموارد البشرية في فعاليات المؤتمر السنوي لتطوير بيئة العمل.</p>
+        </div>
+        <div style="background: rgba(30,41,59,0.7); padding: 0.85rem; border-radius: 1rem; border: 1px solid var(--border-color);">
+          <h4 style="color: #38bdf8; margin-bottom: 0.3rem;">حفل الإفطار السنوي</h4>
+          <p>ترقبوا إعلان موعد حفل الإفطار الجماعي لجميع العاملين خلال الشهر القادم.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Careers Page -->
+    <div id="view-careers-page" class="card hidden">
+      <div class="nav-bar"><button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button><span style="font-weight:700; color:#38bdf8;">الفرص الوظيفية والترقيات</span></div>
+      <div style="text-align: right; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem; color: var(--muted);">
+        <div style="background: rgba(30,41,59,0.7); padding: 0.85rem; border-radius: 1rem; border: 1px solid var(--border-color);">
+          <h4 style="color: #38bdf8; margin-bottom: 0.3rem;">وظيفة شاغرة: مشرف شون العاملين</h4>
+          <p>متاح التقديم للعاملين الحاصلين على خبرة 5 سنوات فأكثر في قسم الموارد البشرية.</p>
+        </div>
+        <div style="background: rgba(30,41,59,0.7); padding: 0.85rem; border-radius: 1rem; border: 1px solid var(--border-color);">
+          <h4 style="color: #38bdf8; margin-bottom: 0.3rem;">تهنئة ترقيات الربع الثالث</h4>
+          <p>نبارك لجميع الزملاء الذين تم ترقيتهم في حركة الترقيات الأخيرة لعام 2026.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Employees Page -->
+    <div id="view-top-employees-page" class="card hidden">
+      <div class="nav-bar"><button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button><span style="font-weight:700; color:#38bdf8;">الموظفون المثاليون</span></div>
+      <div style="text-align: right; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem; color: var(--muted);">
+        <div style="background: rgba(30,41,59,0.7); padding: 0.85rem; border-radius: 1rem; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 1rem;">
+          <img src="https://i.pravatar.cc/150?img=12" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid #38bdf8;" alt="Employee">
+          <div>
+            <h4 style="color: #38bdf8; margin-bottom: 0.2rem;">أ/ أمجد عبدالمؤمن</h4>
+            <p style="font-size: 0.75rem;">الموظف المثالي عن إدارة الموارد البشرية - سبتمبر 2026</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Regulations Page -->
+    <div id="view-regulations-page" class="card hidden">
+      <div class="nav-bar"><button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button><span style="font-weight:700; color:#38bdf8;">اللوائح الداخلية والسياسات</span></div>
+      <div style="text-align: right; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem; color: var(--muted);">
+        <div style="background: rgba(30,41,59,0.7); padding: 0.85rem; border-radius: 1rem; border: 1px solid var(--border-color);">
+          <h4 style="color: #38bdf8; margin-bottom: 0.3rem;">لائحة تنظيم العمل والحضور</h4>
+          <p>التأخير المسموح به صباحاً 15 دقيقة، ويتم احتساب الانصراف بناءً على بصمة الـ GPS.</p>
+        </div>
+        <div style="background: rgba(30,41,59,0.7); padding: 0.85rem; border-radius: 1rem; border: 1px solid var(--border-color);">
+          <h4 style="color: #38bdf8; margin-bottom: 0.3rem;">لائحة الجزاءات والمخالفات</h4>
+          <p>التأكد من الالتزام بالسياسات الداخلية لضمان بيئة عمل منظمة وآمنة للجميع.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- App Updates Page -->
+    <div id="view-app-updates-page" class="card hidden">
+      <div class="nav-bar"><button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button><span style="font-weight:700; color:#38bdf8;">تحديثات التطبيق ودليل العاملين</span></div>
+      <div style="text-align: right; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem; color: var(--muted);">
+        <div style="background: rgba(30,41,59,0.7); padding: 0.85rem; border-radius: 1rem; border: 1px solid var(--border-color);">
+          <h4 style="color: #38bdf8; margin-bottom: 0.3rem;">إصدار النسخة v3.5</h4>
+          <p>تم إطلاق نظام البصمة الجغرافية المطور، إضافة شرائح الإعلانات التفاعلية، ودعم تعدد اللغات.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Suggestion Page (مقترحك) -->
+    <div id="view-suggestion-page" class="card hidden">
+      <div class="nav-bar"><button class="back-btn" onclick="showPage('view-dashboard')">← رجوع</button><span style="font-weight:700; color:#38bdf8;">قدم مقترحك لتطوير الشركة</span></div>
+      <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;">
+        <label style="font-size: 0.75rem; color: var(--muted);">كود الموظف:</label>
+        <input type="text" id="sugCode" readonly style="background: rgba(30,41,59,0.5); cursor: not-allowed;">
+        <label style="font-size: 0.75rem; color: var(--muted);">اسم الموظف:</label>
+        <input type="text" id="sugName" readonly style="background: rgba(30,41,59,0.5); cursor: not-allowed;">
+        <label style="font-size: 0.75rem; color: var(--muted);">اكتب مقترحك (بحد أقصى 500 حرف):</label>
+        <textarea id="sugText" rows="4" maxlength="500" placeholder="اكتب فكرتك أو مقترحك لتطوير العمل هنا..." style="resize: none;"></textarea>
+        <button onclick="submitSuggestion()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color:#fff; margin-top:0.5rem;">إرسال المقترح</button>
+        <p id="sugMsg" style="font-size: 0.8rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
+      </div>
     </div>
   </div>
 
@@ -1144,11 +1242,12 @@
         outLabel: "انصراف",
         inLabel: "حضور",
         slides: [
-          { title: "إعلانات الشركة", badge: "Coming Soon", desc: "أهم الأخبار، الأحداث المباشرة، والمناسبات المرتقبة بالشركة." },
-          { title: "تحديثات النظام", badge: "New", desc: "ترقبوا إطلاق ميزات البصمة الجغرافية المتقدمة وطلبات الإجازات الرقمية قريباً." },
-          { title: "دليل العاملين", badge: "Important", desc: "تأكد من تحديث بيانات التواصل الشخصية الخاصة بك عبر قسم الموارد البشرية." },
-          { title: "السياسات الداخلية", badge: "Guide", desc: "تعرف على لوائح العمل الداخلية وسياسات الحضور والانصراف الجديدة." },
-          { title: "المميزات والخدمات", badge: "Exclusive", desc: "استمتع بالخدمات الرقمية والعروض المقدمة خصيصاً لموظفي الشركة." }
+          { title: "أخبار الشركة", badge: "News", desc: "تابع أحدث المؤتمرات، فعاليات الشركة، وأبرز الأخبار الرسمية. (اضغط للتفاصيل)" },
+          { title: "الفرص الوظيفية", badge: "Careers", desc: "استكشف الوظائف الشاغرة الداخلية وحركات الترقيات الأخيرة للموظفين. (اضغط للتفاصيل)" },
+          { title: "الموظفون المثاليون", badge: "Honors", desc: "تعرف على نجوم الشهر والموظفين المثاليين المكرمين عن كل إدارة. (اضغط للتفاصيل)" },
+          { title: "اللوائح الداخلية", badge: "Guide", desc: "اططلع على لائحة تنظيم العمل، الجزاءات، والسياسات الداخلية للشركة. (اضغط للتفاصيل)" },
+          { title: "دليل العاملين وتحديثات التطبيق", badge: "Updates", desc: "آخر الإضافات والتحديثات البرمجية ومستجدات دليل العاملين. (اضغط للتفاصيل)" },
+          { title: "قدم مقترحك", badge: "New Idea", desc: "شاركنا برأيك وأفكارك الإبداعية لتطوير العمل بالشركة. (اضغط لتقديم مقترحك)" }
         ]
       },
       en: {
@@ -1195,11 +1294,12 @@
         outLabel: "Out",
         inLabel: "In",
         slides: [
-          { title: "Company Announcements", badge: "Coming Soon", desc: "Latest news, live events, and upcoming company occasions." },
-          { title: "System Updates", badge: "New", desc: "Stay tuned for the launch of advanced geo-attendance and digital leaves." },
-          { title: "Employee Guide", badge: "Important", desc: "Make sure to update your personal contact details via the HR department." },
-          { title: "Internal Policies", badge: "Guide", desc: "Learn about internal work regulations and new attendance policies." },
-          { title: "Benefits & Services", badge: "Exclusive", desc: "Enjoy digital services and special offers tailored for company employees." }
+          { title: "Company News", badge: "News", desc: "Follow latest conferences, company events and official news. (Tap for details)" },
+          { title: "Career Opportunities", badge: "Careers", desc: "Explore internal vacancies and recent employee promotions. (Tap for details)" },
+          { title: "Top Employees", badge: "Honors", desc: "Discover department employees of the month and honorees. (Tap for details)" },
+          { title: "Internal Regulations", badge: "Guide", desc: "Review work organization regulations, penalties, and company policies. (Tap for details)" },
+          { title: "Employee Guide & Updates", badge: "Updates", desc: "Latest software updates and employee guide announcements. (Tap for details)" },
+          { title: "Submit a Proposal", badge: "New Idea", desc: "Share your creative ideas and suggestions to improve the company. (Tap to submit)" }
         ]
       }
     };
@@ -1280,10 +1380,6 @@
       
       updateDynamicGreeting();
       
-      ['t-backBtn1', 't-backBtn2', 't-backBtn3', 't-backBtn4'].forEach(id => {
-        const btn = document.getElementById(id);
-        if(btn) btn.innerText = t.backBtn;
-      });
       document.getElementById('t-titleLeaves').innerText = t.titleLeaves;
       document.getElementById('t-descLeaves').innerText = t.descLeaves;
       document.getElementById('t-titlePayroll').innerText = t.titlePayroll;
@@ -1363,7 +1459,7 @@
     }
 
     let currentSlideIndex = 0;
-    const totalSlides = 5;
+    const totalSlides = 6;
     let slideInterval;
     function showSlide(index) {
       currentSlideIndex = (index + totalSlides) % totalSlides;
@@ -1427,7 +1523,6 @@
       return R * c;
     }
 
-    /* دالة البصمة: يدوية تماماً بالضغط مع شرط موقع الشركة والـ GPS */
     function verifyLocationAndCheckIn() {
       const statusText = document.getElementById('checkinStatusText');
       const valIn = document.getElementById('valInTime');
@@ -1503,7 +1598,8 @@
     }
 
     function showPage(pageId) {
-      ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory'].forEach(id => {
+      ['view-login', 'view-dashboard', 'view-id-card', 'view-leaves', 'view-payroll', 'view-directory', 
+       'view-news-page', 'view-careers-page', 'view-top-employees-page', 'view-regulations-page', 'view-app-updates-page', 'view-suggestion-page'].forEach(id => {
         const el = document.getElementById(id);
         if(el) el.classList.add('hidden');
       });
@@ -1521,8 +1617,43 @@
         if(headerCard) headerCard.classList.add('hidden');
         if(contentCard) contentCard.classList.add('hidden');
         document.getElementById(pageId).classList.remove('hidden');
+        
+        // Populate suggestion form fields if opening suggestion page
+        if (pageId === 'view-suggestion-page' && currentUserData) {
+          document.getElementById('sugCode').value = currentEmpCode;
+          document.getElementById('sugName').value = currentUserData.name || '';
+          document.getElementById('sugText').value = '';
+          document.getElementById('sugMsg').innerText = '';
+        }
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function submitSuggestion() {
+      const text = document.getElementById('sugText').value.trim();
+      const msg = document.getElementById('sugMsg');
+      if (!text) {
+        msg.style.color = '#ef4444';
+        msg.innerText = currentLang === 'ar' ? "يرجى كتابة مقترحك أولاً!" : "Please write your suggestion first!";
+        return;
+      }
+      
+      const suggestionData = {
+        code: currentEmpCode,
+        name: currentUserData.name || 'Unknown',
+        suggestion: text,
+        timestamp: Date.now(),
+        date: new Date().toISOString()
+      };
+
+      db.ref('suggestions/' + currentEmpCode).push(suggestionData).then(() => {
+        msg.style.color = '#10b981';
+        msg.innerText = currentLang === 'ar' ? "✅ تم إرسال مقترحك بنجاح. شكراً لتطويرك للشركة!" : "✅ Suggestion submitted successfully. Thank you!";
+        setTimeout(() => { showPage('view-dashboard'); }, 2000);
+      }).catch(err => {
+        msg.style.color = '#ef4444';
+        msg.innerText = currentLang === 'ar' ? "❌ حدث خطأ، حاول مرة أخرى." : "❌ Error occurred, try again.";
+      });
     }
 
     function login() {
@@ -1564,7 +1695,6 @@
           
           showPage('view-dashboard');
 
-          // جلب بيانات الحضور لليوم الحالي وعرضها فقط دون أي تعديل زمني
           const todayStr = new Date().toISOString().split('T')[0];
           db.ref('attendance/' + code + '/' + todayStr).once('value').then(attSnap => {
             if (attSnap.exists()) {
