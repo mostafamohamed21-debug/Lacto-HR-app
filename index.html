@@ -285,7 +285,7 @@
     .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
     .hidden { display: none !important; }
     
-    /* كارت الترحيب (المربع الكبير): إزالة الخط السفلي تماماً ليتم تغطيته بسلاسة بواسطة كارت البصمة الصغير */
+    /* كارت الترحيب (المربع الكبير): إطار جانبي فقط وبدون أي خط سفلي قاطع */
     .user-profile-card {
       width: 100vw;
       position: relative;
@@ -297,7 +297,7 @@
       border-left: 1px solid rgba(56, 189, 248, 0.35);
       border-right: 1px solid rgba(56, 189, 248, 0.35);
       border-top: none;
-      border-bottom: none; /* تم إلغاء الخط السفلي تماماً لتتداخل الأشكال بدون أي خطوط ظاهرة تحت كارت البصمة */
+      border-bottom: none;
       border-radius: 0 0 1.75rem 1.75rem;
       padding: 1.15rem 1.5rem 1.75rem 1.5rem;
       box-shadow: 0 15px 35px rgba(0,0,0,0.5);
@@ -410,7 +410,7 @@
       align-items: center;
       gap: 0.4rem;
       position: relative;
-      margin-top: -18px; /* تداخل مظبوط ليخفي الخط السفلي تماماً ويترك الجانبين فقط */
+      margin-top: -18px;
       z-index: 5;
     }
     .checkin-card:hover { border-color: #38bdf8; box-shadow: 0 15px 30px rgba(0,0,0,0.6), inset 0 0 20px rgba(56, 189, 248, 0.3); }
@@ -805,13 +805,13 @@
   <!-- باقي محتوى الداشبورد -->
   <div class="container">
     <div id="dashboard-content-container" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
-      <!-- كارت البصمة الاحترافي (المربع الصغير المتداخل فوق المربع الكبير ليغطي الجزء السفلي تماماً) -->
+      <!-- كارت البصمة الاحترافي مع ترجمة كاملة للعربية والإنجليزية -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="checkin-top-row">
-          <span style="font-weight: 700; color: #38bdf8;" id="t-workingHoursTitle">Working Hours ⏱️ <span id="valWorkingHours">00:00</span></span>
+          <span style="font-weight: 700; color: #38bdf8;"><span id="t-workingHoursText">ساعات العمل</span> ⏱️ <span id="valWorkingHours">00:00</span></span>
           <div style="display: flex; gap: 0.75rem; color: var(--muted);">
-            <span>Out 🚪 <strong id="valOutTime" style="color:var(--text);">--:--</strong></span>
-            <span>In 📥 <strong id="valInTime" style="color:var(--text);">--:--</strong></span>
+            <span><span id="t-outLabel">انصراف</span> 🚪 <strong id="valOutTime" style="color:var(--text);">--:--</strong></span>
+            <span><span id="t-inLabel">حضور</span> 📥 <strong id="valInTime" style="color:var(--text);">--:--</strong></span>
           </div>
         </div>
         <div class="checkin-main-content">
@@ -827,11 +827,11 @@
         <!-- زرار/لمبة Check Out (أحمر) -->
         <div class="action-btn-item">
           <div id="ledRed" class="indicator-dot dot-red"></div>
-          <span class="glowing-action-text" id="t-checkOutText">Check Out</span>
+          <span class="glowing-action-text" id="t-checkOutText">تسجيل انصراف</span>
         </div>
         <!-- زرار/لمبة Check In (أخضر) -->
         <div class="action-btn-item">
-          <span class="glowing-action-text" id="t-checkInText">Check In</span>
+          <span class="glowing-action-text" id="t-checkInText">تسجيل حضور</span>
           <div id="ledGreen" class="indicator-dot dot-green"></div>
         </div>
       </div>
@@ -1138,8 +1138,11 @@
         botWelcome: "أهلاً بك! كيف يمكنني مساعدتك اليوم في خدمات الموارد البشرية؟",
         sendBtn: "إرسال",
         chatPlaceholder: "اكتب سؤالك هنا...",
-        checkInText: "Check In",
-        checkOutText: "Check Out",
+        checkInText: "تسجيل حضور",
+        checkOutText: "تسجيل انصراف",
+        workingHoursText: "ساعات العمل",
+        outLabel: "انصراف",
+        inLabel: "حضور",
         slides: [
           { title: "إعلانات الشركة", badge: "Coming Soon", desc: "أهم الأخبار، الأحداث المباشرة، والمناسبات المرتقبة بالشركة." },
           { title: "تحديثات النظام", badge: "New", desc: "ترقبوا إطلاق ميزات البصمة الجغرافية المتقدمة وطلبات الإجازات الرقمية قريباً." },
@@ -1188,6 +1191,9 @@
         chatPlaceholder: "Type your question here...",
         checkInText: "Check In",
         checkOutText: "Check Out",
+        workingHoursText: "Working Hours",
+        outLabel: "Out",
+        inLabel: "In",
         slides: [
           { title: "Company Announcements", badge: "Coming Soon", desc: "Latest news, live events, and upcoming company occasions." },
           { title: "System Updates", badge: "New", desc: "Stay tuned for the launch of advanced geo-attendance and digital leaves." },
@@ -1258,6 +1264,9 @@
 
       document.getElementById('t-checkInText').innerText = t.checkInText;
       document.getElementById('t-checkOutText').innerText = t.checkOutText;
+      document.getElementById('t-workingHoursText').innerText = t.workingHoursText;
+      document.getElementById('t-outLabel').innerText = t.outLabel;
+      document.getElementById('t-inLabel').innerText = t.inLabel;
       
       const careerTextWrap = document.getElementById('careerTextWrapper');
       const careerArrow = document.getElementById('careerArrow');
@@ -1510,7 +1519,7 @@
       } else {
         document.getElementById('view-dashboard').classList.add('hidden');
         if(headerCard) headerCard.classList.add('hidden');
-        if(contentCard) headerCard.classList.add('hidden');
+        if(contentCard) contentCard.classList.add('hidden');
         document.getElementById(pageId).classList.remove('hidden');
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
