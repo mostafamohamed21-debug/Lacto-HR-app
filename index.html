@@ -724,14 +724,14 @@
     <div id="view-dashboard" class="hidden"></div>
   </div>
 
-  <!-- كارت الترحيب بالمستخدم المدمج بعرض الشاشة الكاملة بدون خط علوي -->
+  <!-- كارت الترحيب بالمستخدم المدمج بعرض الشاشة الكاملة وبدون خط علوي -->
   <div id="dashboard-header-container" class="hidden">
     <div class="user-profile-card">
       <div class="profile-top-row">
         <div class="profile-info-group">
           <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
           <div class="profile-text-content">
-            <div id="dash-greeting" style="font-size: 0.75rem; color: var(--muted);">مساء الخير 🌙</div>
+            <div id="dash-greeting" style="font-size: 0.75rem; color: var(--muted);">صباح الخير ☀️</div>
             <h3 id="dash-name" style="margin: 0; font-size: 0.95rem; font-weight: 700;">--</h3>
             <div class="code-badge-pill"><span id="t-codeLabel">ID:</span> <span id="dash-code-val">--</span></div>
           </div>
@@ -1060,7 +1060,6 @@
         lblCode: "كود الموظف",
         lblNID: "الرقم القومي",
         saveCardBtn: "حفظ الكارت كصورة",
-        greeting: "مساء الخير 🌙",
         backBtn: "← رجوع",
         titleLeaves: "خدمة الإجازات",
         descLeaves: "قريباً: يمكنك تقديم طلب الإجازة والأذونات من هنا مباشرة لموافقة المدير.",
@@ -1108,7 +1107,6 @@
         lblCode: "Employee Code",
         lblNID: "National ID",
         saveCardBtn: "Save ID Card as Image",
-        greeting: "Good evening 🌙",
         backBtn: "← Back",
         titleLeaves: "Leaves Service",
         descLeaves: "Coming Soon: Submit leave & permission requests directly for manager approval.",
@@ -1133,6 +1131,30 @@
       }
     };
     
+    function updateDynamicGreeting() {
+      const hour = new Date().getHours();
+      const greetingEl = document.getElementById('dash-greeting');
+      if (!greetingEl) return;
+      
+      if (currentLang === 'ar') {
+        if (hour >= 4 && hour < 12) {
+          greetingEl.innerText = "صباح الخير ☀️";
+        } else if (hour >= 12 && hour < 17) {
+          greetingEl.innerText = "نهارك سعيد ☀️";
+        } else {
+          greetingEl.innerText = "مساء الخير 🌙";
+        }
+      } else {
+        if (hour >= 4 && hour < 12) {
+          greetingEl.innerText = "Good morning ☀️";
+        } else if (hour >= 12 && hour < 17) {
+          greetingEl.innerText = "Good afternoon ☀️";
+        } else {
+          greetingEl.innerText = "Good evening 🌙";
+        }
+      }
+    }
+
     function updateContentTranslations() {
       const t = translations[currentLang];
       document.getElementById('empCode').placeholder = t.inputCode;
@@ -1176,7 +1198,8 @@
         careerTextWrap.style.textAlign = 'right';
         careerArrow.innerText = '➔';
       }
-      document.getElementById('dash-greeting').innerText = t.greeting;
+      
+      updateDynamicGreeting(); // تحديث التحية بناءً على الوقت الحالي
       
       ['t-backBtn1', 't-backBtn2', 't-backBtn3', 't-backBtn4'].forEach(id => {
         const btn = document.getElementById(id);
@@ -1361,10 +1384,11 @@
         document.getElementById('view-dashboard').classList.remove('hidden');
         if(headerCard) headerCard.classList.remove('hidden');
         if(contentCard) contentCard.classList.remove('hidden');
+        updateDynamicGreeting(); // تحديث التحية فور الدخول للداشبورد
       } else {
         document.getElementById('view-dashboard').classList.add('hidden');
         if(headerCard) headerCard.classList.add('hidden');
-        if(contentCard) contentCard.classList.add('hidden');
+        if(contentCard) headerCard.classList.add('hidden');
         document.getElementById(pageId).classList.remove('hidden');
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
