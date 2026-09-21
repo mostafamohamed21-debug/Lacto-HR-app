@@ -57,98 +57,40 @@
     /* Intro Screen */
     #intro-screen {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      top: 0; left: 0; width: 100vw; height: 100vh;
       background: linear-gradient(rgba(11, 15, 25, 0.92), rgba(11, 15, 25, 0.96)), url('background.jpg');
-      background-size: cover;
-      background-position: center;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      perspective: 1200px;
-      overflow: hidden;
+      background-size: cover; background-position: center;
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      z-index: 9999; perspective: 1200px; overflow: hidden;
       transition: opacity 1.2s ease, visibility 1.2s ease;
     }
-    #intro-screen.fade-out {
-      opacity: 0;
-      visibility: hidden;
-    }
-    .intro-content-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.2rem;
-      text-align: center;
-      padding: 0 1rem;
-      width: 100%;
-    }
-    .intro-title-container {
-      width: 100%;
-      display: flex;
-      gap: 0.15rem;
-      flex-wrap: nowrap;
-      justify-content: center;
-      align-items: center;
-      direction: ltr;
-    }
+    #intro-screen.fade-out { opacity: 0; visibility: hidden; }
+    .intro-content-wrapper { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; text-align: center; padding: 0 1rem; width: 100%; }
+    .intro-title-container { width: 100%; display: flex; gap: 0.15rem; flex-wrap: nowrap; justify-content: center; align-items: center; direction: ltr; }
     .intro-char {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: clamp(1.2rem, 4vw, 1.8rem);
-      font-weight: 800;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: 800;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
-      display: inline-block;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6); display: inline-block;
     }
     .intro-space { width: 0.4rem; }
     .intro-subtitle {
-      font-family: 'Great Vibes', cursive;
-      font-size: clamp(1.5rem, 5vw, 2.5rem);
-      color: #38bdf8;
-      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
-      opacity: 0;
-      line-height: 1.4;
-      width: 100%;
-      text-align: center;
-      white-space: nowrap;
+      font-family: 'Great Vibes', cursive; font-size: clamp(1.5rem, 5vw, 2.5rem);
+      color: #38bdf8; text-shadow: 0 0 20px rgba(56, 189, 248, 0.6); opacity: 0; line-height: 1.4; width: 100%; text-align: center; white-space: nowrap;
     }
     
     /* App Header & 3D Rotating Logo */
     .app-header {
-      width: 100vw;
-      background: #0d1527;
-      border-bottom: none;
-      padding: 0.75rem 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1000;
-      box-shadow: none;
+      width: 100vw; background: #0d1527; padding: 0.75rem 1rem;
+      display: flex; justify-content: space-between; align-items: center;
+      position: fixed; top: 0; left: 0; z-index: 1000; box-shadow: none;
     }
     body { padding-top: 4.5rem; }
-    .brand-container {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      perspective: 800px;
-    }
+    .brand-container { display: flex; align-items: center; gap: 0.6rem; perspective: 800px; }
     .brand-logo {
-      width: 36px;
-      height: 36px;
-      object-fit: contain;
-      border-radius: 10px;
-      transform-style: preserve-3d;
-      animation: rotateLogo3D 6s linear infinite;
+      width: 36px; height: 36px; object-fit: contain; border-radius: 10px;
+      transform-style: preserve-3d; animation: rotateLogo3D 6s linear infinite;
       filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.7));
     }
     @keyframes rotateLogo3D {
@@ -156,422 +98,149 @@
       100% { transform: perspective(500px) rotateY(360deg); }
     }
     .brand-title {
-      font-size: 1.2rem;
-      font-weight: 800;
+      font-size: 1.2rem; font-weight: 800;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     
-    .lang-dropdown-container { 
-      position: relative; 
-      display: inline-flex;
-      align-items: center;
-    }
+    .lang-dropdown-container { position: relative; display: inline-flex; align-items: center; }
     .lang-dropdown-btn {
-      background: rgba(30, 41, 59, 0.75);
-      border: 1px solid var(--border-color);
-      color: var(--text);
-      padding: 0.45rem 0.85rem;
-      border-radius: 1rem;
-      font-size: 0.8rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      backdrop-filter: blur(12px);
-      outline: none;
-      box-shadow: none;
-      margin: 0;
-      width: auto;
+      background: rgba(30, 41, 59, 0.75); border: 1px solid var(--border-color); color: var(--text);
+      padding: 0.45rem 0.85rem; border-radius: 1rem; font-size: 0.8rem; font-weight: 700; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 0.4rem; backdrop-filter: blur(12px); outline: none; margin: 0; width: auto;
     }
     .lang-dropdown-menu {
-      position: absolute;
-      top: calc(100% + 8px);
-      background: rgba(15, 23, 42, 0.98);
-      border: 1px solid var(--border-color);
-      border-radius: 1rem;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-      display: none;
-      z-index: 300;
-      min-width: 130px;
-      backdrop-filter: blur(16px);
-      overflow: hidden;
+      position: absolute; top: calc(100% + 8px); background: rgba(15, 23, 42, 0.98);
+      border: 1px solid var(--border-color); border-radius: 1rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      display: none; z-index: 300; min-width: 130px; backdrop-filter: blur(16px); overflow: hidden;
     }
     [dir="rtl"] .lang-dropdown-menu { left: 0; right: auto; }
     [dir="ltr"] .lang-dropdown-menu { right: 0; left: auto; }
     .lang-dropdown-menu.show { display: block; }
-    .lang-option {
-      padding: 0.7rem 1rem;
-      font-size: 0.85rem;
-      color: var(--text);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: background 0.2s;
-    }
+    .lang-option { padding: 0.7rem 1rem; font-size: 0.85rem; color: var(--text); cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: background 0.2s; }
     .lang-option:hover { background: rgba(56, 189, 248, 0.3); color: #38bdf8; }
     
     .container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 1rem; }
     .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      padding: 1.75rem 1.5rem;
-      border-radius: 1.5rem;
+      background: var(--card-bg); border: 1px solid var(--border-color);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      padding: 1.75rem 1.5rem; border-radius: 1.5rem;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
       text-align: center;
     }
-    input, textarea {
-      width: 100%;
-      padding: 0.9rem 1rem;
-      margin: 0.5rem 0;
-      border-radius: 1rem;
-      border: 1px solid var(--border-color);
-      background: rgba(15, 23, 42, 0.85);
-      color: var(--text);
-      font-size: 0.95rem;
-      text-align: right;
-      outline: none;
+    input, textarea, select {
+      width: 100%; padding: 0.9rem 1rem; margin: 0.5rem 0; border-radius: 1rem;
+      border: 1px solid var(--border-color); background: rgba(15, 23, 42, 0.85);
+      color: var(--text); font-size: 0.95rem; text-align: right; outline: none;
     }
-    [dir="ltr"] input, [dir="ltr"] textarea { text-align: left; }
-    input:focus, textarea:focus { border-color: #38bdf8; box-shadow: 0 0 15px var(--accent-glow); }
+    [dir="ltr"] input, [dir="ltr"] textarea, [dir="ltr"] select { text-align: left; }
+    input:focus, textarea:focus, select:focus { border-color: #38bdf8; box-shadow: 0 0 15px var(--accent-glow); }
     
-    .password-container { 
-      position: relative; 
-      width: 100%; 
-      margin: 0.5rem 0; 
-      display: flex;
-      align-items: center;
-    }
+    .password-container { position: relative; width: 100%; margin: 0.5rem 0; display: flex; align-items: center; }
     .password-container input { margin: 0; width: 100%; }
     [dir="rtl"] .password-container input { padding-left: 3rem; padding-right: 1rem; text-align: right; }
     [dir="ltr"] .password-container input { padding-right: 3rem; padding-left: 1rem; text-align: left; }
     
     .toggle-password {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 36px;
-      height: 36px;
-      background: transparent; 
-      border: none; 
-      cursor: pointer; 
-      color: var(--muted);
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      z-index: 10;
-      margin: 0; padding: 0;
-      box-shadow: none;
+      position: absolute; top: 50%; transform: translateY(-50%); width: 36px; height: 36px;
+      background: transparent; border: none; cursor: pointer; color: var(--muted);
+      display: flex; align-items: center; justify-content: center; z-index: 10; margin: 0; padding: 0;
     }
     [dir="rtl"] .toggle-password { left: 0.5rem; right: auto; }
     [dir="ltr"] .toggle-password { right: 0.5rem; left: auto; }
     .toggle-password svg { width: 20px; height: 20px; fill: currentColor; }
     
-    .checkbox-container {
-      display: flex; align-items: center; justify-content: flex-start;
-      gap: 0.5rem; margin: 0.75rem 0; font-size: 0.85rem; color: var(--muted); cursor: pointer;
-    }
+    .checkbox-container { display: flex; align-items: center; justify-content: flex-start; gap: 0.5rem; margin: 0.75rem 0; font-size: 0.85rem; color: var(--muted); cursor: pointer; }
     .checkbox-container input[type="checkbox"] { width: 18px; height: 18px; accent-color: #38bdf8; margin: 0; }
     button {
       width: 100%; padding: 0.95rem; border-radius: 1.25rem; border: none;
       background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
       color: #0b0f19; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 0.85rem;
-      box-shadow: 0 8px 0 #026595, 0 12px 20px rgba(0, 0, 0, 0.4);
-      transition: all 0.15s ease;
+      box-shadow: 0 8px 0 #026595, 0 12px 20px rgba(0, 0, 0, 0.4); transition: all 0.15s ease;
     }
     button:active { transform: translateY(6px); box-shadow: 0 2px 0 #026595; }
-    .btn-danger {
-      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-      box-shadow: 0 8px 0 #991b1b, 0 12px 20px rgba(220, 38, 38, 0.3);
-      color: #fff;
-    }
-    .btn-danger:active { transform: translateY(6px); box-shadow: 0 2px 0 #991b1b; }
-    
-    .btn-success {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      box-shadow: 0 8px 0 #047857, 0 12px 20px rgba(16, 185, 129, 0.3);
-      color: #fff;
-    }
-    .btn-success:active { transform: translateY(6px); box-shadow: 0 2px 0 #047857; }
+    .btn-danger { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 8px 0 #991b1b, 0 12px 20px rgba(220, 38, 38, 0.3); color: #fff; }
+    .btn-success { background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 8px 0 #047857, 0 12px 20px rgba(16, 185, 129, 0.3); color: #fff; }
 
     .hidden { display: none !important; }
     
-    /* تصميم الأزرار الموحد والمطابق للثيم في صفحة خدماتي */
     .service-row-btn {
       background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(15, 23, 42, 0.95));
-      border: 1px solid rgba(56, 189, 248, 0.45);
-      border-radius: 1.25rem;
-      padding: 1.1rem 1.25rem;
-      color: var(--text);
-      font-weight: 700;
-      font-size: 0.95rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      transition: all 0.2s ease;
-      width: 100%;
-      margin: 0;
+      border: 1px solid rgba(56, 189, 248, 0.45); border-radius: 1.25rem;
+      padding: 1.1rem 1.25rem; color: var(--text); font-weight: 700; font-size: 0.95rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3); transition: all 0.2s ease; width: 100%; margin: 0;
     }
-    .service-row-btn:hover {
-      border-color: #38bdf8;
-      transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.25);
-    }
+    .service-row-btn:hover { border-color: #38bdf8; transform: translateY(-2px); box-shadow: 0 12px 30px rgba(56, 189, 248, 0.25); }
     
-    /* كارت الترحيب (المربع الكبير) */
     .user-profile-card {
-      width: 100vw;
-      position: relative;
-      left: 50%;
-      right: 50%;
-      margin-left: -50vw;
-      margin-right: -50vw;
-      background: rgba(15, 23, 42, 0.95);
-      border-left: 1px solid rgba(56, 189, 248, 0.35);
-      border-right: 1px solid rgba(56, 189, 248, 0.35);
-      border-top: none;
-      border-bottom: none;
-      border-radius: 0 0 1.75rem 1.75rem;
-      padding: 1.15rem 1.5rem 1.75rem 1.5rem;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-      margin-bottom: 0;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
+      width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw;
+      background: rgba(15, 23, 42, 0.95); border-left: 1px solid rgba(56, 189, 248, 0.35); border-right: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 0 0 1.75rem 1.75rem; padding: 1.15rem 1.5rem 1.75rem 1.5rem; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      margin-bottom: 0; z-index: 2; display: flex; flex-direction: column; gap: 0.75rem;
     }
-    
-    .profile-top-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-    }
-    .profile-info-group {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-    }
-    .header-avatar {
-      width: 55px;
-      height: 55px;
-      border-radius: 50%;
-      border: 2px solid #38bdf8;
-      object-fit: cover;
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
-    }
-    .profile-text-content {
-      display: flex;
-      flex-direction: column;
-      text-align: right;
-    }
+    .profile-top-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+    .profile-info-group { display: flex; align-items: center; gap: 0.85rem; }
+    .header-avatar { width: 55px; height: 55px; border-radius: 50%; border: 2px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); }
+    .profile-text-content { display: flex; flex-direction: column; text-align: right; }
     [dir="ltr"] .profile-text-content { text-align: left; }
-    .code-badge-pill {
-      color: #38bdf8;
-      font-size: 0.8rem;
-      font-weight: 700;
-      margin-top: 0.15rem;
-      display: inline-block;
-    }
+    .code-badge-pill { color: #38bdf8; font-size: 0.8rem; font-weight: 700; margin-top: 0.15rem; display: inline-block; }
     
-    /* Notification Container with Popup */
-    .notification-wrapper {
-      position: relative;
-      display: inline-block;
-    }
+    .notification-wrapper { position: relative; display: inline-block; }
     .notification-btn {
-      width: 45px;
-      height: 45px;
-      background: #1e293b;
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      position: relative;
-      color: #38bdf8;
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
-      transition: transform 0.2s;
+      width: 45px; height: 45px; background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
+      position: relative; color: #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); transition: transform 0.2s;
     }
     .notification-btn:hover { transform: scale(1.05); }
     .notification-btn svg { width: 22px; height: 22px; fill: currentColor; }
-    .notification-badge {
-      position: absolute;
-      top: 2px;
-      right: 2px;
-      width: 10px;
-      height: 10px;
-      background: #ef4444;
-      border-radius: 50%;
-      border: 2px solid #0d1527;
-    }
+    .notification-badge { position: absolute; top: 2px; right: 2px; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; border: 2px solid #0d1527; }
     
     .notification-popup {
-      position: absolute;
-      top: 0;
-      left: calc(100% + 12px);
-      background: rgba(15, 23, 42, 0.98);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      border-radius: 1rem;
-      padding: 0.75rem 1rem;
-      width: 210px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
-      backdrop-filter: blur(12px);
-      z-index: 400;
-      display: none;
-      text-align: right;
+      position: absolute; top: 0; left: calc(100% + 12px); background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 1rem; padding: 0.75rem 1rem; width: 210px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6); backdrop-filter: blur(12px); z-index: 400; display: none; text-align: right;
     }
     [dir="ltr"] .notification-popup { left: auto; right: calc(100% + 12px); text-align: left; }
     .notification-popup.show { display: block; }
     .notification-popup-title { font-size: 0.75rem; font-weight: 800; color: #38bdf8; margin-bottom: 0.2rem; }
     .notification-popup-desc { font-size: 0.7rem; color: var(--muted); line-height: 1.4; }
     
-    /* كارت البصمة المتداخل */
     .checkin-card {
       background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(15, 23, 42, 0.98));
-      border: 1px solid rgba(56, 189, 248, 0.5);
-      border-radius: 1.5rem;
-      padding: 0.85rem 1.25rem;
-      text-align: center;
-      box-shadow: 0 15px 30px rgba(0,0,0,0.6), inset 0 0 15px rgba(56, 189, 248, 0.2);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.4rem;
-      position: relative;
-      margin-top: -18px;
-      z-index: 5;
+      border: 1px solid rgba(56, 189, 248, 0.5); border-radius: 1.5rem; padding: 0.85rem 1.25rem;
+      text-align: center; box-shadow: 0 15px 30px rgba(0,0,0,0.6), inset 0 0 15px rgba(56, 189, 248, 0.2);
+      cursor: pointer; transition: all 0.3s ease; color: #fff; display: flex; flex-direction: column; align-items: center; gap: 0.4rem; position: relative; margin-top: -18px; z-index: 5;
     }
     .checkin-card:hover { border-color: #38bdf8; box-shadow: 0 15px 30px rgba(0,0,0,0.6), inset 0 0 20px rgba(56, 189, 248, 0.3); }
-    
-    .checkin-top-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      padding: 0 0.2rem;
-      font-size: 0.75rem;
-    }
+    .checkin-top-row { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 0.2rem; font-size: 0.75rem; }
 
-    /* الشريط الخارجي لللمبات والزراير */
-    .external-attendance-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      padding: 0.2rem 0.5rem;
-      margin-top: -0.2rem;
-    }
-    .action-btn-item {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      cursor: pointer;
-    }
-    
-    .indicator-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      transition: all 0.4s ease;
-      opacity: 0.3;
-    }
-    .dot-green {
-      background: #10b981;
-      border: 1px solid #34d399;
-    }
-    .dot-green.active {
-      opacity: 1;
-      box-shadow: 0 0 12px #10b981, 0 0 25px #10b981;
-    }
-    .dot-red {
-      background: #ef4444;
-      border: 1px solid #f87171;
-    }
-    .dot-red.active {
-      opacity: 1;
-      box-shadow: 0 0 12px #ef4444, 0 0 25px #ef4444;
-    }
+    .external-attendance-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0.2rem 0.5rem; margin-top: -0.2rem; }
+    .action-btn-item { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; }
+    .indicator-dot { width: 10px; height: 10px; border-radius: 50%; transition: all 0.4s ease; opacity: 0.3; }
+    .dot-green { background: #10b981; border: 1px solid #34d399; }
+    .dot-green.active { opacity: 1; box-shadow: 0 0 12px #10b981, 0 0 25px #10b981; }
+    .dot-red { background: #ef4444; border: 1px solid #f87171; }
+    .dot-red.active { opacity: 1; box-shadow: 0 0 12px #ef4444, 0 0 25px #ef4444; }
 
-    .glowing-action-text {
-      font-size: 0.75rem;
-      font-weight: 800;
-      color: #38bdf8;
-      text-shadow: 0 0 10px rgba(56, 189, 248, 0.6), 0 0 20px rgba(56, 189, 248, 0.4);
-      letter-spacing: 0.5px;
-    }
+    .glowing-action-text { font-size: 0.75rem; font-weight: 800; color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.6); letter-spacing: 0.5px; }
 
-    .checkin-main-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      padding: 0.2rem 0.5rem;
-    }
+    .checkin-main-content { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0.2rem 0.5rem; }
     .fingerprint-icon-wrap {
-      width: 45px; height: 45px;
-      background: rgba(56, 189, 248, 0.2);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      color: #38bdf8;
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+      width: 45px; height: 45px; background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
     }
     .fingerprint-icon-wrap svg { width: 24px; height: 24px; fill: currentColor; }
     .checkin-status-text { font-size: 0.8rem; font-weight: 700; color: var(--text); }
     
-    /* Announcement Slider */
     .announcement-card {
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid var(--border-color);
-      border-radius: 1.5rem;
-      padding: 1.25rem;
-      text-align: right;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      margin-top: 0.5rem;
-      min-height: 110px;
+      background: rgba(15, 23, 42, 0.85); border: 1px solid var(--border-color); border-radius: 1.5rem;
+      padding: 1.25rem; text-align: right; position: relative; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.3); margin-top: 0.5rem; min-height: 110px;
     }
     [dir="ltr"] .announcement-card { text-align: left; }
-    
-    .slides-container {
-      position: relative;
-      width: 100%;
-      min-height: 75px;
-    }
-    .slide-item {
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: 0;
-      width: 100%;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
-      transform: scale(0.97);
-      cursor: pointer;
-      pointer-events: none;
-    }
-    .slide-item.active {
-      position: relative;
-      opacity: 1;
-      visibility: visible;
-      transform: scale(1);
-      pointer-events: auto;
-    }
-    
+    .slides-container { position: relative; width: 100%; min-height: 75px; }
+    .slide-item { position: absolute; top: 0; right: 0; left: 0; width: 100%; opacity: 0; visibility: hidden; transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out; transform: scale(0.97); cursor: pointer; pointer-events: none; }
+    .slide-item.active { position: relative; opacity: 1; visibility: visible; transform: scale(1); pointer-events: auto; }
     .announcement-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
     .announcement-title { font-size: 1rem; font-weight: 700; color: var(--text); }
     .announcement-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; margin-bottom: 0.75rem; }
@@ -579,297 +248,121 @@
     .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s; }
     .dot.active { width: 18px; border-radius: 4px; background: #38bdf8; }
     
-    /* Summaries Stacked Full Width Grid */
-    .summaries-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
-      width: 100%;
-    }
+    .summaries-grid { display: flex; flex-direction: column; gap: 0.85rem; width: 100%; }
     .summary-card {
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid var(--border-color);
-      border-radius: 1.25rem;
-      padding: 1.15rem 1.25rem;
-      text-align: right;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-      width: 100%;
+      background: rgba(15, 23, 42, 0.85); border: 1px solid var(--border-color); border-radius: 1.25rem;
+      padding: 1.15rem 1.25rem; text-align: right; box-shadow: 0 8px 20px rgba(0,0,0,0.3); width: 100%;
     }
     [dir="ltr"] .summary-card { text-align: left; }
     .summary-title { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.4rem; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
     .summary-value { font-size: 1.15rem; font-weight: 800; color: #38bdf8; }
     
-    /* Segmented & Graded Downloading Bar (ثابت الاتجاه دائماً لليمين واليسار لضمان عدم انعكاس التدريج) */
     .progress-bar-container {
-      width: 100%;
-      height: 9px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 6px;
-      margin-top: 0.75rem;
-      overflow: hidden;
-      position: relative;
-      border: 1px solid rgba(56, 189, 248, 0.15);
-      direction: ltr !important;
+      width: 100%; height: 9px; background: rgba(255, 255, 255, 0.08); border-radius: 6px;
+      margin-top: 0.75rem; overflow: hidden; position: relative; border: 1px solid rgba(56, 189, 248, 0.15); direction: ltr !important;
     }
     .progress-bar-fill {
-      height: 100%;
-      border-radius: 6px;
-      width: 0%;
-      transition: width 1s ease-in-out;
+      height: 100%; border-radius: 6px; width: 0%; transition: width 1s ease-in-out;
       background: linear-gradient(90deg, #040814 0%, #0284c7 50%, #38bdf8 100%);
       mask-image: repeating-linear-gradient(90deg, #000, #000 6px, transparent 6px, transparent 9px);
       -webkit-mask-image: repeating-linear-gradient(90deg, #000, #000 6px, transparent 6px, transparent 9px);
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
-      animation: pulseGlow 2s infinite alternate;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.6); animation: pulseGlow 2s infinite alternate;
     }
     @keyframes pulseGlow {
       0% { filter: brightness(0.9); box-shadow: 0 0 8px rgba(56, 189, 248, 0.3); }
       100% { filter: brightness(1.3); box-shadow: 0 0 18px rgba(56, 189, 248, 0.8); }
     }
 
-    /* Salary Row with Eye Toggle */
-    .salary-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 0.3rem;
-    }
-    .salary-masked {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: #38bdf8;
-      letter-spacing: 2px;
-    }
+    .salary-row { display: flex; justify-content: space-between; align-items: center; margin-top: 0.3rem; }
+    .salary-masked { font-size: 1.15rem; font-weight: 800; color: #38bdf8; letter-spacing: 2px; }
     .toggle-salary-btn {
-      background: rgba(56, 189, 248, 0.15);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: #38bdf8;
-      box-shadow: none !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      transition: all 0.2s ease;
+      background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4);
+      width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #38bdf8; box-shadow: none !important; margin: 0 !important; padding: 0 !important; transition: all 0.2s ease;
     }
-    .toggle-salary-btn:hover {
-      background: rgba(56, 189, 248, 0.3);
-      transform: scale(1.05);
-    }
-    .toggle-salary-btn svg {
-      width: 20px;
-      height: 20px;
-      fill: currentColor;
-    }
+    .toggle-salary-btn:hover { background: rgba(56, 189, 248, 0.3); transform: scale(1.05); }
+    .toggle-salary-btn svg { width: 20px; height: 20px; fill: currentColor; }
     
-    /* Sub-pages & ID Card */
     .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; width: 100%; }
     .back-btn { 
-      background: rgba(51, 65, 85, 0.9); 
-      border: 1px solid var(--border-color); 
-      width: auto !important; 
-      padding: 0.5rem 1.1rem !important; 
-      font-size: 0.85rem !important; 
-      font-weight: 700;
-      margin: 0 !important; 
-      border-radius: 0.8rem; 
-      cursor: pointer;
-      color: var(--text);
-      box-shadow: none !important;
+      background: rgba(51, 65, 85, 0.9); border: 1px solid var(--border-color); width: auto !important; 
+      padding: 0.5rem 1.1rem !important; font-size: 0.85rem !important; font-weight: 700;
+      margin: 0 !important; border-radius: 0.8rem; cursor: pointer; color: var(--text); box-shadow: none !important;
     }
     .back-btn:hover { background: rgba(56, 189, 248, 0.2); border-color: #38bdf8; }
     
     .id-card {
       background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(11, 15, 25, 0.98));
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      border-radius: 1.5rem; padding: 1.5rem; position: relative;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 1.5rem; padding: 1.5rem; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.6);
     }
     .profile-img { width: 95px; height: 95px; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover; margin: 0 auto 0.75rem auto; display: block; }
     .info-grid {
       display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; text-align: right;
-      background: rgba(11, 15, 25, 0.7); padding: 0.85rem; border-radius: 1rem; font-size: 0.8rem; margin-bottom: 1.25rem;
-      border: 1px solid var(--border-color);
+      background: rgba(11, 15, 25, 0.7); padding: 0.85rem; border-radius: 1rem; font-size: 0.8rem; margin-bottom: 1.25rem; border: 1px solid var(--border-color);
     }
     [dir="ltr"] .info-grid { text-align: left; }
     .info-label { color: var(--muted); font-size: 0.75rem; margin-bottom: 0.1rem; }
     .info-val { font-weight: 700; color: var(--text); }
     .qr-container { background: #fff; padding: 0.65rem; border-radius: 1rem; display: inline-block; }
     
-    /* Bottom Navigation Bar - شريط التنقل السفلي الثابت بدقة تامة */
     #bottomNavBar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100vw;
-      background: rgba(15, 23, 42, 0.98);
-      border-top: 1px solid rgba(56, 189, 248, 0.4);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      display: none;
-      justify-content: space-around;
-      align-items: center;
-      padding: 0.6rem 0.55rem calc(0.6rem + env(safe-area-inset-bottom)) 0.55rem;
-      z-index: 99998;
-      box-shadow: 0 -10px 25px rgba(0,0,0,0.7);
+      position: fixed; bottom: 0; left: 0; width: 100vw; background: rgba(15, 23, 42, 0.98);
+      border-top: 1px solid rgba(56, 189, 248, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      display: none; justify-content: space-around; align-items: center; padding: 0.6rem 0.55rem calc(0.6rem + env(safe-area-inset-bottom)) 0.55rem;
+      z-index: 99998; box-shadow: 0 -10px 25px rgba(0,0,0,0.7);
     }
     #bottomNavBar.show { display: flex; }
     .bottom-nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.25rem;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      color: #7dd3fc;
-      flex: 1;
-      padding: 0.2rem;
-      margin: 0;
-      box-shadow: none !important;
-      transition: all 0.2s ease;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem;
+      background: transparent; border: none; cursor: pointer; color: #7dd3fc; flex: 1; padding: 0.2rem; margin: 0; box-shadow: none !important; transition: all 0.2s ease;
     }
-    .bottom-nav-item svg {
-      width: 22px;
-      height: 22px;
-      fill: currentColor;
-      transition: filter 0.2s ease, transform 0.2s ease;
-    }
-    .bottom-nav-item span {
-      font-size: 0.7rem;
-      font-weight: 700;
-    }
-    .bottom-nav-item.active {
-      color: #38bdf8;
-    }
-    .bottom-nav-item.active svg {
-      filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.9));
-      transform: translateY(-2px);
-    }
+    .bottom-nav-item svg { width: 22px; height: 22px; fill: currentColor; transition: filter 0.2s ease, transform 0.2s ease; }
+    .bottom-nav-item span { font-size: 0.7rem; font-weight: 700; }
+    .bottom-nav-item.active { color: #38bdf8; }
+    .bottom-nav-item.active svg { filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.9)); transform: translateY(-2px); }
 
-    /* Active Chatbot Floating Widget */
     #chatbot-fab {
-      position: fixed;
-      bottom: 90px;
-      right: 25px;
-      width: 55px;
-      height: 55px;
-      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #0b0f19;
-      cursor: pointer;
-      box-shadow: 0 8px 25px rgba(56, 189, 248, 0.5);
-      z-index: 99999;
-      transition: transform 0.2s ease;
+      position: fixed; bottom: 90px; right: 25px; width: 55px; height: 55px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; color: #0b0f19; cursor: pointer;
+      box-shadow: 0 8px 25px rgba(56, 189, 248, 0.5); z-index: 99999; transition: transform 0.2s ease;
     }
     [dir="ltr"] #chatbot-fab { right: 25px; left: auto; }
     #chatbot-fab:hover { transform: scale(1.1); }
     #chatbot-fab svg { width: 28px; height: 28px; fill: currentColor; }
     
     #chatbot-window {
-      position: fixed;
-      bottom: 90px;
-      right: 20px;
-      width: 330px;
-      max-width: calc(100vw - 40px);
-      height: 380px;
-      background: rgba(15, 23, 42, 0.96);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      border-radius: 1.25rem;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-      backdrop-filter: blur(16px);
-      display: none;
-      flex-direction: column;
-      z-index: 100000;
-      overflow: hidden;
+      position: fixed; bottom: 90px; right: 20px; width: 330px; max-width: calc(100vw - 40px); height: 380px;
+      background: rgba(15, 23, 42, 0.96); border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 1.25rem;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6); backdrop-filter: blur(16px); display: none; flex-direction: column; z-index: 100000; overflow: hidden;
     }
     [dir="ltr"] #chatbot-window { right: 20px; left: auto; }
     #chatbot-window.show { display: flex; }
-    .chatbot-header {
-      background: rgba(30, 41, 59, 0.9);
-      padding: 0.75rem 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border-color);
-    }
+    .chatbot-header { background: rgba(30, 41, 59, 0.9); padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
     .chatbot-title { font-size: 0.85rem; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 0.4rem; }
     .chatbot-close { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.1rem; width: auto; margin:0; padding:0; box-shadow:none !important; }
-    .chatbot-messages {
-      flex: 1;
-      padding: 0.75rem;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      font-size: 0.8rem;
-    }
-    .chat-msg {
-      max-width: 80%;
-      padding: 0.5rem 0.75rem;
-      border-radius: 0.75rem;
-      line-height: 1.4;
-    }
+    .chatbot-messages { flex: 1; padding: 0.75rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.8rem; }
+    .chat-msg { max-width: 80%; padding: 0.5rem 0.75rem; border-radius: 0.75rem; line-height: 1.4; }
     .chat-msg.bot { background: rgba(30, 41, 59, 0.8); color: var(--text); align-self: flex-start; border-bottom-left-radius: 2px; }
     .chat-msg.user { background: #0284c7; color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
-    .chatbot-input-area {
-      padding: 0.6rem;
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      gap: 0.4rem;
-      background: rgba(11, 15, 25, 0.9);
-    }
-    .chatbot-input-area input {
-      margin: 0;
-      padding: 0.5rem 0.75rem;
-      font-size: 0.8rem;
-      text-align: right;
-    }
+    .chatbot-input-area { padding: 0.6rem; border-top: 1px solid var(--border-color); display: flex; gap: 0.4rem; background: rgba(11, 15, 25, 0.9); }
+    .chatbot-input-area input { margin: 0; padding: 0.5rem 0.75rem; font-size: 0.8rem; text-align: right; }
     [dir="ltr"] .chatbot-input-area input { text-align: left; }
-    .chatbot-send-btn {
-      width: auto !important;
-      margin: 0 !important;
-      padding: 0.5rem 0.9rem !important;
-      font-size: 0.8rem !important;
-      border-radius: 0.75rem !important;
-    }
+    .chatbot-send-btn { width: auto !important; margin: 0 !important; padding: 0.5rem 0.9rem !important; font-size: 0.8rem !important; border-radius: 0.75rem !important; }
   </style>
   <script>
     let wakeLock = null;
     async function requestWakeLock() {
       if ('wakeLock' in navigator) {
         try {
-          if (wakeLock !== null) {
-            await wakeLock.release();
-            wakeLock = null;
-          }
+          if (wakeLock !== null) { await wakeLock.release(); wakeLock = null; }
           wakeLock = await navigator.wakeLock.request('screen');
-          wakeLock.addEventListener('release', () => {
-            wakeLock = null;
-          });
-        } catch (err) {
-          console.log('Wake Lock error:', err);
-        }
+          wakeLock.addEventListener('release', () => { wakeLock = null; });
+        } catch (err) { console.log('Wake Lock error:', err); }
       }
     }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      requestWakeLock();
-    });
-
-    document.addEventListener('visibilitychange', async () => {
-      if (document.visibilityState === 'visible') {
-        await requestWakeLock();
-      }
-    });
+    window.addEventListener('DOMContentLoaded', () => { requestWakeLock(); });
+    document.addEventListener('visibilitychange', async () => { if (document.visibilityState === 'visible') { await requestWakeLock(); } });
   </script>
 </head>
 <body>
@@ -881,7 +374,7 @@
     </div>
   </div>
   
-  <!-- App Header with 3D Rotating Logo -->
+  <!-- App Header -->
   <div class="app-header">
     <div class="brand-container">
       <img src="logo.png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
@@ -928,7 +421,7 @@
     <div id="view-dashboard" class="hidden"></div>
   </div>
 
-  <!-- كارت الترحيب (المربع الكبير) -->
+  <!-- User Profile Header Card -->
   <div id="dashboard-header-container" class="hidden">
     <div class="user-profile-card">
       <div class="profile-top-row">
@@ -954,10 +447,9 @@
     </div>
   </div>
 
-  <!-- باقي محتوى الداشبورد -->
+  <!-- Dashboard Content Container -->
   <div class="container">
     <div id="dashboard-content-container" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
-      <!-- كارت البصمة -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="checkin-top-row">
           <span style="font-weight: 700; color: #38bdf8;"><span id="t-workingHoursText">ساعات العمل</span> ⏱️ <span id="valWorkingHours">00:00</span></span>
@@ -974,7 +466,6 @@
         </div>
       </div>
 
-      <!-- شريط اللمبات والزراير الخارجي -->
       <div class="external-attendance-bar">
         <div class="action-btn-item">
           <div id="ledRed" class="indicator-dot dot-red"></div>
@@ -986,49 +477,30 @@
         </div>
       </div>
       
-      <!-- Company Announcements Slider -->
       <div class="announcement-card" id="announcementCard">
         <div class="slides-container" id="slidesContainer">
-          <!-- Slide 1: أخبار الشركة -->
           <div class="slide-item active" onclick="showComingSoon('view-dashboard')">
-            <div class="announcement-top">
-              <span class="announcement-title slide-title-1">أخبار الشركة</span>
-            </div>
+            <div class="announcement-top"><span class="announcement-title slide-title-1">أخبار الشركة</span></div>
             <div class="announcement-desc slide-desc-1">تابع أحدث المؤتمرات، فعاليات الشركة، وأبرز الأخبار الرسمية.</div>
           </div>
-          <!-- Slide 2: الفرص الوظيفية -->
           <div class="slide-item" onclick="showComingSoon('view-dashboard')">
-            <div class="announcement-top">
-              <span class="announcement-title slide-title-2">الفرص الوظيفية</span>
-            </div>
+            <div class="announcement-top"><span class="announcement-title slide-title-2">الفرص الوظيفية</span></div>
             <div class="announcement-desc slide-desc-2">استكشف الوظائف الشاغرة الداخلية وحركات الترقيات الأخيرة للموظفين.</div>
           </div>
-          <!-- Slide 3: الموظفون المثاليون -->
           <div class="slide-item" onclick="showComingSoon('view-dashboard')">
-            <div class="announcement-top">
-              <span class="announcement-title slide-title-3">الموظفون المثاليون</span>
-            </div>
+            <div class="announcement-top"><span class="announcement-title slide-title-3">الموظفون المثاليون</span></div>
             <div class="announcement-desc slide-desc-3">تعرف على نجوم الشهر والموظفين المثاليين المكرمين عن كل إدارة.</div>
           </div>
-          <!-- Slide 4: اللوائح الداخلية -->
           <div class="slide-item" onclick="showComingSoon('view-dashboard')">
-            <div class="announcement-top">
-              <span class="announcement-title slide-title-4">اللوائح الداخلية</span>
-            </div>
+            <div class="announcement-top"><span class="announcement-title slide-title-4">اللوائح الداخلية</span></div>
             <div class="announcement-desc slide-desc-4">اططلع على لائحة تنظيم العمل، الجزاءات، والسياسات الداخلية للشركة.</div>
           </div>
-          <!-- Slide 5: دليل العاملين وتحديثات التطبيق -->
           <div class="slide-item" onclick="showComingSoon('view-dashboard')">
-            <div class="announcement-top">
-              <span class="announcement-title slide-title-5">دليل العاملين وتحديثات التطبيق</span>
-            </div>
+            <div class="announcement-top"><span class="announcement-title slide-title-5">دليل العاملين وتحديثات التطبيق</span></div>
             <div class="announcement-desc slide-desc-5">آخر الإضافات والتحديثات البرمجية ومستجدات دليل العاملين.</div>
           </div>
-          <!-- Slide 6: قدم مقترحك -->
           <div class="slide-item" onclick="showPage('view-suggestion-page')">
-            <div class="announcement-top">
-              <span class="announcement-title slide-title-6">قدم مقترحك</span>
-            </div>
+            <div class="announcement-top"><span class="announcement-title slide-title-6">قدم مقترحك</span></div>
             <div class="announcement-desc slide-desc-6">شاركنا برأيك وأفكارك الإبداعية لتطوير العمل بالشركة.</div>
           </div>
         </div>
@@ -1042,41 +514,25 @@
         </div>
       </div>
       
-      <!-- Summaries Stacked Full Width Cards with Fixed Direction Segmented Bars & Salary Eye Toggle -->
       <div class="summaries-grid">
-        <!-- 1. Leave Balance -->
         <div class="summary-card">
-          <div class="summary-title">
-            <span id="t-sumLeaves">رصيد الإجازات</span>
-            <span style="font-size:0.75rem; color: #38bdf8;" id="leavesPercentageText">46% مستهلك</span>
-          </div>
+          <div class="summary-title"><span id="t-sumLeaves">رصيد الإجازات</span><span style="font-size:0.75rem; color: #38bdf8;" id="leavesPercentageText">46% مستهلك</span></div>
           <div class="summary-value" id="t-valLeaves">21 يوم</div>
-          <div class="progress-bar-container">
-            <div class="progress-bar-fill" id="leavesProgressBar" style="width: 46.6%;"></div>
-          </div>
+          <div class="progress-bar-container"><div class="progress-bar-fill" id="leavesProgressBar" style="width: 46.6%;"></div></div>
         </div>
 
-        <!-- 2. Available Permissions -->
         <div class="summary-card">
-          <div class="summary-title">
-            <span id="t-sumPermissions">الأذونات المتاحة</span>
-            <span style="font-size:0.75rem; color: #38bdf8;" id="permsPercentageText">60% متاح</span>
-          </div>
+          <div class="summary-title"><span id="t-sumPermissions">الأذونات المتاحة</span><span style="font-size:0.75rem; color: #38bdf8;" id="permsPercentageText">60% متاح</span></div>
           <div class="summary-value" id="t-valPermissions">3 أذونات</div>
-          <div class="progress-bar-container">
-            <div class="progress-bar-fill" id="permsProgressBar" style="width: 60%;"></div>
-          </div>
+          <div class="progress-bar-container"><div class="progress-bar-fill" id="permsProgressBar" style="width: 60%;"></div></div>
         </div>
 
-        <!-- 3. Last Net Salary with Mask & Eye Toggle -->
         <div class="summary-card">
           <div class="summary-title" id="t-sumSalary">صافي آخر مرتب</div>
           <div class="salary-row">
             <div class="salary-masked" id="salaryDisplayVal">••••••••</div>
             <button type="button" class="toggle-salary-btn" onclick="toggleSalaryVisibility()" title="إظهار / إخفاء الراتب">
-              <svg id="salaryEyeIcon" viewBox="0 0 24 24">
-                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-              </svg>
+              <svg id="salaryEyeIcon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
             </button>
           </div>
         </div>
@@ -1085,7 +541,7 @@
       <button id="t-logoutBtn" onclick="logout()" class="btn-danger">تسجيل الخروج</button>
     </div>
     
-    <!-- 3. ID Card View (كارت الهوية الرقمية) -->
+    <!-- 3. ID Card View -->
     <div id="view-id-card" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-dashboard')"><span id="t-backBtnID">← رجوع</span></button>
@@ -1110,14 +566,14 @@
       <button id="t-saveCardBtn" onclick="downloadCard()" class="btn-success" style="margin-top:1rem;">حفظ الكارت كصورة</button>
     </div>
     
-    <!-- 4. Services View (خدماتي المحدثة بالـ 10 طلبات) -->
+    <!-- 4. Services View -->
     <div id="view-services" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-dashboard')"><span id="t-backBtnServices">← رجوع</span></button>
         <span style="font-weight: 700; color: #38bdf8;" id="t-titleServices">خدماتي</span>
       </div>
       <div style="display: flex; flex-direction: column; gap: 0.75rem; padding: 0.5rem 0;">
-        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+        <button class="service-row-btn" onclick="showPage('view-leave-request')">
           <span id="t-srv1">📅 طلب إجازة</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
@@ -1159,8 +615,47 @@
         </button>
       </div>
     </div>
+
+    <!-- 4.1. Leave Request Form View (شاشة طلب إجازة بالتفاصيل الجديدة) -->
+    <div id="view-leave-request" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-services')"><span id="t-backBtnLeave">← رجوع</span></button>
+        <span style="font-weight: 700; color: #38bdf8;" id="t-leavePageTitle">طلب إجازة جديد</span>
+      </div>
+      
+      <!-- خانة رصيد الإجازات على الجنب -->
+      <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 1rem; padding: 0.75rem 1rem; margin-bottom: 1rem;">
+        <span style="font-size: 0.8rem; color: var(--muted);" id="t-leaveBalanceLabel">رصيد الإجازات المتاح:</span>
+        <span style="font-size: 0.95rem; font-weight: 800; color: #38bdf8;" id="leaveBalanceVal">21 يوم</span>
+      </div>
+
+      <div style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;" id="leaveFormWrapper">
+        <label style="font-size: 0.75rem; color: var(--muted);" id="t-lblLeaveType">نوع الإجازة:</label>
+        <select id="leaveType">
+          <option value="annual" id="t-optAnnual">إجازة سنوية</option>
+          <option value="casual" id="t-optCasual">إجازة عارضة</option>
+          <option value="sick" id="t-optSick">إجازة مرضية</option>
+        </select>
+
+        <label style="font-size: 0.75rem; color: var(--muted);" id="t-lblStartDate">تاريخ بداية الأجازة:</label>
+        <input type="date" id="leaveStartDate" onchange="calculateLeaveDays()">
+
+        <label style="font-size: 0.75rem; color: var(--muted);" id="t-lblEndDate">تاريخ نهاية الأجازة:</label>
+        <input type="date" id="leaveEndDate" onchange="calculateLeaveDays()">
+
+        <div style="font-size: 0.8rem; color: #38bdf8; font-weight: bold; text-align: center; margin: 0.3rem 0;" id="leaveTotalDaysText">
+          إجمالي الأيام المطلوبة: 0 يوم
+        </div>
+
+        <label style="font-size: 0.75rem; color: var(--muted);" id="t-lblLeaveNotes">ملاحظات إضافية:</label>
+        <textarea id="leaveNotes" rows="3" placeholder="اكتب أى ملاحظات عايز تضفها هنا..." style="resize: none;"></textarea>
+
+        <button onclick="submitLeaveRequest()" class="btn-success" id="t-submitLeaveBtn" style="margin-top: 0.5rem;">إرسال طلب الإجازة</button>
+        <p id="leaveMsg" style="font-size: 0.8rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
+      </div>
+    </div>
     
-    <!-- 5. Settings View (الضبط) -->
+    <!-- 5. Settings View -->
     <div id="view-settings" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-dashboard')"><span id="t-backBtnSettings">← رجوع</span></button>
@@ -1174,7 +669,7 @@
       </div>
     </div>
     
-    <!-- 6. Profile View (تحديث الملف الشخصي) -->
+    <!-- 6. Profile View -->
     <div id="view-profile" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-dashboard')"><span id="t-backBtnProfile">← رجوع</span></button>
@@ -1202,7 +697,7 @@
       </div>
     </div>
 
-    <!-- Suggestion Page (قدم مقترحك) -->
+    <!-- Suggestion Page -->
     <div id="view-suggestion-page" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-dashboard')"><span id="t-backBtnSug">← رجوع</span></button>
@@ -1221,7 +716,7 @@
     </div>
   </div>
 
-  <!-- Bottom Navigation Bar - شريط التنقل السفلي الثابت بدقة تامة -->
+  <!-- Bottom Navigation Bar -->
   <div id="bottomNavBar">
     <button class="bottom-nav-item active" onclick="switchTab('view-dashboard', this)">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -1245,8 +740,8 @@
     </button>
   </div>
 
-  <!-- Active Chatbot Floating Widget -->
-  <div id="chatbot-fab" onclick="toggleChatbot()" title="مساعد الرتات / Chatbot">
+  <!-- Chatbot Floating Widget -->
+  <div id="chatbot-fab" onclick="toggleChatbot()" title="مساعد الرواتب / Chatbot">
     <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
   </div>
   <div id="chatbot-window">
@@ -1293,40 +788,16 @@
       charElements.forEach((el) => {
         const randomX = (Math.random() - 0.5) * 400; 
         const randomRotation = (Math.random() - 0.5) * 720;
-        gsap.set(el, { 
-          y: -250, 
-          x: randomX, 
-          rotation: randomRotation, 
-          opacity: 0, 
-          scale: 0.8 
-        });
+        gsap.set(el, { y: -250, x: randomX, rotation: randomRotation, opacity: 0, scale: 0.8 });
       });
       gsap.set(subtitle, { opacity: 0, y: 20 });
-      const tl = gsap.timeline({ 
-        onComplete: () => document.getElementById('intro-screen').classList.add('fade-out') 
-      });
-      tl.to(charElements, { 
-        duration: 1.5, 
-        x: 0, 
-        y: 0, 
-        rotation: 360, 
-        opacity: 1, 
-        scale: 1, 
-        stagger: 0.08, 
-        ease: "power2.out" 
-      });
+      const tl = gsap.timeline({ onComplete: () => document.getElementById('intro-screen').classList.add('fade-out') });
+      tl.to(charElements, { duration: 1.5, x: 0, y: 0, rotation: 360, opacity: 1, scale: 1, stagger: 0.08, ease: "power2.out" });
       tl.to(subtitle, { duration: 1.2, opacity: 1, y: 0, ease: "power2.out" }, "-=0.8");
       tl.to(subtitle, { duration: 1.2, opacity: 0, y: -20, ease: "power1.in" }, "+=2.0");
       charElements.forEach((el, index) => {
         const dir = directions[index % directions.length];
-        tl.to(el, { 
-          duration: 1.5, 
-          x: dir.x, 
-          y: dir.y, 
-          opacity: 0, 
-          scale: 0.5, 
-          ease: "power1.inOut" 
-        }, index === 0 ? "scatter" : `-=1.35`);
+        tl.to(el, { duration: 1.5, x: dir.x, y: dir.y, opacity: 0, scale: 0.5, ease: "power1.inOut" }, index === 0 ? "scatter" : `-=1.35`);
       });
     }
     window.addEventListener('DOMContentLoaded', runLeafFallIntro);
@@ -1351,7 +822,6 @@
       }
     }
     
-    /* Firebase & App Logic */
     const firebaseConfig = {
       apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
       authDomain: "lacto-hr-system.firebaseapp.com",
@@ -1416,6 +886,17 @@
         titleSettings: "الضبط والإعدادات",
         titleProfile: "تحديث الملف الشخصي",
         langSetting: "لغة التطبيق",
+        leavePageTitle: "طلب إجازة جديد",
+        leaveBalanceLabel: "رصيد الإجازات المتاح:",
+        lblLeaveType: "نوع الإجازة:",
+        optAnnual: "إجازة سنوية",
+        optCasual: "إجازة عارضة",
+        optSick: "إجازة مرضية",
+        lblStartDate: "تاريخ بداية الأجازة:",
+        lblEndDate: "تاريخ نهاية الأجازة:",
+        lblLeaveNotes: "ملاحظات إضافية:",
+        leaveNotesPlaceholder: "اكتب أى ملاحظات عايز تضفها هنا...",
+        submitLeaveBtn: "إرسال طلب الإجازة",
         srv1: "📅 طلب إجازة",
         srv2: "🚪 طلب إذن شخصي",
         srv3: "✈️ طلب مأمورية",
@@ -1482,6 +963,17 @@
         titleSettings: "Settings",
         titleProfile: "Update Profile",
         langSetting: "App Language",
+        leavePageTitle: "New Leave Request",
+        leaveBalanceLabel: "Available Leave Balance:",
+        lblLeaveType: "Leave Type:",
+        optAnnual: "Annual Leave",
+        optCasual: "Casual Leave",
+        optSick: "Sick Leave",
+        lblStartDate: "Start Date:",
+        lblEndDate: "End Date:",
+        lblLeaveNotes: "Additional Notes:",
+        leaveNotesPlaceholder: "Type any notes you want to add here...",
+        submitLeaveBtn: "Submit Leave Request",
         srv1: "📅 Leave Request",
         srv2: "🚪 Personal Permission",
         srv3: "✈️ Mission Request",
@@ -1509,21 +1001,13 @@
       if (!greetingEl) return;
       
       if (currentLang === 'ar') {
-        if (hour >= 4 && hour < 12) {
-          greetingEl.innerText = "صباح الخير ☀️";
-        } else if (hour >= 12 && hour < 17) {
-          greetingEl.innerText = "نهارك سعيد ☀️";
-        } else {
-          greetingEl.innerText = "مساء الخير 🌙";
-        }
+        if (hour >= 4 && hour < 12) greetingEl.innerText = "صباح الخير ☀️";
+        else if (hour >= 12 && hour < 17) greetingEl.innerText = "نهارك سعيد ☀️";
+        else greetingEl.innerText = "مساء الخير 🌙";
       } else {
-        if (hour >= 4 && hour < 12) {
-          greetingEl.innerText = "Good morning ☀️";
-        } else if (hour >= 12 && hour < 17) {
-          greetingEl.innerText = "Good afternoon ☀️";
-        } else {
-          greetingEl.innerText = "Good evening 🌙";
-        }
+        if (hour >= 4 && hour < 12) greetingEl.innerText = "Good morning ☀️";
+        else if (hour >= 12 && hour < 17) greetingEl.innerText = "Good afternoon ☀️";
+        else greetingEl.innerText = "Good evening 🌙";
       }
     }
 
@@ -1569,6 +1053,7 @@
       document.getElementById('t-backBtnProfile').innerText = t.backBtn;
       document.getElementById('t-backBtnCS').innerText = t.backBtn;
       document.getElementById('t-backBtnSug').innerText = t.backBtn;
+      document.getElementById('t-backBtnLeave').innerText = t.backBtn;
 
       document.getElementById('t-sugHeaderTitle').innerText = t.sugHeaderTitle;
       document.getElementById('t-sugCodeLabel').innerText = t.sugCodeLabel;
@@ -1576,6 +1061,18 @@
       document.getElementById('t-sugTextLabel').innerText = t.sugTextLabel;
       document.getElementById('sugText').placeholder = t.sugPlaceholder;
       document.getElementById('t-sugSubmitBtn').innerText = t.sugSubmitBtn;
+
+      document.getElementById('t-leavePageTitle').innerText = t.leavePageTitle;
+      document.getElementById('t-leaveBalanceLabel').innerText = t.leaveBalanceLabel;
+      document.getElementById('t-lblLeaveType').innerText = t.lblLeaveType;
+      document.getElementById('t-optAnnual').innerText = t.optAnnual;
+      document.getElementById('t-optCasual').innerText = t.optCasual;
+      document.getElementById('t-optSick').innerText = t.optSick;
+      document.getElementById('t-lblStartDate').innerText = t.lblStartDate;
+      document.getElementById('t-lblEndDate').innerText = t.lblEndDate;
+      document.getElementById('t-lblLeaveNotes').innerText = t.lblLeaveNotes;
+      document.getElementById('leaveNotes').placeholder = t.leaveNotesPlaceholder;
+      document.getElementById('t-submitLeaveBtn').innerText = t.submitLeaveBtn;
 
       document.getElementById('t-navHome').innerText = t.navHome;
       document.getElementById('t-navServices').innerText = t.navServices;
@@ -1610,20 +1107,14 @@
     }
     window.addEventListener('click', () => {
       const popup = document.getElementById('notificationPopup');
-      if (popup && popup.classList.contains('show')) {
-        popup.classList.remove('show');
-      }
+      if (popup && popup.classList.contains('show')) popup.classList.remove('show');
     });
 
     function toggleChatbot() {
       const chatWin = document.getElementById('chatbot-window');
       chatWin.classList.toggle('show');
     }
-    function handleChatKeyPress(e) {
-      if (e.key === 'Enter') {
-        sendChatMessage();
-      }
-    }
+    function handleChatKeyPress(e) { if (e.key === 'Enter') sendChatMessage(); }
     function sendChatMessage() {
       const input = document.getElementById('chatInput');
       const text = input.value.trim();
@@ -1640,21 +1131,16 @@
       setTimeout(() => {
         const botMsg = document.createElement('div');
         botMsg.className = 'chat-msg bot';
-        
         const lowerText = text.toLowerCase();
         if (currentLang === 'ar') {
           if (lowerText.includes('إجازة') || lowerText.includes('اجازات')) {
-            botMsg.innerText = "يمكنك متابعة رصيد إجازاتك من الشاشة الرئيسية (21 يوم) أو الدخول لقسم خدماتي.";
-          } else if (lowerText.includes('مرتب') || lowerText.includes('راتب')) {
-            botMsg.innerText = "يتم إتاحة مفردات المرتب فور إصدارها من إدارة الرواتب شهرياً.";
+            botMsg.innerText = "يمكنك تقديم طلب إجازة جديد مباشرة من قسم خدماتي > طلب إجازة.";
           } else {
             botMsg.innerText = "شكراً لتواصلك! تم تسجيل استفسارك وسيتم الرد عليك قريباً من قبل ممثل الموارد البشرية.";
           }
         } else {
           if (lowerText.includes('leave') || lowerText.includes('vacation')) {
-            botMsg.innerText = "You can check your leave balance (21 days) on the main dashboard or via Services.";
-          } else if (lowerText.includes('salary') || lowerText.includes('pay')) {
-            botMsg.innerText = "Payslips are updated monthly as soon as they are issued by the payroll department.";
+            botMsg.innerText = "You can apply for a new leave directly from Services > Leave Request.";
           } else {
             botMsg.innerText = "Thank you for your message! Your query has been noted and HR will follow up with you.";
           }
@@ -1671,48 +1157,27 @@
     function showSlide(index) {
       currentSlideIndex = (index + totalSlides) % totalSlides;
       const slides = document.querySelectorAll('.slide-item');
-      slides.forEach((slide, i) => {
-        if (i === currentSlideIndex) {
-          slide.classList.add('active');
-        } else {
-          slide.classList.remove('active');
-        }
-      });
-      
+      slides.forEach((slide, i) => { slide.classList.toggle('active', i === currentSlideIndex); });
       const dots = document.querySelectorAll('.dot');
-      dots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentSlideIndex);
-      });
+      dots.forEach((dot, i) => { dot.classList.toggle('active', i === currentSlideIndex); });
     }
-
-    function currentSlide(index) {
-      showSlide(index);
-      resetSlideTimer();
-    }
-    function nextSlide() {
-      showSlide(currentSlideIndex + 1);
-    }
-    function resetSlideTimer() {
-      clearInterval(slideInterval);
-      slideInterval = setInterval(nextSlide, 5500);
-    }
+    function currentSlide(index) { showSlide(index); resetSlideTimer(); }
+    function nextSlide() { showSlide(currentSlideIndex + 1); }
+    function resetSlideTimer() { clearInterval(slideInterval); slideInterval = setInterval(nextSlide, 5500); }
+    
     let touchStartX = 0;
     const cardEl = document.getElementById('announcementCard');
     cardEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; clearInterval(slideInterval); });
     cardEl.addEventListener('touchend', e => {
       let touchEndX = e.changedTouches[0].clientX;
-      if (touchStartX - touchEndX > 40) {
-        nextSlide();
-      } else if (touchEndX - touchStartX > 40) {
-        showSlide(currentSlideIndex - 1);
-      }
+      if (touchStartX - touchEndX > 40) nextSlide();
+      else if (touchEndX - touchStartX > 40) showSlide(currentSlideIndex - 1);
       resetSlideTimer();
     });
 
     window.addEventListener('DOMContentLoaded', () => {
       selectLanguage(currentLang);
       resetSlideTimer();
-      
       const savedCode = localStorage.getItem('lacto_saved_code');
       const savedPass = localStorage.getItem('lacto_saved_pass');
       if (savedCode && savedPass) {
@@ -1730,11 +1195,8 @@
       const R = 6371e3;
       const dLat = (lat2 - lat1) * Math.PI / 180;
       const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                Math.sin(dLon/2) * Math.sin(dLon/2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      return R * c;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+      return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
     }
 
     function verifyLocationAndCheckIn() {
@@ -1746,80 +1208,103 @@
       const ledRed = document.getElementById('ledRed');
 
       statusText.innerText = currentLang === 'ar' ? "جاري تفعيل الـ GPS والتحقق من الموقع..." : "Activating GPS & verifying location...";
-      
-      if (!navigator.geolocation) {
-        statusText.innerText = currentLang === 'ar' ? "متصفحك لا يدعم الـ GPS." : "Geolocation not supported.";
-        return;
-      }
+      if (!navigator.geolocation) { statusText.innerText = currentLang === 'ar' ? "متصفحك لا يدعم الـ GPS." : "Geolocation not supported."; return; }
       
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
-          const distance = calculateDistance(userLat, userLng, COMPANY_LAT, COMPANY_LNG);
-          
+          const distance = calculateDistance(position.coords.latitude, position.coords.longitude, COMPANY_LAT, COMPANY_LNG);
           if (distance <= ALLOWED_RADIUS_METERS) {
             const now = new Date();
             const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             const todayStr = now.toISOString().split('T')[0];
-
             if (!currentEmpCode) return;
 
             const refPath = db.ref('attendance/' + currentEmpCode + '/' + todayStr);
             refPath.once('value').then(snapshot => {
               let attData = snapshot.val() || {};
               let currentTimeMs = now.getTime();
-
               if (!attData.inTime) {
-                attData.inTime = timeStr;
-                attData.inTimestamp = currentTimeMs;
-                statusText.innerText = currentLang === 'ar' ? `✅ تم تسجيل الحضور (In) بنجاح الساعة ${timeStr}` : `✅ Check-In saved at ${timeStr}`;
-                
-                ledGreen.classList.add('active');
-                ledRed.classList.remove('active');
+                attData.inTime = timeStr; attData.inTimestamp = currentTimeMs;
+                statusText.innerText = currentLang === 'ar' ? `✅ تم تسجيل الحضور الساعة ${timeStr}` : `✅ Check-In saved at ${timeStr}`;
+                ledGreen.classList.add('active'); ledRed.classList.remove('active');
               } else {
-                attData.outTime = timeStr;
-                attData.outTimestamp = currentTimeMs;
-
+                attData.outTime = timeStr; attData.outTimestamp = currentTimeMs;
                 const diffMs = attData.outTimestamp - attData.inTimestamp;
                 const totalMins = Math.floor(diffMs / 60000);
-                const hrs = Math.floor(totalMins / 60);
-                const mins = totalMins % 60;
-                attData.workingHours = `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
-
-                statusText.innerText = currentLang === 'ar' ? `✅ تم تسجيل وانصراف (Out) الساعة ${timeStr}` : `✅ Check-Out recorded at ${timeStr}`;
-                
-                ledRed.classList.add('active');
-                ledGreen.classList.remove('active');
+                attData.workingHours = `${String(Math.floor(totalMins / 60)).padStart(2, '0')}:${String(totalMins % 60).padStart(2, '0')}`;
+                statusText.innerText = currentLang === 'ar' ? `✅ تم تسجيل الانصراف الساعة ${timeStr}` : `✅ Check-Out recorded at ${timeStr}`;
+                ledRed.classList.add('active'); ledGreen.classList.remove('active');
               }
-
               refPath.set(attData);
-
               if (attData.inTime) valIn.innerText = attData.inTime;
               if (attData.outTime) valOut.innerText = attData.outTime;
               if (attData.workingHours) valWorking.innerText = attData.workingHours;
             });
-
           } else {
             statusText.innerText = currentLang === 'ar' ? `❌ خارج نطاق الشركة (${Math.round(distance)} متر)` : `❌ Outside range (${Math.round(distance)}m)`;
           }
         },
-        (error) => {
-          statusText.innerText = currentLang === 'ar' ? "تعذر الحصول على موقعك. تأكد من تفعيل GPS." : "Unable to retrieve location.";
-        },
+        () => { statusText.innerText = currentLang === 'ar' ? "تعذر الحصول على موقعك. تأكد من تفعيل GPS." : "Unable to retrieve location."; },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     }
 
-    function showComingSoon(fromView = 'view-dashboard') {
-      returnToView = fromView;
-      showPage('view-coming-soon');
+    /* حساب أيام الإجازة تلقائياً */
+    function calculateLeaveDays() {
+      const start = document.getElementById('leaveStartDate').value;
+      const end = document.getElementById('leaveEndDate').value;
+      const daysText = document.getElementById('leaveTotalDaysText');
+      
+      if (start && end) {
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+        const diffTime = endDate - startDate;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        
+        if (diffDays > 0) {
+          daysText.innerText = currentLang === 'ar' ? `إجمالي الأيام المطلوبة: ${diffDays} يوم` : `Total requested days: ${diffDays} days`;
+        } else {
+          daysText.innerText = currentLang === 'ar' ? "❌ تاريخ النهاية يجب أن يكون بعد تاريخ البداية!" : "❌ End date must be after start date!";
+        }
+      }
     }
 
-    function goBackFromComingSoon() {
-      showPage(returnToView);
+    function submitLeaveRequest() {
+      const leaveType = document.getElementById('leaveType').value;
+      const startDate = document.getElementById('leaveStartDate').value;
+      const endDate = document.getElementById('leaveEndDate').value;
+      const notes = document.getElementById('leaveNotes').value.trim();
+      const msg = document.getElementById('leaveMsg');
+
+      if (!startDate || !endDate) {
+        msg.style.color = '#ef4444';
+        msg.innerText = currentLang === 'ar' ? "يرجى تحديد تاريخ البداية والنهاية!" : "Please select start and end dates!";
+        return;
+      }
+
+      const leaveData = {
+        code: currentEmpCode,
+        name: currentUserData.name || 'Unknown',
+        type: leaveType,
+        startDate: startDate,
+        endDate: endDate,
+        notes: notes,
+        status: 'Pending',
+        timestamp: Date.now()
+      };
+
+      db.ref('leave_requests/' + currentEmpCode).push(leaveData).then(() => {
+        msg.style.color = '#10b981';
+        msg.innerText = currentLang === 'ar' ? "✅ تم تقديم طلب الإجازة بنجاح في النظام!" : "✅ Leave request submitted successfully!";
+        setTimeout(() => { showPage('view-dashboard'); }, 2000);
+      }).catch(() => {
+        msg.style.color = '#ef4444';
+        msg.innerText = currentLang === 'ar' ? "❌ حدث خطأ، حاول مرة أخرى." : "❌ Error occurred, try again.";
+      });
     }
 
+    function showComingSoon(fromView = 'view-dashboard') { returnToView = fromView; showPage('view-coming-soon'); }
+    function goBackFromComingSoon() { showPage(returnToView); }
     function switchTab(pageId, btnElement) {
       document.querySelectorAll('.bottom-nav-item').forEach(btn => btn.classList.remove('active'));
       if (btnElement) btnElement.classList.add('active');
@@ -1828,11 +1313,9 @@
 
     function showPage(pageId) {
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0; document.documentElement.scrollTop = 0;
 
       const chatbotFab = document.getElementById('chatbot-fab');
-      const chatbotWin = document.getElementById('chatbot-window');
       const bottomNavBar = document.getElementById('bottomNavBar');
 
       if (pageId === 'view-login') {
@@ -1843,10 +1326,9 @@
         if (bottomNavBar) bottomNavBar.classList.add('show');
       }
       
-      ['view-login', 'view-dashboard', 'view-id-card', 'view-services', 'view-settings', 'view-profile', 
-       'view-coming-soon', 'view-suggestion-page'].forEach(id => {
+      ['view-login', 'view-dashboard', 'view-id-card', 'view-services', 'view-leave-request', 'view-settings', 'view-profile', 'view-coming-soon', 'view-suggestion-page'].forEach(id => {
         const el = document.getElementById(id);
-        if(el) el.classList.add('hidden');
+        if (el) el.classList.add('hidden');
       });
       
       const headerCard = document.getElementById('dashboard-header-container');
@@ -1854,13 +1336,13 @@
       
       if (pageId === 'view-dashboard') {
         document.getElementById('view-dashboard').classList.remove('hidden');
-        if(headerCard) headerCard.classList.remove('hidden');
-        if(contentCard) contentCard.classList.remove('hidden');
+        if (headerCard) headerCard.classList.remove('hidden');
+        if (contentCard) contentCard.classList.remove('hidden');
         updateDynamicGreeting();
       } else {
         document.getElementById('view-dashboard').classList.add('hidden');
-        if(headerCard) headerCard.classList.add('hidden');
-        if(contentCard) contentCard.classList.add('hidden');
+        if (headerCard) headerCard.classList.add('hidden');
+        if (contentCard) contentCard.classList.add('hidden');
         document.getElementById(pageId).classList.remove('hidden');
         
         if (pageId === 'view-suggestion-page' && currentUserData) {
@@ -1870,9 +1352,6 @@
           document.getElementById('sugMsg').innerText = '';
         }
       }
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
     }
 
     function submitSuggestion() {
@@ -1884,19 +1363,13 @@
         return;
       }
       
-      const suggestionData = {
-        code: currentEmpCode,
-        name: currentUserData.name || 'Unknown',
-        suggestion: text,
-        timestamp: Date.now(),
-        date: new Date().toISOString()
-      };
-
-      db.ref('suggestions/' + currentEmpCode).push(suggestionData).then(() => {
+      db.ref('suggestions/' + currentEmpCode).push({
+        code: currentEmpCode, name: currentUserData.name || 'Unknown', suggestion: text, timestamp: Date.now()
+      }).then(() => {
         msg.style.color = '#10b981';
-        msg.innerText = currentLang === 'ar' ? "✅ تم إرسال مقترحك بنجاح. شكراً لتطويرك للشركة!" : "✅ Suggestion submitted successfully. Thank you!";
+        msg.innerText = currentLang === 'ar' ? "✅ تم إرسال مقترحك بنجاح!" : "✅ Suggestion submitted successfully!";
         setTimeout(() => { showPage('view-dashboard'); }, 2000);
-      }).catch(err => {
+      }).catch(() => {
         msg.style.color = '#ef4444';
         msg.innerText = currentLang === 'ar' ? "❌ حدث خطأ، حاول مرة أخرى." : "❌ Error occurred, try again.";
       });
@@ -1908,6 +1381,7 @@
       const rememberMe = document.getElementById('rememberMe').checked;
       const errorEl = document.getElementById('error');
       if (!code) { errorEl.innerText = currentLang === 'ar' ? "يرجى إدخال كود الموظف" : "Please enter employee code"; return; }
+      
       db.ref('users/' + code).once('value').then((snapshot) => {
         if (snapshot.exists()) {
           const user = snapshot.val();
@@ -1941,22 +1415,12 @@
           
           showPage('view-dashboard');
 
-          const todayStr = new Date().toISOString().split('T')[0];
-          db.ref('attendance/' + code + '/' + todayStr).once('value').then(attSnap => {
+          db.ref('attendance/' + code + '/' + new Date().toISOString().split('T')[0]).once('value').then(attSnap => {
             if (attSnap.exists()) {
               const d = attSnap.val();
-              if (d.inTime) {
-                document.getElementById('valInTime').innerText = d.inTime;
-                document.getElementById('ledGreen').classList.add('active');
-              }
-              if (d.outTime) {
-                document.getElementById('valOutTime').innerText = d.outTime;
-                document.getElementById('ledRed').classList.add('active');
-                document.getElementById('ledGreen').classList.remove('active');
-              }
-              if (d.workingHours) {
-                document.getElementById('valWorkingHours').innerText = d.workingHours;
-              }
+              if (d.inTime) { document.getElementById('valInTime').innerText = d.inTime; document.getElementById('ledGreen').classList.add('active'); }
+              if (d.outTime) { document.getElementById('valOutTime').innerText = d.outTime; document.getElementById('ledRed').classList.add('active'); document.getElementById('ledGreen').classList.remove('active'); }
+              if (d.workingHours) document.getElementById('valWorkingHours').innerText = d.workingHours;
             }
           });
         } else {
@@ -1983,9 +1447,7 @@
     function toggleLangMenu() { document.getElementById('langMenu').classList.toggle('show'); }
     
     function selectLanguage(lang) {
-      if(document.getElementById('langMenu').classList.contains('show')) {
-        toggleLangMenu();
-      }
+      if (document.getElementById('langMenu').classList.contains('show')) toggleLangMenu();
       currentLang = lang;
       localStorage.setItem('lacto_lang', lang);
       document.documentElement.lang = lang;
