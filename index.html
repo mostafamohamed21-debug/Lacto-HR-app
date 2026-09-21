@@ -283,7 +283,7 @@
       box-shadow: 0 8px 0 #991b1b, 0 12px 20px rgba(220, 38, 38, 0.3);
       color: #fff;
     }
-    .btn-danger:active { box-shadow: 0 2px 0 #991b1b; }
+    .btn-danger:active { transform: translateY(6px); box-shadow: 0 2px 0 #991b1b; }
     
     .btn-success {
       background: linear-gradient(135deg, #10b981 0%, #059669 100%);
@@ -500,7 +500,7 @@
     .fingerprint-icon-wrap svg { width: 24px; height: 24px; fill: currentColor; }
     .checkin-status-text { font-size: 0.8rem; font-weight: 700; color: var(--text); }
     
-    /* Announcement Slider - نظام انتقال احترافي (Fade & Switch) عالي الاستقرار لمنع التداخل تماماً */
+    /* Announcement Slider */
     .announcement-card {
       background: rgba(15, 23, 42, 0.85);
       border: 1px solid var(--border-color);
@@ -646,11 +646,11 @@
     .info-val { font-weight: 700; color: var(--text); }
     .qr-container { background: #fff; padding: 0.65rem; border-radius: 1rem; display: inline-block; }
     
-    /* Active Chatbot Floating Widget */
+    /* Active Chatbot Floating Widget - تم رفعه للأعلى لتجنب التداخل مع زر الخروج */
     #chatbot-fab {
       position: fixed;
-      bottom: 90px;
-      right: 30px;
+      bottom: 140px;
+      right: 25px;
       width: 55px;
       height: 55px;
       background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
@@ -664,13 +664,13 @@
       z-index: 9999;
       transition: transform 0.2s ease;
     }
-    [dir="ltr"] #chatbot-fab { right: 20px; left: auto; }
+    [dir="ltr"] #chatbot-fab { right: 25px; left: auto; }
     #chatbot-fab:hover { transform: scale(1.1); }
     #chatbot-fab svg { width: 28px; height: 28px; fill: currentColor; }
     
     #chatbot-window {
       position: fixed;
-      bottom: 85px;
+      bottom: 140px;
       right: 20px;
       width: 330px;
       max-width: calc(100vw - 40px);
@@ -1058,7 +1058,7 @@
     </div>
   </div>
 
-  <!-- Active Chatbot Floating Widget -->
+  <!-- Active Chatbot Floating Widget - تم رفعه للأعلى -->
   <div id="chatbot-fab" onclick="toggleChatbot()" title="مساعد الرتات / Chatbot">
     <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
   </div>
