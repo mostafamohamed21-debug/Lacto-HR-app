@@ -84,7 +84,7 @@
     .app-header {
       width: 100vw; background: #0d1527; padding: 0.75rem 1rem;
       display: flex; justify-content: space-between; align-items: center;
-      position: fixed; top: 0; left: 0; z-index: 1000; box-shadow: none;
+      position: fixed; top: 0; left: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4);
     }
     body { padding-top: 4.5rem; }
     .brand-container { display: flex; align-items: center; gap: 0.6rem; perspective: 800px; }
@@ -103,11 +103,12 @@
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     
-    .lang-dropdown-container { position: relative; display: inline-flex; align-items: center; }
+    .lang-dropdown-container { position: relative; display: flex; align-items: center; }
     .lang-dropdown-btn {
-      background: rgba(30, 41, 59, 0.75); border: 1px solid var(--border-color); color: var(--text);
+      background: rgba(30, 41, 59, 0.85); border: 1px solid var(--border-color); color: var(--text);
       padding: 0.45rem 0.85rem; border-radius: 1rem; font-size: 0.8rem; font-weight: 700; cursor: pointer;
-      display: inline-flex; align-items: center; gap: 0.4rem; backdrop-filter: blur(12px); outline: none; margin: 0; width: auto;
+      display: flex; align-items: center; gap: 0.4rem; backdrop-filter: blur(12px); outline: none; margin: 0; width: auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
     .lang-dropdown-menu {
       position: absolute; top: calc(100% + 8px); background: rgba(15, 23, 42, 0.98);
@@ -136,19 +137,52 @@
     [dir="ltr"] input, [dir="ltr"] textarea, [dir="ltr"] select { text-align: left; }
     input:focus, textarea:focus, select:focus { border-color: #38bdf8; box-shadow: 0 0 15px var(--accent-glow); }
     
-    .password-container { position: relative; width: 100%; margin: 0.5rem 0; display: flex; align-items: center; }
-    .password-container input { margin: 0; width: 100%; }
-    [dir="rtl"] .password-container input { padding-left: 3rem; padding-right: 1rem; text-align: right; }
-    [dir="ltr"] .password-container input { padding-right: 3rem; padding-left: 1rem; text-align: left; }
+    /* Login Password Container with New Stylish Eye Toggle */
+    .password-container { 
+      position: relative; 
+      width: 100%; 
+      margin: 0.5rem 0; 
+      display: flex;
+      align-items: center;
+    }
+    .password-container input { 
+      margin: 0; 
+      width: 100%; 
+    }
+    [dir="rtl"] .password-container input { padding-left: 3.5rem; padding-right: 1rem; text-align: right; }
+    [dir="ltr"] .password-container input { padding-right: 3.5rem; padding-left: 1rem; text-align: left; }
     
     .toggle-password {
-      position: absolute; top: 50%; transform: translateY(-50%); width: 36px; height: 36px;
-      background: transparent; border: none; cursor: pointer; color: var(--muted);
-      display: flex; align-items: center; justify-content: center; z-index: 10; margin: 0; padding: 0;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #38bdf8;
+      box-shadow: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      transition: all 0.2s ease;
+      z-index: 10;
     }
-    [dir="rtl"] .toggle-password { left: 0.5rem; right: auto; }
-    [dir="ltr"] .toggle-password { right: 0.5rem; left: auto; }
-    .toggle-password svg { width: 20px; height: 20px; fill: currentColor; }
+    [dir="rtl"] .toggle-password { left: 8px; right: auto; }
+    [dir="ltr"] .toggle-password { right: 8px; left: auto; }
+    .toggle-password:hover {
+      background: rgba(56, 189, 248, 0.3);
+      transform: translateY(-50%) scale(1.05);
+    }
+    .toggle-password svg { 
+      width: 20px; 
+      height: 20px; 
+      fill: currentColor; 
+    }
     
     .checkbox-container { display: flex; align-items: center; justify-content: flex-start; gap: 0.5rem; margin: 0.75rem 0; font-size: 0.85rem; color: var(--muted); cursor: pointer; }
     .checkbox-container input[type="checkbox"] { width: 18px; height: 18px; accent-color: #38bdf8; margin: 0; }
@@ -374,7 +408,7 @@
     </div>
   </div>
   
-  <!-- App Header -->
+  <!-- App Header & 3D Rotating Logo -->
   <div class="app-header">
     <div class="brand-container">
       <img src="logo.png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
@@ -402,7 +436,7 @@
       
       <div class="password-container">
         <input type="password" id="empPass" placeholder="كلمة السر">
-        <button type="button" class="toggle-password" onclick="togglePasswordVisibility()">
+        <button type="button" class="toggle-password" onclick="togglePasswordVisibility()" title="إظهار / إخفاء كلمة السر">
           <svg id="eyeIcon" viewBox="0 0 24 24">
             <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
           </svg>
@@ -616,7 +650,7 @@
       </div>
     </div>
 
-    <!-- 4.1. Leave Request Form View (محدث بأنواع إجازات الوفاة، الولادة، وبدون مرتب) -->
+    <!-- 4.1. Leave Request Form View -->
     <div id="view-leave-request" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-services')"><span id="t-backBtnLeave">← رجوع</span></button>
@@ -639,7 +673,6 @@
           <option value="unpaid" id="t-optUnpaid">إجازة بدون مرتب (بحد أقصى شهر)</option>
         </select>
 
-        <!-- تنبيه التأمينات الخاص بالإجازة بدون مرتب -->
         <div id="unpaidInsuranceNotice" class="hidden" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 0.8rem; padding: 0.65rem; font-size: 0.75rem; color: #f87171; text-align: right; line-height: 1.4;">
           ⚠️ <strong>تنبيه هامة:</strong> الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة.
         </div>
@@ -811,7 +844,14 @@
     
     function togglePasswordVisibility() {
       const pass = document.getElementById('empPass');
-      pass.type = (pass.type === 'password') ? 'text' : 'password';
+      const eyeIconEl = document.getElementById('eyeIcon');
+      if (pass.type === 'password') {
+        pass.type = 'text';
+        eyeIconEl.innerHTML = `<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2z"/>`;
+      } else {
+        pass.type = 'password';
+        eyeIconEl.innerHTML = `<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>`;
+      }
     }
 
     let isSalaryVisible = false;
