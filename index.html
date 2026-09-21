@@ -6,10 +6,12 @@
   <title>LM HR - Lacto HR Hub</title>
   
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0b1329">
+  <meta name="theme-color" content="#0f172a">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="LM HR">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="icon" type="image/png" href="logo.png">
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -18,32 +20,31 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
   
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Share+Tech+Mono&display=swap');
-    
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&display=swap');
     :root {
-      --bg-dark: #0b1329;
-      --navy-blue: #1e3a8a;
-      --mid-blue: #0284c7;
-      --baby-blue: #38bdf8;
-      --glow-blue: #7dd3fc;
-      --card-bg: rgba(15, 23, 42, 0.85);
-      --border-color: rgba(56, 189, 248, 0.25);
+      --bg: #0b0f19;
+      --card-bg: rgba(15, 23, 42, 0.78);
+      --border-color: rgba(255, 255, 255, 0.16);
       --text: #f8fafc;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.4);
       --danger: #ef4444;
       --success: #10b981;
       --muted: #cbd5e1;
     }
-
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Cairo', 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-family: 'Cairo', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
-
     body {
-      background: radial-gradient(circle at top center, #101f3c 0%, #0b1329 100%);
+      background: linear-gradient(rgba(11, 15, 25, 0.78), rgba(11, 15, 25, 0.88)), url('background.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
       color: var(--text);
       min-height: 100vh;
       display: flex;
@@ -52,382 +53,1681 @@
       padding: 1.5rem 1rem 6rem 1rem;
       overflow-x: hidden;
     }
-
+    
     /* Intro Screen */
     #intro-screen {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
-      background: radial-gradient(circle at center, #101f3c 0%, #0b1329 100%);
+      background: linear-gradient(rgba(11, 15, 25, 0.92), rgba(11, 15, 25, 0.96)), url('background.jpg');
+      background-size: cover; background-position: center;
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
       display: flex; flex-direction: column; justify-content: center; align-items: center;
-      z-index: 9999; overflow: hidden; transition: opacity 0.8s ease, visibility 0.8s ease;
-      cursor: pointer;
+      z-index: 9999; perspective: 1200px; overflow: hidden;
+      transition: opacity 1.2s ease, visibility 1.2s ease;
     }
-    #intro-screen.fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
-    .intro-title { font-size: 1.8rem; font-weight: 800; color: var(--baby-blue); text-shadow: 0 0 20px var(--baby-blue); }
-
-    /* App Header */
+    #intro-screen.fade-out { opacity: 0; visibility: hidden; }
+    .intro-content-wrapper { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; text-align: center; padding: 0 1rem; width: 100%; }
+    .intro-title-container { width: 100%; display: flex; gap: 0.15rem; flex-wrap: nowrap; justify-content: center; align-items: center; direction: ltr; }
+    .intro-char {
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: 800;
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6); display: inline-block;
+    }
+    .intro-space { width: 0.4rem; }
+    .intro-subtitle {
+      font-family: 'Great Vibes', cursive; font-size: clamp(1.5rem, 5vw, 2.5rem);
+      color: #38bdf8; text-shadow: 0 0 20px rgba(56, 189, 248, 0.6); opacity: 0; line-height: 1.4; width: 100%; text-align: center; white-space: nowrap;
+    }
+    
+    /* App Header & 3D Rotating Logo */
     .app-header {
-      width: 100vw; background: rgba(11, 19, 41, 0.95); padding: 0.75rem 1rem;
+      width: 100vw; background: #0d1527; padding: 0.75rem 1rem;
       display: flex; justify-content: space-between; align-items: center;
-      position: fixed; top: 0; left: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-      border-bottom: 1px solid var(--border-color); backdrop-filter: blur(12px);
+      position: fixed; top: 0; left: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4);
     }
     body { padding-top: 4.5rem; }
-    .brand-title { font-size: 1.2rem; font-weight: 800; color: var(--baby-blue); text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
+    .brand-container { display: flex; align-items: center; gap: 0.6rem; perspective: 800px; }
+    .brand-logo {
+      width: 36px; height: 36px; object-fit: contain; border-radius: 10px;
+      transform-style: preserve-3d; animation: rotateLogo3D 6s linear infinite;
+      filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.7));
+    }
+    @keyframes rotateLogo3D {
+      0% { transform: perspective(500px) rotateY(0deg); }
+      100% { transform: perspective(500px) rotateY(360deg); }
+    }
+    .brand-title {
+      font-size: 1.2rem; font-weight: 800;
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    
+    .lang-dropdown-container { position: relative; display: flex; align-items: center; }
+    .lang-dropdown-btn {
+      background: rgba(30, 41, 59, 0.85); border: 1px solid var(--border-color); color: var(--text);
+      padding: 0.45rem 0.85rem; border-radius: 1rem; font-size: 0.8rem; font-weight: 700; cursor: pointer;
+      display: flex; align-items: center; gap: 0.4rem; backdrop-filter: blur(12px); outline: none; margin: 0; width: auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .lang-dropdown-menu {
+      position: absolute; top: calc(100% + 8px); background: rgba(15, 23, 42, 0.98);
+      border: 1px solid var(--border-color); border-radius: 1rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      display: none; z-index: 300; min-width: 130px; backdrop-filter: blur(16px); overflow: hidden;
+    }
+    [dir="rtl"] .lang-dropdown-menu { left: 0; right: auto; }
+    [dir="ltr"] .lang-dropdown-menu { right: 0; left: auto; }
+    .lang-dropdown-menu.show { display: block; }
+    .lang-option { padding: 0.7rem 1rem; font-size: 0.85rem; color: var(--text); cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: background 0.2s; }
+    .lang-option:hover { background: rgba(56, 189, 248, 0.3); color: #38bdf8; }
     
     .container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 1rem; }
     .card {
       background: var(--card-bg); border: 1px solid var(--border-color);
-      backdrop-filter: blur(16px); padding: 1.5rem; border-radius: 1.5rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      padding: 1.75rem 1.5rem; border-radius: 1.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
       text-align: center;
     }
-
-    input, textarea {
-      width: 100%; padding: 0.9rem 1rem; margin: 0.4rem 0; border-radius: 1rem;
-      border: 1px solid var(--border-color); background: rgba(11, 19, 41, 0.8);
-      color: var(--text); font-size: 0.95rem; outline: none; text-align: right;
+    input, textarea, select {
+      width: 100%; padding: 0.9rem 1rem; margin: 0.5rem 0; border-radius: 1rem;
+      border: 1px solid var(--border-color); background: rgba(15, 23, 42, 0.85);
+      color: var(--text); font-size: 0.95rem; text-align: right; outline: none;
     }
-    [dir="ltr"] input, [dir="ltr"] textarea { text-align: left; }
-
-    /* --- DIGITAL COUNTER CARD --- */
-    .digital-quota-card {
-      background: linear-gradient(135deg, #0b1329 0%, #1e3a8a 40%, #0284c7 75%, #38bdf8 100%);
-      border: 1px solid var(--glow-blue);
-      border-radius: 1.75rem;
-      padding: 1.5rem 1rem;
-      text-align: center;
-      box-shadow: 0 15px 35px rgba(2, 132, 199, 0.35), inset 0 0 20px rgba(125, 211, 252, 0.3);
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 0.5rem;
-    }
-    .quota-label {
-      font-size: 0.85rem; font-weight: 700; color: #e0f2fe; margin-bottom: 0.75rem;
-      text-transform: uppercase; letter-spacing: 0.5px;
-    }
-    .digital-clock-display {
-      display: flex; justify-content: center; align-items: center; gap: 0.4rem; direction: ltr;
-    }
-    .time-unit-box {
-      display: flex; flex-direction: column; align-items: center;
-      background: rgba(11, 19, 41, 0.75); border: 1px solid var(--glow-blue);
-      border-radius: 0.85rem; padding: 0.5rem 0.75rem; min-width: 70px;
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
-    }
-    .digit-val {
-      font-family: 'Share Tech Mono', monospace; font-size: 1.8rem; font-weight: 800;
-      color: var(--glow-blue); text-shadow: 0 0 12px var(--baby-blue); line-height: 1;
-    }
-    .digit-sub { font-size: 0.65rem; color: #bae6fd; margin-top: 0.3rem; font-weight: 600; }
-    .clock-separator { font-family: 'Share Tech Mono', monospace; font-size: 1.8rem; color: var(--glow-blue); text-shadow: 0 0 10px var(--baby-blue); animation: blink 1s infinite; }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-    /* --- PERMISSION TYPE SELECTOR --- */
-    .permission-type-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 0.75rem 0;
-    }
-    .type-btn {
-      background: rgba(30, 58, 138, 0.3); border: 1px solid var(--border-color);
-      border-radius: 1.25rem; padding: 0.85rem 0.5rem; color: var(--text);
-      font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease;
-      display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
-    }
-    .type-btn.active {
-      background: linear-gradient(135deg, var(--navy-blue) 0%, var(--mid-blue) 100%);
-      border-color: var(--baby-blue); color: #fff;
-      box-shadow: 0 0 18px rgba(56, 189, 248, 0.4); transform: scale(1.02);
-    }
-
-    /* --- ANDROID-STYLE WHEEL TIME PICKERS --- */
-    .picker-section-title { font-size: 0.8rem; color: var(--muted); text-align: right; margin-top: 0.5rem; }
-    [dir="ltr"] .picker-section-title { text-align: left; }
+    [dir="ltr"] input, [dir="ltr"] textarea, [dir="ltr"] select { text-align: left; }
+    input:focus, textarea:focus, select:focus { border-color: #38bdf8; box-shadow: 0 0 15px var(--accent-glow); }
     
-    .time-picker-card {
-      background: linear-gradient(135deg, rgba(11, 19, 41, 0.9) 0%, rgba(30, 58, 138, 0.4) 100%);
-      border: 1px solid var(--border-color); border-radius: 1.25rem; padding: 0.75rem;
-      margin-top: 0.4rem; display: flex; align-items: center; justify-content: space-around;
-      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
-    }
-    .wheel-container { display: flex; align-items: center; gap: 0.3rem; direction: ltr; }
-    .wheel-scroll-box {
-      height: 90px; width: 55px; overflow-y: scroll; scroll-snap-type: y mandatory;
-      scrollbar-width: none; border-radius: 0.6rem; background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(56, 189, 248, 0.3); text-align: center; position: relative;
-    }
-    .wheel-scroll-box::-webkit-scrollbar { display: none; }
-    .wheel-item {
-      height: 30px; line-height: 30px; font-size: 0.95rem; font-weight: 700;
-      color: var(--muted); scroll-snap-align: center; transition: all 0.2s;
-    }
-    .wheel-item.selected { color: var(--baby-blue); font-size: 1.15rem; font-weight: 800; text-shadow: 0 0 8px var(--baby-blue); }
-
-    .duration-result-box {
-      background: rgba(56, 189, 248, 0.12); border: 1px solid var(--baby-blue);
-      border-radius: 1rem; padding: 0.75rem; text-align: center; font-weight: 800;
-      color: var(--baby-blue); font-size: 0.9rem; margin-top: 0.75rem;
-      text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+    /* Custom Glowing Date Input Trigger */
+    .custom-date-input {
+      background: rgba(56, 189, 248, 0.08) !important;
+      border: 1px solid rgba(56, 189, 248, 0.5) !important;
+      color: #38bdf8 !important;
+      font-weight: 700 !important;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+      cursor: pointer;
+      text-align: center !important;
     }
 
-    button.btn-primary {
+    /* Custom Glowing Dropdown Styling for Leave Type */
+    .custom-dropdown {
+      position: relative;
+      width: 100%;
+      margin: 0.5rem 0;
+      text-align: right;
+    }
+    [dir="ltr"] .custom-dropdown { text-align: left; }
+    
+    .dropdown-selected {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border-radius: 1rem;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.6);
+      color: #38bdf8;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
+      transition: all 0.2s ease;
+    }
+    .dropdown-selected:hover {
+      border-color: #38bdf8;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    }
+    
+    .dropdown-options {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      width: 100%;
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(56, 189, 248, 0.6);
+      border-radius: 1rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 189, 248, 0.25);
+      backdrop-filter: blur(16px);
+      display: none;
+      z-index: 500;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+    .dropdown-options.show {
+      display: block;
+    }
+    
+    .dropdown-option {
+      padding: 0.8rem 1rem;
+      font-size: 0.9rem;
+      color: var(--text);
+      cursor: pointer;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.2s ease;
+    }
+    .dropdown-option:last-child {
+      border-bottom: none;
+    }
+    .dropdown-option:hover {
+      background: rgba(56, 189, 248, 0.25);
+      color: #38bdf8;
+      padding-right: 1.25rem;
+    }
+    [dir="ltr"] .dropdown-option:hover {
+      padding-left: 1.25rem;
+      padding-right: 1rem;
+    }
+
+    /* Custom Glowing Calendar Modal Overlay */
+    .calendar-modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 20000;
+      padding: 1rem;
+    }
+    .calendar-modal-overlay.show { display: flex; }
+    
+    .calendar-box {
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(56, 189, 248, 0.6);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 350px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 25px rgba(56, 189, 248, 0.3);
+      text-align: center;
+    }
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+    }
+    .calendar-header button {
+      width: 36px; height: 36px;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+      border-radius: 50%;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 0;
+      padding: 0;
+      box-shadow: none !important;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .calendar-header button:hover { background: rgba(56, 189, 248, 0.3); }
+    .calendar-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #38bdf8;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.3rem;
+      margin-bottom: 1rem;
+    }
+    .calendar-day-name {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 700;
+      padding-bottom: 0.4rem;
+    }
+    .calendar-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border-radius: 50%;
+      cursor: pointer;
+      color: var(--text);
+      transition: all 0.2s ease;
+    }
+    .calendar-day:hover {
+      background: rgba(56, 189, 248, 0.25);
+      color: #38bdf8;
+    }
+    .calendar-day.selected {
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      color: #0b0f19;
+      box-shadow: 0 0 22px #38bdf8, inset 0 0 8px rgba(255, 255, 255, 0.8);
+      border: 2px solid #ffffff;
+      transform: scale(1.08);
+      z-index: 2;
+    }
+    .calendar-day.empty { cursor: default; }
+
+    /* Professional Glowing Light-Blue Text-Only Action Buttons for Calendar */
+    .calendar-text-btn {
+      background: none;
+      border: none;
+      box-shadow: none !important;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      color: #38bdf8;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+      transition: all 0.2s ease;
+      margin: 0 !important;
+      width: auto !important;
+    }
+    .calendar-text-btn:hover {
+      opacity: 0.85;
+      transform: scale(1.05);
+      text-shadow: 0 0 15px rgba(56, 189, 248, 0.7);
+    }
+    .calendar-text-btn:active {
+      transform: scale(0.95);
+      box-shadow: none !important;
+    }
+
+    /* Fully Glowing Badge for Leave Days Total Result */
+    .glowing-result-badge {
+      background: rgba(56, 189, 248, 0.22);
+      border: 1px solid rgba(56, 189, 248, 0.8);
+      border-radius: 1rem;
+      padding: 0.85rem;
+      font-size: 0.95rem;
+      color: #38bdf8;
+      font-weight: 800;
+      text-align: center;
+      margin: 0.6rem 0;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+      text-shadow: 0 0 12px rgba(56, 189, 248, 0.7);
+    }
+
+    /* File Upload Styling for Medical Report */
+    .medical-upload-box {
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px dashed rgba(56, 189, 248, 0.6);
+      border-radius: 1rem;
+      padding: 1rem;
+      text-align: center;
+      margin: 0.5rem 0;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);
+    }
+    .medical-upload-box input[type="file"] {
+      display: none;
+    }
+    .upload-btn-label {
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      color: #0b0f19;
+      padding: 0.6rem 1.2rem;
+      border-radius: 0.8rem;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
+      transition: transform 0.2s;
+    }
+    .upload-btn-label:hover {
+      transform: scale(1.03);
+    }
+
+    /* Login Password Container with Stylish Eye Toggle */
+    .password-container { 
+      position: relative; 
+      width: 100%; 
+      margin: 0.5rem 0; 
+      display: flex;
+      align-items: center;
+    }
+    .password-container input { 
+      margin: 0; 
+      width: 100%; 
+    }
+    [dir="rtl"] .password-container input { padding-left: 3.5rem; padding-right: 1rem; text-align: right; }
+    [dir="ltr"] .password-container input { padding-right: 3.5rem; padding-left: 1rem; text-align: left; }
+    
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #38bdf8;
+      box-shadow: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+    [dir="rtl"] .toggle-password { left: 8px; right: auto; }
+    [dir="ltr"] .toggle-password { right: 8px; left: auto; }
+    .toggle-password:hover {
+      background: rgba(56, 189, 248, 0.3);
+      transform: translateY(-50%) scale(1.05);
+    }
+    .toggle-password svg { 
+      width: 20px; 
+      height: 20px; 
+      fill: currentColor; 
+    }
+    
+    .checkbox-container { display: flex; align-items: center; justify-content: flex-start; gap: 0.5rem; margin: 0.75rem 0; font-size: 0.85rem; color: var(--muted); cursor: pointer; }
+    .checkbox-container input[type="checkbox"] { width: 18px; height: 18px; accent-color: #38bdf8; margin: 0; }
+    button {
       width: 100%; padding: 0.95rem; border-radius: 1.25rem; border: none;
-      background: linear-gradient(135deg, var(--mid-blue) 0%, var(--baby-blue) 100%);
-      color: #0b1329; font-weight: 800; font-size: 1rem; cursor: pointer; margin-top: 1rem;
-      box-shadow: 0 8px 0 #0284c7, 0 12px 25px rgba(56, 189, 248, 0.3); transition: all 0.15s ease;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      color: #0b0f19; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 0.85rem;
+      box-shadow: 0 8px 0 #026595, 0 12px 20px rgba(0, 0, 0, 0.4); transition: all 0.15s ease;
     }
-    button.btn-primary:active { transform: translateY(6px); box-shadow: 0 2px 0 #0284c7; }
+    button:active { transform: translateY(6px); box-shadow: 0 2px 0 #026595; }
+    .btn-danger { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 8px 0 #991b1b, 0 12px 20px rgba(220, 38, 38, 0.3); color: #fff; }
+    .btn-success { background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 8px 0 #047857, 0 12px 20px rgba(16, 185, 129, 0.3); color: #fff; }
 
-    .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-    .back-btn {
-      background: rgba(30, 58, 138, 0.6); border: 1px solid var(--border-color); color: var(--text);
-      padding: 0.4rem 0.9rem; border-radius: 0.8rem; font-size: 0.8rem; font-weight: 700; cursor: pointer;
-    }
     .hidden { display: none !important; }
+    
+    .service-row-btn {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(15, 23, 42, 0.95));
+      border: 1px solid rgba(56, 189, 248, 0.45); border-radius: 1.25rem;
+      padding: 1.1rem 1.25rem; color: var(--text); font-weight: 700; font-size: 0.95rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3); transition: all 0.2s ease; width: 100%; margin: 0;
+    }
+    .service-row-btn:hover { border-color: #38bdf8; transform: translateY(-2px); box-shadow: 0 12px 30px rgba(56, 189, 248, 0.25); }
+    
+    .user-profile-card {
+      width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw;
+      background: rgba(15, 23, 42, 0.95); border-left: 1px solid rgba(56, 189, 248, 0.35); border-right: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 0 0 1.75rem 1.75rem; padding: 1.15rem 1.5rem 1.75rem 1.5rem; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      margin-bottom: 0; z-index: 2; display: flex; flex-direction: column; gap: 0.75rem;
+    }
+    .profile-top-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+    .profile-info-group { display: flex; align-items: center; gap: 0.85rem; }
+    .header-avatar { width: 55px; height: 55px; border-radius: 50%; border: 2px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); }
+    .profile-text-content { display: flex; flex-direction: column; text-align: right; }
+    [dir="ltr"] .profile-text-content { text-align: left; }
+    .code-badge-pill { color: #38bdf8; font-size: 0.8rem; font-weight: 700; margin-top: 0.15rem; display: inline-block; }
+    
+    .notification-wrapper { position: relative; display: inline-block; }
+    .notification-btn {
+      width: 45px; height: 45px; background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
+      position: relative; color: #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); transition: transform 0.2s;
+    }
+    .notification-btn:hover { transform: scale(1.05); }
+    .notification-btn svg { width: 22px; height: 22px; fill: currentColor; }
+    .notification-badge { position: absolute; top: 2px; right: 2px; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; border: 2px solid #0d1527; }
+    
+    .notification-popup {
+      position: absolute; top: 0; left: calc(100% + 12px); background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 1rem; padding: 0.75rem 1rem; width: 210px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6); backdrop-filter: blur(12px); z-index: 400; display: none; text-align: right;
+    }
+    [dir="ltr"] .notification-popup { left: auto; right: calc(100% + 12px); text-align: left; }
+    .notification-popup.show { display: block; }
+    .notification-popup-title { font-size: 0.75rem; font-weight: 800; color: #38bdf8; margin-bottom: 0.2rem; }
+    .notification-popup-desc { font-size: 0.7rem; color: var(--muted); line-height: 1.4; }
+    
+    .checkin-card {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(15, 23, 42, 0.98));
+      border: 1px solid rgba(56, 189, 248, 0.5); border-radius: 1.5rem; padding: 0.85rem 1.25rem;
+      text-align: center; box-shadow: 0 15px 30px rgba(0,0,0,0.6), inset 0 0 15px rgba(56, 189, 248, 0.2);
+      cursor: pointer; transition: all 0.3s ease; color: #fff; display: flex; flex-direction: column; align-items: center; gap: 0.4rem; position: relative; margin-top: -18px; z-index: 5;
+    }
+    .checkin-card:hover { border-color: #38bdf8; box-shadow: 0 15px 30px rgba(0,0,0,0.6), inset 0 0 20px rgba(56, 189, 248, 0.3); }
+    .checkin-top-row { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 0.2rem; font-size: 0.75rem; }
+
+    .external-attendance-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0.2rem 0.5rem; margin-top: -0.2rem; }
+    .action-btn-item { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; }
+    .indicator-dot { width: 10px; height: 10px; border-radius: 50%; transition: all 0.4s ease; opacity: 0.3; }
+    .dot-green { background: #10b981; border: 1px solid #34d399; }
+    .dot-green.active { opacity: 1; box-shadow: 0 0 12px #10b981, 0 0 25px #10b981; }
+    .dot-red { background: #ef4444; border: 1px solid #f87171; }
+    .dot-red.active { opacity: 1; box-shadow: 0 0 12px #ef4444, 0 0 25px #ef4444; }
+
+    .glowing-action-text { font-size: 0.75rem; font-weight: 800; color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.6); letter-spacing: 0.5px; }
+
+    .checkin-main-content { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0.2rem 0.5rem; }
+    .fingerprint-icon-wrap {
+      width: 45px; height: 45px; background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+    }
+    .fingerprint-icon-wrap svg { width: 24px; height: 24px; fill: currentColor; }
+    .checkin-status-text { font-size: 0.8rem; font-weight: 700; color: var(--text); }
+    
+    .announcement-card {
+      background: rgba(15, 23, 42, 0.85); border: 1px solid var(--border-color); border-radius: 1.5rem;
+      padding: 1.25rem; text-align: right; position: relative; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.3); margin-top: 0.5rem; min-height: 110px;
+    }
+    [dir="ltr"] .announcement-card { text-align: left; }
+    .slides-container { position: relative; width: 100%; min-height: 75px; }
+    .slide-item { position: absolute; top: 0; right: 0; left: 0; width: 100%; opacity: 0; visibility: hidden; transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out; transform: scale(0.97); cursor: pointer; pointer-events: none; }
+    .slide-item.active { position: relative; opacity: 1; visibility: visible; transform: scale(1); pointer-events: auto; }
+    .announcement-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .announcement-title { font-size: 1rem; font-weight: 700; color: var(--text); }
+    .announcement-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; margin-bottom: 0.75rem; }
+    .slider-dots { display: flex; justify-content: center; gap: 0.35rem; align-items: center; margin-top: 0.5rem; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s; }
+    .dot.active { width: 18px; border-radius: 4px; background: #38bdf8; }
+    
+    .summaries-grid { display: flex; flex-direction: column; gap: 0.85rem; width: 100%; }
+    .summary-card {
+      background: rgba(15, 23, 42, 0.85); border: 1px solid var(--border-color); border-radius: 1.25rem;
+      padding: 1.15rem 1.25rem; text-align: right; box-shadow: 0 8px 20px rgba(0,0,0,0.3); width: 100%;
+    }
+    [dir="ltr"] .summary-card { text-align: left; }
+    .summary-title { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.4rem; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+    .summary-value { font-size: 1.15rem; font-weight: 800; color: #38bdf8; }
+    
+    .progress-bar-container {
+      width: 100%; height: 9px; background: rgba(255, 255, 255, 0.08); border-radius: 6px;
+      margin-top: 0.75rem; overflow: hidden; position: relative; border: 1px solid rgba(56, 189, 248, 0.15); direction: ltr !important;
+    }
+    .progress-bar-fill {
+      height: 100%; border-radius: 6px; width: 0%; transition: width 1s ease-in-out;
+      background: linear-gradient(90deg, #040814 0%, #0284c7 50%, #38bdf8 100%);
+      mask-image: repeating-linear-gradient(90deg, #000, #000 6px, transparent 6px, transparent 9px);
+      -webkit-mask-image: repeating-linear-gradient(90deg, #000, #000 6px, transparent 6px, transparent 9px);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.6); animation: pulseGlow 2s infinite alternate;
+    }
+    @keyframes pulseGlow {
+      0% { filter: brightness(0.9); box-shadow: 0 0 8px rgba(56, 189, 248, 0.3); }
+      100% { filter: brightness(1.3); box-shadow: 0 0 18px rgba(56, 189, 248, 0.8); }
+    }
+
+    .salary-row { display: flex; justify-content: space-between; align-items: center; margin-top: 0.3rem; }
+    .salary-masked { font-size: 1.15rem; font-weight: 800; color: #38bdf8; letter-spacing: 2px; }
+    .toggle-salary-btn {
+      background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4);
+      width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #38bdf8; box-shadow: none !important; margin: 0 !important; padding: 0 !important; transition: all 0.2s ease;
+    }
+    .toggle-salary-btn:hover { background: rgba(56, 189, 248, 0.3); transform: scale(1.05); }
+    .toggle-salary-btn svg { width: 20px; height: 20px; fill: currentColor; }
+    
+    .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; width: 100%; }
+    .back-btn { 
+      background: rgba(51, 65, 85, 0.9); border: 1px solid var(--border-color); width: auto !important; 
+      padding: 0.5rem 1.1rem !important; font-size: 0.85rem !important; font-weight: 700;
+      margin: 0 !important; border-radius: 0.8rem; cursor: pointer; color: var(--text); box-shadow: none !important;
+    }
+    .back-btn:hover { background: rgba(56, 189, 248, 0.2); border-color: #38bdf8; }
+    
+    .id-card {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(11, 15, 25, 0.98));
+      border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 1.5rem; padding: 1.5rem; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+    .profile-img { width: 95px; height: 95px; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover; margin: 0 auto 0.75rem auto; display: block; }
+    .info-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; text-align: right;
+      background: rgba(11, 15, 25, 0.7); padding: 0.85rem; border-radius: 1rem; font-size: 0.8rem; margin-bottom: 1.25rem; border: 1px solid var(--border-color);
+    }
+    [dir="ltr"] .info-grid { text-align: left; }
+    .info-label { color: var(--muted); font-size: 0.75rem; margin-bottom: 0.1rem; }
+    .info-val { font-weight: 700; color: var(--text); }
+    .qr-container { background: #fff; padding: 0.65rem; border-radius: 1rem; display: inline-block; }
+    
+    #bottomNavBar {
+      position: fixed; bottom: 0; left: 0; width: 100vw; background: rgba(15, 23, 42, 0.98);
+      border-top: 1px solid rgba(56, 189, 248, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      display: none; justify-content: space-around; align-items: center; padding: 0.6rem 0.55rem calc(0.6rem + env(safe-area-inset-bottom)) 0.55rem;
+      z-index: 99998; box-shadow: 0 -10px 25px rgba(0,0,0,0.7);
+    }
+    #bottomNavBar.show { display: flex; }
+    .bottom-nav-item {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem;
+      background: transparent; border: none; cursor: pointer; color: #7dd3fc; flex: 1; padding: 0.2rem; margin: 0; box-shadow: none !important; transition: all 0.2s ease;
+    }
+    .bottom-nav-item svg { width: 22px; height: 22px; fill: currentColor; transition: filter 0.2s ease, transform 0.2s ease; }
+    .bottom-nav-item span { font-size: 0.7rem; font-weight: 700; }
+    .bottom-nav-item.active { color: #38bdf8; }
+    .bottom-nav-item.active svg { filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.9)); transform: translateY(-2px); }
+
+    #chatbot-fab {
+      position: fixed; bottom: 90px; right: 25px; width: 55px; height: 55px;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; color: #0b0f19; cursor: pointer;
+      box-shadow: 0 8px 25px rgba(56, 189, 248, 0.5); z-index: 99999; transition: transform 0.2s ease;
+    }
+    [dir="ltr"] #chatbot-fab { right: 25px; left: auto; }
+    #chatbot-fab:hover { transform: scale(1.1); }
+    #chatbot-fab svg { width: 28px; height: 28px; fill: currentColor; }
+    
+    #chatbot-window {
+      position: fixed; bottom: 90px; right: 20px; width: 330px; max-width: calc(100vw - 40px); height: 380px;
+      background: rgba(15, 23, 42, 0.96); border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 1.25rem;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6); backdrop-filter: blur(16px); display: none; flex-direction: column; z-index: 100000; overflow: hidden;
+    }
+    [dir="ltr"] #chatbot-window { right: 20px; left: auto; }
+    #chatbot-window.show { display: flex; }
+    .chatbot-header { background: rgba(30, 41, 59, 0.9); padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
+    .chatbot-title { font-size: 0.85rem; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 0.4rem; }
+    .chatbot-close { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.1rem; width: auto; margin:0; padding:0; box-shadow:none !important; }
+    .chatbot-messages { flex: 1; padding: 0.75rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.8rem; }
+    .chat-msg { max-width: 80%; padding: 0.5rem 0.75rem; border-radius: 0.75rem; line-height: 1.4; }
+    .chat-msg.bot { background: rgba(30, 41, 59, 0.8); color: var(--text); align-self: flex-start; border-bottom-left-radius: 2px; }
+    .chat-msg.user { background: #0284c7; color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
+    .chatbot-input-area { padding: 0.6rem; border-top: 1px solid var(--border-color); display: flex; gap: 0.4rem; background: rgba(11, 15, 25, 0.9); }
+    .chatbot-input-area input { margin: 0; padding: 0.5rem 0.75rem; font-size: 0.8rem; text-align: right; }
+    [dir="ltr"] .chatbot-input-area input { text-align: left; }
+    .chatbot-send-btn { width: auto !important; margin: 0 !important; padding: 0.5rem 0.9rem !important; font-size: 0.8rem !important; border-radius: 0.75rem !important; }
   </style>
+  <script>
+    let wakeLock = null;
+    async function requestWakeLock() {
+      if ('wakeLock' in navigator) {
+        try {
+          if (wakeLock !== null) { await wakeLock.release(); wakeLock = null; }
+          wakeLock = await navigator.wakeLock.request('screen');
+          wakeLock.addEventListener('release', () => { wakeLock = null; });
+        } catch (err) { console.log('Wake Lock error:', err); }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', () => { requestWakeLock(); });
+    document.addEventListener('visibilitychange', async () => { if (document.visibilityState === 'visible') { await requestWakeLock(); } });
+  </script>
 </head>
 <body>
-
-  <!-- App Header -->
+  <!-- Intro Screen -->
+  <div id="intro-screen">
+    <div class="intro-content-wrapper">
+      <div class="intro-title-container" id="introTitle"></div>
+      <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
+    </div>
+  </div>
+  
+  <!-- App Header & 3D Rotating Logo -->
   <div class="app-header">
-    <div class="brand-title">LM HR HUB</div>
-    <button class="back-btn" onclick="alert('الرجوع للرئيسية')">🏠 الرئيسية</button>
+    <div class="brand-container">
+      <img src="logo.png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
+      <div class="brand-title">LM HR</div>
+    </div>
+    
+    <div class="lang-dropdown-container">
+      <button class="lang-dropdown-btn" onclick="toggleLangMenu()">
+        🌐 <span id="current-lang-text">العربية</span> ▼
+      </button>
+      <div class="lang-dropdown-menu" id="langMenu">
+        <div class="lang-option" onclick="selectLanguage('ar')">🇪🇬 العربية</div>
+        <div class="lang-option" onclick="selectLanguage('en')">🇬🇧 English</div>
+      </div>
+    </div>
   </div>
 
   <div class="container">
-    <div class="card">
+    <!-- 1. Login View -->
+    <div id="view-login" class="card">
+      <h2 style="font-size: 1.5rem; margin-bottom: 0.2rem;">LM HR Hub</h2>
+      <p id="t-subtitle" data-ar="بوابة الموظفين الرقمية" data-en="Digital Employee Portal" style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem;">بوابة الموظفين الرقمية</p>
       
-      <!-- 1. العداد الديجيتال الكبير -->
-      <div class="digital-quota-card">
-        <div class="quota-label" data-ar="المتبقي من الرصيد الشهري للأذونات" data-en="Monthly Permission Balance">المتبقي من الرصيد الشهري للأذونات</div>
-        <div class="digital-clock-display">
-          <div class="time-unit-box">
-            <span class="digit-val" id="cntHours">04</span>
-            <span class="digit-sub" data-ar="ساعة" data-en="Hours">ساعة</span>
+      <input type="text" id="empCode" data-ar-placeholder="كود الموظف" data-en-placeholder="Employee Code" placeholder="كود الموظف">
+      
+      <div class="password-container">
+        <input type="password" id="empPass" data-ar-placeholder="كلمة السر" data-en-placeholder="Password" placeholder="كلمة السر">
+        <button type="button" class="toggle-password" onclick="togglePasswordVisibility()" title="إظهار / إخفاء كلمة السر">
+          <svg id="eyeIcon" viewBox="0 0 24 24">
+            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+          </svg>
+        </button>
+      </div>
+      <label class="checkbox-container">
+        <input type="checkbox" id="rememberMe">
+        <span id="t-remember" data-ar="تذكرني" data-en="Remember Me">تذكرني</span>
+      </label>
+      
+      <button id="t-loginBtn" data-ar="دخول الحساب" data-en="Sign In" onclick="login()">دخول الحساب</button>
+      <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.85rem; font-weight: bold;"></p>
+    </div>
+    
+    <!-- 2. Dashboard View -->
+    <div id="view-dashboard" class="hidden"></div>
+  </div>
+
+  <!-- User Profile Header Card -->
+  <div id="dashboard-header-container" class="hidden">
+    <div class="user-profile-card">
+      <div class="profile-top-row">
+        <div class="profile-info-group">
+          <img id="dash-avatar" class="header-avatar" src="" alt="Avatar">
+          <div class="profile-text-content">
+            <div id="dash-greeting" style="font-size: 0.75rem; color: var(--muted);">صباح الخير ☀️</div>
+            <h3 id="dash-name" style="margin: 0; font-size: 0.95rem; font-weight: 700;">--</h3>
+            <div class="code-badge-pill"><span id="t-codeLabel" data-ar="ID:" data-en="ID:">ID:</span> <span id="dash-code-val">--</span></div>
           </div>
-          <span class="clock-separator">:</span>
-          <div class="time-unit-box">
-            <span class="digit-val" id="cntMins">00</span>
-            <span class="digit-sub" data-ar="دقيقة" data-en="Mins">دقيقة</span>
+        </div>
+        <div class="notification-wrapper">
+          <div class="notification-btn" onclick="toggleNotificationPopup(event)" title="الإشعارات">
+            <div class="notification-badge"></div>
+            <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4v6z"/></svg>
           </div>
-          <span class="clock-separator">:</span>
-          <div class="time-unit-box">
-            <span class="digit-val" id="cntSecs">00</span>
-            <span class="digit-sub" data-ar="ثانية" data-en="Secs">ثانية</span>
+          <div class="notification-popup" id="notificationPopup">
+            <div class="notification-popup-title" data-ar="تنبيهات النظام" data-en="System Alerts">تنبيهات النظام</div>
+            <div class="notification-popup-desc" data-ar="لا توجد إشعارات جديدة. تم تفعيل النظام بنجاح!" data-en="No new notifications. System activated successfully!">لا توجد إشعارات جديدة. تم تفعيل النظام بنجاح!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Content Container -->
+  <div class="container">
+    <div id="dashboard-content-container" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
+      <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
+        <div class="checkin-top-row">
+          <span style="font-weight: 700; color: #38bdf8;"><span data-ar="ساعات العمل" data-en="Working Hours">ساعات العمل</span> ⏱️ <span id="valWorkingHours">00:00</span></span>
+          <div style="display: flex; gap: 0.75rem; color: var(--muted);">
+            <span><span data-ar="انصراف" data-en="Out">انصراف</span> 🚪 <strong id="valOutTime" style="color:var(--text);">--:--</strong></span>
+            <span><span data-ar="حضور" data-en="In">حضور</span> 📥 <strong id="valInTime" style="color:var(--text);">--:--</strong></span>
+          </div>
+        </div>
+        <div class="checkin-main-content">
+          <div id="t-checkinStatusText" data-ar="اضغط هنا لتفعيل بصمة الـ GPS وتسجيل الحضور/الانصراف" data-en="Tap here to activate GPS check-in/out" class="checkin-status-text">اضغط هنا لتفعيل بصمة الـ GPS وتسجيل الحضور/الانصراف</div>
+          <div class="fingerprint-icon-wrap">
+            <svg viewBox="0 0 24 24"><path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 13.9 3 12 3s-3.66.42-5.58 1.41c-.15.08-.33.05-.45-.07-.12-.12-.15-.31-.07-.46C7.94 2.76 9.9 2.25 12 2.25s4.06.51 6.1 1.63c.15.08.21.27.13.43-.05.1-.15.16-.25.16zM12 9c-1.1 0-2 .9-2 2 0 .55.22 1.05.59 1.42l.98.98c.37.37.87.59 1.42.59 1.1 0 2-.9 2-2 0-1.1-.9-2-2-2zm6.75 3.75c-.41 0-.75.34-.75.75 0 2.9-2.35 5.25-5.25 5.25S7.5 16.4 7.5 13.5c0-.41-.34-.75-.75-.75s-.75.34-.75.75c0 3.79 3.09 6.88 6.88 6.88s6.88-3.09 6.88-6.88c0-.41-.34-.75-.75-.75z"/></svg>
           </div>
         </div>
       </div>
 
-      <!-- 2. نوع الإذن -->
-      <div class="picker-section-title" data-ar="حدد نوع الإذن المطلوب:" data-en="Select Permission Type:">حدد نوع الإذن المطلوب:</div>
-      <div class="permission-type-grid">
-        <div class="type-btn active" id="btnTypeLate" onclick="setPermissionType('late_arrival')">
-          <span style="font-size:1.2rem;">🌅</span>
-          <span data-ar="تأخير صباحي" data-en="Morning Late">تأخير صباحي</span>
+      <div class="external-attendance-bar">
+        <div class="action-btn-item">
+          <div id="ledRed" class="indicator-dot dot-red"></div>
+          <span class="glowing-action-text" data-ar="تسجيل انصراف" data-en="Check Out">تسجيل انصراف</span>
         </div>
-        <div class="type-btn" id="btnTypeEarly" onclick="setPermissionType('early_leave')">
-          <span style="font-size:1.2rem;">🌆</span>
-          <span data-ar="انصراف مبكر" data-en="Early Departure">انصراف مبكر</span>
+        <div class="action-btn-item">
+          <span class="glowing-action-text" data-ar="تسجيل حضور" data-en="Check In">تسجيل حضور</span>
+          <div id="ledGreen" class="indicator-dot dot-green"></div>
         </div>
       </div>
-      <input type="hidden" id="permTypeVal" value="late_arrival">
+      
+      <div class="announcement-card" id="announcementCard">
+        <div class="slides-container" id="slidesContainer">
+          <div class="slide-item active" onclick="showComingSoon('view-dashboard')">
+            <div class="announcement-top"><span class="announcement-title slide-title-1" data-ar="أخبار الشركة" data-en="Company News">أخبار الشركة</span></div>
+            <div class="announcement-desc slide-desc-1" data-ar="تابع أحدث المؤتمرات، فعاليات الشركة، وأبرز الأخبار الرسمية." data-en="Follow latest conferences, company events and official news.">تابع أحدث المؤتمرات، فعاليات الشركة، وأبرز الأخبار الرسمية.</div>
+          </div>
+          <div class="slide-item" onclick="showComingSoon('view-dashboard')">
+            <div class="announcement-top"><span class="announcement-title slide-title-2" data-ar="الفرص الوظيفية" data-en="Career Opportunities">الفرص الوظيفية</span></div>
+            <div class="announcement-desc slide-desc-2" data-ar="استكشف الوظائف الشاغرة الداخلية وحركات الترقيات الأخيرة للموظفين." data-en="Explore internal vacancies and recent employee promotions.">استكشف الوظائف الشاغرة الداخلية وحركات الترقيات الأخيرة للموظفين.</div>
+          </div>
+          <div class="slide-item" onclick="showComingSoon('view-dashboard')">
+            <div class="announcement-top"><span class="announcement-title slide-title-3" data-ar="الموظفون المثاليون" data-en="Top Employees">الموظفون المثاليون</span></div>
+            <div class="announcement-desc slide-desc-3" data-ar="تعرف على نجوم الشهر والموظفين المثاليين المكرمين عن كل إدارة." data-en="Discover department employees of the month and honorees.">تعرف على نجوم الشهر والموظفين المثاليين المكرمين عن كل إدارة.</div>
+          </div>
+          <div class="slide-item" onclick="showComingSoon('view-dashboard')">
+            <div class="announcement-top"><span class="announcement-title slide-title-4" data-ar="اللوائح الداخلية" data-en="Internal Regulations">اللوائح الداخلية</span></div>
+            <div class="announcement-desc slide-desc-4" data-ar="اططلع على لائحة تنظيم العمل، الجزاءات، والسياسات الداخلية للشركة." data-en="Review work organization regulations, penalties, and company policies.">اططلع على لائحة تنظيم العمل، الجزاءات، والسياسات الداخلية للشركة.</div>
+          </div>
+          <div class="slide-item" onclick="showComingSoon('view-dashboard')">
+            <div class="announcement-top"><span class="announcement-title slide-title-5" data-ar="دليل العاملين وتحديثات التطبيق" data-en="Employee Guide & Updates">دليل العاملين وتحديثات التطبيق</span></div>
+            <div class="announcement-desc slide-desc-5" data-ar="آخر الإضافات والتحديثات البرمجية ومستجدات دليل العاملين." data-en="Latest software updates and employee guide announcements.">آخر الإضافات والتحديثات البرمجية ومستجدات دليل العاملين.</div>
+          </div>
+          <div class="slide-item" onclick="showPage('view-suggestion-page')">
+            <div class="announcement-top"><span class="announcement-title slide-title-6" data-ar="قدم مقترحك" data-en="Submit a Proposal">قدم مقترحك</span></div>
+            <div class="announcement-desc slide-desc-6" data-ar="شاركنا برأيك وأفكارك الإبداعية لتطوير العمل بالشركة." data-en="Share your creative ideas and suggestions to improve the company.">شاركنا برأيك وأفكارك الإبداعية لتطوير العمل بالشركة.</div>
+          </div>
+        </div>
+        <div class="slider-dots" id="sliderDots">
+          <div class="dot active" onclick="currentSlide(0)"></div>
+          <div class="dot" onclick="currentSlide(1)"></div>
+          <div class="dot" onclick="currentSlide(2)"></div>
+          <div class="dot" onclick="currentSlide(3)"></div>
+          <div class="dot" onclick="currentSlide(4)"></div>
+          <div class="dot" onclick="currentSlide(5)"></div>
+        </div>
+      </div>
+      
+      <div class="summaries-grid">
+        <div class="summary-card">
+          <div class="summary-title"><span data-ar="رصيد الإجازات" data-en="Leave Balance">رصيد الإجازات</span><span style="font-size:0.75rem; color: #38bdf8;" data-ar="46% مستهلك" data-en="46% Consumed">46% مستهلك</span></div>
+          <div class="summary-value" data-ar="21 يوم" data-en="21 Days">21 يوم</div>
+          <div class="progress-bar-container"><div class="progress-bar-fill" id="leavesProgressBar" style="width: 46.6%;"></div></div>
+        </div>
 
-      <!-- 3. منتقي الوقت الحديث (Android Wheel Picker Style) -->
-      <!-- وقت البداية -->
-      <div class="picker-section-title" data-ar="من الساعة:" data-en="From Time:">من الساعة:</div>
-      <div class="time-picker-card">
-        <div class="wheel-container">
-          <!-- Hours Wheel -->
-          <div class="wheel-scroll-box" id="fromHourWheel" onscroll="handleWheelScroll('fromHourWheel', 'fromHourVal')">
-            <div class="wheel-item"></div>
-            <div class="wheel-item selected">08</div><div class="wheel-item">09</div><div class="wheel-item">10</div>
-            <div class="wheel-item">11</div><div class="wheel-item">12</div><div class="wheel-item">01</div>
-            <div class="wheel-item">02</div><div class="wheel-item">03</div><div class="wheel-item">04</div>
-            <div class="wheel-item"></div>
-          </div>
-          <span style="color:var(--baby-blue); font-weight:800;">:</span>
-          <!-- Minutes Wheel -->
-          <div class="wheel-scroll-box" id="fromMinWheel" onscroll="handleWheelScroll('fromMinWheel', 'fromMinVal')">
-            <div class="wheel-item"></div>
-            <div class="wheel-item selected">00</div><div class="wheel-item">15</div>
-            <div class="wheel-item">30</div><div class="wheel-item">45</div>
-            <div class="wheel-item"></div>
-          </div>
-          <!-- AM/PM Wheel -->
-          <div class="wheel-scroll-box" id="fromAmpmWheel" onscroll="handleWheelScroll('fromAmpmWheel', 'fromAmpmVal')">
-            <div class="wheel-item"></div>
-            <div class="wheel-item selected">ص</div><div class="wheel-item">م</div>
-            <div class="wheel-item"></div>
+        <div class="summary-card">
+          <div class="summary-title"><span data-ar="الأذونات المتاحة" data-en="Available Permissions">الأذونات المتاحة</span><span style="font-size:0.75rem; color: #38bdf8;" data-ar="60% متاح" data-en="60% Available">60% متاح</span></div>
+          <div class="summary-value" data-ar="3 أذونات" data-en="3 Permissions">3 أذونات</div>
+          <div class="progress-bar-container"><div class="progress-bar-fill" id="permsProgressBar" style="width: 60%;"></div></div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-title" data-ar="صافي آخر مرتب" data-en="Last Net Salary">صافي آخر مرتب</div>
+          <div class="salary-row">
+            <div class="salary-masked" id="salaryDisplayVal">••••••••</div>
+            <button type="button" class="toggle-salary-btn" onclick="toggleSalaryVisibility()" title="إظهار / إخفاء الراتب">
+              <svg id="salaryEyeIcon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </button>
           </div>
         </div>
       </div>
 
-      <!-- وقت النهاية -->
-      <div class="picker-section-title" data-ar="إلى الساعة:" data-en="To Time:" style="margin-top:0.75rem;">إلى الساعة:</div>
-      <div class="time-picker-card">
-        <div class="wheel-container">
-          <!-- Hours Wheel -->
-          <div class="wheel-scroll-box" id="toHourWheel" onscroll="handleWheelScroll('toHourWheel', 'toHourVal')">
-            <div class="wheel-item"></div>
-            <div class="wheel-item">08</div><div class="wheel-item selected">09</div><div class="wheel-item">10</div>
-            <div class="wheel-item">11</div><div class="wheel-item">12</div><div class="wheel-item">01</div>
-            <div class="wheel-item">02</div><div class="wheel-item">03</div><div class="wheel-item">04</div>
-            <div class="wheel-item"></div>
+      <button id="t-logoutBtn" data-ar="تسجيل الخروج" data-en="Sign Out" onclick="logout()" class="btn-danger">تسجيل الخروج</button>
+    </div>
+    
+    <!-- 3. ID Card View -->
+    <div id="view-id-card" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span data-ar="الكارت الرقمي" data-en="Digital ID Card" style="font-weight: 700; font-size: 0.9rem;">الكارت الرقمي</span>
+      </div>
+      <div class="id-card" id="myCardToDownload" style="border-radius: 0 0 24px 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1rem;">
+          <span style="font-weight: 800; font-size: 0.85rem; color: #38bdf8;">LACTO MISR S.A.E</span>
+          <span style="font-size: 0.65rem; background: rgba(56, 189, 248, 0.4); border: 1px solid #38bdf8; color: #38bdf8; padding: 0.15rem 0.5rem; border-radius: 0.5rem; font-weight: 600;">VERIFIED</span>
+        </div>
+        <img id="userPhoto" class="profile-img" crossorigin="anonymous" src="" alt="User">
+        <h3 id="userName" style="margin:0 0 0.2rem 0; font-size: 1.1rem;">--</h3>
+        <p id="userJob" style="color: #38bdf8; font-size: 0.85rem; margin:0 0 0.85rem 0;">--</p>
+        
+        <div class="info-grid">
+          <div><div class="info-label" data-ar="الإدارة" data-en="Department">الإدارة</div><div id="userDept" class="info-val">--</div></div>
+          <div><div class="info-label" data-ar="كود الموظف" data-en="Employee Code">كود الموظف</div><div id="userCodeVal" class="info-val">--</div></div>
+          <div style="grid-column: span 2;"><div class="info-label" data-ar="الرقم القومي" data-en="National ID">الرقم القومي</div><div id="userNID" class="info-val">--</div></div>
+        </div>
+        <div class="qr-container"><div id="qrcode"></div></div>
+      </div>
+      <button data-ar="حفظ الكارت كصورة" data-en="Save ID Card as Image" onclick="downloadCard()" class="btn-success" style="margin-top:1rem;">حفظ الكارت كصورة</button>
+    </div>
+    
+    <!-- 4. Services View -->
+    <div id="view-services" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span style="font-weight: 700; color: #38bdf8;" data-ar="خدماتي" data-en="My Services">خدماتي</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; padding: 0.5rem 0;">
+        <button class="service-row-btn" onclick="showPage('view-leave-request')">
+          <span data-ar="📅 طلب إجازة" data-en="📅 Leave Request">📅 طلب إجازة</span>
+          <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
+        </button>
+        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+          <span data-ar="🚪 طلب إذن شخصي" data-en="🚪 Personal Permission">🚪 طلب إذن شخصي</span>
+          <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
+        </button>
+        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+          <span data-ar="✈️ طلب مأمورية" data-en="✈️ Mission Request">✈️ طلب مأمورية</span>
+          <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
+        </button>
+        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+          <span data-ar="💰 طلب مفردات مرتب" data-en="💰 Payslip Request">💰 طلب مفردات مرتب</span>
+          <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
+        </button>
+        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+          <span data-ar="💳 طلب سلفة مالية مقسطة" data-en="💳 Installment Advance">💳 طلب سلفة مالية مقسطة</span>
+          <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
+        </button>
+        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+          <span data-ar="📁 طلب أصول أوراق من ملفي" data-en="📁 Original Docs Request">📁 طلب أصول أوراق من ملفي</span>
+          <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
+        </button>
+        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+          <span data-ar="🕋 طلب إجازة حج" data-en="🕋 Hajj Leave Request">🕋 طلب إجازة حج</span>
+          <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
+        </button>
+        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+          <span data-ar="🕌 طلب إجازة عمرة" data-en="🕌 Umrah Leave Request">🕌 طلب إجازة عمرة</span>
+          <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
+        </button>
+        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+          <span data-ar="🛠️ طلب دعم فني" data-en="🛠️ Technical Support">🛠️ طلب دعم فني</span>
+          <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
+        </button>
+        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+          <span data-ar="🏥 طلب حجز عيادة" data-en="🏥 Clinic Reservation">🏥 طلب حجز عيادة</span>
+          <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 4.1. Leave Request Form View -->
+    <div id="view-leave-request" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span style="font-weight: 700; color: #38bdf8;" data-ar="طلب إجازة جديد" data-en="New Leave Request">طلب إجازة جديد</span>
+      </div>
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 1rem; padding: 0.75rem 1rem; margin-bottom: 1rem;">
+        <span style="font-size: 0.8rem; color: var(--muted);" data-ar="رصيد الإجازات المتاح:" data-en="Available Leave Balance:">رصيد الإجازات المتاح:</span>
+        <span style="font-size: 0.95rem; font-weight: 800; color: #38bdf8;" id="leaveBalanceVal" data-ar="21 يوم" data-en="21 Days">21 يوم</span>
+      </div>
+
+      <div style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;" id="leaveFormWrapper">
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="نوع الإجازة:" data-en="Leave Type:">نوع الإجازة:</label>
+        
+        <!-- Custom Glowing Dropdown for Leave Type -->
+        <div class="custom-dropdown" id="customLeaveDropdown">
+          <div class="dropdown-selected" onclick="toggleCustomDropdown(event)">
+            <span id="selectedLeaveText" data-ar="إجازة سنوية" data-en="Annual Leave">إجازة سنوية</span>
+            <span style="font-size: 0.8rem;">▼</span>
           </div>
-          <span style="color:var(--baby-blue); font-weight:800;">:</span>
-          <!-- Minutes Wheel -->
-          <div class="wheel-scroll-box" id="toMinWheel" onscroll="handleWheelScroll('toMinWheel', 'toMinVal')">
-            <div class="wheel-item"></div>
-            <div class="wheel-item selected">00</div><div class="wheel-item">15</div>
-            <div class="wheel-item">30</div><div class="wheel-item">45</div>
-            <div class="wheel-item"></div>
-          </div>
-          <!-- AM/PM Wheel -->
-          <div class="wheel-scroll-box" id="toAmpmWheel" onscroll="handleWheelScroll('toAmpmWheel', 'toAmpmVal')">
-            <div class="wheel-item"></div>
-            <div class="wheel-item selected">ص</div><div class="wheel-item">م</div>
-            <div class="wheel-item"></div>
+          <div class="dropdown-options" id="dropdownOptions">
+            <div class="dropdown-option" onclick="selectLeaveOption('annual')" data-ar="إجازة سنوية" data-en="Annual Leave">إجازة سنوية</div>
+            <div class="dropdown-option" onclick="selectLeaveOption('casual')" data-ar="إجازة عارضة" data-en="Casual Leave">إجازة عارضة</div>
+            <div class="dropdown-option" onclick="selectLeaveOption('sick')" data-ar="إجازة مرضية" data-en="Sick Leave">إجازة مرضية</div>
+            <div class="dropdown-option" onclick="selectLeaveOption('bereavement')" data-ar="إجازة وفاة (أقارب درجة أولى - يوم)" data-en="Bereavement Leave (1st degree - 1 day)">إجازة وفاة (أقارب درجة أولى - يوم)</div>
+            <div class="dropdown-option" onclick="selectLeaveOption('paternity')" data-ar="إجازة ولادة (يوم الولادة للموظف)" data-en="Paternity Leave (Birth day)">إجازة ولادة (يوم الولادة للموظف)</div>
+            <div class="dropdown-option" onclick="selectLeaveOption('unpaid')" data-ar="إجازة بدون مرتب (بحد أقصى شهر)" data-en="Unpaid Leave (Max 1 Month)">إجازة بدون مرتب (بحد أقصى شهر)</div>
           </div>
         </div>
+        <input type="hidden" id="leaveType" value="annual">
+
+        <div id="unpaidInsuranceNotice" class="hidden" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 0.8rem; padding: 0.65rem; font-size: 0.75rem; color: #f87171; text-align: right; line-height: 1.4;">
+          ⚠️ <strong data-ar="تنبيه هام:" data-en="Important Notice:">تنبيه هام:</strong> <span data-ar="الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة." data-en="Unpaid leave is for a maximum of 1 month, and the employee is committed to paying their share of social insurance for this period.">الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة.</span>
+        </div>
+
+        <!-- Medical Report Upload Section -->
+        <div id="medicalReportSection" class="medical-upload-box hidden">
+          <div style="font-size: 0.8rem; color: #38bdf8; font-weight: 700; margin-bottom: 0.5rem;" data-ar="🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):" data-en="🏥 Upload or capture medical report (Image or PDF):">🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):</div>
+          <label class="upload-btn-label" for="medicalReportFile" data-ar="📁 اختر الملف أو صور التقرير" data-en="📁 Choose file or capture report">
+            📁 اختر الملف أو صور التقرير
+          </label>
+          <input type="file" id="medicalReportFile" accept="image/*,application/pdf" onchange="handleMedicalFileSelected(this)">
+          <div id="medicalFileName" data-ar="لم يتم اختيار ملف" data-en="No file chosen" style="font-size: 0.75rem; color: var(--muted); margin-top: 0.4rem;">لم يتم اختيار ملف</div>
+        </div>
+
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="تاريخ بداية الأجازة:" data-en="Start Date:">تاريخ بداية الأجازة:</label>
+        <input type="text" id="leaveStartDate" class="custom-date-input" readonly data-ar-placeholder="اختر تاريخ البداية..." data-en-placeholder="Select start date..." placeholder="اختر تاريخ البداية..." onclick="openCustomCalendar('leaveStartDate')">
+
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="تاريخ نهاية الأجازة:" data-en="End Date:">تاريخ نهاية الأجازة:</label>
+        <input type="text" id="leaveEndDate" class="custom-date-input" readonly data-ar-placeholder="اختر تاريخ النهاية..." data-en-placeholder="Select end date..." placeholder="اختر تاريخ النهاية..." onclick="openCustomCalendar('leaveEndDate')">
+
+        <div class="glowing-result-badge" id="leaveTotalDaysText" data-ar="إجمالي الأيام المطلوبة: 0 يوم" data-en="Total requested days: 0 days">
+          إجمالي الأيام المطلوبة: 0 يوم
+        </div>
+
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="ملاحظات إضافية:" data-en="Additional Notes:">ملاحظات إضافية:</label>
+        <textarea id="leaveNotes" rows="3" data-ar-placeholder="اكتب أى ملاحظات عايز تضفها هنا..." data-en-placeholder="Type any notes you want to add here..." placeholder="اكتب أى ملاحظات عايز تضفها هنا..." style="resize: none;"></textarea>
+
+        <button onclick="submitLeaveRequest()" class="btn-success" data-ar="إرسال طلب الإجازة" data-en="Submit Leave Request" style="margin-top: 0.5rem;">إرسال طلب الإجازة</button>
+        <p id="leaveMsg" style="font-size: 0.8rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
       </div>
-
-      <!-- قيم الأوقات المختارة المخفية -->
-      <input type="hidden" id="fromHourVal" value="08"><input type="hidden" id="fromMinVal" value="00"><input type="hidden" id="fromAmpmVal" value="ص">
-      <input type="hidden" id="toHourVal" value="09"><input type="hidden" id="toMinVal" value="00"><input type="hidden" id="toAmpmVal" value="ص">
-
-      <!-- 4. شاشة حساب مدة الإذن تلقائياً -->
-      <div class="duration-result-box" id="durationResultText">
-        ⏱️ مدة الإذن المطلوبة: 1 ساعة و 0 دقيقة
+    </div>
+    
+    <!-- 5. Settings View -->
+    <div id="view-settings" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span style="font-weight: 700; color: #38bdf8;" data-ar="الضبط والإعدادات" data-en="Settings">الضبط والإعدادات</span>
       </div>
+      <div style="text-align: right; display: flex; flex-direction: column; gap: 1rem; padding: 1rem 0;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.9rem;" data-ar="لغة التطبيق / Language" data-en="App Language / اللغة">لغة التطبيق / Language</span>
+          <button onclick="selectLanguage(currentLang === 'ar' ? 'en' : 'ar')" style="width: auto; padding: 0.4rem 1rem; font-size: 0.8rem; margin:0;" data-ar="تغيير اللغة" data-en="Change Language">تغيير اللغة</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 6. Profile View -->
+    <div id="view-profile" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span style="font-weight: 700; color: #38bdf8;" data-ar="تحديث الملف الشخصي" data-en="Update Profile">تحديث الملف الشخصي</span>
+      </div>
+      <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;">
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="البريد الإلكتروني:" data-en="Email:">البريد الإلكتروني:</label>
+        <input type="email" placeholder="example@lactomisr.com">
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="رقم الهاتف:" data-en="Phone Number:">رقم الهاتف:</label>
+        <input type="text" placeholder="010xxxxxxxx">
+        <button onclick="showComingSoon('view-profile')" class="btn-success" data-ar="حفظ التعديلات" data-en="Save Changes" style="margin-top: 0.5rem;">حفظ التعديلات</button>
+      </div>
+    </div>
 
-      <!-- ملاحظات -->
-      <textarea id="permissionNotes" rows="2" placeholder="سبب الإذن / ملاحظات إضافية..." style="margin-top:0.75rem; resize:none;"></textarea>
+    <!-- Coming Soon Generic View -->
+    <div id="view-coming-soon" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="goBackFromComingSoon()"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span style="font-weight: 700; color: #38bdf8;" data-ar="قريباً" data-en="Coming Soon">قريباً</span>
+      </div>
+      <div style="padding: 2.5rem 1rem; text-align: center; display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+        <div style="font-size: 3rem;">⏳</div>
+        <h3 style="color: #38bdf8; font-size: 1.2rem;">Coming Soon</h3>
+        <p style="color: var(--muted); font-size: 0.9rem;" data-ar="هذا القسم تحت التأسيس والتصميم وسيتم إطلاقه قريباً جداً!" data-en="This section is under development and will be launched very soon!">هذا القسم تحت التأسيس والتصميم وسيتم إطلاقه قريباً جداً!</p>
+      </div>
+    </div>
 
-      <!-- 5. زر التأكيد -->
-      <button class="btn-primary" onclick="submitPermissionRequest()">🚀 تأكيد وإرسال طلب الإذن</button>
-      <p id="permMsg" style="font-size: 0.85rem; margin-top: 0.6rem; font-weight: 800;"></p>
+    <!-- Suggestion Page -->
+    <div id="view-suggestion-page" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span style="font-weight:700; color:#38bdf8;" data-ar="قدم مقترحك لتطوير الشركة" data-en="Submit Your Proposal">قدم مقترحك لتطوير الشركة</span>
+      </div>
+      <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;" id="sugFormWrapper">
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="كود الموظف:" data-en="Employee Code:">كود الموظف:</label>
+        <input type="text" id="sugCode" readonly style="background: rgba(30,41,59,0.5); cursor: not-allowed;">
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="اسم الموظف:" data-en="Employee Name:">اسم الموظف:</label>
+        <input type="text" id="sugName" readonly style="background: rgba(30,41,59,0.5); cursor: not-allowed;">
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="اكتب مقترحك (بحد أقصى 500 حرف):" data-en="Your Proposal (Max 500 chars):">اكتب مقترحك (بحد أقصى 500 حرف):</label>
+        <textarea id="sugText" rows="4" maxlength="500" data-ar-placeholder="اكتب فكرتك أو مقترحك لتطوير العمل هنا..." data-en-placeholder="Type your idea or suggestion here..." placeholder="اكتب فكرتك أو مقترحك لتطوير العمل هنا..." style="resize: none;"></textarea>
+        <button onclick="submitSuggestion()" class="btn-success" data-ar="إرسال المقترح" data-en="Submit Proposal" style="margin-top:0.5rem;">إرسال المقترح</button>
+        <p id="sugMsg" style="font-size: 0.8rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
+      </div>
+    </div>
+  </div>
 
+  <!-- Custom Glowing Calendar Modal with Unified Professional Light-Blue Theme -->
+  <div id="customCalendarModal" class="calendar-modal-overlay" onclick="closeCustomCalendar()">
+    <div class="calendar-box" onclick="event.stopPropagation()">
+      <div class="calendar-header">
+        <button onclick="changeCalendarMonth(-1)">❮</button>
+        <div class="calendar-title" id="calMonthYearTitle">سبتمبر 2026</div>
+        <button onclick="changeCalendarMonth(1)">❯</button>
+      </div>
+      <div class="calendar-grid" id="calendarHeaderGrid"></div>
+      <div class="calendar-grid" id="calendarDaysGrid"></div>
+      <div style="display: flex; justify-content: space-around; align-items: center; margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+        <button onclick="confirmCustomCalendar()" class="calendar-text-btn" data-ar="تأكيد" data-en="OK">تأكيد</button>
+        <button onclick="closeCustomCalendar()" class="calendar-text-btn" style="color: var(--muted);" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation Bar -->
+  <div id="bottomNavBar">
+    <button class="bottom-nav-item active" onclick="switchTab('view-dashboard', this)">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span data-ar="الرئيسية" data-en="Home">الرئيسية</span>
+    </button>
+    <button class="bottom-nav-item" onclick="switchTab('view-services', this)">
+      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+      <span data-ar="خدماتي" data-en="Services">خدماتي</span>
+    </button>
+    <button class="bottom-nav-item" onclick="switchTab('view-profile', this)">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      <span data-ar="الملف" data-en="Profile">الملف</span>
+    </button>
+    <button class="bottom-nav-item" onclick="switchTab('view-id-card', this)">
+      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .89-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1z"/></svg>
+      <span data-ar="الهوية" data-en="ID Card">الهوية</span>
+    </button>
+    <button class="bottom-nav-item" onclick="switchTab('view-settings', this)">
+      <svg viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.03 2.18 13.82 2 13.6 2h-4c-.22 0-.42.18-.45.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.45.42h4c.22 0 .42-.18.45-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+      <span data-ar="الضبط" data-en="Settings">الضبط</span>
+    </button>
+  </div>
+
+  <!-- Chatbot Floating Widget -->
+  <div id="chatbot-fab" onclick="toggleChatbot()" title="مساعد الرواتب / Chatbot">
+    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+  </div>
+  <div id="chatbot-window">
+    <div class="chatbot-header">
+      <div class="chatbot-title">🤖 <span data-ar="مساعد LM HR الذكي" data-en="LM HR Smart Assistant">مساعد LM HR الذكي</span></div>
+      <button class="chatbot-close" onclick="toggleChatbot()">✕</button>
+    </div>
+    <div class="chatbot-messages" id="chatbotMessages">
+      <div class="chat-msg bot" data-ar="أهلاً بك! كيف يمكنني مساعدتك اليوم في خدمات الموارد البشرية؟" data-en="Hello! How can I help you today with HR services?">أهلاً بك! كيف يمكنني مساعدتك اليوم في خدمات الموارد البشرية؟</div>
+    </div>
+    <div class="chatbot-input-area">
+      <input type="text" id="chatInput" data-ar-placeholder="اكتب سؤالك هنا..." data-en-placeholder="Type your question here..." placeholder="اكتب سؤالك هنا..." onkeypress="handleChatKeyPress(event)">
+      <button class="chatbot-send-btn" onclick="sendChatMessage()" data-ar="إرسال" data-en="Send">إرسال</button>
     </div>
   </div>
 
   <script>
-    // إجمالي الرصيد بالثواني (4 ساعات = 14400 ثانية)
-    let totalBalanceSeconds = 14400;
-
-    function updateDigitalClockDisplay(seconds) {
-      let h = Math.floor(seconds / 3600);
-      let m = Math.floor((seconds % 3600) / 60);
-      let s = seconds % 60;
-
-      document.getElementById('cntHours').innerText = String(h).padStart(2, '0');
-      document.getElementById('cntMins').innerText = String(m).padStart(2, '0');
-      document.getElementById('cntSecs').innerText = String(s).padStart(2, '0');
+    /* Leaf Fall Intro */
+    function runLeafFallIntro() {
+      const text = "LACTO MISR S.A.E";
+      const container = document.getElementById('introTitle');
+      const subtitle = document.getElementById('introSubtitle');
+      container.innerHTML = "";
+      const charElements = [];
+      
+      for (let char of text) {
+        if (char === ' ') {
+          const space = document.createElement('span');
+          space.className = 'intro-space';
+          container.appendChild(space);
+        } else {
+          const span = document.createElement('span');
+          span.className = 'intro-char';
+          span.innerText = char;
+          container.appendChild(span);
+          charElements.push(span);
+        }
+      }
+      const directions = [
+        {x:-900, y:-700}, {x:0, y:-900}, {x:900, y:-700}, 
+        {x:900, y:0}, {x:900, y:700}, {x:0, y:900}, 
+        {x:-900, y:700}, {x:-900, y:0}
+      ];
+      charElements.forEach((el) => {
+        const randomX = (Math.random() - 0.5) * 400; 
+        const randomRotation = (Math.random() - 0.5) * 720;
+        gsap.set(el, { y: -250, x: randomX, rotation: randomRotation, opacity: 0, scale: 0.8 });
+      });
+      gsap.set(subtitle, { opacity: 0, y: 20 });
+      const tl = gsap.timeline({ onComplete: () => document.getElementById('intro-screen').classList.add('fade-out') });
+      tl.to(charElements, { duration: 1.5, x: 0, y: 0, rotation: 360, opacity: 1, scale: 1, stagger: 0.08, ease: "power2.out" });
+      tl.to(subtitle, { duration: 1.2, opacity: 1, y: 0, ease: "power2.out" }, "-=0.8");
+      tl.to(subtitle, { duration: 1.2, opacity: 0, y: -20, ease: "power1.in" }, "+=2.0");
+      charElements.forEach((el, index) => {
+        const dir = directions[index % directions.length];
+        tl.to(el, { duration: 1.5, x: dir.x, y: dir.y, opacity: 0, scale: 0.5, ease: "power1.inOut" }, index === 0 ? "scatter" : `-=1.35`);
+      });
     }
-
-    function setPermissionType(type) {
-      document.getElementById('permTypeVal').value = type;
-      if (type === 'late_arrival') {
-        document.getElementById('btnTypeLate').classList.add('active');
-        document.getElementById('btnTypeEarly').classList.remove('active');
+    window.addEventListener('DOMContentLoaded', runLeafFallIntro);
+    
+    function togglePasswordVisibility() {
+      const pass = document.getElementById('empPass');
+      const eyeIconEl = document.getElementById('eyeIcon');
+      if (pass.type === 'password') {
+        pass.type = 'text';
+        eyeIconEl.innerHTML = `<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2z"/>`;
       } else {
-        document.getElementById('btnTypeEarly').classList.add('active');
-        document.getElementById('btnTypeLate').classList.remove('active');
+        pass.type = 'password';
+        eyeIconEl.innerHTML = `<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3 z"/>`;
       }
     }
 
-    // التحكم في سكرول بكرة الوقت على طريقة الأندرويد
-    function handleWheelScroll(wheelId, targetInputId) {
-      const wheel = document.getElementById(wheelId);
-      const items = wheel.querySelectorAll('.wheel-item');
-      const scrollTop = wheel.scrollTop;
-      const itemHeight = 30;
+    let isSalaryVisible = false;
+    function toggleSalaryVisibility() {
+      isSalaryVisible = !isSalaryVisible;
+      const salaryValEl = document.getElementById('salaryDisplayVal');
+      const eyeIconEl = document.getElementById('salaryEyeIcon');
       
-      let selectedIndex = Math.round(scrollTop / itemHeight) + 1;
-      if (selectedIndex < 1) selectedIndex = 1;
-      if (selectedIndex >= items.length - 1) selectedIndex = items.length - 2;
+      if (isSalaryVisible) {
+        salaryValEl.innerText = "0 EGP";
+        eyeIconEl.innerHTML = `<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2z"/>`;
+      } else {
+        salaryValEl.innerText = "••••••••";
+        eyeIconEl.innerHTML = `<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>`;
+      }
+    }
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
+      authDomain: "lacto-hr-system.firebaseapp.com",
+      databaseURL: "https://lacto-hr-system-default-rtdb.firebaseio.com",
+      projectId: "lacto-hr-system",
+      storageBucket: "lacto-hr-system.firebasestorage.app",
+      messagingSenderId: "671259800401",
+      appId: "1:671259800401:web:905e1a36adba52ba2d1970"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    let currentUserData = null;
+    let currentEmpCode = "";
+    let currentLang = localStorage.getItem('lacto_lang') || 'ar';
+    let returnToView = 'view-dashboard';
+    
+    function updateDynamicGreeting() {
+      const hour = new Date().getHours();
+      const greetingEl = document.getElementById('dash-greeting');
+      if (!greetingEl) return;
+      
+      if (currentLang === 'ar') {
+        if (hour >= 4 && hour < 12) greetingEl.innerText = "صباح الخير ☀️";
+        else if (hour >= 12 && hour < 17) greetingEl.innerText = "نهارك سعيد ☀️";
+        else greetingEl.innerText = "مساء الخير 🌙";
+      } else {
+        if (hour >= 4 && hour < 12) greetingEl.innerText = "Good morning ☀️";
+        else if (hour >= 12 && hour < 17) greetingEl.innerText = "Good afternoon ☀️";
+        else greetingEl.innerText = "Good evening 🌙";
+      }
+    }
 
-      items.forEach((item, idx) => {
-        if (idx === selectedIndex) {
-          item.classList.add('selected');
-          document.getElementById(targetInputId).value = item.innerText.trim();
-        } else {
-          item.classList.remove('selected');
+    function updateContentTranslations() {
+      const lang = currentLang;
+      // Loop through all elements with data-ar and data-en
+      document.querySelectorAll('[data-ar][data-en]').forEach(el => {
+        el.innerText = el.getAttribute(`data-${lang}`);
+      });
+      // Loop through placeholders
+      document.querySelectorAll('[data-ar-placeholder][data-en-placeholder]').forEach(el => {
+        el.placeholder = el.getAttribute(`data-${lang}-placeholder`);
+      });
+      
+      updateDynamicGreeting();
+    }
+
+    function toggleNotificationPopup(event) {
+      event.stopPropagation();
+      const popup = document.getElementById('notificationPopup');
+      popup.classList.toggle('show');
+    }
+    window.addEventListener('click', () => {
+      const popup = document.getElementById('notificationPopup');
+      if (popup && popup.classList.contains('show')) popup.classList.remove('show');
+      const dropdownOptions = document.getElementById('dropdownOptions');
+      if (dropdownOptions && dropdownOptions.classList.contains('show')) dropdownOptions.classList.remove('show');
+    });
+
+    /* Custom Dropdown Control */
+    function toggleCustomDropdown(event) {
+      if (event) event.stopPropagation();
+      const options = document.getElementById('dropdownOptions');
+      options.classList.toggle('show');
+    }
+
+    function selectLeaveOption(value) {
+      document.getElementById('leaveType').value = value;
+      const selectedOptionEl = document.querySelector(`.dropdown-option[onclick*="${value}"]`);
+      if (selectedOptionEl) {
+        document.getElementById('selectedLeaveText').innerText = selectedOptionEl.getAttribute(`data-${currentLang}`);
+      }
+      document.getElementById('dropdownOptions').classList.remove('show');
+      handleLeaveTypeChange();
+      calculateLeaveDays();
+    }
+
+    function handleMedicalFileSelected(input) {
+      const fileNameEl = document.getElementById('medicalFileName');
+      if (input.files && input.files[0]) {
+        fileNameEl.innerText = "📄 " + input.files[0].name;
+        fileNameEl.style.color = "#38bdf8";
+      } else {
+        fileNameEl.innerText = fileNameEl.getAttribute(`data-${currentLang}`);
+        fileNameEl.style.color = "var(--muted)";
+      }
+    }
+
+    /* Custom Glowing Calendar Logic */
+    let activeDateInputId = null;
+    let tempSelectedDate = "";
+    let calYear = new Date().getFullYear();
+    let calMonth = new Date().getMonth();
+
+    const monthNamesAr = ["يناير", "فبراير", "مارس", "إبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+    const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    const dayNamesAr = ["س", "ح", "ن", "ث", "ر", "خ", "ج"];
+    const dayNamesEn = ["Sa", "Su", "Mo", "Tu", "We", "Th", "Fr"];
+
+    function openCustomCalendar(inputId) {
+      activeDateInputId = inputId;
+      const val = document.getElementById(inputId).value;
+      tempSelectedDate = val;
+      if (val) {
+        const parts = val.split('-');
+        if (parts.length === 3) {
+          calYear = parseInt(parts[0]);
+          calMonth = parseInt(parts[1]) - 1;
         }
+      } else {
+        const now = new Date();
+        calYear = now.getFullYear();
+        calMonth = now.getMonth();
+      }
+      renderCustomCalendar();
+      document.getElementById('customCalendarModal').classList.add('show');
+    }
+
+    function confirmCustomCalendar() {
+      if (tempSelectedDate && activeDateInputId) {
+        document.getElementById(activeDateInputId).value = tempSelectedDate;
+        calculateLeaveDays();
+      }
+      closeCustomCalendar();
+    }
+
+    function closeCustomCalendar() {
+      document.getElementById('customCalendarModal').classList.remove('show');
+    }
+
+    function changeCalendarMonth(direction) {
+      calMonth += direction;
+      if (calMonth > 11) { calMonth = 0; calYear++; }
+      else if (calMonth < 0) { calMonth = 11; calYear--; }
+      renderCustomCalendar();
+    }
+
+    function renderCustomCalendar() {
+      const mNames = currentLang === 'ar' ? monthNamesAr : monthNamesEn;
+      document.getElementById('calMonthYearTitle').innerText = `${mNames[calMonth]} ${calYear}`;
+      
+      const headerGrid = document.getElementById('calendarHeaderGrid');
+      headerGrid.innerHTML = "";
+      const activeDayNames = currentLang === 'ar' ? dayNamesAr : dayNamesEn;
+      activeDayNames.forEach(dName => {
+        const nameEl = document.createElement('div');
+        nameEl.className = 'calendar-day-name';
+        nameEl.innerText = dName;
+        headerGrid.appendChild(nameEl);
       });
 
-      calculateRequestedDuration();
-    }
+      const grid = document.getElementById('calendarDaysGrid');
+      grid.innerHTML = "";
 
-    // حساب المدة الزمنية تلقائياً
-    function calculateRequestedDuration() {
-      let fH = parseInt(document.getElementById('fromHourVal').value) || 8;
-      let fM = parseInt(document.getElementById('fromMinVal').value) || 0;
-      let fAp = document.getElementById('fromAmpmVal').value;
+      const jsDay = new Date(calYear, calMonth, 1).getDay();
+      const firstDayIndex = (jsDay + 1) % 7;
+      const totalDays = new Date(calYear, calMonth + 1, 0).getDate();
 
-      let tH = parseInt(document.getElementById('toHourVal').value) || 9;
-      let tM = parseInt(document.getElementById('toMinVal').value) || 0;
-      let tAp = document.getElementById('toAmpmVal').value;
-
-      // تحويل لنظام 24 ساعة
-      if (fAp === 'م' && fH < 12) fH += 12;
-      if (fAp === 'ص' && fH === 12) fH = 0;
-
-      if (tAp === 'م' && tH < 12) tH += 12;
-      if (tAp === 'ص' && tH === 12) tH = 0;
-
-      let startTotalMins = fH * 60 + fM;
-      let endTotalMins = tH * 60 + tM;
-
-      let diffMins = endTotalMins - startTotalMins;
-
-      const resultBox = document.getElementById('durationResultText');
-
-      if (diffMins <= 0) {
-        resultBox.style.color = '#ef4444';
-        resultBox.style.borderColor = '#ef4444';
-        resultBox.innerText = '⚠️ وقت النهاية يجب أن يكون بعد وقت البداية!';
-        return 0;
+      for (let i = 0; i < firstDayIndex; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'calendar-day empty';
+        grid.appendChild(emptyCell);
       }
 
-      let durHours = Math.floor(diffMins / 60);
-      let durMins = diffMins % 60;
+      for (let day = 1; day <= totalDays; day++) {
+        const dayCell = document.createElement('div');
+        dayCell.className = 'calendar-day';
+        dayCell.innerText = day;
 
-      resultBox.style.color = '#38bdf8';
-      resultBox.style.borderColor = '#38bdf8';
-      resultBox.innerText = `⏱️ مدة الإذن المطلوبة: ${durHours} ساعة و ${durMins} دقيقة`;
+        const mStr = String(calMonth + 1).padStart(2, '0');
+        const dStr = String(day).padStart(2, '0');
+        const formattedDate = `${calYear}-${mStr}-${dStr}`;
 
-      return diffMins;
+        if (formattedDate === tempSelectedDate) {
+          dayCell.classList.add('selected');
+        }
+
+        dayCell.onclick = () => {
+          grid.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
+          dayCell.classList.add('selected');
+          tempSelectedDate = formattedDate;
+        };
+
+        grid.appendChild(dayCell);
+      }
     }
 
-    function submitPermissionRequest() {
-      const diffMins = calculateRequestedDuration();
-      const msg = document.getElementById('permMsg');
+    function toggleChatbot() {
+      const chatWin = document.getElementById('chatbot-window');
+      chatWin.classList.toggle('show');
+    }
+    function handleChatKeyPress(e) { if (e.key === 'Enter') sendChatMessage(); }
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+      const messagesContainer = document.getElementById('chatbotMessages');
+      
+      const userMsg = document.createElement('div');
+      userMsg.className = 'chat-msg user';
+      userMsg.innerText = text;
+      messagesContainer.appendChild(userMsg);
+      input.value = '';
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-      if (diffMins <= 0) {
-        msg.style.color = '#ef4444';
-        msg.innerText = 'يرجى ضبط الوقت بطريقة صحيحة!';
-        return;
-      }
-
-      let reqSeconds = diffMins * 60;
-      if (reqSeconds > totalBalanceSeconds) {
-        msg.style.color = '#ef4444';
-        msg.innerText = '❌ مدة الإذن تتجاوز رصيدك المتبقي الشهرى!';
-        return;
-      }
-
-      // خصم الوقت المأخوذ وتحديث العداد الديجيتال
-      totalBalanceSeconds -= reqSeconds;
-      updateDigitalClockDisplay(totalBalanceSeconds);
-
-      msg.style.color = '#10b981';
-      msg.innerText = '✅ تم تسجيل الإذن وتأكيده بنجاح!';
+      setTimeout(() => {
+        const botMsg = document.createElement('div');
+        botMsg.className = 'chat-msg bot';
+        const lowerText = text.toLowerCase();
+        if (currentLang === 'ar') {
+          if (lowerText.includes('إجازة') || lowerText.includes('اجازات')) {
+            botMsg.innerText = "يمكنك تقديم طلب إجازة جديد (سنوية، وفاة، ولادة، بدون مرتب) مباشرة من خدماتي.";
+          } else {
+            botMsg.innerText = "شكراً لتواصلك! تم تسجيل استفسارك وسيتم الرد عليك قريباً من قبل ممثل الموارد البشرية.";
+          }
+        } else {
+          if (lowerText.includes('leave') || lowerText.includes('vacation')) {
+            botMsg.innerText = "You can apply for leave (annual, bereavement, paternity, unpaid) directly from Services.";
+          } else {
+            botMsg.innerText = "Thank you for your message! Your query has been noted and HR will follow up with you.";
+          }
+        }
+        messagesContainer.appendChild(botMsg);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }, 600);
     }
 
-    // تشغيل العداد لأول مرة
-    window.addEventListener('DOMContentLoaded', () => {
-      updateDigitalClockDisplay(totalBalanceSeconds);
-      calculateRequestedDuration();
+    let currentSlideIndex = 0;
+    const totalSlides = 6;
+    let slideInterval;
+
+    function showSlide(index) {
+      currentSlideIndex = (index + totalSlides) % totalSlides;
+      const slides = document.querySelectorAll('.slide-item');
+      slides.forEach((slide, i) => { slide.classList.toggle('active', i === currentSlideIndex); });
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, i) => { dot.classList.toggle('active', i === currentSlideIndex); });
+    }
+    function currentSlide(index) { showSlide(index); resetSlideTimer(); }
+    function nextSlide() { showSlide(currentSlideIndex + 1); }
+    function resetSlideTimer() { clearInterval(slideInterval); slideInterval = setInterval(nextSlide, 5500); }
+    
+    let touchStartX = 0;
+    const cardEl = document.getElementById('announcementCard');
+    cardEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; clearInterval(slideInterval); });
+    cardEl.addEventListener('touchend', e => {
+      let touchEndX = e.changedTouches[0].clientX;
+      if (touchStartX - touchEndX > 40) nextSlide();
+      else if (touchEndX - touchStartX > 40) showSlide(currentSlideIndex - 1);
+      resetSlideTimer();
     });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      selectLanguage(currentLang);
+      resetSlideTimer();
+      const savedCode = localStorage.getItem('lacto_saved_code');
+      const savedPass = localStorage.getItem('lacto_saved_pass');
+      if (savedCode && savedPass) {
+        document.getElementById('empCode').value = savedCode;
+        document.getElementById('empPass').value = savedPass;
+        document.getElementById('rememberMe').checked = true;
+      }
+    });
+
+    const COMPANY_LAT = 30.235154;
+    const COMPANY_LNG = 31.743997;
+    const ALLOWED_RADIUS_METERS = 75;
+
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371e3;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+      return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+    }
+
+    function verifyLocationAndCheckIn() {
+      const statusText = document.getElementById('t-checkinStatusText');
+      const valIn = document.getElementById('valInTime');
+      const valOut = document.getElementById('valOutTime');
+      const valWorking = document.getElementById('valWorkingHours');
+      const ledGreen = document.getElementById('ledGreen');
+      const ledRed = document.getElementById('ledRed');
+
+      statusText.innerText = currentLang === 'ar' ? "جاري تفعيل الـ GPS والتحقق من الموقع..." : "Activating GPS & verifying location...";
+      if (!navigator.geolocation) { statusText.innerText = currentLang === 'ar' ? "متصفحك لا يدعم الـ GPS." : "Geolocation not supported."; return; }
+      
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const distance = calculateDistance(position.coords.latitude, position.coords.longitude, COMPANY_LAT, COMPANY_LNG);
+          if (distance <= ALLOWED_RADIUS_METERS) {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const todayStr = now.toISOString().split('T')[0];
+            if (!currentEmpCode) return;
+
+            const refPath = db.ref('attendance/' + currentEmpCode + '/' + todayStr);
+            refPath.once('value').then(snapshot => {
+              let attData = snapshot.val() || {};
+              let currentTimeMs = now.getTime();
+              if (!attData.inTime) {
+                attData.inTime = timeStr; attData.inTimestamp = currentTimeMs;
+                statusText.innerText = currentLang === 'ar' ? `✅ تم تسجيل الحضور الساعة ${timeStr}` : `✅ Check-In saved at ${timeStr}`;
+                ledGreen.classList.add('active'); ledRed.classList.remove('active');
+              } else {
+                attData.outTime = timeStr; attData.outTimestamp = currentTimeMs;
+                const diffMs = attData.outTimestamp - attData.inTimestamp;
+                const totalMins = Math.floor(diffMs / 60000);
+                attData.workingHours = `${String(Math.floor(totalMins / 60)).padStart(2, '0')}:${String(totalMins % 60).padStart(2, '0')}`;
+                statusText.innerText = currentLang === 'ar' ? `✅ تم تسجيل الانصراف الساعة ${timeStr}` : `✅ Check-Out recorded at ${timeStr}`;
+                ledRed.classList.add('active'); ledGreen.classList.remove('active');
+              }
+              refPath.set(attData);
+              if (attData.inTime) valIn.innerText = attData.inTime;
+              if (attData.outTime) valOut.innerText = attData.outTime;
+              if (attData.workingHours) valWorking.innerText = attData.workingHours;
+            });
+          } else {
+            statusText.innerText = currentLang === 'ar' ? `❌ خارج نطاق الشركة (${Math.round(distance)} متر)` : `❌ Outside range (${Math.round(distance)}m)`;
+          }
+        },
+        () => { statusText.innerText = currentLang === 'ar' ? "تعذر الحصول على موقعك. تأكد من تفعيل GPS." : "Unable to retrieve location."; },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    }
+
+    function handleLeaveTypeChange() {
+      const leaveType = document.getElementById('leaveType').value;
+      const noticeBox = document.getElementById('unpaidInsuranceNotice');
+      const medicalBox = document.getElementById('medicalReportSection');
+
+      if (leaveType === 'unpaid') {
+        noticeBox.classList.remove('hidden');
+      } else {
+        noticeBox.classList.add('hidden');
+      }
+
+      if (leaveType === 'sick') {
+        medicalBox.classList.remove('hidden');
+      } else {
+        medicalBox.classList.add('hidden');
+      }
+    }
+
+    function calculateLeaveDays() {
+      const start = document.getElementById('leaveStartDate').value;
+      const end = document.getElementById('leaveEndDate').value;
+      const daysText = document.getElementById('leaveTotalDaysText');
+      const leaveType = document.getElementById('leaveType').value;
+      
+      if (start && end) {
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+        const diffTime = endDate - startDate;
+        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        
+        if (leaveType === 'unpaid' && diffDays > 30) {
+          daysText.innerText = currentLang === 'ar' ? "⚠️ تنبيه: الإجازة بدون مرتب بحد أقصى شهر (30 يوم)!" : "⚠️ Max limit for unpaid leave is 30 days!";
+          return;
+        }
+
+        if (diffDays > 0) {
+          daysText.innerText = currentLang === 'ar' ? `إجمالي الأيام المطلوبة: ${diffDays} يوم` : `Total requested days: ${diffDays} days`;
+        } else {
+          daysText.innerText = currentLang === 'ar' ? "❌ تاريخ النهاية يجب أن يكون بعد تاريخ البداية!" : "❌ End date must be after start date!";
+        }
+      }
+    }
+
+    function submitLeaveRequest() {
+      const leaveType = document.getElementById('leaveType').value;
+      const startDate = document.getElementById('leaveStartDate').value;
+      const endDate = document.getElementById('leaveEndDate').value;
+      const notes = document.getElementById('leaveNotes').value.trim();
+      const msg = document.getElementById('leaveMsg');
+
+      if (!startDate || !endDate) {
+        msg.style.color = '#ef4444';
+        msg.innerText = currentLang === 'ar' ? "يرجى تحديد تاريخ البداية والنهاية!" : "Please select start and end dates!";
+        return;
+      }
+
+      if (leaveType === 'sick') {
+        const fileInput = document.getElementById('medicalReportFile');
+        if (!fileInput.files || !fileInput.files[0]) {
+          msg.style.color = '#ef4444';
+          msg.innerText = currentLang === 'ar' ? "⚠️ يرجى اختيار أو تصوير التقرير الطبي للإجازة المرضية!" : "⚠️ Please attach or capture medical report for sick leave!";
+          return;
+        }
+      }
+
+      const leaveData = {
+        code: currentEmpCode,
+        name: currentUserData.name || 'Unknown',
+        type: leaveType,
+        startDate: startDate,
+        endDate: endDate,
+        notes: notes,
+        status: 'Pending',
+        timestamp: Date.now()
+      };
+
+      db.ref('leave_requests/' + currentEmpCode).push(leaveData).then(() => {
+        msg.style.color = '#10b981';
+        msg.innerText = currentLang === 'ar' ? "✅ تم تقديم طلب الإجازة بنجاح في النظام!" : "✅ Leave request submitted successfully!";
+        setTimeout(() => { showPage('view-dashboard'); }, 2000);
+      }).catch(() => {
+        msg.style.color = '#ef4444';
+        msg.innerText = currentLang === 'ar' ? "❌ حدث خطأ، حاول مرة أخرى." : "❌ Error occurred, try again.";
+      });
+    }
+
+    function showComingSoon(fromView = 'view-dashboard') { returnToView = fromView; showPage('view-coming-soon'); }
+    function goBackFromComingSoon() { showPage(returnToView); }
+    function switchTab(pageId, btnElement) {
+      document.querySelectorAll('.bottom-nav-item').forEach(btn => btn.classList.remove('active'));
+      if (btnElement) btnElement.classList.add('active');
+      showPage(pageId);
+    }
+
+    function showPage(pageId) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.body.scrollTop = 0; document.documentElement.scrollTop = 0;
+
+      const chatbotFab = document.getElementById('chatbot-fab');
+      const bottomNavBar = document.getElementById('bottomNavBar');
+
+      if (pageId === 'view-login') {
+        if (chatbotFab) chatbotFab.style.display = 'none';
+        if (bottomNavBar) bottomNavBar.classList.remove('show');
+      } else {
+        if (chatbotFab) chatbotFab.style.display = 'flex';
+        if (bottomNavBar) bottomNavBar.classList.add('show');
+      }
+      
+      ['view-login', 'view-dashboard', 'view-id-card', 'view-services', 'view-leave-request', 'view-settings', 'view-profile', 'view-coming-soon', 'view-suggestion-page'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+      });
+      
+      const headerCard = document.getElementById('dashboard-header-container');
+      const contentCard = document.getElementById('dashboard-content-container');
+      
+      if (pageId === 'view-dashboard') {
+        document.getElementById('view-dashboard').classList.remove('hidden');
+        if (headerCard) headerCard.classList.remove('hidden');
+        if (contentCard) contentCard.classList.remove('hidden');
+        updateDynamicGreeting();
+      } else {
+        document.getElementById('view-dashboard').classList.add('hidden');
+        if (headerCard) headerCard.classList.add('hidden');
+        if (contentCard) contentCard.classList.add('hidden');
+        document.getElementById(pageId).classList.remove('hidden');
+        
+        if (pageId === 'view-leave-request') {
+          document.getElementById('leaveStartDate').value = '';
+          document.getElementById('leaveEndDate').value = '';
+          document.getElementById('leaveNotes').value = '';
+          document.getElementById('leaveTotalDaysText').innerText = currentLang === 'ar' ? 'إجمالي الأيام المطلوبة: 0 يوم' : 'Total requested days: 0 days';
+          document.getElementById('leaveMsg').innerText = '';
+          document.getElementById('medicalReportFile').value = '';
+          const medFileEl = document.getElementById('medicalFileName');
+          medFileEl.innerText = medFileEl.getAttribute(`data-${currentLang}`);
+          document.getElementById('leaveType').value = 'annual';
+          document.getElementById('selectedLeaveText').innerText = document.querySelector('.dropdown-option').getAttribute(`data-${currentLang}`);
+          handleLeaveTypeChange();
+        }
+
+        if (pageId === 'view-suggestion-page' && currentUserData) {
+          document.getElementById('sugCode').value = currentEmpCode;
+          document.getElementById('sugName').value = currentUserData.name || '';
+          document.getElementById('sugText').value = '';
+          document.getElementById('sugMsg').innerText = '';
+        }
+      }
+    }
+
+    function submitSuggestion() {
+      const text = document.getElementById('sugText').value.trim();
+      const msg = document.getElementById('sugMsg');
+      if (!text) {
+        msg.style.color = '#ef4444';
+        msg.innerText = currentLang === 'ar' ? "يرجى كتابة مقترحك أولاً!" : "Please write your suggestion first!";
+        return;
+      }
+      
+      db.ref('suggestions/' + currentEmpCode).push({
+        code: currentEmpCode, name: currentUserData.name || 'Unknown', suggestion: text, timestamp: Date.now()
+      }).then(() => {
+        msg.style.color = '#10b981';
+        msg.innerText = currentLang === 'ar' ? "✅ تم إرسال مقترحك بنجاح!" : "✅ Suggestion submitted successfully!";
+        setTimeout(() => { showPage('view-dashboard'); }, 2000);
+      }).catch(() => {
+        msg.style.color = '#ef4444';
+        msg.innerText = currentLang === 'ar' ? "❌ حدث خطأ، حاول مرة أخرى." : "❌ Error occurred, try again.";
+      });
+    }
+
+    function login() {
+      const code = document.getElementById('empCode').value.trim();
+      const pass = document.getElementById('empPass').value.trim();
+      const rememberMe = document.getElementById('rememberMe').checked;
+      const errorEl = document.getElementById('error');
+      if (!code) { errorEl.innerText = currentLang === 'ar' ? "يرجى إدخال كود الموظف" : "Please enter employee code"; return; }
+      
+      db.ref('users/' + code).once('value').then((snapshot) => {
+        if (snapshot.exists()) {
+          const user = snapshot.val();
+          if (user.password !== pass) {
+            errorEl.innerText = currentLang === 'ar' ? "كلمة السر غير صحيحة!" : "Incorrect password!";
+            return;
+          }
+          currentUserData = user;
+          currentEmpCode = code;
+          errorEl.innerText = "";
+          
+          if (rememberMe) {
+            localStorage.setItem('lacto_saved_code', code);
+            localStorage.setItem('lacto_saved_pass', pass);
+          } else {
+            localStorage.removeItem('lacto_saved_code');
+            localStorage.removeItem('lacto_saved_pass');
+          }
+          document.getElementById('dash-name').innerText = user.name || "--";
+          document.getElementById('dash-code-val').innerText = code;
+          
+          const userPhotoUrl = user.photo || (code === 'amgad' || (user.name && user.name.includes('أمجد')) ? 'amgad.jpg' : 'https://i.pravatar.cc/150?img=12');
+          
+          document.getElementById('dash-avatar').src = userPhotoUrl;
+          document.getElementById('userName').innerText = user.name || "--";
+          document.getElementById('userJob').innerText = user.job || "--";
+          document.getElementById('userDept').innerText = user.dept || "--";
+          document.getElementById('userCodeVal').innerText = code;
+          document.getElementById('userNID').innerText = user.nationalId || "--";
+          document.getElementById('userPhoto').src = userPhotoUrl;
+
+          document.getElementById('qrcode').innerHTML = "";
+          new QRCode(document.getElementById("qrcode"), { text: window.location.origin + window.location.pathname + "?emp=" + code, width: 85, height: 85 });
+          
+          showPage('view-dashboard');
+
+          db.ref('attendance/' + code + '/' + new Date().toISOString().split('T')[0]).once('value').then(attSnap => {
+            if (attSnap.exists()) {
+              const d = attSnap.val();
+              if (d.inTime) { document.getElementById('valInTime').innerText = d.inTime; document.getElementById('ledGreen').classList.add('active'); }
+              if (d.outTime) { document.getElementById('valOutTime').innerText = d.outTime; document.getElementById('ledRed').classList.add('active'); document.getElementById('ledGreen').classList.remove('active'); }
+              if (d.workingHours) document.getElementById('valWorkingHours').innerText = d.workingHours;
+            }
+          });
+        } else {
+          errorEl.innerText = currentLang === 'ar' ? "كود الموظف غير مسجل!" : "Employee code not found!";
+        }
+      });
+    }
+
+    function downloadCard() {
+      html2canvas(document.getElementById('myCardToDownload'), { useCORS: true, scale: 2 }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'Lacto_ID_' + currentEmpCode + '.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    }
+
+    function logout() { 
+      localStorage.removeItem('lacto_saved_code');
+      localStorage.removeItem('lacto_saved_pass');
+      window.location.reload(); 
+    }
+    
+    function toggleLangMenu() { document.getElementById('langMenu').classList.toggle('show'); }
+    
+    function selectLanguage(lang) {
+      if (document.getElementById('langMenu').classList.contains('show')) toggleLangMenu();
+      currentLang = lang;
+      localStorage.setItem('lacto_lang', lang);
+      document.documentElement.lang = lang;
+      document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+      document.getElementById('current-lang-text').innerText = (lang === 'ar') ? "العربية" : "English";
+      updateContentTranslations();
+      showSlide(currentSlideIndex);
+    }
   </script>
 </body>
 </html>
