@@ -987,7 +987,7 @@
     </div>
   </div>
 
-  <!-- Custom Glowing Calendar Modal -->
+  <!-- Custom Glowing Calendar Modal with OK / Cancel Buttons -->
   <div id="customCalendarModal" class="calendar-modal-overlay" onclick="closeCustomCalendar()">
     <div class="calendar-box" onclick="event.stopPropagation()">
       <div class="calendar-header">
@@ -999,7 +999,10 @@
         <!-- Dynamically rendered day names (ar / en) -->
       </div>
       <div class="calendar-grid" id="calendarDaysGrid"></div>
-      <button onclick="closeCustomCalendar()" style="margin-top: 0.5rem; padding: 0.6rem; font-size: 0.85rem;" id="t-closeCal">إغلاق</button>
+      <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+        <button onclick="confirmCustomCalendar()" class="btn-success" style="margin-top: 0; padding: 0.6rem; font-size: 0.85rem;" id="t-okCal">تأكيد (OK)</button>
+        <button onclick="closeCustomCalendar()" class="btn-danger" style="margin-top: 0; padding: 0.6rem; font-size: 0.85rem;" id="t-cancelCal">إلغاء (Cancel)</button>
+      </div>
     </div>
   </div>
 
@@ -1195,7 +1198,8 @@
         lblLeaveNotes: "ملاحظات إضافية:",
         leaveNotesPlaceholder: "اكتب أى ملاحظات عايز تضفها هنا...",
         submitLeaveBtn: "إرسال طلب الإجازة",
-        closeCal: "إغلاق",
+        okCal: "تأكيد (OK)",
+        cancelCal: "إلغاء (Cancel)",
         srv1: "📅 طلب إجازة",
         srv2: "🚪 طلب إذن شخصي",
         srv3: "✈️ طلب مأمورية",
@@ -1277,7 +1281,8 @@
         lblLeaveNotes: "Additional Notes:",
         leaveNotesPlaceholder: "Type any notes you want to add here...",
         submitLeaveBtn: "Submit Leave Request",
-        closeCal: "Close",
+        okCal: "OK",
+        cancelCal: "Cancel",
         srv1: "📅 Leave Request",
         srv2: "🚪 Personal Permission",
         srv3: "✈️ Mission Request",
@@ -1381,7 +1386,9 @@
       document.getElementById('t-lblLeaveNotes').innerText = t.lblLeaveNotes;
       document.getElementById('leaveNotes').placeholder = t.leaveNotesPlaceholder;
       document.getElementById('t-submitLeaveBtn').innerText = t.submitLeaveBtn;
-      document.getElementById('t-closeCal').innerText = t.closeCal;
+      
+      document.getElementById('t-okCal').innerText = t.okCal;
+      document.getElementById('t-cancelCal').innerText = t.cancelCal;
 
       document.getElementById('t-navHome').innerText = t.navHome;
       document.getElementById('t-navServices').innerText = t.navServices;
@@ -1447,8 +1454,9 @@
       }
     }
 
-    /* Custom Glowing Calendar Logic with Fully Localized Day Headers & Glowing Selection */
+    /* Custom Glowing Calendar Logic with OK / Cancel Confirmation */
     let activeDateInputId = null;
+    let tempSelectedDate = "";
     let calYear = new Date().getFullYear();
     let calMonth = new Date().getMonth();
 
@@ -1461,6 +1469,7 @@
     function openCustomCalendar(inputId) {
       activeDateInputId = inputId;
       const val = document.getElementById(inputId).value;
+      tempSelectedDate = val;
       if (val) {
         const parts = val.split('-');
         if (parts.length === 3) {
@@ -1474,6 +1483,14 @@
       }
       renderCustomCalendar();
       document.getElementById('customCalendarModal').classList.add('show');
+    }
+
+    function confirmCustomCalendar() {
+      if (tempSelectedDate && activeDateInputId) {
+        document.getElementById(activeDateInputId).value = tempSelectedDate;
+        calculateLeaveDays();
+      }
+      closeCustomCalendar();
     }
 
     function closeCustomCalendar() {
@@ -1491,7 +1508,6 @@
       const mNames = currentLang === 'ar' ? monthNamesAr : monthNamesEn;
       document.getElementById('calMonthYearTitle').innerText = `${mNames[calMonth]} ${calYear}`;
       
-      // Render dynamic localized day header names
       const headerGrid = document.getElementById('calendarHeaderGrid');
       headerGrid.innerHTML = "";
       const activeDayNames = currentLang === 'ar' ? dayNamesAr : dayNamesEn;
@@ -1505,7 +1521,6 @@
       const grid = document.getElementById('calendarDaysGrid');
       grid.innerHTML = "";
 
-      // Corrected alignment: map JS getDay() (Sun=0, Mon=1... Sat=6) to Saturday-start header (Sat=0, Sun=1... Fri=6)
       const jsDay = new Date(calYear, calMonth, 1).getDay();
       const firstDayIndex = (jsDay + 1) % 7;
       const totalDays = new Date(calYear, calMonth + 1, 0).getDate();
@@ -1516,8 +1531,6 @@
         grid.appendChild(emptyCell);
       }
 
-      const currentSelectedVal = activeDateInputId ? document.getElementById(activeDateInputId).value : "";
-
       for (let day = 1; day <= totalDays; day++) {
         const dayCell = document.createElement('div');
         dayCell.className = 'calendar-day';
@@ -1527,14 +1540,14 @@
         const dStr = String(day).padStart(2, '0');
         const formattedDate = `${calYear}-${mStr}-${dStr}`;
 
-        if (formattedDate === currentSelectedVal) {
+        if (formattedDate === tempSelectedDate) {
           dayCell.classList.add('selected');
         }
 
         dayCell.onclick = () => {
-          document.getElementById(activeDateInputId).value = formattedDate;
-          closeCustomCalendar();
-          calculateLeaveDays();
+          grid.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
+          dayCell.classList.add('selected');
+          tempSelectedDate = formattedDate;
         };
 
         grid.appendChild(dayCell);
