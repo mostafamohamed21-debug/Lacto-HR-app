@@ -137,17 +137,15 @@
     [dir="ltr"] input, [dir="ltr"] textarea, [dir="ltr"] select { text-align: left; }
     input:focus, textarea:focus, select:focus { border-color: #38bdf8; box-shadow: 0 0 15px var(--accent-glow); }
     
-    /* Glowing Date Inputs Styling */
-    input[type="date"] {
-      background: rgba(56, 189, 248, 0.08);
-      border: 1px solid rgba(56, 189, 248, 0.5);
-      color: #38bdf8;
-      font-weight: 700;
+    /* Custom Glowing Date Input Trigger */
+    .custom-date-input {
+      background: rgba(56, 189, 248, 0.08) !important;
+      border: 1px solid rgba(56, 189, 248, 0.5) !important;
+      color: #38bdf8 !important;
+      font-weight: 700 !important;
       box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
-    }
-    input[type="date"]::-webkit-calendar-picker-indicator {
-      filter: invert(1) drop-shadow(0 0 4px #38bdf8);
       cursor: pointer;
+      text-align: center !important;
     }
 
     /* Custom Glowing Dropdown Styling for Leave Type */
@@ -215,6 +213,92 @@
       color: #38bdf8;
       padding-right: 1.25rem;
     }
+
+    /* Custom Glowing Calendar Modal Overlay */
+    .calendar-modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 20000;
+      padding: 1rem;
+    }
+    .calendar-modal-overlay.show { display: flex; }
+    
+    .calendar-box {
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(56, 189, 248, 0.6);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 350px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 25px rgba(56, 189, 248, 0.3);
+      text-align: center;
+    }
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+    }
+    .calendar-header button {
+      width: 36px; height: 36px;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+      border-radius: 50%;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 0;
+      padding: 0;
+      box-shadow: none !important;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .calendar-header button:hover { background: rgba(56, 189, 248, 0.3); }
+    .calendar-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #38bdf8;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.3rem;
+      margin-bottom: 1rem;
+    }
+    .calendar-day-name {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 700;
+      padding-bottom: 0.4rem;
+    }
+    .calendar-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border-radius: 50%;
+      cursor: pointer;
+      color: var(--text);
+      transition: all 0.2s ease;
+    }
+    .calendar-day:hover {
+      background: rgba(56, 189, 248, 0.25);
+      color: #38bdf8;
+    }
+    .calendar-day.selected {
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      color: #0b0f19;
+      box-shadow: 0 0 15px #38bdf8;
+    }
+    .calendar-day.empty { cursor: default; }
 
     /* Fully Glowing Badge for Leave Days Total Result */
     .glowing-result-badge {
@@ -822,10 +906,10 @@
         </div>
 
         <label style="font-size: 0.75rem; color: var(--muted);" id="t-lblStartDate">تاريخ بداية الأجازة:</label>
-        <input type="date" id="leaveStartDate" onchange="calculateLeaveDays()">
+        <input type="text" id="leaveStartDate" class="custom-date-input" readonly placeholder="اختر تاريخ البداية..." onclick="openCustomCalendar('leaveStartDate')">
 
         <label style="font-size: 0.75rem; color: var(--muted);" id="t-lblEndDate">تاريخ نهاية الأجازة:</label>
-        <input type="date" id="leaveEndDate" onchange="calculateLeaveDays()">
+        <input type="text" id="leaveEndDate" class="custom-date-input" readonly placeholder="اختر تاريخ النهاية..." onclick="openCustomCalendar('leaveEndDate')">
 
         <div class="glowing-result-badge" id="leaveTotalDaysText">
           إجمالي الأيام المطلوبة: 0 يوم
@@ -897,6 +981,28 @@
         <button onclick="submitSuggestion()" class="btn-success" id="t-sugSubmitBtn" style="margin-top:0.5rem;">إرسال المقترح</button>
         <p id="sugMsg" style="font-size: 0.8rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
       </div>
+    </div>
+  </div>
+
+  <!-- Custom Glowing Calendar Modal -->
+  <div id="customCalendarModal" class="calendar-modal-overlay" onclick="closeCustomCalendar()">
+    <div class="calendar-box" onclick="event.stopPropagation()">
+      <div class="calendar-header">
+        <button onclick="changeCalendarMonth(-1)">❮</button>
+        <div class="calendar-title" id="calMonthYearTitle">سبتمبر 2026</div>
+        <button onclick="changeCalendarMonth(1)">❯</button>
+      </div>
+      <div class="calendar-grid">
+        <div class="calendar-day-name">س</div>
+        <div class="calendar-day-name">ح</div>
+        <div class="calendar-day-name">ن</div>
+        <div class="calendar-day-name">ث</div>
+        <div class="calendar-day-name">ر</div>
+        <div class="calendar-day-name">خ</div>
+        <div class="calendar-day-name">ج</div>
+      </div>
+      <div class="calendar-grid" id="calendarDaysGrid"></div>
+      <button onclick="closeCustomCalendar()" style="margin-top: 0.5rem; padding: 0.6rem; font-size: 0.85rem;">إغلاق</button>
     </div>
   </div>
 
@@ -1338,6 +1444,82 @@
       }
     }
 
+    /* Custom Glowing Calendar Logic */
+    let activeDateInputId = null;
+    let calYear = new Date().getFullYear();
+    let calMonth = new Date().getMonth();
+
+    const monthNamesAr = ["يناير", "فبراير", "مارس", "إبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+
+    function openCustomCalendar(inputId) {
+      activeDateInputId = inputId;
+      const val = document.getElementById(inputId).value;
+      if (val) {
+        const parts = val.split('-');
+        if (parts.length === 3) {
+          calYear = parseInt(parts[0]);
+          calMonth = parseInt(parts[1]) - 1;
+        }
+      } else {
+        const now = new Date();
+        calYear = now.getFullYear();
+        calMonth = now.getMonth();
+      }
+      renderCustomCalendar();
+      document.getElementById('customCalendarModal').classList.add('show');
+    }
+
+    function closeCustomCalendar() {
+      document.getElementById('customCalendarModal').classList.remove('show');
+    }
+
+    function changeCalendarMonth(direction) {
+      calMonth += direction;
+      if (calMonth > 11) { calMonth = 0; calYear++; }
+      else if (calMonth < 0) { calMonth = 11; calYear--; }
+      renderCustomCalendar();
+    }
+
+    function renderCustomCalendar() {
+      document.getElementById('calMonthYearTitle').innerText = `${monthNamesAr[calMonth]} ${calYear}`;
+      const grid = document.getElementById('calendarDaysGrid');
+      grid.innerHTML = "";
+
+      const firstDayIndex = new Date(calYear, calMonth, 1).getDay();
+      const totalDays = new Date(calYear, calMonth + 1, 0).getDate();
+
+      // Empty slots for previous month alignment
+      for (let i = 0; i < firstDayIndex; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'calendar-day empty';
+        grid.appendChild(emptyCell);
+      }
+
+      const currentSelectedVal = activeDateInputId ? document.getElementById(activeDateInputId).value : "";
+
+      for (let day = 1; day <= totalDays; day++) {
+        const dayCell = document.createElement('div');
+        dayCell.className = 'calendar-day';
+        dayCell.innerText = day;
+
+        const mStr = String(calMonth + 1).padStart(2, '0');
+        const dStr = String(day).padStart(2, '0');
+        const formattedDate = `${calYear}-${mStr}-${dStr}`;
+
+        if (formattedDate === currentSelectedVal) {
+          dayCell.classList.add('selected');
+        }
+
+        dayCell.onclick = () => {
+          document.getElementById(activeDateInputId).value = formattedDate;
+          closeCustomCalendar();
+          calculateLeaveDays();
+        };
+
+        grid.appendChild(dayCell);
+      }
+    }
+
     function toggleChatbot() {
       const chatWin = document.getElementById('chatbot-window');
       chatWin.classList.toggle('show');
@@ -1663,7 +1845,7 @@
           document.getElementById('dash-name').innerText = user.name || "--";
           document.getElementById('dash-code-val').innerText = code;
           
-          // Check for manager Amgad Abdel Momen photo or user photo
+          // Check for manager Amgad Abdel Momen photo (`amgad.jpg`) or fallback
           const userPhotoUrl = user.photo || (code === 'amgad' || (user.name && user.name.includes('أمجد')) ? 'amgad.jpg' : 'https://i.pravatar.cc/150?img=12');
           
           document.getElementById('dash-avatar').src = userPhotoUrl;
