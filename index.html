@@ -913,24 +913,24 @@
             <span style="font-size: 0.8rem;">▼</span>
           </div>
           <div class="dropdown-options" id="dropdownOptions">
-            <div class="dropdown-option" onclick="selectLeaveOption('annual', 'إجازة سنوية')" id="t-optAnnual">إجازة سنوية</div>
-            <div class="dropdown-option" onclick="selectLeaveOption('casual', 'إجازة عارضة')" id="t-optCasual">إجازة عارضة</div>
-            <div class="dropdown-option" onclick="selectLeaveOption('sick', 'إجازة مرضية')" id="t-optSick">إجازة مرضية</div>
-            <div class="dropdown-option" onclick="selectLeaveOption('bereavement', 'إجازة وفاة (أقارب درجة أولى - يوم)')" id="t-optBereavement">إجازة وفاة (أقارب درجة أولى - يوم)</div>
-            <div class="dropdown-option" onclick="selectLeaveOption('paternity', 'إجازة ولادة (يوم الولادة للموظف)')" id="t-optPaternity">إجازة ولادة (يوم الولادة للموظف)</div>
-            <div class="dropdown-option" onclick="selectLeaveOption('unpaid', 'إجازة بدون مرتب (بحد أقصى شهر)')" id="t-optUnpaid">إجازة بدون مرتب (بحد أقصى شهر)</div>
+            <div class="dropdown-option" onclick="selectLeaveOption('annual')" id="t-optAnnual">إجازة سنوية</div>
+            <div class="dropdown-option" onclick="selectLeaveOption('casual')" id="t-optCasual">إجازة عارضة</div>
+            <div class="dropdown-option" onclick="selectLeaveOption('sick')" id="t-optSick">إجازة مرضية</div>
+            <div class="dropdown-option" onclick="selectLeaveOption('bereavement')" id="t-optBereavement">إجازة وفاة (أقارب درجة أولى - يوم)</div>
+            <div class="dropdown-option" onclick="selectLeaveOption('paternity')" id="t-optPaternity">إجازة ولادة (يوم الولادة للموظف)</div>
+            <div class="dropdown-option" onclick="selectLeaveOption('unpaid')" id="t-optUnpaid">إجازة بدون مرتب (بحد أقصى شهر)</div>
           </div>
         </div>
         <input type="hidden" id="leaveType" value="annual">
 
         <div id="unpaidInsuranceNotice" class="hidden" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 0.8rem; padding: 0.65rem; font-size: 0.75rem; color: #f87171; text-align: right; line-height: 1.4;">
-          ⚠️ <strong>تنبيه هام:</strong> الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة.
+          ⚠️ <strong id="t-unpaidNoticeTitle">تنبيه هام:</strong> <span id="t-unpaidNoticeDesc">الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة.</span>
         </div>
 
         <!-- Medical Report Upload Section (Only for Sick Leave - Supports Camera, Gallery & PDF) -->
         <div id="medicalReportSection" class="medical-upload-box hidden">
           <div style="font-size: 0.8rem; color: #38bdf8; font-weight: 700; margin-bottom: 0.5rem;" id="t-medicalUploadTitle">🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):</div>
-          <label class="upload-btn-label" for="medicalReportFile">
+          <label class="upload-btn-label" for="medicalReportFile" id="t-medicalUploadBtnText">
             📁 اختر الملف أو صور التقرير
           </label>
           <input type="file" id="medicalReportFile" accept="image/*,application/pdf" onchange="handleMedicalFileSelected(this)">
@@ -964,7 +964,7 @@
       <div style="text-align: right; display: flex; flex-direction: column; gap: 1rem; padding: 1rem 0;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <span style="font-size: 0.9rem;" id="t-lblLangSetting">لغة التطبيق / Language</span>
-          <button onclick="selectLanguage(currentLang === 'ar' ? 'en' : 'ar')" style="width: auto; padding: 0.4rem 1rem; font-size: 0.8rem; margin:0;">تغيير اللغة</button>
+          <button onclick="selectLanguage(currentLang === 'ar' ? 'en' : 'ar')" style="width: auto; padding: 0.4rem 1rem; font-size: 0.8rem; margin:0;" id="t-changeLangBtn">تغيير اللغة</button>
         </div>
       </div>
     </div>
@@ -976,11 +976,11 @@
         <span style="font-weight: 700; color: #38bdf8;" id="t-titleProfile">تحديث الملف الشخصي</span>
       </div>
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;">
-        <label style="font-size: 0.75rem; color: var(--muted);">البريد الإلكتروني:</label>
+        <label style="font-size: 0.75rem; color: var(--muted);" id="t-lblEmail">البريد الإلكتروني:</label>
         <input type="email" placeholder="example@lactomisr.com">
-        <label style="font-size: 0.75rem; color: var(--muted);">رقم الهاتف:</label>
+        <label style="font-size: 0.75rem; color: var(--muted);" id="t-lblPhone">رقم الهاتف:</label>
         <input type="text" placeholder="010xxxxxxxx">
-        <button onclick="showComingSoon('view-profile')" class="btn-success" style="margin-top: 0.5rem;">حفظ التعديلات</button>
+        <button onclick="showComingSoon('view-profile')" class="btn-success" id="t-saveProfileBtn" style="margin-top: 0.5rem;">حفظ التعديلات</button>
       </div>
     </div>
 
@@ -1221,7 +1221,11 @@
         optBereavement: "إجازة وفاة (أقارب درجة أولى - يوم)",
         optPaternity: "إجازة ولادة (يوم الولادة للموظف)",
         optUnpaid: "إجازة بدون مرتب (بحد أقصى شهر)",
+        unpaidNoticeTitle: "تنبيه هام:",
+        unpaidNoticeDesc: "الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة.",
         medicalUploadTitle: "🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):",
+        medicalUploadBtnText: "📁 اختر الملف أو صور التقرير",
+        medicalFileChosen: "لم يتم اختيار ملف",
         lblStartDate: "تاريخ بداية الأجازة:",
         lblEndDate: "تاريخ نهاية الأجازة:",
         startPlaceholder: "اختر تاريخ البداية...",
@@ -1231,6 +1235,10 @@
         submitLeaveBtn: "إرسال طلب الإجازة",
         okCal: "تأكيد",
         cancelCal: "إلغاء",
+        lblEmail: "البريد الإلكتروني:",
+        lblPhone: "رقم الهاتف:",
+        saveProfileBtn: "حفظ التعديلات",
+        changeLangBtn: "تغيير اللغة",
         srv1: "📅 طلب إجازة",
         srv2: "🚪 طلب إذن شخصي",
         srv3: "✈️ طلب مأمورية",
@@ -1306,7 +1314,11 @@
         optBereavement: "Bereavement Leave (1st degree - 1 day)",
         optPaternity: "Paternity Leave (Birth day)",
         optUnpaid: "Unpaid Leave (Max 1 Month)",
+        unpaidNoticeTitle: "Important Notice:",
+        unpaidNoticeDesc: "Unpaid leave is for a maximum of 1 month, and the employee is committed to paying their share of social insurance for this period.",
         medicalUploadTitle: "🏥 Upload or capture medical report (Image or PDF):",
+        medicalUploadBtnText: "📁 Choose file or capture report",
+        medicalFileChosen: "No file chosen",
         lblStartDate: "Start Date:",
         lblEndDate: "End Date:",
         startPlaceholder: "Select start date...",
@@ -1316,6 +1328,10 @@
         submitLeaveBtn: "Submit Leave Request",
         okCal: "OK",
         cancelCal: "Cancel",
+        lblEmail: "Email:",
+        lblPhone: "Phone Number:",
+        saveProfileBtn: "Save Changes",
+        changeLangBtn: "Change Language",
         srv1: "📅 Leave Request",
         srv2: "🚪 Personal Permission",
         srv3: "✈️ Mission Request",
@@ -1363,7 +1379,7 @@
       document.getElementById('t-codeLabel').innerText = t.codeLabel;
       document.getElementById('t-sumLeaves').innerText = t.sumLeaves;
       document.getElementById('t-valLeaves').innerText = t.valLeaves;
-      document.getElementById('t-sumPermissions').innerText = t.sumPermissions;
+      document.getElementById('sumPermissions').innerText = t.sumPermissions; // Fixed ID mapping if any
       document.getElementById('t-valPermissions').innerText = t.valPermissions;
       document.getElementById('t-sumSalary').innerText = t.sumSalary;
       document.getElementById('t-logoutBtn').innerText = t.logoutBtn;
@@ -1406,16 +1422,27 @@
 
       document.getElementById('t-leavePageTitle').innerText = t.leavePageTitle;
       document.getElementById('t-leaveBalanceLabel').innerText = t.leaveBalanceLabel;
+      document.getElementById('leaveBalanceVal').innerText = t.valLeaves;
       document.getElementById('t-lblLeaveType').innerText = t.lblLeaveType;
+      
+      // Update Dropdown Option Texts
       document.getElementById('t-optAnnual').innerText = t.optAnnual;
       document.getElementById('t-optCasual').innerText = t.optCasual;
       document.getElementById('t-optSick').innerText = t.optSick;
       document.getElementById('t-optBereavement').innerText = t.optBereavement;
       document.getElementById('t-optPaternity').innerText = t.optPaternity;
       document.getElementById('t-optUnpaid').innerText = t.optUnpaid;
+
+      document.getElementById('t-unpaidNoticeTitle').innerText = t.unpaidNoticeTitle;
+      document.getElementById('t-unpaidNoticeDesc').innerText = t.unpaidNoticeDesc;
       document.getElementById('t-medicalUploadTitle').innerText = t.medicalUploadTitle;
+      document.getElementById('t-medicalUploadBtnText').innerText = t.medicalUploadBtnText;
       
-      // Fix: Immediately update start and end date input placeholders and selected dropdown text on language switch
+      const medicalFileNameEl = document.getElementById('medicalFileName');
+      if (medicalFileNameEl.innerText === "لم يتم اختيار ملف" || medicalFileNameEl.innerText === "No file chosen") {
+        medicalFileNameEl.innerText = t.medicalFileChosen;
+      }
+      
       document.getElementById('leaveStartDate').placeholder = t.startPlaceholder;
       document.getElementById('leaveEndDate').placeholder = t.endPlaceholder;
 
@@ -1444,6 +1471,10 @@
       document.getElementById('t-titleSettings').innerText = t.titleSettings;
       document.getElementById('t-titleProfile').innerText = t.titleProfile;
       document.getElementById('t-lblLangSetting').innerText = t.langSetting;
+      document.getElementById('t-changeLangBtn').innerText = t.changeLangBtn;
+      document.getElementById('t-lblEmail').innerText = t.lblEmail;
+      document.getElementById('t-lblPhone').innerText = t.lblPhone;
+      document.getElementById('t-saveProfileBtn').innerText = t.saveProfileBtn;
 
       for (let i = 1; i <= 10; i++) {
         const el = document.getElementById(`t-srv${i}`);
@@ -1479,9 +1510,13 @@
       options.classList.toggle('show');
     }
 
-    function selectLeaveOption(value, text) {
+    function selectLeaveOption(value) {
       document.getElementById('leaveType').value = value;
-      document.getElementById('selectedLeaveText').innerText = text;
+      const t = translations[currentLang];
+      const leaveKeyMap = { annual: 'optAnnual', casual: 'optCasual', sick: 'optSick', bereavement: 'optBereavement', paternity: 'optPaternity', unpaid: 'optUnpaid' };
+      if (leaveKeyMap[value] && t[leaveKeyMap[value]]) {
+        document.getElementById('selectedLeaveText').innerText = t[leaveKeyMap[value]];
+      }
       document.getElementById('dropdownOptions').classList.remove('show');
       handleLeaveTypeChange();
       calculateLeaveDays();
@@ -1489,11 +1524,12 @@
 
     function handleMedicalFileSelected(input) {
       const fileNameEl = document.getElementById('medicalFileName');
+      const t = translations[currentLang];
       if (input.files && input.files[0]) {
         fileNameEl.innerText = "📄 " + input.files[0].name;
         fileNameEl.style.color = "#38bdf8";
       } else {
-        fileNameEl.innerText = currentLang === 'ar' ? "لم يتم اختيار ملف" : "No file chosen";
+        fileNameEl.innerText = t.medicalFileChosen;
         fileNameEl.style.color = "var(--muted)";
       }
     }
@@ -1873,9 +1909,9 @@
           document.getElementById('leaveTotalDaysText').innerText = currentLang === 'ar' ? 'إجمالي الأيام المطلوبة: 0 يوم' : 'Total requested days: 0 days';
           document.getElementById('leaveMsg').innerText = '';
           document.getElementById('medicalReportFile').value = '';
-          document.getElementById('medicalFileName').innerText = currentLang === 'ar' ? 'لم يتم اختيار ملف' : 'No file chosen';
+          document.getElementById('medicalFileName').innerText = translations[currentLang].medicalFileChosen;
           document.getElementById('leaveType').value = 'annual';
-          document.getElementById('selectedLeaveText').innerText = currentLang === 'ar' ? 'إجازة سنوية' : translations[currentLang].optAnnual;
+          document.getElementById('selectedLeaveText').innerText = translations[currentLang].optAnnual;
           handleLeaveTypeChange();
         }
 
