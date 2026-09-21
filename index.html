@@ -591,28 +591,31 @@
     .summary-title { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.4rem; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
     .summary-value { font-size: 1.15rem; font-weight: 800; color: #38bdf8; }
     
-    /* Progress / Downloading Bar for Level of Consumption */
+    /* Segmented & Graded Downloading Bar (شريط الاستهلاك المتقطع والمتدرج من أزرق داكن مائل للسواد لأزرق مضيء) */
     .progress-bar-container {
       width: 100%;
-      height: 8px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 4px;
+      height: 9px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
       margin-top: 0.75rem;
       overflow: hidden;
       position: relative;
+      border: 1px solid rgba(56, 189, 248, 0.15);
     }
     .progress-bar-fill {
       height: 100%;
-      background: linear-gradient(90deg, #0284c7, #38bdf8);
-      border-radius: 4px;
+      border-radius: 6px;
       width: 0%;
       transition: width 1s ease-in-out;
+      background: linear-gradient(90deg, #040814 0%, #0284c7 50%, #38bdf8 100%);
+      mask-image: repeating-linear-gradient(90deg, #000, #000 6px, transparent 6px, transparent 9px);
+      -webkit-mask-image: repeating-linear-gradient(90deg, #000, #000 6px, transparent 6px, transparent 9px);
       box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
       animation: pulseGlow 2s infinite alternate;
     }
     @keyframes pulseGlow {
-      0% { filter: brightness(1); box-shadow: 0 0 8px rgba(56, 189, 248, 0.4); }
-      100% { filter: brightness(1.25); box-shadow: 0 0 16px rgba(56, 189, 248, 0.8); }
+      0% { filter: brightness(0.9); box-shadow: 0 0 8px rgba(56, 189, 248, 0.3); }
+      100% { filter: brightness(1.3); box-shadow: 0 0 18px rgba(56, 189, 248, 0.8); }
     }
 
     /* Salary Row with Eye Toggle */
@@ -1030,7 +1033,7 @@
         </div>
       </div>
       
-      <!-- Summaries Stacked Full Width Cards with Downloading Bars & Salary Eye Toggle -->
+      <!-- Summaries Stacked Full Width Cards with Segmented/Graded Bars & Salary Eye Toggle -->
       <div class="summaries-grid">
         <!-- 1. Leave Balance -->
         <div class="summary-card">
@@ -1106,15 +1109,15 @@
       </div>
       <div style="display: flex; flex-direction: column; gap: 0.85rem; padding: 0.5rem 0;">
         <button class="service-row-btn" onclick="showComingSoon('view-services')">
-          <span>📅 طلبات الإجازات</span>
+          <span id="t-srv1">📅 طلبات الإجازات</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
         <button class="service-row-btn" onclick="showComingSoon('view-services')">
-          <span>💰 مفردات المرتب</span>
+          <span id="t-srv2">💰 مفردات المرتب</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
         <button class="service-row-btn" onclick="showComingSoon('view-services')">
-          <span>📞 دليل التواصل</span>
+          <span id="t-srv3">📞 دليل التواصل</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
       </div>
@@ -1376,6 +1379,9 @@
         titleSettings: "الضبط والإعدادات",
         titleProfile: "تحديث الملف الشخصي",
         langSetting: "لغة التطبيق",
+        srv1: "📅 طلبات الإجازات",
+        srv2: "💰 مفردات المرتب",
+        srv3: "📞 دليل التواصل",
         slides: [
           { title: "أخبار الشركة", desc: "تابع أحدث المؤتمرات، فعاليات الشركة، وأبرز الأخبار الرسمية." },
           { title: "الفرص الوظيفية", desc: "استكشف الوظائف الشاغرة الداخلية وحركات الترقيات الأخيرة للموظفين." },
@@ -1432,6 +1438,9 @@
         titleSettings: "Settings",
         titleProfile: "Update Profile",
         langSetting: "App Language",
+        srv1: "📅 Leave Requests",
+        srv2: "💰 Payslips",
+        srv3: "📞 Contact Directory",
         slides: [
           { title: "Company News", desc: "Follow latest conferences, company events and official news." },
           { title: "Career Opportunities", desc: "Explore internal vacancies and recent employee promotions." },
@@ -1527,6 +1536,10 @@
       document.getElementById('t-titleSettings').innerText = t.titleSettings;
       document.getElementById('t-titleProfile').innerText = t.titleProfile;
       document.getElementById('t-lblLangSetting').innerText = t.langSetting;
+
+      document.getElementById('t-srv1').innerText = t.srv1;
+      document.getElementById('t-srv2').innerText = t.srv2;
+      document.getElementById('t-srv3').innerText = t.srv3;
       
       updateDynamicGreeting();
       
