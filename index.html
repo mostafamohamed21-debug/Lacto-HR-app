@@ -120,7 +120,7 @@
       white-space: nowrap;
     }
     
-    /* App Header */
+    /* App Header & 3D Rotating Logo */
     .app-header {
       width: 100vw;
       background: #0d1527;
@@ -139,13 +139,21 @@
     .brand-container {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.6rem;
+      perspective: 800px;
     }
     .brand-logo {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       object-fit: contain;
-      border-radius: 8px;
+      border-radius: 10px;
+      transform-style: preserve-3d;
+      animation: rotateLogo3D 6s linear infinite;
+      filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.7));
+    }
+    @keyframes rotateLogo3D {
+      0% { transform: perspective(500px) rotateY(0deg); }
+      100% { transform: perspective(500px) rotateY(360deg); }
     }
     .brand-title {
       font-size: 1.2rem;
@@ -873,7 +881,7 @@
     </div>
   </div>
   
-  <!-- App Header -->
+  <!-- App Header with 3D Rotating Logo -->
   <div class="app-header">
     <div class="brand-container">
       <img src="logo.png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
@@ -1102,23 +1110,51 @@
       <button id="t-saveCardBtn" onclick="downloadCard()" class="btn-success" style="margin-top:1rem;">حفظ الكارت كصورة</button>
     </div>
     
-    <!-- 4. Services View (خدماتي) -->
+    <!-- 4. Services View (خدماتي المحدثة بالـ 10 طلبات) -->
     <div id="view-services" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-dashboard')"><span id="t-backBtnServices">← رجوع</span></button>
         <span style="font-weight: 700; color: #38bdf8;" id="t-titleServices">خدماتي</span>
       </div>
-      <div style="display: flex; flex-direction: column; gap: 0.85rem; padding: 0.5rem 0;">
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; padding: 0.5rem 0;">
         <button class="service-row-btn" onclick="showComingSoon('view-services')">
-          <span id="t-srv1">📅 طلبات الإجازات</span>
+          <span id="t-srv1">📅 طلب إجازة</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
         <button class="service-row-btn" onclick="showComingSoon('view-services')">
-          <span id="t-srv2">💰 مفردات المرتب</span>
+          <span id="t-srv2">🚪 طلب إذن شخصي</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
         <button class="service-row-btn" onclick="showComingSoon('view-services')">
-          <span id="t-srv3">📞 دليل التواصل</span>
+          <span id="t-srv3">✈️ طلب مأمورية</span>
+          <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
+        </button>
+        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+          <span id="t-srv4">💰 طلب مفردات مرتب</span>
+          <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
+        </button>
+        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+          <span id="t-srv5">💳 طلب سلفة مالية مقسطة</span>
+          <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
+        </button>
+        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+          <span id="t-srv6">📁 طلب أصول أوراق من ملفي</span>
+          <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
+        </button>
+        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+          <span id="t-srv7">🕋 طلب إجازة حج</span>
+          <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
+        </button>
+        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+          <span id="t-srv8">🕌 طلب إجازة عمرة</span>
+          <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
+        </button>
+        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+          <span id="t-srv9">🛠️ طلب دعم فني</span>
+          <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
+        </button>
+        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+          <span id="t-srv10">🏥 طلب حجز عيادة</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
       </div>
@@ -1380,9 +1416,16 @@
         titleSettings: "الضبط والإعدادات",
         titleProfile: "تحديث الملف الشخصي",
         langSetting: "لغة التطبيق",
-        srv1: "📅 طلبات الإجازات",
-        srv2: "💰 مفردات المرتب",
-        srv3: "📞 دليل التواصل",
+        srv1: "📅 طلب إجازة",
+        srv2: "🚪 طلب إذن شخصي",
+        srv3: "✈️ طلب مأمورية",
+        srv4: "💰 طلب مفردات مرتب",
+        srv5: "💳 طلب سلفة مالية مقسطة",
+        srv6: "📁 طلب أصول أوراق من ملفي",
+        srv7: "🕋 طلب إجازة حج",
+        srv8: "🕌 طلب إجازة عمرة",
+        srv9: "🛠️ طلب دعم فني",
+        srv10: "🏥 طلب حجز عيادة",
         slides: [
           { title: "أخبار الشركة", desc: "تابع أحدث المؤتمرات، فعاليات الشركة، وأبرز الأخبار الرسمية." },
           { title: "الفرص الوظيفية", desc: "استكشف الوظائف الشاغرة الداخلية وحركات الترقيات الأخيرة للموظفين." },
@@ -1439,9 +1482,16 @@
         titleSettings: "Settings",
         titleProfile: "Update Profile",
         langSetting: "App Language",
-        srv1: "📅 Leave Requests",
-        srv2: "💰 Payslips",
-        srv3: "📞 Contact Directory",
+        srv1: "📅 Leave Request",
+        srv2: "🚪 Personal Permission",
+        srv3: "✈️ Mission Request",
+        srv4: "💰 Payslip Request",
+        srv5: "💳 Installment Advance",
+        srv6: "📁 Original Docs Request",
+        srv7: "🕋 Hajj Leave Request",
+        srv8: "🕌 Umrah Leave Request",
+        srv9: "🛠️ Technical Support",
+        srv10: "🏥 Clinic Reservation",
         slides: [
           { title: "Company News", desc: "Follow latest conferences, company events and official news." },
           { title: "Career Opportunities", desc: "Explore internal vacancies and recent employee promotions." },
@@ -1538,9 +1588,10 @@
       document.getElementById('t-titleProfile').innerText = t.titleProfile;
       document.getElementById('t-lblLangSetting').innerText = t.langSetting;
 
-      document.getElementById('t-srv1').innerText = t.srv1;
-      document.getElementById('t-srv2').innerText = t.srv2;
-      document.getElementById('t-srv3').innerText = t.srv3;
+      for (let i = 1; i <= 10; i++) {
+        const el = document.getElementById(`t-srv${i}`);
+        if (el && t[`srv${i}`]) el.innerText = t[`srv${i}`];
+      }
       
       updateDynamicGreeting();
       
