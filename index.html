@@ -216,19 +216,50 @@
       padding-right: 1.25rem;
     }
 
-    /* Glowing Badge for Leave Days Total Result */
+    /* Fully Glowing Badge for Leave Days Total Result */
     .glowing-result-badge {
-      background: rgba(56, 189, 248, 0.15);
-      border: 1px solid rgba(56, 189, 248, 0.6);
+      background: rgba(56, 189, 248, 0.22);
+      border: 1px solid rgba(56, 189, 248, 0.8);
       border-radius: 1rem;
-      padding: 0.75rem;
-      font-size: 0.85rem;
+      padding: 0.85rem;
+      font-size: 0.95rem;
       color: #38bdf8;
       font-weight: 800;
       text-align: center;
+      margin: 0.6rem 0;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+      text-shadow: 0 0 12px rgba(56, 189, 248, 0.7);
+    }
+
+    /* File Upload Styling for Medical Report */
+    .medical-upload-box {
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px dashed rgba(56, 189, 248, 0.6);
+      border-radius: 1rem;
+      padding: 1rem;
+      text-align: center;
       margin: 0.5rem 0;
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
-      text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);
+    }
+    .medical-upload-box input[type="file"] {
+      display: none;
+    }
+    .upload-btn-label {
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      color: #0b0f19;
+      padding: 0.6rem 1.2rem;
+      border-radius: 0.8rem;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
+      transition: transform 0.2s;
+    }
+    .upload-btn-label:hover {
+      transform: scale(1.03);
     }
 
     /* Login Password Container with Stylish Eye Toggle */
@@ -761,7 +792,7 @@
         
         <!-- Custom Glowing Dropdown for Leave Type -->
         <div class="custom-dropdown" id="customLeaveDropdown">
-          <div class="dropdown-selected" onclick="toggleCustomDropdown()">
+          <div class="dropdown-selected" onclick="toggleCustomDropdown(event)">
             <span id="selectedLeaveText">إجازة سنوية</span>
             <span style="font-size: 0.8rem;">▼</span>
           </div>
@@ -778,6 +809,16 @@
 
         <div id="unpaidInsuranceNotice" class="hidden" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 0.8rem; padding: 0.65rem; font-size: 0.75rem; color: #f87171; text-align: right; line-height: 1.4;">
           ⚠️ <strong>تنبيه هام:</strong> الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة.
+        </div>
+
+        <!-- Medical Report Upload Section (Only for Sick Leave) -->
+        <div id="medicalReportSection" class="medical-upload-box hidden">
+          <div style="font-size: 0.8rem; color: #38bdf8; font-weight: 700; margin-bottom: 0.5rem;">🏥 مطلوب إرفاق أو تصوير التقرير الطبي:</div>
+          <label class="upload-btn-label" for="medicalReportFile">
+            📷 تصوير / رفع التقرير الطبي
+          </label>
+          <input type="file" id="medicalReportFile" accept="image/*" capture="environment" onchange="handleMedicalFileSelected(this)">
+          <div id="medicalFileName" style="font-size: 0.75rem; color: var(--muted); margin-top: 0.4rem;">لم يتم اختيار ملف</div>
         </div>
 
         <label style="font-size: 0.75rem; color: var(--muted);" id="t-lblStartDate">تاريخ بداية الأجازة:</label>
@@ -968,7 +1009,7 @@
         eyeIconEl.innerHTML = `<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2z"/>`;
       } else {
         salaryValEl.innerText = "••••••••";
-        eyeIconEl.innerHTML = `<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3 z"/>`;
+        eyeIconEl.innerHTML = `<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>`;
       }
     }
     
@@ -1272,8 +1313,8 @@
     });
 
     /* Custom Dropdown Control */
-    function toggleCustomDropdown() {
-      event.stopPropagation();
+    function toggleCustomDropdown(event) {
+      if (event) event.stopPropagation();
       const options = document.getElementById('dropdownOptions');
       options.classList.toggle('show');
     }
@@ -1284,6 +1325,17 @@
       document.getElementById('dropdownOptions').classList.remove('show');
       handleLeaveTypeChange();
       calculateLeaveDays();
+    }
+
+    function handleMedicalFileSelected(input) {
+      const fileNameEl = document.getElementById('medicalFileName');
+      if (input.files && input.files[0]) {
+        fileNameEl.innerText = "📄 " + input.files[0].name;
+        fileNameEl.style.color = "#38bdf8";
+      } else {
+        fileNameEl.innerText = "لم يتم اختيار ملف";
+        fileNameEl.style.color = "var(--muted)";
+      }
     }
 
     function toggleChatbot() {
@@ -1310,7 +1362,7 @@
         const lowerText = text.toLowerCase();
         if (currentLang === 'ar') {
           if (lowerText.includes('إجازة') || lowerText.includes('اجازات')) {
-            botMsg.innerText = "يمكنك تقديم طلب إجازة جديد (سنوية، وفاة، ولادة، بدون مرتب) مباشرة من قسم خدماتي.";
+            botMsg.innerText = "يمكنك تقديم طلب إجازة جديد (سنوية، وفاة، ولادة، بدون مرتب) مباشرة من خدماتي.";
           } else {
             botMsg.innerText = "شكراً لتواصلك! تم تسجيل استفسارك وسيتم الرد عليك قريباً من قبل ممثل الموارد البشرية.";
           }
@@ -1428,10 +1480,18 @@
     function handleLeaveTypeChange() {
       const leaveType = document.getElementById('leaveType').value;
       const noticeBox = document.getElementById('unpaidInsuranceNotice');
+      const medicalBox = document.getElementById('medicalReportSection');
+
       if (leaveType === 'unpaid') {
         noticeBox.classList.remove('hidden');
       } else {
         noticeBox.classList.add('hidden');
+      }
+
+      if (leaveType === 'sick') {
+        medicalBox.classList.remove('hidden');
+      } else {
+        medicalBox.classList.add('hidden');
       }
     }
 
@@ -1471,6 +1531,15 @@
         msg.style.color = '#ef4444';
         msg.innerText = currentLang === 'ar' ? "يرجى تحديد تاريخ البداية والنهاية!" : "Please select start and end dates!";
         return;
+      }
+
+      if (leaveType === 'sick') {
+        const fileInput = document.getElementById('medicalReportFile');
+        if (!fileInput.files || !fileInput.files[0]) {
+          msg.style.color = '#ef4444';
+          msg.innerText = currentLang === 'ar' ? "⚠️ يرجى تصوير أو إرفاق التقرير الطبي للإجازة المرضية!" : "⚠️ Please attach medical report for sick leave!";
+          return;
+        }
       }
 
       const leaveData = {
@@ -1593,14 +1662,18 @@
           }
           document.getElementById('dash-name').innerText = user.name || "--";
           document.getElementById('dash-code-val').innerText = code;
-          document.getElementById('dash-avatar').src = user.photo || "https://i.pravatar.cc/150?img=12";
           
+          // Check for manager Amgad Abdel Momen photo or user photo
+          const userPhotoUrl = user.photo || (code === 'amgad' || (user.name && user.name.includes('أمجد')) ? 'amgad.jpg' : 'https://i.pravatar.cc/150?img=12');
+          
+          document.getElementById('dash-avatar').src = userPhotoUrl;
           document.getElementById('userName').innerText = user.name || "--";
           document.getElementById('userJob').innerText = user.job || "--";
           document.getElementById('userDept').innerText = user.dept || "--";
           document.getElementById('userCodeVal').innerText = code;
           document.getElementById('userNID').innerText = user.nationalId || "--";
-          document.getElementById('userPhoto').src = user.photo || "https://i.pravatar.cc/150?img=12";
+          document.getElementById('userPhoto').src = userPhotoUrl;
+
           document.getElementById('qrcode').innerHTML = "";
           new QRCode(document.getElementById("qrcode"), { text: window.location.origin + window.location.pathname + "?emp=" + code, width: 85, height: 85 });
           
