@@ -671,12 +671,12 @@
     <!-- 1. Login View -->
     <div id="view-login" class="card">
       <h2 style="font-size: 1.5rem; margin-bottom: 0.2rem;">LM HR Hub</h2>
-      <p id="t-subtitle" style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem;">بوابة الموظفين الرقمية</p>
+      <p id="t-subtitle" data-ar="بوابة الموظفين الرقمية" data-en="Digital Employee Portal" style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem;">بوابة الموظفين الرقمية</p>
       
-      <input type="text" id="empCode" placeholder="كود الموظف">
+      <input type="text" id="empCode" data-ar-placeholder="كود الموظف" data-en-placeholder="Employee Code" placeholder="كود الموظف">
       
       <div class="password-container">
-        <input type="password" id="empPass" placeholder="كلمة السر">
+        <input type="password" id="empPass" data-ar-placeholder="كلمة السر" data-en-placeholder="Password" placeholder="كلمة السر">
         <button type="button" class="toggle-password" onclick="togglePasswordVisibility()" title="إظهار / إخفاء كلمة السر">
           <svg id="eyeIcon" viewBox="0 0 24 24">
             <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
@@ -685,10 +685,10 @@
       </div>
       <label class="checkbox-container">
         <input type="checkbox" id="rememberMe">
-        <span id="t-remember">تذكرني</span>
+        <span id="t-remember" data-ar="تذكرني" data-en="Remember Me">تذكرني</span>
       </label>
       
-      <button id="t-loginBtn" onclick="login()">دخول الحساب</button>
+      <button id="t-loginBtn" data-ar="دخول الحساب" data-en="Sign In" onclick="login()">دخول الحساب</button>
       <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.85rem; font-weight: bold;"></p>
     </div>
     
@@ -705,7 +705,7 @@
           <div class="profile-text-content">
             <div id="dash-greeting" style="font-size: 0.75rem; color: var(--muted);">صباح الخير ☀️</div>
             <h3 id="dash-name" style="margin: 0; font-size: 0.95rem; font-weight: 700;">--</h3>
-            <div class="code-badge-pill"><span id="t-codeLabel">ID:</span> <span id="dash-code-val">--</span></div>
+            <div class="code-badge-pill"><span id="t-codeLabel" data-ar="ID:" data-en="ID:">ID:</span> <span id="dash-code-val">--</span></div>
           </div>
         </div>
         <div class="notification-wrapper">
@@ -714,8 +714,8 @@
             <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4v6z"/></svg>
           </div>
           <div class="notification-popup" id="notificationPopup">
-            <div class="notification-popup-title" id="t-popupTitle">تنبيهات النظام</div>
-            <div class="notification-popup-desc" id="t-popupDesc">لا توجد إشعارات جديدة. تم تفعيل النظام بنجاح!</div>
+            <div class="notification-popup-title" data-ar="تنبيهات النظام" data-en="System Alerts">تنبيهات النظام</div>
+            <div class="notification-popup-desc" data-ar="لا توجد إشعارات جديدة. تم تفعيل النظام بنجاح!" data-en="No new notifications. System activated successfully!">لا توجد إشعارات جديدة. تم تفعيل النظام بنجاح!</div>
           </div>
         </div>
       </div>
@@ -727,14 +727,14 @@
     <div id="dashboard-content-container" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="checkin-top-row">
-          <span style="font-weight: 700; color: #38bdf8;"><span id="t-workingHoursText">ساعات العمل</span> ⏱️ <span id="valWorkingHours">00:00</span></span>
+          <span style="font-weight: 700; color: #38bdf8;"><span data-ar="ساعات العمل" data-en="Working Hours">ساعات العمل</span> ⏱️ <span id="valWorkingHours">00:00</span></span>
           <div style="display: flex; gap: 0.75rem; color: var(--muted);">
-            <span><span id="t-outLabel">انصراف</span> 🚪 <strong id="valOutTime" style="color:var(--text);">--:--</strong></span>
-            <span><span id="t-inLabel">حضور</span> 📥 <strong id="valInTime" style="color:var(--text);">--:--</strong></span>
+            <span><span data-ar="انصراف" data-en="Out">انصراف</span> 🚪 <strong id="valOutTime" style="color:var(--text);">--:--</strong></span>
+            <span><span data-ar="حضور" data-en="In">حضور</span> 📥 <strong id="valInTime" style="color:var(--text);">--:--</strong></span>
           </div>
         </div>
         <div class="checkin-main-content">
-          <div id="checkinStatusText" class="checkin-status-text">اضغط هنا لتفعيل بصمة الـ GPS وتسجيل الحضور/الانصراف</div>
+          <div id="t-checkinStatusText" data-ar="اضغط هنا لتفعيل بصمة الـ GPS وتسجيل الحضور/الانصراف" data-en="Tap here to activate GPS check-in/out" class="checkin-status-text">اضغط هنا لتفعيل بصمة الـ GPS وتسجيل الحضور/الانصراف</div>
           <div class="fingerprint-icon-wrap">
             <svg viewBox="0 0 24 24"><path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 13.9 3 12 3s-3.66.42-5.58 1.41c-.15.08-.33.05-.45-.07-.12-.12-.15-.31-.07-.46C7.94 2.76 9.9 2.25 12 2.25s4.06.51 6.1 1.63c.15.08.21.27.13.43-.05.1-.15.16-.25.16zM12 9c-1.1 0-2 .9-2 2 0 .55.22 1.05.59 1.42l.98.98c.37.37.87.59 1.42.59 1.1 0 2-.9 2-2 0-1.1-.9-2-2-2zm6.75 3.75c-.41 0-.75.34-.75.75 0 2.9-2.35 5.25-5.25 5.25S7.5 16.4 7.5 13.5c0-.41-.34-.75-.75-.75s-.75.34-.75.75c0 3.79 3.09 6.88 6.88 6.88s6.88-3.09 6.88-6.88c0-.41-.34-.75-.75-.75z"/></svg>
           </div>
@@ -744,10 +744,10 @@
       <div class="external-attendance-bar">
         <div class="action-btn-item">
           <div id="ledRed" class="indicator-dot dot-red"></div>
-          <span class="glowing-action-text" id="t-checkOutText">تسجيل انصراف</span>
+          <span class="glowing-action-text" data-ar="تسجيل انصراف" data-en="Check Out">تسجيل انصراف</span>
         </div>
         <div class="action-btn-item">
-          <span class="glowing-action-text" id="t-checkInText">تسجيل حضور</span>
+          <span class="glowing-action-text" data-ar="تسجيل حضور" data-en="Check In">تسجيل حضور</span>
           <div id="ledGreen" class="indicator-dot dot-green"></div>
         </div>
       </div>
@@ -755,28 +755,28 @@
       <div class="announcement-card" id="announcementCard">
         <div class="slides-container" id="slidesContainer">
           <div class="slide-item active" onclick="showComingSoon('view-dashboard')">
-            <div class="announcement-top"><span class="announcement-title slide-title-1">أخبار الشركة</span></div>
-            <div class="announcement-desc slide-desc-1">تابع أحدث المؤتمرات، فعاليات الشركة، وأبرز الأخبار الرسمية.</div>
+            <div class="announcement-top"><span class="announcement-title slide-title-1" data-ar="أخبار الشركة" data-en="Company News">أخبار الشركة</span></div>
+            <div class="announcement-desc slide-desc-1" data-ar="تابع أحدث المؤتمرات، فعاليات الشركة، وأبرز الأخبار الرسمية." data-en="Follow latest conferences, company events and official news.">تابع أحدث المؤتمرات، فعاليات الشركة، وأبرز الأخبار الرسمية.</div>
           </div>
           <div class="slide-item" onclick="showComingSoon('view-dashboard')">
-            <div class="announcement-top"><span class="announcement-title slide-title-2">الفرص الوظيفية</span></div>
-            <div class="announcement-desc slide-desc-2">استكشف الوظائف الشاغرة الداخلية وحركات الترقيات الأخيرة للموظفين.</div>
+            <div class="announcement-top"><span class="announcement-title slide-title-2" data-ar="الفرص الوظيفية" data-en="Career Opportunities">الفرص الوظيفية</span></div>
+            <div class="announcement-desc slide-desc-2" data-ar="استكشف الوظائف الشاغرة الداخلية وحركات الترقيات الأخيرة للموظفين." data-en="Explore internal vacancies and recent employee promotions.">استكشف الوظائف الشاغرة الداخلية وحركات الترقيات الأخيرة للموظفين.</div>
           </div>
           <div class="slide-item" onclick="showComingSoon('view-dashboard')">
-            <div class="announcement-top"><span class="announcement-title slide-title-3">الموظفون المثاليون</span></div>
-            <div class="announcement-desc slide-desc-3">تعرف على نجوم الشهر والموظفين المثاليين المكرمين عن كل إدارة.</div>
+            <div class="announcement-top"><span class="announcement-title slide-title-3" data-ar="الموظفون المثاليون" data-en="Top Employees">الموظفون المثاليون</span></div>
+            <div class="announcement-desc slide-desc-3" data-ar="تعرف على نجوم الشهر والموظفين المثاليين المكرمين عن كل إدارة." data-en="Discover department employees of the month and honorees.">تعرف على نجوم الشهر والموظفين المثاليين المكرمين عن كل إدارة.</div>
           </div>
           <div class="slide-item" onclick="showComingSoon('view-dashboard')">
-            <div class="announcement-top"><span class="announcement-title slide-title-4">اللوائح الداخلية</span></div>
-            <div class="announcement-desc slide-desc-4">اططلع على لائحة تنظيم العمل، الجزاءات، والسياسات الداخلية للشركة.</div>
+            <div class="announcement-top"><span class="announcement-title slide-title-4" data-ar="اللوائح الداخلية" data-en="Internal Regulations">اللوائح الداخلية</span></div>
+            <div class="announcement-desc slide-desc-4" data-ar="اططلع على لائحة تنظيم العمل، الجزاءات، والسياسات الداخلية للشركة." data-en="Review work organization regulations, penalties, and company policies.">اططلع على لائحة تنظيم العمل، الجزاءات، والسياسات الداخلية للشركة.</div>
           </div>
           <div class="slide-item" onclick="showComingSoon('view-dashboard')">
-            <div class="announcement-top"><span class="announcement-title slide-title-5">دليل العاملين وتحديثات التطبيق</span></div>
-            <div class="announcement-desc slide-desc-5">آخر الإضافات والتحديثات البرمجية ومستجدات دليل العاملين.</div>
+            <div class="announcement-top"><span class="announcement-title slide-title-5" data-ar="دليل العاملين وتحديثات التطبيق" data-en="Employee Guide & Updates">دليل العاملين وتحديثات التطبيق</span></div>
+            <div class="announcement-desc slide-desc-5" data-ar="آخر الإضافات والتحديثات البرمجية ومستجدات دليل العاملين." data-en="Latest software updates and employee guide announcements.">آخر الإضافات والتحديثات البرمجية ومستجدات دليل العاملين.</div>
           </div>
           <div class="slide-item" onclick="showPage('view-suggestion-page')">
-            <div class="announcement-top"><span class="announcement-title slide-title-6">قدم مقترحك</span></div>
-            <div class="announcement-desc slide-desc-6">شاركنا برأيك وأفكارك الإبداعية لتطوير العمل بالشركة.</div>
+            <div class="announcement-top"><span class="announcement-title slide-title-6" data-ar="قدم مقترحك" data-en="Submit a Proposal">قدم مقترحك</span></div>
+            <div class="announcement-desc slide-desc-6" data-ar="شاركنا برأيك وأفكارك الإبداعية لتطوير العمل بالشركة." data-en="Share your creative ideas and suggestions to improve the company.">شاركنا برأيك وأفكارك الإبداعية لتطوير العمل بالشركة.</div>
           </div>
         </div>
         <div class="slider-dots" id="sliderDots">
@@ -791,19 +791,19 @@
       
       <div class="summaries-grid">
         <div class="summary-card">
-          <div class="summary-title"><span id="t-sumLeaves">رصيد الإجازات</span><span style="font-size:0.75rem; color: #38bdf8;" id="leavesPercentageText">46% مستهلك</span></div>
-          <div class="summary-value" id="t-valLeaves">21 يوم</div>
+          <div class="summary-title"><span data-ar="رصيد الإجازات" data-en="Leave Balance">رصيد الإجازات</span><span style="font-size:0.75rem; color: #38bdf8;" data-ar="46% مستهلك" data-en="46% Consumed">46% مستهلك</span></div>
+          <div class="summary-value" data-ar="21 يوم" data-en="21 Days">21 يوم</div>
           <div class="progress-bar-container"><div class="progress-bar-fill" id="leavesProgressBar" style="width: 46.6%;"></div></div>
         </div>
 
         <div class="summary-card">
-          <div class="summary-title"><span id="t-sumPermissions">الأذونات المتاحة</span><span style="font-size:0.75rem; color: #38bdf8;" id="permsPercentageText">60% متاح</span></div>
-          <div class="summary-value" id="t-valPermissions">3 أذونات</div>
+          <div class="summary-title"><span data-ar="الأذونات المتاحة" data-en="Available Permissions">الأذونات المتاحة</span><span style="font-size:0.75rem; color: #38bdf8;" data-ar="60% متاح" data-en="60% Available">60% متاح</span></div>
+          <div class="summary-value" data-ar="3 أذونات" data-en="3 Permissions">3 أذونات</div>
           <div class="progress-bar-container"><div class="progress-bar-fill" id="permsProgressBar" style="width: 60%;"></div></div>
         </div>
 
         <div class="summary-card">
-          <div class="summary-title" id="t-sumSalary">صافي آخر مرتب</div>
+          <div class="summary-title" data-ar="صافي آخر مرتب" data-en="Last Net Salary">صافي آخر مرتب</div>
           <div class="salary-row">
             <div class="salary-masked" id="salaryDisplayVal">••••••••</div>
             <button type="button" class="toggle-salary-btn" onclick="toggleSalaryVisibility()" title="إظهار / إخفاء الراتب">
@@ -813,14 +813,14 @@
         </div>
       </div>
 
-      <button id="t-logoutBtn" onclick="logout()" class="btn-danger">تسجيل الخروج</button>
+      <button id="t-logoutBtn" data-ar="تسجيل الخروج" data-en="Sign Out" onclick="logout()" class="btn-danger">تسجيل الخروج</button>
     </div>
     
     <!-- 3. ID Card View -->
     <div id="view-id-card" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" onclick="showPage('view-dashboard')"><span id="t-backBtnID">← رجوع</span></button>
-        <span id="t-cardTitle" style="font-weight: 700; font-size: 0.9rem;">الكارت الرقمي</span>
+        <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span data-ar="الكارت الرقمي" data-en="Digital ID Card" style="font-weight: 700; font-size: 0.9rem;">الكارت الرقمي</span>
       </div>
       <div class="id-card" id="myCardToDownload" style="border-radius: 0 0 24px 24px;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1rem;">
@@ -832,60 +832,60 @@
         <p id="userJob" style="color: #38bdf8; font-size: 0.85rem; margin:0 0 0.85rem 0;">--</p>
         
         <div class="info-grid">
-          <div><div class="info-label" id="t-lblDept">الإدارة</div><div id="userDept" class="info-val">--</div></div>
-          <div><div class="info-label" id="t-lblCode">كود الموظف</div><div id="userCodeVal" class="info-val">--</div></div>
-          <div style="grid-column: span 2;"><div class="info-label" id="t-lblNID">الرقم القومي</div><div id="userNID" class="info-val">--</div></div>
+          <div><div class="info-label" data-ar="الإدارة" data-en="Department">الإدارة</div><div id="userDept" class="info-val">--</div></div>
+          <div><div class="info-label" data-ar="كود الموظف" data-en="Employee Code">كود الموظف</div><div id="userCodeVal" class="info-val">--</div></div>
+          <div style="grid-column: span 2;"><div class="info-label" data-ar="الرقم القومي" data-en="National ID">الرقم القومي</div><div id="userNID" class="info-val">--</div></div>
         </div>
         <div class="qr-container"><div id="qrcode"></div></div>
       </div>
-      <button id="t-saveCardBtn" onclick="downloadCard()" class="btn-success" style="margin-top:1rem;">حفظ الكارت كصورة</button>
+      <button data-ar="حفظ الكارت كصورة" data-en="Save ID Card as Image" onclick="downloadCard()" class="btn-success" style="margin-top:1rem;">حفظ الكارت كصورة</button>
     </div>
     
     <!-- 4. Services View -->
     <div id="view-services" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" onclick="showPage('view-dashboard')"><span id="t-backBtnServices">← رجوع</span></button>
-        <span style="font-weight: 700; color: #38bdf8;" id="t-titleServices">خدماتي</span>
+        <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span style="font-weight: 700; color: #38bdf8;" data-ar="خدماتي" data-en="My Services">خدماتي</span>
       </div>
       <div style="display: flex; flex-direction: column; gap: 0.75rem; padding: 0.5rem 0;">
         <button class="service-row-btn" onclick="showPage('view-leave-request')">
-          <span id="t-srv1">📅 طلب إجازة</span>
+          <span data-ar="📅 طلب إجازة" data-en="📅 Leave Request">📅 طلب إجازة</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
         <button class="service-row-btn" onclick="showComingSoon('view-services')">
-          <span id="t-srv2">🚪 طلب إذن شخصي</span>
+          <span data-ar="🚪 طلب إذن شخصي" data-en="🚪 Personal Permission">🚪 طلب إذن شخصي</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
         <button class="service-row-btn" onclick="showComingSoon('view-services')">
-          <span id="t-srv3">✈️ طلب مأمورية</span>
+          <span data-ar="✈️ طلب مأمورية" data-en="✈️ Mission Request">✈️ طلب مأمورية</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
         <button class="service-row-btn" onclick="showComingSoon('view-services')">
-          <span id="t-srv4">💰 طلب مفردات مرتب</span>
+          <span data-ar="💰 طلب مفردات مرتب" data-en="💰 Payslip Request">💰 طلب مفردات مرتب</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
         <button class="service-row-btn" onclick="showComingSoon('view-services')">
-          <span id="t-srv5">💳 طلب سلفة مالية مقسطة</span>
+          <span data-ar="💳 طلب سلفة مالية مقسطة" data-en="💳 Installment Advance">💳 طلب سلفة مالية مقسطة</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
         <button class="service-row-btn" onclick="showComingSoon('view-services')">
-          <span id="t-srv6">📁 طلب أصول أوراق من ملفي</span>
+          <span data-ar="📁 طلب أصول أوراق من ملفي" data-en="📁 Original Docs Request">📁 طلب أصول أوراق من ملفي</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
         <button class="service-row-btn" onclick="showComingSoon('view-services')">
-          <span id="t-srv7">🕋 طلب إجازة حج</span>
+          <span data-ar="🕋 طلب إجازة حج" data-en="🕋 Hajj Leave Request">🕋 طلب إجازة حج</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
         <button class="service-row-btn" onclick="showComingSoon('view-services')">
-          <span id="t-srv8">🕌 طلب إجازة عمرة</span>
+          <span data-ar="🕌 طلب إجازة عمرة" data-en="🕌 Umrah Leave Request">🕌 طلب إجازة عمرة</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
         <button class="service-row-btn" onclick="showComingSoon('view-services')">
-          <span id="t-srv9">🛠️ طلب دعم فني</span>
+          <span data-ar="🛠️ طلب دعم فني" data-en="🛠️ Technical Support">🛠️ طلب دعم فني</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
         <button class="service-row-btn" onclick="showComingSoon('view-services')">
-          <span id="t-srv10">🏥 طلب حجز عيادة</span>
+          <span data-ar="🏥 طلب حجز عيادة" data-en="🏥 Clinic Reservation">🏥 طلب حجز عيادة</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
       </div>
@@ -894,63 +894,63 @@
     <!-- 4.1. Leave Request Form View -->
     <div id="view-leave-request" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" onclick="showPage('view-services')"><span id="t-backBtnLeave">← رجوع</span></button>
-        <span style="font-weight: 700; color: #38bdf8;" id="t-leavePageTitle">طلب إجازة جديد</span>
+        <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span style="font-weight: 700; color: #38bdf8;" data-ar="طلب إجازة جديد" data-en="New Leave Request">طلب إجازة جديد</span>
       </div>
       
       <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 1rem; padding: 0.75rem 1rem; margin-bottom: 1rem;">
-        <span style="font-size: 0.8rem; color: var(--muted);" id="t-leaveBalanceLabel">رصيد الإجازات المتاح:</span>
-        <span style="font-size: 0.95rem; font-weight: 800; color: #38bdf8;" id="leaveBalanceVal">21 يوم</span>
+        <span style="font-size: 0.8rem; color: var(--muted);" data-ar="رصيد الإجازات المتاح:" data-en="Available Leave Balance:">رصيد الإجازات المتاح:</span>
+        <span style="font-size: 0.95rem; font-weight: 800; color: #38bdf8;" id="leaveBalanceVal" data-ar="21 يوم" data-en="21 Days">21 يوم</span>
       </div>
 
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;" id="leaveFormWrapper">
-        <label style="font-size: 0.75rem; color: var(--muted);" id="t-lblLeaveType">نوع الإجازة:</label>
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="نوع الإجازة:" data-en="Leave Type:">نوع الإجازة:</label>
         
         <!-- Custom Glowing Dropdown for Leave Type -->
         <div class="custom-dropdown" id="customLeaveDropdown">
           <div class="dropdown-selected" onclick="toggleCustomDropdown(event)">
-            <span id="selectedLeaveText">إجازة سنوية</span>
+            <span id="selectedLeaveText" data-ar="إجازة سنوية" data-en="Annual Leave">إجازة سنوية</span>
             <span style="font-size: 0.8rem;">▼</span>
           </div>
           <div class="dropdown-options" id="dropdownOptions">
-            <div class="dropdown-option" onclick="selectLeaveOption('annual')" id="t-optAnnual">إجازة سنوية</div>
-            <div class="dropdown-option" onclick="selectLeaveOption('casual')" id="t-optCasual">إجازة عارضة</div>
-            <div class="dropdown-option" onclick="selectLeaveOption('sick')" id="t-optSick">إجازة مرضية</div>
-            <div class="dropdown-option" onclick="selectLeaveOption('bereavement')" id="t-optBereavement">إجازة وفاة (أقارب درجة أولى - يوم)</div>
-            <div class="dropdown-option" onclick="selectLeaveOption('paternity')" id="t-optPaternity">إجازة ولادة (يوم الولادة للموظف)</div>
-            <div class="dropdown-option" onclick="selectLeaveOption('unpaid')" id="t-optUnpaid">إجازة بدون مرتب (بحد أقصى شهر)</div>
+            <div class="dropdown-option" onclick="selectLeaveOption('annual')" data-ar="إجازة سنوية" data-en="Annual Leave">إجازة سنوية</div>
+            <div class="dropdown-option" onclick="selectLeaveOption('casual')" data-ar="إجازة عارضة" data-en="Casual Leave">إجازة عارضة</div>
+            <div class="dropdown-option" onclick="selectLeaveOption('sick')" data-ar="إجازة مرضية" data-en="Sick Leave">إجازة مرضية</div>
+            <div class="dropdown-option" onclick="selectLeaveOption('bereavement')" data-ar="إجازة وفاة (أقارب درجة أولى - يوم)" data-en="Bereavement Leave (1st degree - 1 day)">إجازة وفاة (أقارب درجة أولى - يوم)</div>
+            <div class="dropdown-option" onclick="selectLeaveOption('paternity')" data-ar="إجازة ولادة (يوم الولادة للموظف)" data-en="Paternity Leave (Birth day)">إجازة ولادة (يوم الولادة للموظف)</div>
+            <div class="dropdown-option" onclick="selectLeaveOption('unpaid')" data-ar="إجازة بدون مرتب (بحد أقصى شهر)" data-en="Unpaid Leave (Max 1 Month)">إجازة بدون مرتب (بحد أقصى شهر)</div>
           </div>
         </div>
         <input type="hidden" id="leaveType" value="annual">
 
         <div id="unpaidInsuranceNotice" class="hidden" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 0.8rem; padding: 0.65rem; font-size: 0.75rem; color: #f87171; text-align: right; line-height: 1.4;">
-          ⚠️ <strong id="t-unpaidNoticeTitle">تنبيه هام:</strong> <span id="t-unpaidNoticeDesc">الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة.</span>
+          ⚠️ <strong data-ar="تنبيه هام:" data-en="Important Notice:">تنبيه هام:</strong> <span data-ar="الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة." data-en="Unpaid leave is for a maximum of 1 month, and the employee is committed to paying their share of social insurance for this period.">الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة.</span>
         </div>
 
-        <!-- Medical Report Upload Section (Only for Sick Leave - Supports Camera, Gallery & PDF) -->
+        <!-- Medical Report Upload Section -->
         <div id="medicalReportSection" class="medical-upload-box hidden">
-          <div style="font-size: 0.8rem; color: #38bdf8; font-weight: 700; margin-bottom: 0.5rem;" id="t-medicalUploadTitle">🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):</div>
-          <label class="upload-btn-label" for="medicalReportFile" id="t-medicalUploadBtnText">
+          <div style="font-size: 0.8rem; color: #38bdf8; font-weight: 700; margin-bottom: 0.5rem;" data-ar="🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):" data-en="🏥 Upload or capture medical report (Image or PDF):">🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):</div>
+          <label class="upload-btn-label" for="medicalReportFile" data-ar="📁 اختر الملف أو صور التقرير" data-en="📁 Choose file or capture report">
             📁 اختر الملف أو صور التقرير
           </label>
           <input type="file" id="medicalReportFile" accept="image/*,application/pdf" onchange="handleMedicalFileSelected(this)">
-          <div id="medicalFileName" style="font-size: 0.75rem; color: var(--muted); margin-top: 0.4rem;">لم يتم اختيار ملف</div>
+          <div id="medicalFileName" data-ar="لم يتم اختيار ملف" data-en="No file chosen" style="font-size: 0.75rem; color: var(--muted); margin-top: 0.4rem;">لم يتم اختيار ملف</div>
         </div>
 
-        <label style="font-size: 0.75rem; color: var(--muted);" id="t-lblStartDate">تاريخ بداية الأجازة:</label>
-        <input type="text" id="leaveStartDate" class="custom-date-input" readonly placeholder="اختر تاريخ البداية..." onclick="openCustomCalendar('leaveStartDate')">
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="تاريخ بداية الأجازة:" data-en="Start Date:">تاريخ بداية الأجازة:</label>
+        <input type="text" id="leaveStartDate" class="custom-date-input" readonly data-ar-placeholder="اختر تاريخ البداية..." data-en-placeholder="Select start date..." placeholder="اختر تاريخ البداية..." onclick="openCustomCalendar('leaveStartDate')">
 
-        <label style="font-size: 0.75rem; color: var(--muted);" id="t-lblEndDate">تاريخ نهاية الأجازة:</label>
-        <input type="text" id="leaveEndDate" class="custom-date-input" readonly placeholder="اختر تاريخ النهاية..." onclick="openCustomCalendar('leaveEndDate')">
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="تاريخ نهاية الأجازة:" data-en="End Date:">تاريخ نهاية الأجازة:</label>
+        <input type="text" id="leaveEndDate" class="custom-date-input" readonly data-ar-placeholder="اختر تاريخ النهاية..." data-en-placeholder="Select end date..." placeholder="اختر تاريخ النهاية..." onclick="openCustomCalendar('leaveEndDate')">
 
-        <div class="glowing-result-badge" id="leaveTotalDaysText">
+        <div class="glowing-result-badge" id="leaveTotalDaysText" data-ar="إجمالي الأيام المطلوبة: 0 يوم" data-en="Total requested days: 0 days">
           إجمالي الأيام المطلوبة: 0 يوم
         </div>
 
-        <label style="font-size: 0.75rem; color: var(--muted);" id="t-lblLeaveNotes">ملاحظات إضافية:</label>
-        <textarea id="leaveNotes" rows="3" placeholder="اكتب أى ملاحظات عايز تضفها هنا..." style="resize: none;"></textarea>
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="ملاحظات إضافية:" data-en="Additional Notes:">ملاحظات إضافية:</label>
+        <textarea id="leaveNotes" rows="3" data-ar-placeholder="اكتب أى ملاحظات عايز تضفها هنا..." data-en-placeholder="Type any notes you want to add here..." placeholder="اكتب أى ملاحظات عايز تضفها هنا..." style="resize: none;"></textarea>
 
-        <button onclick="submitLeaveRequest()" class="btn-success" id="t-submitLeaveBtn" style="margin-top: 0.5rem;">إرسال طلب الإجازة</button>
+        <button onclick="submitLeaveRequest()" class="btn-success" data-ar="إرسال طلب الإجازة" data-en="Submit Leave Request" style="margin-top: 0.5rem;">إرسال طلب الإجازة</button>
         <p id="leaveMsg" style="font-size: 0.8rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
       </div>
     </div>
@@ -958,13 +958,13 @@
     <!-- 5. Settings View -->
     <div id="view-settings" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" onclick="showPage('view-dashboard')"><span id="t-backBtnSettings">← رجوع</span></button>
-        <span style="font-weight: 700; color: #38bdf8;" id="t-titleSettings">الضبط والإعدادات</span>
+        <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span style="font-weight: 700; color: #38bdf8;" data-ar="الضبط والإعدادات" data-en="Settings">الضبط والإعدادات</span>
       </div>
       <div style="text-align: right; display: flex; flex-direction: column; gap: 1rem; padding: 1rem 0;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-          <span style="font-size: 0.9rem;" id="t-lblLangSetting">لغة التطبيق / Language</span>
-          <button onclick="selectLanguage(currentLang === 'ar' ? 'en' : 'ar')" style="width: auto; padding: 0.4rem 1rem; font-size: 0.8rem; margin:0;" id="t-changeLangBtn">تغيير اللغة</button>
+          <span style="font-size: 0.9rem;" data-ar="لغة التطبيق / Language" data-en="App Language / اللغة">لغة التطبيق / Language</span>
+          <button onclick="selectLanguage(currentLang === 'ar' ? 'en' : 'ar')" style="width: auto; padding: 0.4rem 1rem; font-size: 0.8rem; margin:0;" data-ar="تغيير اللغة" data-en="Change Language">تغيير اللغة</button>
         </div>
       </div>
     </div>
@@ -972,45 +972,45 @@
     <!-- 6. Profile View -->
     <div id="view-profile" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" onclick="showPage('view-dashboard')"><span id="t-backBtnProfile">← رجوع</span></button>
-        <span style="font-weight: 700; color: #38bdf8;" id="t-titleProfile">تحديث الملف الشخصي</span>
+        <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span style="font-weight: 700; color: #38bdf8;" data-ar="تحديث الملف الشخصي" data-en="Update Profile">تحديث الملف الشخصي</span>
       </div>
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;">
-        <label style="font-size: 0.75rem; color: var(--muted);" id="t-lblEmail">البريد الإلكتروني:</label>
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="البريد الإلكتروني:" data-en="Email:">البريد الإلكتروني:</label>
         <input type="email" placeholder="example@lactomisr.com">
-        <label style="font-size: 0.75rem; color: var(--muted);" id="t-lblPhone">رقم الهاتف:</label>
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="رقم الهاتف:" data-en="Phone Number:">رقم الهاتف:</label>
         <input type="text" placeholder="010xxxxxxxx">
-        <button onclick="showComingSoon('view-profile')" class="btn-success" id="t-saveProfileBtn" style="margin-top: 0.5rem;">حفظ التعديلات</button>
+        <button onclick="showComingSoon('view-profile')" class="btn-success" data-ar="حفظ التعديلات" data-en="Save Changes" style="margin-top: 0.5rem;">حفظ التعديلات</button>
       </div>
     </div>
 
     <!-- Coming Soon Generic View -->
     <div id="view-coming-soon" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" onclick="goBackFromComingSoon()"><span id="t-backBtnCS">← رجوع</span></button>
-        <span style="font-weight: 700; color: #38bdf8;" id="t-csTitle">قريباً</span>
+        <button class="back-btn" onclick="goBackFromComingSoon()"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span style="font-weight: 700; color: #38bdf8;" data-ar="قريباً" data-en="Coming Soon">قريباً</span>
       </div>
       <div style="padding: 2.5rem 1rem; text-align: center; display: flex; flex-direction: column; gap: 1rem; align-items: center;">
         <div style="font-size: 3rem;">⏳</div>
         <h3 style="color: #38bdf8; font-size: 1.2rem;">Coming Soon</h3>
-        <p style="color: var(--muted); font-size: 0.9rem;" id="t-csDesc">هذا القسم تحت التأسيس والتصميم وسيتم إطلاقه قريباً جداً!</p>
+        <p style="color: var(--muted); font-size: 0.9rem;" data-ar="هذا القسم تحت التأسيس والتصميم وسيتم إطلاقه قريباً جداً!" data-en="This section is under development and will be launched very soon!">هذا القسم تحت التأسيس والتصميم وسيتم إطلاقه قريباً جداً!</p>
       </div>
     </div>
 
     <!-- Suggestion Page -->
     <div id="view-suggestion-page" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" onclick="showPage('view-dashboard')"><span id="t-backBtnSug">← رجوع</span></button>
-        <span style="font-weight:700; color:#38bdf8;" id="t-sugHeaderTitle">قدم مقترحك لتطوير الشركة</span>
+        <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span style="font-weight:700; color:#38bdf8;" data-ar="قدم مقترحك لتطوير الشركة" data-en="Submit Your Proposal">قدم مقترحك لتطوير الشركة</span>
       </div>
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;" id="sugFormWrapper">
-        <label style="font-size: 0.75rem; color: var(--muted);" id="t-sugCodeLabel">كود الموظف:</label>
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="كود الموظف:" data-en="Employee Code:">كود الموظف:</label>
         <input type="text" id="sugCode" readonly style="background: rgba(30,41,59,0.5); cursor: not-allowed;">
-        <label style="font-size: 0.75rem; color: var(--muted);" id="t-sugNameLabel">اسم الموظف:</label>
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="اسم الموظف:" data-en="Employee Name:">اسم الموظف:</label>
         <input type="text" id="sugName" readonly style="background: rgba(30,41,59,0.5); cursor: not-allowed;">
-        <label style="font-size: 0.75rem; color: var(--muted);" id="t-sugTextLabel">اكتب مقترحك (بحد أقصى 500 حرف):</label>
-        <textarea id="sugText" rows="4" maxlength="500" placeholder="اكتب فكرتك أو مقترحك لتطوير العمل هنا..." style="resize: none;"></textarea>
-        <button onclick="submitSuggestion()" class="btn-success" id="t-sugSubmitBtn" style="margin-top:0.5rem;">إرسال المقترح</button>
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="اكتب مقترحك (بحد أقصى 500 حرف):" data-en="Your Proposal (Max 500 chars):">اكتب مقترحك (بحد أقصى 500 حرف):</label>
+        <textarea id="sugText" rows="4" maxlength="500" data-ar-placeholder="اكتب فكرتك أو مقترحك لتطوير العمل هنا..." data-en-placeholder="Type your idea or suggestion here..." placeholder="اكتب فكرتك أو مقترحك لتطوير العمل هنا..." style="resize: none;"></textarea>
+        <button onclick="submitSuggestion()" class="btn-success" data-ar="إرسال المقترح" data-en="Submit Proposal" style="margin-top:0.5rem;">إرسال المقترح</button>
         <p id="sugMsg" style="font-size: 0.8rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
       </div>
     </div>
@@ -1024,13 +1024,11 @@
         <div class="calendar-title" id="calMonthYearTitle">سبتمبر 2026</div>
         <button onclick="changeCalendarMonth(1)">❯</button>
       </div>
-      <div class="calendar-grid" id="calendarHeaderGrid">
-        <!-- Dynamically rendered day names (ar / en) -->
-      </div>
+      <div class="calendar-grid" id="calendarHeaderGrid"></div>
       <div class="calendar-grid" id="calendarDaysGrid"></div>
       <div style="display: flex; justify-content: space-around; align-items: center; margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.08);">
-        <button onclick="confirmCustomCalendar()" class="calendar-text-btn" id="t-okCal">تأكيد</button>
-        <button onclick="closeCustomCalendar()" class="calendar-text-btn" style="color: var(--muted);" id="t-cancelCal">إلغاء</button>
+        <button onclick="confirmCustomCalendar()" class="calendar-text-btn" data-ar="تأكيد" data-en="OK">تأكيد</button>
+        <button onclick="closeCustomCalendar()" class="calendar-text-btn" style="color: var(--muted);" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
       </div>
     </div>
   </div>
@@ -1039,23 +1037,23 @@
   <div id="bottomNavBar">
     <button class="bottom-nav-item active" onclick="switchTab('view-dashboard', this)">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      <span id="t-navHome">الرئيسية</span>
+      <span data-ar="الرئيسية" data-en="Home">الرئيسية</span>
     </button>
     <button class="bottom-nav-item" onclick="switchTab('view-services', this)">
       <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
-      <span id="t-navServices">خدماتي</span>
+      <span data-ar="خدماتي" data-en="Services">خدماتي</span>
     </button>
     <button class="bottom-nav-item" onclick="switchTab('view-profile', this)">
       <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-      <span id="t-navProfile">الملف</span>
+      <span data-ar="الملف" data-en="Profile">الملف</span>
     </button>
     <button class="bottom-nav-item" onclick="switchTab('view-id-card', this)">
       <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .89-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1z"/></svg>
-      <span id="t-navIdCard">الهوية</span>
+      <span data-ar="الهوية" data-en="ID Card">الهوية</span>
     </button>
     <button class="bottom-nav-item" onclick="switchTab('view-settings', this)">
       <svg viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.03 2.18 13.82 2 13.6 2h-4c-.22 0-.42.18-.45.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.45.42h4c.22 0 .42-.18.45-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
-      <span id="t-navSettings">الضبط</span>
+      <span data-ar="الضبط" data-en="Settings">الضبط</span>
     </button>
   </div>
 
@@ -1065,15 +1063,15 @@
   </div>
   <div id="chatbot-window">
     <div class="chatbot-header">
-      <div class="chatbot-title">🤖 <span id="t-botName">مساعد LM HR الذكي</span></div>
+      <div class="chatbot-title">🤖 <span data-ar="مساعد LM HR الذكي" data-en="LM HR Smart Assistant">مساعد LM HR الذكي</span></div>
       <button class="chatbot-close" onclick="toggleChatbot()">✕</button>
     </div>
     <div class="chatbot-messages" id="chatbotMessages">
-      <div class="chat-msg bot" id="t-botWelcome">أهلاً بك! كيف يمكنني مساعدتك اليوم في خدمات الموارد البشرية؟ / Hello! How can I help you today?</div>
+      <div class="chat-msg bot" data-ar="أهلاً بك! كيف يمكنني مساعدتك اليوم في خدمات الموارد البشرية؟" data-en="Hello! How can I help you today with HR services?">أهلاً بك! كيف يمكنني مساعدتك اليوم في خدمات الموارد البشرية؟</div>
     </div>
     <div class="chatbot-input-area">
-      <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا... / Type here..." onkeypress="handleChatKeyPress(event)">
-      <button class="chatbot-send-btn" onclick="sendChatMessage()" id="t-sendBtn">إرسال</button>
+      <input type="text" id="chatInput" data-ar-placeholder="اكتب سؤالك هنا..." data-en-placeholder="Type your question here..." placeholder="اكتب سؤالك هنا..." onkeypress="handleChatKeyPress(event)">
+      <button class="chatbot-send-btn" onclick="sendChatMessage()" data-ar="إرسال" data-en="Send">إرسال</button>
     </div>
   </div>
 
@@ -1164,195 +1162,6 @@
     let currentLang = localStorage.getItem('lacto_lang') || 'ar';
     let returnToView = 'view-dashboard';
     
-    const translations = {
-      ar: {
-        inputCode: "كود الموظف",
-        inputPass: "كلمة السر",
-        subtitle: "بوابة الموظفين الرقمية",
-        remember: "تذكرني",
-        loginBtn: "دخول الحساب",
-        codeLabel: "ID:",
-        sumLeaves: "رصيد الإجازات",
-        valLeaves: "21 يوم",
-        sumPermissions: "الأذونات المتاحة",
-        valPermissions: "3 أذونات",
-        sumSalary: "صافي آخر مرتب",
-        logoutBtn: "تسجيل الخروج",
-        cardTitle: "الكارت الرقمي",
-        lblDept: "الإدارة",
-        lblCode: "كود الموظف",
-        lblNID: "الرقم القومي",
-        saveCardBtn: "حفظ الكارت كصورة",
-        backBtn: "رجوع ←",
-        popupTitle: "تنبيهات النظام",
-        popupDesc: "لا توجد إشعارات جديدة. تم تفعيل النظام بنجاح!",
-        botName: "مساعد LM HR الذكي",
-        botWelcome: "أهلاً بك! كيف يمكنني مساعدتك اليوم في خدمات الموارد البشرية؟",
-        sendBtn: "إرسال",
-        chatPlaceholder: "اكتب سؤالك هنا...",
-        checkInText: "تسجيل حضور",
-        checkOutText: "تسجيل انصراف",
-        workingHoursText: "ساعات العمل",
-        outLabel: "انصراف",
-        inLabel: "حضور",
-        csTitle: "قريباً",
-        csDesc: "هذا القسم تحت التأسيس والتصميم وسيتم إطلاقه قريباً جداً!",
-        sugHeaderTitle: "قدم مقترحك لتطوير الشركة",
-        sugCodeLabel: "كود الموظف:",
-        sugNameLabel: "اسم الموظف:",
-        sugTextLabel: "اكتب مقترحك (بحد أقصى 500 حرف):",
-        sugPlaceholder: "اكتب فكرتك أو مقترحك لتطوير العمل هنا...",
-        sugSubmitBtn: "إرسال المقترح",
-        navHome: "الرئيسية",
-        navServices: "خدماتي",
-        navProfile: "الملف",
-        navIdCard: "الهوية",
-        navSettings: "الضبط",
-        titleServices: "خدماتي",
-        titleSettings: "الضبط والإعدادات",
-        titleProfile: "تحديث الملف الشخصي",
-        langSetting: "لغة التطبيق",
-        leavePageTitle: "طلب إجازة جديد",
-        leaveBalanceLabel: "رصيد الإجازات المتاح:",
-        lblLeaveType: "نوع الإجازة:",
-        optAnnual: "إجازة سنوية",
-        optCasual: "إجازة عارضة",
-        optSick: "إجازة مرضية",
-        optBereavement: "إجازة وفاة (أقارب درجة أولى - يوم)",
-        optPaternity: "إجازة ولادة (يوم الولادة للموظف)",
-        optUnpaid: "إجازة بدون مرتب (بحد أقصى شهر)",
-        unpaidNoticeTitle: "تنبيه هام:",
-        unpaidNoticeDesc: "الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة.",
-        medicalUploadTitle: "🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):",
-        medicalUploadBtnText: "📁 اختر الملف أو صور التقرير",
-        medicalFileChosen: "لم يتم اختيار ملف",
-        lblStartDate: "تاريخ بداية الأجازة:",
-        lblEndDate: "تاريخ نهاية الأجازة:",
-        startPlaceholder: "اختر تاريخ البداية...",
-        endPlaceholder: "اختر تاريخ النهاية...",
-        lblLeaveNotes: "ملاحظات إضافية:",
-        leaveNotesPlaceholder: "اكتب أى ملاحظات عايز تضفها هنا...",
-        submitLeaveBtn: "إرسال طلب الإجازة",
-        okCal: "تأكيد",
-        cancelCal: "إلغاء",
-        lblEmail: "البريد الإلكتروني:",
-        lblPhone: "رقم الهاتف:",
-        saveProfileBtn: "حفظ التعديلات",
-        changeLangBtn: "تغيير اللغة",
-        srv1: "📅 طلب إجازة",
-        srv2: "🚪 طلب إذن شخصي",
-        srv3: "✈️ طلب مأمورية",
-        srv4: "💰 طلب مفردات مرتب",
-        srv5: "💳 طلب سلفة مالية مقسطة",
-        srv6: "📁 طلب أصول أوراق من ملفي",
-        srv7: "🕋 طلب إجازة حج",
-        srv8: "🕌 طلب إجازة عمرة",
-        srv9: "🛠️ طلب دعم فني",
-        srv10: "🏥 طلب حجز عيادة",
-        slides: [
-          { title: "أخبار الشركة", desc: "تابع أحدث المؤتمرات، فعاليات الشركة، وأبرز الأخبار الرسمية." },
-          { title: "الفرص الوظيفية", desc: "استكشف الوظائف الشاغرة الداخلية وحركات الترقيات الأخيرة للموظفين." },
-          { title: "الموظفون المثاليون", desc: "تعرف على نجوم الشهر والموظفين المثاليين المكرمين عن كل إدارة." },
-          { title: "اللوائح الداخلية", desc: "اططلع على لائحة تنظيم العمل، الجزاءات، والسياسات الداخلية للشركة." },
-          { title: "دليل العاملين وتحديثات التطبيق", desc: "آخر الإضافات والتحديثات البرمجية ومستجدات دليل العاملين." },
-          { title: "قدم مقترحك", desc: "شاركنا برأيك وأفكارك الإبداعية لتطوير العمل بالشركة." }
-        ]
-      },
-      en: {
-        inputCode: "Employee Code",
-        inputPass: "Password",
-        subtitle: "Digital Employee Portal",
-        remember: "Remember Me",
-        loginBtn: "Sign In",
-        codeLabel: "ID:",
-        sumLeaves: "Leave Balance",
-        valLeaves: "21 Days",
-        sumPermissions: "Available Permissions",
-        valPermissions: "3 Permissions",
-        sumSalary: "Last Net Salary",
-        logoutBtn: "Sign Out",
-        cardTitle: "Digital ID Card",
-        lblDept: "Department",
-        lblCode: "Employee Code",
-        lblNID: "National ID",
-        saveCardBtn: "Save ID Card as Image",
-        backBtn: "← Back",
-        popupTitle: "System Alerts",
-        popupDesc: "No new notifications. System activated successfully!",
-        botName: "LM HR Smart Assistant",
-        botWelcome: "Hello! How can I help you today with HR services?",
-        sendBtn: "Send",
-        chatPlaceholder: "Type your question here...",
-        checkInText: "Check In",
-        checkOutText: "Check Out",
-        workingHoursText: "Working Hours",
-        outLabel: "Out",
-        inLabel: "In",
-        csTitle: "Coming Soon",
-        csDesc: "This section is under design and development and will be launched very soon!",
-        sugHeaderTitle: "Submit Your Proposal",
-        sugCodeLabel: "Employee Code:",
-        sugNameLabel: "Employee Name:",
-        sugTextLabel: "Your Proposal (Max 500 chars):",
-        sugPlaceholder: "Type your idea or suggestion here...",
-        sugSubmitBtn: "Submit Proposal",
-        navHome: "Home",
-        navServices: "Services",
-        navProfile: "Profile",
-        navIdCard: "ID Card",
-        navSettings: "Settings",
-        titleServices: "My Services",
-        titleSettings: "Settings",
-        titleProfile: "Update Profile",
-        langSetting: "App Language",
-        leavePageTitle: "New Leave Request",
-        leaveBalanceLabel: "Available Leave Balance:",
-        lblLeaveType: "Leave Type:",
-        optAnnual: "Annual Leave",
-        optCasual: "Casual Leave",
-        optSick: "Sick Leave",
-        optBereavement: "Bereavement Leave (1st degree - 1 day)",
-        optPaternity: "Paternity Leave (Birth day)",
-        optUnpaid: "Unpaid Leave (Max 1 Month)",
-        unpaidNoticeTitle: "Important Notice:",
-        unpaidNoticeDesc: "Unpaid leave is for a maximum of 1 month, and the employee is committed to paying their share of social insurance for this period.",
-        medicalUploadTitle: "🏥 Upload or capture medical report (Image or PDF):",
-        medicalUploadBtnText: "📁 Choose file or capture report",
-        medicalFileChosen: "No file chosen",
-        lblStartDate: "Start Date:",
-        lblEndDate: "End Date:",
-        startPlaceholder: "Select start date...",
-        endPlaceholder: "Select end date...",
-        lblLeaveNotes: "Additional Notes:",
-        leaveNotesPlaceholder: "Type any notes you want to add here...",
-        submitLeaveBtn: "Submit Leave Request",
-        okCal: "OK",
-        cancelCal: "Cancel",
-        lblEmail: "Email:",
-        lblPhone: "Phone Number:",
-        saveProfileBtn: "Save Changes",
-        changeLangBtn: "Change Language",
-        srv1: "📅 Leave Request",
-        srv2: "🚪 Personal Permission",
-        srv3: "✈️ Mission Request",
-        srv4: "💰 Payslip Request",
-        srv5: "💳 Installment Advance",
-        srv6: "📁 Original Docs Request",
-        srv7: "🕋 Hajj Leave Request",
-        srv8: "🕌 Umrah Leave Request",
-        srv9: "🛠️ Technical Support",
-        srv10: "🏥 Clinic Reservation",
-        slides: [
-          { title: "Company News", desc: "Follow latest conferences, company events and official news." },
-          { title: "Career Opportunities", desc: "Explore internal vacancies and recent employee promotions." },
-          { title: "Top Employees", desc: "Discover department employees of the month and honorees." },
-          { title: "Internal Regulations", desc: "Review work organization regulations, penalties, and company policies." },
-          { title: "Employee Guide & Updates", desc: "Latest software updates and employee guide announcements." },
-          { title: "Submit a Proposal", desc: "Share your creative ideas and suggestions to improve the company." }
-        ]
-      }
-    };
-    
     function updateDynamicGreeting() {
       const hour = new Date().getHours();
       const greetingEl = document.getElementById('dash-greeting');
@@ -1370,125 +1179,17 @@
     }
 
     function updateContentTranslations() {
-      const t = translations[currentLang];
-      document.getElementById('empCode').placeholder = t.inputCode;
-      document.getElementById('empPass').placeholder = t.inputPass;
-      document.getElementById('t-subtitle').innerText = t.subtitle;
-      document.getElementById('t-remember').innerText = t.remember;
-      document.getElementById('t-loginBtn').innerText = t.loginBtn;
-      document.getElementById('t-codeLabel').innerText = t.codeLabel;
-      document.getElementById('t-sumLeaves').innerText = t.sumLeaves;
-      document.getElementById('t-valLeaves').innerText = t.valLeaves;
-      document.getElementById('sumPermissions').innerText = t.sumPermissions; // Fixed ID mapping if any
-      document.getElementById('t-valPermissions').innerText = t.valPermissions;
-      document.getElementById('t-sumSalary').innerText = t.sumSalary;
-      document.getElementById('t-logoutBtn').innerText = t.logoutBtn;
-      document.getElementById('t-cardTitle').innerText = t.cardTitle;
-      document.getElementById('t-lblDept').innerText = t.lblDept;
-      document.getElementById('t-lblCode').innerText = t.lblCode;
-      document.getElementById('t-lblNID').innerText = t.lblNID;
-      document.getElementById('t-saveCardBtn').innerText = t.saveCardBtn;
-      document.getElementById('t-popupTitle').innerText = t.popupTitle;
-      document.getElementById('t-popupDesc').innerText = t.popupDesc;
-      
-      document.getElementById('t-botName').innerText = t.botName;
-      document.getElementById('t-botWelcome').innerText = t.botWelcome;
-      document.getElementById('t-sendBtn').innerText = t.sendBtn;
-      document.getElementById('chatInput').placeholder = t.chatPlaceholder;
-
-      document.getElementById('t-checkInText').innerText = t.checkInText;
-      document.getElementById('t-checkOutText').innerText = t.checkOutText;
-      document.getElementById('t-workingHoursText').innerText = t.workingHoursText;
-      document.getElementById('t-outLabel').innerText = t.outLabel;
-      document.getElementById('t-inLabel').innerText = t.inLabel;
-      
-      document.getElementById('t-csTitle').innerText = t.csTitle;
-      document.getElementById('t-csDesc').innerText = t.csDesc;
-      
-      document.getElementById('t-backBtnID').innerText = t.backBtn;
-      document.getElementById('t-backBtnServices').innerText = t.backBtn;
-      document.getElementById('t-backBtnSettings').innerText = t.backBtn;
-      document.getElementById('t-backBtnProfile').innerText = t.backBtn;
-      document.getElementById('t-backBtnCS').innerText = t.backBtn;
-      document.getElementById('t-backBtnSug').innerText = t.backBtn;
-      document.getElementById('t-backBtnLeave').innerText = t.backBtn;
-
-      document.getElementById('t-sugHeaderTitle').innerText = t.sugHeaderTitle;
-      document.getElementById('t-sugCodeLabel').innerText = t.sugCodeLabel;
-      document.getElementById('t-sugNameLabel').innerText = t.sugNameLabel;
-      document.getElementById('t-sugTextLabel').innerText = t.sugTextLabel;
-      document.getElementById('sugText').placeholder = t.sugPlaceholder;
-      document.getElementById('t-sugSubmitBtn').innerText = t.sugSubmitBtn;
-
-      document.getElementById('t-leavePageTitle').innerText = t.leavePageTitle;
-      document.getElementById('t-leaveBalanceLabel').innerText = t.leaveBalanceLabel;
-      document.getElementById('leaveBalanceVal').innerText = t.valLeaves;
-      document.getElementById('t-lblLeaveType').innerText = t.lblLeaveType;
-      
-      // Update Dropdown Option Texts
-      document.getElementById('t-optAnnual').innerText = t.optAnnual;
-      document.getElementById('t-optCasual').innerText = t.optCasual;
-      document.getElementById('t-optSick').innerText = t.optSick;
-      document.getElementById('t-optBereavement').innerText = t.optBereavement;
-      document.getElementById('t-optPaternity').innerText = t.optPaternity;
-      document.getElementById('t-optUnpaid').innerText = t.optUnpaid;
-
-      document.getElementById('t-unpaidNoticeTitle').innerText = t.unpaidNoticeTitle;
-      document.getElementById('t-unpaidNoticeDesc').innerText = t.unpaidNoticeDesc;
-      document.getElementById('t-medicalUploadTitle').innerText = t.medicalUploadTitle;
-      document.getElementById('t-medicalUploadBtnText').innerText = t.medicalUploadBtnText;
-      
-      const medicalFileNameEl = document.getElementById('medicalFileName');
-      if (medicalFileNameEl.innerText === "لم يتم اختيار ملف" || medicalFileNameEl.innerText === "No file chosen") {
-        medicalFileNameEl.innerText = t.medicalFileChosen;
-      }
-      
-      document.getElementById('leaveStartDate').placeholder = t.startPlaceholder;
-      document.getElementById('leaveEndDate').placeholder = t.endPlaceholder;
-
-      const currentLeaveTypeVal = document.getElementById('leaveType').value;
-      const leaveKeyMap = { annual: 'optAnnual', casual: 'optCasual', sick: 'optSick', bereavement: 'optBereavement', paternity: 'optPaternity', unpaid: 'optUnpaid' };
-      if (leaveKeyMap[currentLeaveTypeVal] && t[leaveKeyMap[currentLeaveTypeVal]]) {
-        document.getElementById('selectedLeaveText').innerText = t[leaveKeyMap[currentLeaveTypeVal]];
-      }
-
-      document.getElementById('t-lblStartDate').innerText = t.lblStartDate;
-      document.getElementById('t-lblEndDate').innerText = t.lblEndDate;
-      document.getElementById('t-lblLeaveNotes').innerText = t.lblLeaveNotes;
-      document.getElementById('leaveNotes').placeholder = t.leaveNotesPlaceholder;
-      document.getElementById('t-submitLeaveBtn').innerText = t.submitLeaveBtn;
-      
-      document.getElementById('t-okCal').innerText = t.okCal;
-      document.getElementById('t-cancelCal').innerText = t.cancelCal;
-
-      document.getElementById('t-navHome').innerText = t.navHome;
-      document.getElementById('t-navServices').innerText = t.navServices;
-      document.getElementById('t-navProfile').innerText = t.navProfile;
-      document.getElementById('t-navIdCard').innerText = t.navIdCard;
-      document.getElementById('t-navSettings').innerText = t.navSettings;
-      
-      document.getElementById('t-titleServices').innerText = t.titleServices;
-      document.getElementById('t-titleSettings').innerText = t.titleSettings;
-      document.getElementById('t-titleProfile').innerText = t.titleProfile;
-      document.getElementById('t-lblLangSetting').innerText = t.langSetting;
-      document.getElementById('t-changeLangBtn').innerText = t.changeLangBtn;
-      document.getElementById('t-lblEmail').innerText = t.lblEmail;
-      document.getElementById('t-lblPhone').innerText = t.lblPhone;
-      document.getElementById('t-saveProfileBtn').innerText = t.saveProfileBtn;
-
-      for (let i = 1; i <= 10; i++) {
-        const el = document.getElementById(`t-srv${i}`);
-        if (el && t[`srv${i}`]) el.innerText = t[`srv${i}`];
-      }
+      const lang = currentLang;
+      // Loop through all elements with data-ar and data-en
+      document.querySelectorAll('[data-ar][data-en]').forEach(el => {
+        el.innerText = el.getAttribute(`data-${lang}`);
+      });
+      // Loop through placeholders
+      document.querySelectorAll('[data-ar-placeholder][data-en-placeholder]').forEach(el => {
+        el.placeholder = el.getAttribute(`data-${lang}-placeholder`);
+      });
       
       updateDynamicGreeting();
-      
-      t.slides.forEach((slide, idx) => {
-        const titleEl = document.querySelector(`.slide-title-${idx + 1}`);
-        const descEl = document.querySelector(`.slide-desc-${idx + 1}`);
-        if(titleEl) titleEl.innerText = slide.title;
-        if(descEl) descEl.innerText = slide.desc;
-      });
     }
 
     function toggleNotificationPopup(event) {
@@ -1512,10 +1213,9 @@
 
     function selectLeaveOption(value) {
       document.getElementById('leaveType').value = value;
-      const t = translations[currentLang];
-      const leaveKeyMap = { annual: 'optAnnual', casual: 'optCasual', sick: 'optSick', bereavement: 'optBereavement', paternity: 'optPaternity', unpaid: 'optUnpaid' };
-      if (leaveKeyMap[value] && t[leaveKeyMap[value]]) {
-        document.getElementById('selectedLeaveText').innerText = t[leaveKeyMap[value]];
+      const selectedOptionEl = document.querySelector(`.dropdown-option[onclick*="${value}"]`);
+      if (selectedOptionEl) {
+        document.getElementById('selectedLeaveText').innerText = selectedOptionEl.getAttribute(`data-${currentLang}`);
       }
       document.getElementById('dropdownOptions').classList.remove('show');
       handleLeaveTypeChange();
@@ -1524,17 +1224,16 @@
 
     function handleMedicalFileSelected(input) {
       const fileNameEl = document.getElementById('medicalFileName');
-      const t = translations[currentLang];
       if (input.files && input.files[0]) {
         fileNameEl.innerText = "📄 " + input.files[0].name;
         fileNameEl.style.color = "#38bdf8";
       } else {
-        fileNameEl.innerText = t.medicalFileChosen;
+        fileNameEl.innerText = fileNameEl.getAttribute(`data-${currentLang}`);
         fileNameEl.style.color = "var(--muted)";
       }
     }
 
-    /* Custom Glowing Calendar Logic with Unified Professional Light-Blue Theme */
+    /* Custom Glowing Calendar Logic */
     let activeDateInputId = null;
     let tempSelectedDate = "";
     let calYear = new Date().getFullYear();
@@ -1724,7 +1423,7 @@
     }
 
     function verifyLocationAndCheckIn() {
-      const statusText = document.getElementById('checkinStatusText');
+      const statusText = document.getElementById('t-checkinStatusText');
       const valIn = document.getElementById('valInTime');
       const valOut = document.getElementById('valOutTime');
       const valWorking = document.getElementById('valWorkingHours');
@@ -1901,7 +1600,6 @@
         if (contentCard) contentCard.classList.add('hidden');
         document.getElementById(pageId).classList.remove('hidden');
         
-        // Reset Leave Request form completely whenever entering the leave request page
         if (pageId === 'view-leave-request') {
           document.getElementById('leaveStartDate').value = '';
           document.getElementById('leaveEndDate').value = '';
@@ -1909,9 +1607,10 @@
           document.getElementById('leaveTotalDaysText').innerText = currentLang === 'ar' ? 'إجمالي الأيام المطلوبة: 0 يوم' : 'Total requested days: 0 days';
           document.getElementById('leaveMsg').innerText = '';
           document.getElementById('medicalReportFile').value = '';
-          document.getElementById('medicalFileName').innerText = translations[currentLang].medicalFileChosen;
+          const medFileEl = document.getElementById('medicalFileName');
+          medFileEl.innerText = medFileEl.getAttribute(`data-${currentLang}`);
           document.getElementById('leaveType').value = 'annual';
-          document.getElementById('selectedLeaveText').innerText = translations[currentLang].optAnnual;
+          document.getElementById('selectedLeaveText').innerText = document.querySelector('.dropdown-option').getAttribute(`data-${currentLang}`);
           handleLeaveTypeChange();
         }
 
