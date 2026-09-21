@@ -51,7 +51,6 @@
       flex-direction: column;
       align-items: center;
       padding: 1.5rem 1rem 6rem 1rem;
-      perspective: 1000px;
       overflow-x: hidden;
     }
     
@@ -600,7 +599,7 @@
     .info-val { font-weight: 700; color: var(--text); }
     .qr-container { background: #fff; padding: 0.65rem; border-radius: 1rem; display: inline-block; }
     
-    /* Bottom Navigation Bar - شريط التنقل السفلي الثابت بأيقونات زرقاء مضيئة */
+    /* Bottom Navigation Bar - مثبت تماماً على شاشة الموبايل بشفافية وزخرفة عصرية */
     #bottomNavBar {
       position: fixed;
       bottom: 0;
@@ -613,9 +612,9 @@
       display: none;
       justify-content: space-around;
       align-items: center;
-      padding: 0.6rem 0.5rem;
-      z-index: 998;
-      box-shadow: 0 -10px 25px rgba(0,0,0,0.6);
+      padding: 0.6rem 0.55rem calc(0.6rem + env(safe-area-inset-bottom)) 0.55rem;
+      z-index: 99998;
+      box-shadow: 0 -10px 25px rgba(0,0,0,0.7);
     }
     #bottomNavBar.show { display: flex; }
     .bottom-nav-item {
@@ -627,7 +626,7 @@
       background: transparent;
       border: none;
       cursor: pointer;
-      color: #7dd3fc; /* لون أزرق فاتح مريح للأيقونات غير النشطة */
+      color: #7dd3fc;
       flex: 1;
       padding: 0.2rem;
       margin: 0;
@@ -645,7 +644,7 @@
       font-weight: 700;
     }
     .bottom-nav-item.active {
-      color: #38bdf8; /* أزرق فاتح ساطع ونشط */
+      color: #38bdf8;
     }
     .bottom-nav-item.active svg {
       filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.9));
@@ -667,7 +666,7 @@
       color: #0b0f19;
       cursor: pointer;
       box-shadow: 0 8px 25px rgba(56, 189, 248, 0.5);
-      z-index: 999;
+      z-index: 99999;
       transition: transform 0.2s ease;
     }
     [dir="ltr"] #chatbot-fab { right: 25px; left: auto; }
@@ -688,7 +687,7 @@
       backdrop-filter: blur(16px);
       display: none;
       flex-direction: column;
-      z-index: 1000;
+      z-index: 100000;
       overflow: hidden;
     }
     [dir="ltr"] #chatbot-window { right: 20px; left: auto; }
@@ -1043,7 +1042,7 @@
     </div>
   </div>
 
-  <!-- Bottom Navigation Bar - شريط التنقل السفلي الثابت -->
+  <!-- Bottom Navigation Bar - شريط التنقل السفلي الثابت بدقة تامة -->
   <div id="bottomNavBar">
     <button class="bottom-nav-item active" onclick="switchTab('view-dashboard', this)">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
