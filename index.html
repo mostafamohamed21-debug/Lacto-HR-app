@@ -50,7 +50,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 1.5rem 1rem 5.5rem 1rem;
+      padding: 1.5rem 1rem 6rem 1rem;
       perspective: 1000px;
       overflow-x: hidden;
     }
@@ -600,14 +600,14 @@
     .info-val { font-weight: 700; color: var(--text); }
     .qr-container { background: #fff; padding: 0.65rem; border-radius: 1rem; display: inline-block; }
     
-    /* Bottom Navigation Bar - شريط التنقل السفلي العصري المضئ باللون الأزرق الفاتح */
+    /* Bottom Navigation Bar - شريط التنقل السفلي الثابت بأيقونات زرقاء مضيئة */
     #bottomNavBar {
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100vw;
-      background: rgba(15, 23, 42, 0.95);
-      border-top: 1px solid rgba(56, 189, 248, 0.3);
+      background: rgba(15, 23, 42, 0.98);
+      border-top: 1px solid rgba(56, 189, 248, 0.4);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       display: none;
@@ -615,7 +615,7 @@
       align-items: center;
       padding: 0.6rem 0.5rem;
       z-index: 998;
-      box-shadow: 0 -10px 25px rgba(0,0,0,0.5);
+      box-shadow: 0 -10px 25px rgba(0,0,0,0.6);
     }
     #bottomNavBar.show { display: flex; }
     .bottom-nav-item {
@@ -627,7 +627,7 @@
       background: transparent;
       border: none;
       cursor: pointer;
-      color: var(--muted);
+      color: #7dd3fc; /* لون أزرق فاتح مريح للأيقونات غير النشطة */
       flex: 1;
       padding: 0.2rem;
       margin: 0;
@@ -645,10 +645,10 @@
       font-weight: 700;
     }
     .bottom-nav-item.active {
-      color: #38bdf8;
+      color: #38bdf8; /* أزرق فاتح ساطع ونشط */
     }
     .bottom-nav-item.active svg {
-      filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.8));
+      filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.9));
       transform: translateY(-2px);
     }
 
@@ -837,7 +837,7 @@
     </div>
   </div>
 
-  <!-- باقي محتوى الداشبورد (بدون زحمة الأزرار القديمة) -->
+  <!-- باقي محتوى الداشبورد -->
   <div class="container">
     <div id="dashboard-content-container" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
       <!-- كارت البصمة -->
@@ -1043,7 +1043,7 @@
     </div>
   </div>
 
-  <!-- Bottom Navigation Bar - شريط التنقل السفلي -->
+  <!-- Bottom Navigation Bar - شريط التنقل السفلي الثابت -->
   <div id="bottomNavBar">
     <button class="bottom-nav-item active" onclick="switchTab('view-dashboard', this)">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -1600,7 +1600,6 @@
     }
 
     function switchTab(pageId, btnElement) {
-      // تحديث حالة الأزرار في شريط التنقل السفلي
       document.querySelectorAll('.bottom-nav-item').forEach(btn => btn.classList.remove('active'));
       if (btnElement) btnElement.classList.add('active');
       showPage(pageId);
