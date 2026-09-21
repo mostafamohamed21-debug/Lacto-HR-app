@@ -992,7 +992,7 @@
       <button id="t-saveCardBtn" onclick="downloadCard()" class="btn-success" style="margin-top:1rem;">حفظ الكارت كصورة</button>
     </div>
     
-    <!-- 4. Services View (خدماتي - بأزرار متناسقة ومطابقة للثيم) -->
+    <!-- 4. Services View (خدماتي) -->
     <div id="view-services" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-dashboard')"><span id="t-backBtnServices">← رجوع</span></button>
@@ -1043,7 +1043,7 @@
       </div>
     </div>
 
-    <!-- Coming Soon Generic View (مع زر رجوع ذكي يعيدك للمكان الصحيح) -->
+    <!-- Coming Soon Generic View -->
     <div id="view-coming-soon" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="goBackFromComingSoon()"><span id="t-backBtnCS">← رجوع</span></button>
@@ -1075,7 +1075,7 @@
     </div>
   </div>
 
-  <!-- Bottom Navigation Bar - شريط التنقل السفلي الثابت بدقة تامة -->
+  <!-- Bottom Navigation Bar -->
   <div id="bottomNavBar">
     <button class="bottom-nav-item active" onclick="switchTab('view-dashboard', this)">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -1205,7 +1205,7 @@
     let currentUserData = null;
     let currentEmpCode = "";
     let currentLang = localStorage.getItem('lacto_lang') || 'ar';
-    let returnToView = 'view-dashboard'; // متغير لحفظ الصفحة السابقة لزر الرجوع الذكي
+    let returnToView = 'view-dashboard';
     
     const translations = {
       ar: {
@@ -1736,7 +1736,7 @@
           currentEmpCode = code;
           errorEl.innerText = "";
           
-          if (rememberMenu) {
+          if (rememberMe) {
             localStorage.setItem('lacto_saved_code', code);
             localStorage.setItem('lacto_saved_pass', pass);
           } else {
