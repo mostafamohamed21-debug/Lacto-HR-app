@@ -1447,7 +1447,7 @@
       }
     }
 
-    /* Custom Glowing Calendar Logic */
+    /* Custom Glowing Calendar Logic with Corrected Day Alignment */
     let activeDateInputId = null;
     let calYear = new Date().getFullYear();
     let calMonth = new Date().getMonth();
@@ -1490,7 +1490,9 @@
       const grid = document.getElementById('calendarDaysGrid');
       grid.innerHTML = "";
 
-      const firstDayIndex = new Date(calYear, calMonth, 1).getDay();
+      // Corrected alignment: map JS getDay() (Sun=0, Mon=1... Sat=6) to Saturday-start header (Sat=0, Sun=1... Fri=6)
+      const jsDay = new Date(calYear, calMonth, 1).getDay();
+      const firstDayIndex = (jsDay + 1) % 7;
       const totalDays = new Date(calYear, calMonth + 1, 0).getDate();
 
       for (let i = 0; i < firstDayIndex; i++) {
@@ -1922,5 +1924,7 @@
   </script>
 </body>
 </html>
+
+
 
         
