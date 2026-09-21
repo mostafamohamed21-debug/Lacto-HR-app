@@ -303,6 +303,31 @@
     }
     .calendar-day.empty { cursor: default; }
 
+    /* Professional Glowing Light-Blue Text-Only Action Buttons for Calendar */
+    .calendar-text-btn {
+      background: none;
+      border: none;
+      box-shadow: none !important;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      color: #38bdf8;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+      transition: all 0.2s ease;
+      margin: 0 !important;
+      width: auto !important;
+    }
+    .calendar-text-btn:hover {
+      opacity: 0.85;
+      transform: scale(1.05);
+      text-shadow: 0 0 15px rgba(56, 189, 248, 0.7);
+    }
+    .calendar-text-btn:active {
+      transform: scale(0.95);
+      box-shadow: none !important;
+    }
+
     /* Fully Glowing Badge for Leave Days Total Result */
     .glowing-result-badge {
       background: rgba(56, 189, 248, 0.22);
@@ -987,7 +1012,7 @@
     </div>
   </div>
 
-  <!-- Custom Glowing Calendar Modal with OK / Cancel Buttons -->
+  <!-- Custom Glowing Calendar Modal with Unified Professional Light-Blue Theme -->
   <div id="customCalendarModal" class="calendar-modal-overlay" onclick="closeCustomCalendar()">
     <div class="calendar-box" onclick="event.stopPropagation()">
       <div class="calendar-header">
@@ -999,9 +1024,9 @@
         <!-- Dynamically rendered day names (ar / en) -->
       </div>
       <div class="calendar-grid" id="calendarDaysGrid"></div>
-      <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
-        <button onclick="confirmCustomCalendar()" class="btn-success" style="margin-top: 0; padding: 0.6rem; font-size: 0.85rem;" id="t-okCal">تأكيد (OK)</button>
-        <button onclick="closeCustomCalendar()" class="btn-danger" style="margin-top: 0; padding: 0.6rem; font-size: 0.85rem;" id="t-cancelCal">إلغاء (Cancel)</button>
+      <div style="display: flex; justify-content: space-around; align-items: center; margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+        <button onclick="confirmCustomCalendar()" class="calendar-text-btn" id="t-okCal">تأكيد</button>
+        <button onclick="closeCustomCalendar()" class="calendar-text-btn" style="color: var(--muted);" id="t-cancelCal">إلغاء</button>
       </div>
     </div>
   </div>
@@ -1198,8 +1223,8 @@
         lblLeaveNotes: "ملاحظات إضافية:",
         leaveNotesPlaceholder: "اكتب أى ملاحظات عايز تضفها هنا...",
         submitLeaveBtn: "إرسال طلب الإجازة",
-        okCal: "تأكيد (OK)",
-        cancelCal: "إلغاء (Cancel)",
+        okCal: "تأكيد",
+        cancelCal: "إلغاء",
         srv1: "📅 طلب إجازة",
         srv2: "🚪 طلب إذن شخصي",
         srv3: "✈️ طلب مأمورية",
@@ -1454,7 +1479,7 @@
       }
     }
 
-    /* Custom Glowing Calendar Logic with OK / Cancel Confirmation */
+    /* Custom Glowing Calendar Logic with Unified Professional Light-Blue Theme */
     let activeDateInputId = null;
     let tempSelectedDate = "";
     let calYear = new Date().getFullYear();
