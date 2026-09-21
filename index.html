@@ -616,14 +616,13 @@
       </div>
     </div>
 
-    <!-- 4.1. Leave Request Form View (شاشة طلب إجازة بالتفاصيل الجديدة) -->
+    <!-- 4.1. Leave Request Form View (محدث بأنواع إجازات الوفاة، الولادة، وبدون مرتب) -->
     <div id="view-leave-request" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-services')"><span id="t-backBtnLeave">← رجوع</span></button>
         <span style="font-weight: 700; color: #38bdf8;" id="t-leavePageTitle">طلب إجازة جديد</span>
       </div>
       
-      <!-- خانة رصيد الإجازات على الجنب -->
       <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 1rem; padding: 0.75rem 1rem; margin-bottom: 1rem;">
         <span style="font-size: 0.8rem; color: var(--muted);" id="t-leaveBalanceLabel">رصيد الإجازات المتاح:</span>
         <span style="font-size: 0.95rem; font-weight: 800; color: #38bdf8;" id="leaveBalanceVal">21 يوم</span>
@@ -631,11 +630,19 @@
 
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;" id="leaveFormWrapper">
         <label style="font-size: 0.75rem; color: var(--muted);" id="t-lblLeaveType">نوع الإجازة:</label>
-        <select id="leaveType">
+        <select id="leaveType" onchange="handleLeaveTypeChange()">
           <option value="annual" id="t-optAnnual">إجازة سنوية</option>
           <option value="casual" id="t-optCasual">إجازة عارضة</option>
           <option value="sick" id="t-optSick">إجازة مرضية</option>
+          <option value="bereavement" id="t-optBereavement">إجازة وفاة (أقارب درجة أولى - يوم)</option>
+          <option value="paternity" id="t-optPaternity">إجازة ولادة (يوم الولادة للموظف)</option>
+          <option value="unpaid" id="t-optUnpaid">إجازة بدون مرتب (بحد أقصى شهر)</option>
         </select>
+
+        <!-- تنبيه التأمينات الخاص بالإجازة بدون مرتب -->
+        <div id="unpaidInsuranceNotice" class="hidden" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 0.8rem; padding: 0.65rem; font-size: 0.75rem; color: #f87171; text-align: right; line-height: 1.4;">
+          ⚠️ <strong>تنبيه هامة:</strong> الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة.
+        </div>
 
         <label style="font-size: 0.75rem; color: var(--muted);" id="t-lblStartDate">تاريخ بداية الأجازة:</label>
         <input type="date" id="leaveStartDate" onchange="calculateLeaveDays()">
@@ -892,6 +899,9 @@
         optAnnual: "إجازة سنوية",
         optCasual: "إجازة عارضة",
         optSick: "إجازة مرضية",
+        optBereavement: "إجازة وفاة (أقارب درجة أولى - يوم)",
+        optPaternity: "إجازة ولادة (يوم الولادة للموظف)",
+        optUnpaid: "إجازة بدون مرتب (بحد أقصى شهر)",
         lblStartDate: "تاريخ بداية الأجازة:",
         lblEndDate: "تاريخ نهاية الأجازة:",
         lblLeaveNotes: "ملاحظات إضافية:",
@@ -969,6 +979,9 @@
         optAnnual: "Annual Leave",
         optCasual: "Casual Leave",
         optSick: "Sick Leave",
+        optBereavement: "Bereavement Leave (1st degree - 1 day)",
+        optPaternity: "Paternity Leave (Birth day)",
+        optUnpaid: "Unpaid Leave (Max 1 Month)",
         lblStartDate: "Start Date:",
         lblEndDate: "End Date:",
         lblLeaveNotes: "Additional Notes:",
@@ -1068,6 +1081,9 @@
       document.getElementById('t-optAnnual').innerText = t.optAnnual;
       document.getElementById('t-optCasual').innerText = t.optCasual;
       document.getElementById('t-optSick').innerText = t.optSick;
+      document.getElementById('t-optBereavement').innerText = t.optBereavement;
+      document.getElementById('t-optPaternity').innerText = t.optPaternity;
+      document.getElementById('t-optUnpaid').innerText = t.optUnpaid;
       document.getElementById('t-lblStartDate').innerText = t.lblStartDate;
       document.getElementById('t-lblEndDate').innerText = t.lblEndDate;
       document.getElementById('t-lblLeaveNotes').innerText = t.lblLeaveNotes;
@@ -1134,13 +1150,13 @@
         const lowerText = text.toLowerCase();
         if (currentLang === 'ar') {
           if (lowerText.includes('إجازة') || lowerText.includes('اجازات')) {
-            botMsg.innerText = "يمكنك تقديم طلب إجازة جديد مباشرة من قسم خدماتي > طلب إجازة.";
+            botMsg.innerText = "يمكنك تقديم طلب إجازة جديد (سنوية، وفاة، ولادة، بدون مرتب) مباشرة من قسم خدماتي.";
           } else {
             botMsg.innerText = "شكراً لتواصلك! تم تسجيل استفسارك وسيتم الرد عليك قريباً من قبل ممثل الموارد البشرية.";
           }
         } else {
           if (lowerText.includes('leave') || lowerText.includes('vacation')) {
-            botMsg.innerText = "You can apply for a new leave directly from Services > Leave Request.";
+            botMsg.innerText = "You can apply for leave (annual, bereavement, paternity, unpaid) directly from Services.";
           } else {
             botMsg.innerText = "Thank you for your message! Your query has been noted and HR will follow up with you.";
           }
@@ -1249,18 +1265,33 @@
       );
     }
 
-    /* حساب أيام الإجازة تلقائياً */
+    function handleLeaveTypeChange() {
+      const leaveType = document.getElementById('leaveType').value;
+      const noticeBox = document.getElementById('unpaidInsuranceNotice');
+      if (leaveType === 'unpaid') {
+        noticeBox.classList.remove('hidden');
+      } else {
+        noticeBox.classList.add('hidden');
+      }
+    }
+
     function calculateLeaveDays() {
       const start = document.getElementById('leaveStartDate').value;
       const end = document.getElementById('leaveEndDate').value;
       const daysText = document.getElementById('leaveTotalDaysText');
+      const leaveType = document.getElementById('leaveType').value;
       
       if (start && end) {
         const startDate = new Date(start);
         const endDate = new Date(end);
         const diffTime = endDate - startDate;
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
         
+        if (leaveType === 'unpaid' && diffDays > 30) {
+          daysText.innerText = currentLang === 'ar' ? "⚠️ تنبيه: الإجازة بدون مرتب بحد أقصى شهر (30 يوم)!" : "⚠️ Max limit for unpaid leave is 30 days!";
+          return;
+        }
+
         if (diffDays > 0) {
           daysText.innerText = currentLang === 'ar' ? `إجمالي الأيام المطلوبة: ${diffDays} يوم` : `Total requested days: ${diffDays} days`;
         } else {
