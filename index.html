@@ -895,13 +895,13 @@
           ⚠️ <strong>تنبيه هام:</strong> الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة.
         </div>
 
-        <!-- Medical Report Upload Section (Only for Sick Leave) -->
+        <!-- Medical Report Upload Section (Only for Sick Leave - Supports Camera, Gallery & PDF) -->
         <div id="medicalReportSection" class="medical-upload-box hidden">
-          <div style="font-size: 0.8rem; color: #38bdf8; font-weight: 700; margin-bottom: 0.5rem;">🏥 مطلوب إرفاق أو تصوير التقرير الطبي:</div>
+          <div style="font-size: 0.8rem; color: #38bdf8; font-weight: 700; margin-bottom: 0.5rem;" id="t-medicalUploadTitle">🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):</div>
           <label class="upload-btn-label" for="medicalReportFile">
-            📷 تصوير / رفع التقرير الطبي
+            📁 اختر الملف أو صور التقرير
           </label>
-          <input type="file" id="medicalReportFile" accept="image/*" capture="environment" onchange="handleMedicalFileSelected(this)">
+          <input type="file" id="medicalReportFile" accept="image/*,application/pdf" onchange="handleMedicalFileSelected(this)">
           <div id="medicalFileName" style="font-size: 0.75rem; color: var(--muted); margin-top: 0.4rem;">لم يتم اختيار ملف</div>
         </div>
 
@@ -1192,6 +1192,7 @@
         optBereavement: "إجازة وفاة (أقارب درجة أولى - يوم)",
         optPaternity: "إجازة ولادة (يوم الولادة للموظف)",
         optUnpaid: "إجازة بدون مرتب (بحد أقصى شهر)",
+        medicalUploadTitle: "🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):",
         lblStartDate: "تاريخ بداية الأجازة:",
         lblEndDate: "تاريخ نهاية الأجازة:",
         lblLeaveNotes: "ملاحظات إضافية:",
@@ -1272,6 +1273,7 @@
         optBereavement: "Bereavement Leave (1st degree - 1 day)",
         optPaternity: "Paternity Leave (Birth day)",
         optUnpaid: "Unpaid Leave (Max 1 Month)",
+        medicalUploadTitle: "🏥 Upload or capture medical report (Image or PDF):",
         lblStartDate: "Start Date:",
         lblEndDate: "End Date:",
         lblLeaveNotes: "Additional Notes:",
@@ -1374,6 +1376,7 @@
       document.getElementById('t-optBereavement').innerText = t.optBereavement;
       document.getElementById('t-optPaternity').innerText = t.optPaternity;
       document.getElementById('t-optUnpaid').innerText = t.optUnpaid;
+      document.getElementById('t-medicalUploadTitle').innerText = t.medicalUploadTitle;
       document.getElementById('t-lblStartDate').innerText = t.lblStartDate;
       document.getElementById('t-lblEndDate').innerText = t.lblEndDate;
       document.getElementById('t-lblLeaveNotes').innerText = t.lblLeaveNotes;
@@ -1439,7 +1442,7 @@
         fileNameEl.innerText = "📄 " + input.files[0].name;
         fileNameEl.style.color = "#38bdf8";
       } else {
-        fileNameEl.innerText = "لم يتم اختيار ملف";
+        fileNameEl.innerText = currentLang === 'ar' ? "لم يتم اختيار ملف" : "No file chosen";
         fileNameEl.style.color = "var(--muted)";
       }
     }
@@ -1450,6 +1453,7 @@
     let calMonth = new Date().getMonth();
 
     const monthNamesAr = ["يناير", "فبراير", "مارس", "إبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+    const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
     function openCustomCalendar(inputId) {
       activeDateInputId = inputId;
@@ -1481,14 +1485,14 @@
     }
 
     function renderCustomCalendar() {
-      document.getElementById('calMonthYearTitle').innerText = `${monthNamesAr[calMonth]} ${calYear}`;
+      const mNames = currentLang === 'ar' ? monthNamesAr : monthNamesEn;
+      document.getElementById('calMonthYearTitle').innerText = `${mNames[calMonth]} ${calYear}`;
       const grid = document.getElementById('calendarDaysGrid');
       grid.innerHTML = "";
 
       const firstDayIndex = new Date(calYear, calMonth, 1).getDay();
       const totalDays = new Date(calYear, calMonth + 1, 0).getDate();
 
-      // Empty slots for previous month alignment
       for (let i = 0; i < firstDayIndex; i++) {
         const emptyCell = document.createElement('div');
         emptyCell.className = 'calendar-day empty';
@@ -1719,7 +1723,7 @@
         const fileInput = document.getElementById('medicalReportFile');
         if (!fileInput.files || !fileInput.files[0]) {
           msg.style.color = '#ef4444';
-          msg.innerText = currentLang === 'ar' ? "⚠️ يرجى تصوير أو إرفاق التقرير الطبي للإجازة المرضية!" : "⚠️ Please attach medical report for sick leave!";
+          msg.innerText = currentLang === 'ar' ? "⚠️ يرجى اختيار أو تصوير التقرير الطبي للإجازة المرضية!" : "⚠️ Please attach or capture medical report for sick leave!";
           return;
         }
       }
@@ -1787,6 +1791,20 @@
         if (contentCard) contentCard.classList.add('hidden');
         document.getElementById(pageId).classList.remove('hidden');
         
+        // Reset Leave Request form completely whenever entering the leave request page
+        if (pageId === 'view-leave-request') {
+          document.getElementById('leaveStartDate').value = '';
+          document.getElementById('leaveEndDate').value = '';
+          document.getElementById('leaveNotes').value = '';
+          document.getElementById('leaveTotalDaysText').innerText = currentLang === 'ar' ? 'إجمالي الأيام المطلوبة: 0 يوم' : 'Total requested days: 0 days';
+          document.getElementById('leaveMsg').innerText = '';
+          document.getElementById('medicalReportFile').value = '';
+          document.getElementById('medicalFileName').innerText = currentLang === 'ar' ? 'لم يتم اختيار ملف' : 'No file chosen';
+          document.getElementById('leaveType').value = 'annual';
+          document.getElementById('selectedLeaveText').innerText = currentLang === 'ar' ? 'إجازة سنوية' : 'Annual Leave';
+          handleLeaveTypeChange();
+        }
+
         if (pageId === 'view-suggestion-page' && currentUserData) {
           document.getElementById('sugCode').value = currentEmpCode;
           document.getElementById('sugName').value = currentUserData.name || '';
@@ -1845,7 +1863,6 @@
           document.getElementById('dash-name').innerText = user.name || "--";
           document.getElementById('dash-code-val').innerText = code;
           
-          // Check for manager Amgad Abdel Momen photo (`amgad.jpg`) or fallback
           const userPhotoUrl = user.photo || (code === 'amgad' || (user.name && user.name.includes('أمجد')) ? 'amgad.jpg' : 'https://i.pravatar.cc/150?img=12');
           
           document.getElementById('dash-avatar').src = userPhotoUrl;
@@ -1905,3 +1922,5 @@
   </script>
 </body>
 </html>
+
+        
