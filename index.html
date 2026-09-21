@@ -296,7 +296,10 @@
     .calendar-day.selected {
       background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
       color: #0b0f19;
-      box-shadow: 0 0 15px #38bdf8;
+      box-shadow: 0 0 22px #38bdf8, inset 0 0 8px rgba(255, 255, 255, 0.8);
+      border: 2px solid #ffffff;
+      transform: scale(1.08);
+      z-index: 2;
     }
     .calendar-day.empty { cursor: default; }
 
@@ -992,17 +995,11 @@
         <div class="calendar-title" id="calMonthYearTitle">سبتمبر 2026</div>
         <button onclick="changeCalendarMonth(1)">❯</button>
       </div>
-      <div class="calendar-grid">
-        <div class="calendar-day-name">س</div>
-        <div class="calendar-day-name">ح</div>
-        <div class="calendar-day-name">ن</div>
-        <div class="calendar-day-name">ث</div>
-        <div class="calendar-day-name">ر</div>
-        <div class="calendar-day-name">خ</div>
-        <div class="calendar-day-name">ج</div>
+      <div class="calendar-grid" id="calendarHeaderGrid">
+        <!-- Dynamically rendered day names (ar / en) -->
       </div>
       <div class="calendar-grid" id="calendarDaysGrid"></div>
-      <button onclick="closeCustomCalendar()" style="margin-top: 0.5rem; padding: 0.6rem; font-size: 0.85rem;">إغلاق</button>
+      <button onclick="closeCustomCalendar()" style="margin-top: 0.5rem; padding: 0.6rem; font-size: 0.85rem;" id="t-closeCal">إغلاق</button>
     </div>
   </div>
 
@@ -1198,6 +1195,7 @@
         lblLeaveNotes: "ملاحظات إضافية:",
         leaveNotesPlaceholder: "اكتب أى ملاحظات عايز تضفها هنا...",
         submitLeaveBtn: "إرسال طلب الإجازة",
+        closeCal: "إغلاق",
         srv1: "📅 طلب إجازة",
         srv2: "🚪 طلب إذن شخصي",
         srv3: "✈️ طلب مأمورية",
@@ -1279,6 +1277,7 @@
         lblLeaveNotes: "Additional Notes:",
         leaveNotesPlaceholder: "Type any notes you want to add here...",
         submitLeaveBtn: "Submit Leave Request",
+        closeCal: "Close",
         srv1: "📅 Leave Request",
         srv2: "🚪 Personal Permission",
         srv3: "✈️ Mission Request",
@@ -1382,6 +1381,7 @@
       document.getElementById('t-lblLeaveNotes').innerText = t.lblLeaveNotes;
       document.getElementById('leaveNotes').placeholder = t.leaveNotesPlaceholder;
       document.getElementById('t-submitLeaveBtn').innerText = t.submitLeaveBtn;
+      document.getElementById('t-closeCal').innerText = t.closeCal;
 
       document.getElementById('t-navHome').innerText = t.navHome;
       document.getElementById('t-navServices').innerText = t.navServices;
@@ -1447,13 +1447,16 @@
       }
     }
 
-    /* Custom Glowing Calendar Logic with Corrected Day Alignment */
+    /* Custom Glowing Calendar Logic with Fully Localized Day Headers & Glowing Selection */
     let activeDateInputId = null;
     let calYear = new Date().getFullYear();
     let calMonth = new Date().getMonth();
 
     const monthNamesAr = ["يناير", "فبراير", "مارس", "إبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
     const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    const dayNamesAr = ["س", "ح", "ن", "ث", "ر", "خ", "ج"];
+    const dayNamesEn = ["Sa", "Su", "Mo", "Tu", "We", "Th", "Fr"];
 
     function openCustomCalendar(inputId) {
       activeDateInputId = inputId;
@@ -1487,6 +1490,18 @@
     function renderCustomCalendar() {
       const mNames = currentLang === 'ar' ? monthNamesAr : monthNamesEn;
       document.getElementById('calMonthYearTitle').innerText = `${mNames[calMonth]} ${calYear}`;
+      
+      // Render dynamic localized day header names
+      const headerGrid = document.getElementById('calendarHeaderGrid');
+      headerGrid.innerHTML = "";
+      const activeDayNames = currentLang === 'ar' ? dayNamesAr : dayNamesEn;
+      activeDayNames.forEach(dName => {
+        const nameEl = document.createElement('div');
+        nameEl.className = 'calendar-day-name';
+        nameEl.innerText = dName;
+        headerGrid.appendChild(nameEl);
+      });
+
       const grid = document.getElementById('calendarDaysGrid');
       grid.innerHTML = "";
 
