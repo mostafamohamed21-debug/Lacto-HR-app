@@ -388,6 +388,26 @@
       gap: 0.5rem; 
       direction: ltr; 
     }
+    .flip-clock-display.compact {
+      gap: 0.35rem;
+    }
+    .flip-clock-display.compact .flip-card-digit {
+      min-width: 52px;
+      padding: 0.4rem 0.5rem;
+      border-radius: 0.6rem;
+    }
+    .flip-clock-display.compact .digit-val-glow {
+      font-size: 1.4rem;
+    }
+    .flip-clock-display.compact .digit-sub-text {
+      font-size: 0.6rem;
+      margin-top: 0.25rem;
+    }
+    .flip-clock-display.compact .flip-clock-colon {
+      font-size: 1.4rem;
+      margin-bottom: 0.9rem;
+    }
+
     .flip-unit-box {
       display: flex; 
       flex-direction: column; 
@@ -911,10 +931,33 @@
           <div class="progress-bar-container"><div class="progress-bar-fill" id="leavesProgressBar" style="width: 46.6%;"></div></div>
         </div>
 
-        <!-- كارت الأذونات المباشر والمربوط بصفحة الأذونات -->
+        <!-- كارت الأذونات الجديد المدمج بـ Flip Clock ثلاثي الأبعاد المضيء وشريط التقدم -->
         <div class="summary-card clickable-card" onclick="showPage('view-permission-request')">
           <div class="summary-title"><span data-ar="الأذونات المتاحة" data-en="Available Permissions">الأذونات المتاحة</span><span style="font-size:0.75rem; color: #38bdf8;" id="permRatioText" data-ar="100% متاح" data-en="100% Available">100% متاح</span></div>
-          <div class="summary-value" id="summaryPermVal">4 ساعات</div>
+          
+          <div class="flip-clock-display compact" style="margin: 0.6rem 0 0.3rem 0;">
+            <div class="flip-unit-box">
+              <div class="flip-card-digit">
+                <span class="digit-val-glow" id="dashCntHours">04</span>
+              </div>
+              <span class="digit-sub-text" data-ar="ساعة" data-en="Hours">ساعة</span>
+            </div>
+            <span class="flip-clock-colon">:</span>
+            <div class="flip-unit-box">
+              <div class="flip-card-digit">
+                <span class="digit-val-glow" id="dashCntMins">00</span>
+              </div>
+              <span class="digit-sub-text" data-ar="دقيقة" data-en="Mins">دقيقة</span>
+            </div>
+            <span class="flip-clock-colon">:</span>
+            <div class="flip-unit-box">
+              <div class="flip-card-digit">
+                <span class="digit-val-glow" id="dashCntSecs">00</span>
+              </div>
+              <span class="digit-sub-text" data-ar="ثانية" data-en="Secs">ثانية</span>
+            </div>
+          </div>
+
           <div class="progress-bar-container"><div class="progress-bar-fill" id="permsProgressBar" style="width: 100%;"></div></div>
         </div>
 
@@ -1593,28 +1636,33 @@
       }
     }
 
-    /* PERMISSION COUNTER & 3D TUMBLER WHEEL LOGIC */
+    /* PERMISSION COUNTER & DUAL FLIP CLOCK SYNC LOGIC */
     function updateDigitalClockDisplay(seconds) {
       let h = Math.floor(seconds / 3600);
       let m = Math.floor((seconds % 3600) / 60);
       let s = seconds % 60;
+
+      const strH = String(h).padStart(2, '0');
+      const strM = String(m).padStart(2, '0');
+      const strS = String(s).padStart(2, '0');
+
+      // 1. Permission Form Flip Clock
       const cntH = document.getElementById('cntHours');
       const cntM = document.getElementById('cntMins');
       const cntS = document.getElementById('cntSecs');
-      if (cntH) cntH.innerText = String(h).padStart(2, '0');
-      if (cntM) cntM.innerText = String(m).padStart(2, '0');
-      if (cntS) cntS.innerText = String(s).padStart(2, '0');
+      if (cntH) cntH.innerText = strH;
+      if (cntM) cntM.innerText = strM;
+      if (cntS) cntS.innerText = strS;
 
-      // Update Summary Card Text Dynamic
-      const summaryPermVal = document.getElementById('summaryPermVal');
-      if (summaryPermVal) {
-        if (m > 0) {
-          summaryPermVal.innerText = currentLang === 'ar' ? `${h} ساعة و ${m} دقيقة` : `${h}h ${m}m`;
-        } else {
-          summaryPermVal.innerText = currentLang === 'ar' ? `${h} ساعات` : `${h} Hours`;
-        }
-      }
+      // 2. Dashboard Card Compact Flip Clock
+      const dashH = document.getElementById('dashCntHours');
+      const dashM = document.getElementById('dashCntMins');
+      const dashS = document.getElementById('dashCntSecs');
+      if (dashH) dashH.innerText = strH;
+      if (dashM) dashM.innerText = strM;
+      if (dashS) dashS.innerText = strS;
 
+      // 3. Progress Bar & Percentage Ratio
       const ratioText = document.getElementById('permRatioText');
       const permsProgressBar = document.getElementById('permsProgressBar');
       const pct = Math.round((seconds / 14400) * 100);
