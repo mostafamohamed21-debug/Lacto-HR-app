@@ -296,16 +296,16 @@
     }
     .type-btn.active svg { fill: #38bdf8; filter: drop-shadow(0 0 8px #38bdf8); transform: scale(1.1); }
 
-    /* 3D WHEEL SCROLL PICKER STYLES (24-HOUR FULL DAY WHEELS) */
+    /* 3D WHEEL SCROLL PICKER STYLES (WITH AM/PM INDICATOR) */
     .time-picker-card {
       background: linear-gradient(135deg, rgba(11, 19, 41, 0.9) 0%, rgba(30, 58, 138, 0.4) 100%);
       border: 1px solid var(--border-color); border-radius: 1.25rem; padding: 0.75rem;
       margin-top: 0.4rem; display: flex; align-items: center; justify-content: space-around;
       box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
     }
-    .wheel-container { display: flex; align-items: center; gap: 0.5rem; direction: ltr; perspective: 600px; }
+    .wheel-container { display: flex; align-items: center; gap: 0.4rem; direction: ltr; perspective: 600px; }
     .wheel-scroll-box {
-      height: 90px; width: 75px; overflow-y: scroll; scroll-snap-type: y mandatory;
+      height: 90px; width: 68px; overflow-y: scroll; scroll-snap-type: y mandatory;
       scrollbar-width: none; border-radius: 0.8rem; background: rgba(15, 23, 42, 0.85);
       border: 1px solid rgba(56, 189, 248, 0.35); text-align: center;
       perspective: 400px; transform-style: preserve-3d; scroll-padding: 30px 0;
@@ -319,6 +319,12 @@
     .wheel-item.selected { 
       color: #38bdf8; font-size: 1.15rem; font-weight: 800; 
       text-shadow: 0 0 12px #38bdf8; opacity: 1; transform: scale(1.1) rotateX(0deg); 
+    }
+    
+    .ampm-badge {
+      background: rgba(56, 189, 248, 0.18); border: 1px solid rgba(56, 189, 248, 0.5);
+      color: #38bdf8; font-weight: 800; font-size: 0.75rem; padding: 0.35rem 0.55rem;
+      border-radius: 0.6rem; text-shadow: 0 0 8px rgba(56, 189, 248, 0.5); min-width: 42px; text-align: center;
     }
 
     .duration-result-box {
@@ -915,7 +921,7 @@
       </div>
     </div>
 
-    <!-- 4.2. Personal Permission Request View (24-HOUR WHEELS + EXACT MINUTES) -->
+    <!-- 4.2. Personal Permission Request View (WITH AM/PM INDICATOR) -->
     <div id="view-permission-request" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
@@ -964,6 +970,7 @@
           <div class="wheel-scroll-box" id="fromHourWheel" onscroll="handleWheelScroll('fromHourWheel', 'fromHourVal')"></div>
           <span style="color:#38bdf8; font-weight:800;">:</span>
           <div class="wheel-scroll-box" id="fromMinWheel" onscroll="handleWheelScroll('fromMinWheel', 'fromMinVal')"></div>
+          <div class="ampm-badge" id="fromAmPmBadge">صباحاً</div>
         </div>
       </div>
 
@@ -973,6 +980,7 @@
           <div class="wheel-scroll-box" id="toHourWheel" onscroll="handleWheelScroll('toHourWheel', 'toHourVal')"></div>
           <span style="color:#38bdf8; font-weight:800;">:</span>
           <div class="wheel-scroll-box" id="toMinWheel" onscroll="handleWheelScroll('toMinWheel', 'toMinVal')"></div>
+          <div class="ampm-badge" id="toAmPmBadge">صباحاً</div>
         </div>
       </div>
 
@@ -989,7 +997,7 @@
       <p id="permMsg" style="font-size: 0.85rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
     </div>
 
-    <!-- 4.3. MISSION REQUEST VIEW (24-HOUR WHEELS + EXACT MINUTES) -->
+    <!-- 4.3. MISSION REQUEST VIEW (WITH AM/PM INDICATORS) -->
     <div id="view-mission-request" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
@@ -998,7 +1006,6 @@
 
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;">
         
-        <!-- GPS Notice Banner -->
         <div style="background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 1rem; padding: 0.8rem; font-size: 0.78rem; color: #38bdf8; line-height: 1.5; text-align: right;">
           📍 <strong data-ar="تنبيه نظام بصمة المأموريات (GPS):" data-en="GPS Mission Notice:">تنبيه نظام بصمة المأموريات (GPS):</strong><br>
           <span data-ar="بمجرد موافقة مدير الإدارة وكذلك الـ HR على المأمورية، سيتم منحك كامل الصلاحية لتسجيل الحضور والانصراف من أي مكان، وسيتم إرسال الموقع الإلكتروني للـ HR." data-en="Upon approval from your Department Manager & HR, full authority will be granted to check in/out from any location, and location data will be submitted directly to HR.">بمجرد موافقة مدير الإدارة وكذلك الـ HR على المأمورية، سيتم منحك كامل الصلاحية لتسجيل الحضور والانصراف من أي مكان، وسيتم إرسال الموقع الإلكتروني للـ HR.</span>
@@ -1019,6 +1026,7 @@
               <div class="wheel-scroll-box" id="mFromHourWheel" onscroll="handleWheelScroll('mFromHourWheel', 'mFromHourVal')"></div>
               <span style="color:#38bdf8; font-weight:800;">:</span>
               <div class="wheel-scroll-box" id="mFromMinWheel" onscroll="handleWheelScroll('mFromMinWheel', 'mFromMinVal')"></div>
+              <div class="ampm-badge" id="mFromAmPmBadge">صباحاً</div>
             </div>
           </div>
 
@@ -1028,6 +1036,7 @@
               <div class="wheel-scroll-box" id="mToHourWheel" onscroll="handleWheelScroll('mToHourWheel', 'mToHourVal')"></div>
               <span style="color:#38bdf8; font-weight:800;">:</span>
               <div class="wheel-scroll-box" id="mToMinWheel" onscroll="handleWheelScroll('mToMinWheel', 'mToMinVal')"></div>
+              <div class="ampm-badge" id="mToAmPmBadge">مساءً</div>
             </div>
           </div>
         </div>
@@ -1067,14 +1076,13 @@
       </div>
     </div>
 
-    <!-- 4.4. PAYSLIP REQUEST VIEW (ACCURATE HR & INSURANCE MATH LOGIC) -->
+    <!-- 4.4. PAYSLIP REQUEST VIEW (FIXED CHECKBOX LOGIC) -->
     <div id="view-payslip-request" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
         <span style="font-weight: 700; color: #38bdf8;" data-ar="مفردات المرتب الرسمية" data-en="Official Payslip">مفردات المرتب الرسمية</span>
       </div>
 
-      <!-- 1. الأجور الثلاثية المباشرة بالحسابات المضبوطة بـ 30% معفاه والـ 11% تأمينات -->
       <div class="payslip-summary-grid">
         <div class="payslip-badge">
           <div class="payslip-badge-title" data-ar="الأجر الشامل" data-en="Gross Salary">الأجر الشامل</div>
@@ -1090,22 +1098,18 @@
         </div>
       </div>
 
-      <!-- 2. Toggle Button -->
       <button type="button" onclick="togglePayslipBreakdown()" style="margin-top:0; font-size: 0.85rem;" class="btn-success">
         👁️ <span id="btnPayslipToggleText" data-ar="الاطلاع على تفاصيل مفردات مرتبي" data-en="View Payslip Breakdown">الاطلاع على تفاصيل مفردات مرتبي</span>
       </button>
 
-      <!-- 3. Breakdown Grid with Strict Mathematical Accuracy -->
       <div id="payslipDetailsBreakdown" class="hidden">
         <div class="payslip-breakdown-container">
-          <!-- Earnings -->
           <div>
             <div class="payslip-col-title earnings" data-ar="➕ الاستحقاقات" data-en="➕ Earnings">➕ الاستحقاقات</div>
             <div class="payslip-item"><span class="payslip-item-label" data-ar="أجر شامل:" data-en="Gross Salary:">أجر شامل:</span><span class="payslip-item-val">18,500</span></div>
             <div class="payslip-item"><span class="payslip-item-label" data-ar="بدلات مستحقة:" data-en="Allowances:">بدلات مستحقة:</span><span class="payslip-item-val">2,500</span></div>
             <div class="payslip-item" style="border-top:1px dashed var(--border-color); padding-top:0.3rem; margin-top:0.3rem;"><strong style="color:#38bdf8;" data-ar="الإجمالي:" data-en="Total:">الإجمالي:</strong><strong style="color:#38bdf8;">21,000</strong></div>
           </div>
-          <!-- Deductions -->
           <div>
             <div class="payslip-col-title deductions" data-ar="➖ الاستقطاعات" data-en="➖ Deductions">➖ الاستقطاعات</div>
             <div class="payslip-item"><span class="payslip-item-label" data-ar="جزاءات:" data-en="Penalties:">جزاءات:</span><span class="payslip-item-val">300</span></div>
@@ -1120,7 +1124,7 @@
 
       <hr style="border: 0; height: 1px; background: var(--border-color); margin: 1rem 0;">
 
-      <!-- 4. Payslip Request Form -->
+      <!-- 4. Payslip Request Form with STRICT MUTUAL EXCLUSION CHECKBOX LOGIC -->
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;">
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="الجهة الموجه إليها الخطاب:" data-en="Addressed To:">الجهة الموجه إليها الخطاب:</label>
         <input type="text" id="payslipDestination" data-ar-placeholder="مثال: البنك الأهلي المصري / السفارة..." data-en-placeholder="e.g. National Bank of Egypt / Embassy..." placeholder="مثال: البنك الأهلي المصري / السفارة...">
@@ -1134,12 +1138,12 @@
         <label style="font-size: 0.75rem; color: var(--muted); margin-top:0.4rem;" data-ar="طريقة الاستلام المطلوبة:" data-en="Delivery Method:">طريقة الاستلام المطلوبة:</label>
         
         <label class="checkbox-container">
-          <input type="checkbox" id="chkPrintout" onchange="handleDeliveryCheckboxes()">
+          <input type="checkbox" id="chkPrintout" onchange="handleSingleDeliveryCheckbox('printout')">
           <span data-ar="نسخة مطبوعة ومختومة (استلام من الـ HR)" data-en="Hardcopy Stamped (Pick up from HR)">نسخة مطبوعة ومختومة (استلام من الـ HR)</span>
         </label>
         
         <label class="checkbox-container" style="margin-top:0.2rem;">
-          <input type="checkbox" id="chkDigitalEmail" onchange="handleDeliveryCheckboxes()">
+          <input type="checkbox" id="chkDigitalEmail" onchange="handleSingleDeliveryCheckbox('digital')">
           <span data-ar="نسخة رقمية PDF على البريد الإلكتروني المسجل" data-en="Digital PDF via Registered Email">نسخة رقمية PDF على البريد الإلكتروني المسجل</span>
         </label>
 
@@ -1350,10 +1354,10 @@
       const btnTextEl = document.getElementById('btnPayslipToggleText');
       if (breakdownEl.classList.contains('hidden')) {
         breakdownEl.classList.remove('hidden'); 
-        btnTextEl.innerText = btnTextEl.getAttribute(currentLang === 'ar' ? 'data-ar-hide' : 'data-en-hide') || (currentLang === 'ar' ? 'إخفاء تفاصيل مفردات مرتبي' : 'Hide Payslip Breakdown');
+        btnTextEl.innerText = currentLang === 'ar' ? 'إخفاء تفاصيل مفردات مرتبي' : 'Hide Payslip Breakdown';
       } else {
         breakdownEl.classList.add('hidden'); 
-        btnTextEl.innerText = btnTextEl.getAttribute(`data-${currentLang}`);
+        btnTextEl.innerText = currentLang === 'ar' ? 'الاطلاع على تفاصيل مفردات مرتبي' : 'View Payslip Breakdown';
       }
     }
 
@@ -1362,25 +1366,46 @@
       document.getElementById('optNet').classList.toggle('active', type === 'net');
     }
 
+    /* STRICT MUTUAL EXCLUSION CHECKBOX LOGIC */
+    function handleSingleDeliveryCheckbox(changedType) {
+      const chkPrint = document.getElementById('chkPrintout');
+      const chkDigital = document.getElementById('chkDigitalEmail');
+      const chkBoth = document.getElementById('chkBothDelivery');
+
+      if (changedType === 'printout' && chkPrint.checked) {
+        chkDigital.checked = false;
+        chkBoth.checked = false;
+      } else if (changedType === 'digital' && chkDigital.checked) {
+        chkPrint.checked = false;
+        chkBoth.checked = false;
+      } else {
+        chkBoth.checked = false;
+      }
+    }
+
     function handleBothCheckbox(isChecked) {
       document.getElementById('chkPrintout').checked = isChecked;
       document.getElementById('chkDigitalEmail').checked = isChecked;
     }
 
-    function handleDeliveryCheckboxes() {
-      const p = document.getElementById('chkPrintout').checked;
-      const d = document.getElementById('chkDigitalEmail').checked;
-      document.getElementById('chkBothDelivery').checked = (p && d);
-    }
-
     function submitPayslipRequest() {
       const dest = document.getElementById('payslipDestination').value.trim();
+      const chkPrint = document.getElementById('chkPrintout').checked;
+      const chkDigital = document.getElementById('chkDigitalEmail').checked;
       const msg = document.getElementById('payslipMsg');
+
       if (!dest) {
         msg.style.color = '#ef4444'; 
         msg.innerText = currentLang === 'ar' ? '⚠️ يرجى تحديد الجهة الموجه إليها الخطاب!' : '⚠️ Please specify the destination entity!'; 
         return;
       }
+
+      if (!chkPrint && !chkDigital) {
+        msg.style.color = '#ef4444';
+        msg.innerText = currentLang === 'ar' ? '⚠️ يرجى اختيار طريقة استلام واحدة على الأقل!' : '⚠️ Please choose at least one delivery method!';
+        return;
+      }
+
       msg.style.color = '#38bdf8'; 
       msg.innerText = currentLang === 'ar' ? '✅ تم إرسال طلب مفردات المرتب بنجاح للـ HR!' : '✅ Payslip request submitted to HR!';
       setTimeout(() => showPage('view-dashboard'), 1800);
@@ -1453,6 +1478,7 @@
       if (typeof calculateRequestedDuration === 'function') calculateRequestedDuration();
       updateDigitalClockDisplay(totalPermBalanceSeconds);
       updateDynamicGreeting();
+      updateAmPmBadges();
     }
 
     function toggleNotificationPopup(event) {
@@ -1645,6 +1671,28 @@
       createWheelItems('mFromMinWheel', 60, '00');
       createWheelItems('mToHourWheel', 24, '16');
       createWheelItems('mToMinWheel', 60, '00');
+
+      updateAmPmBadges();
+    }
+
+    /* DYNAMIC AM / PM BADGE UPDATER */
+    function updateAmPmBadges() {
+      const getAmPmText = (hourVal) => {
+        const h = parseInt(hourVal);
+        if (isNaN(h)) return currentLang === 'ar' ? 'صباحاً' : 'AM';
+        if (h >= 12) return currentLang === 'ar' ? 'مساءً' : 'PM';
+        return currentLang === 'ar' ? 'صباحاً' : 'AM';
+      };
+
+      const fromH = document.getElementById('fromHourVal') ? document.getElementById('fromHourVal').value : '08';
+      const toH = document.getElementById('toHourVal') ? document.getElementById('toHourVal').value : '09';
+      const mFromH = document.getElementById('mFromHourVal') ? document.getElementById('mFromHourVal').value : '08';
+      const mToH = document.getElementById('mToHourVal') ? document.getElementById('mToHourVal').value : '16';
+
+      if (document.getElementById('fromAmPmBadge')) document.getElementById('fromAmPmBadge').innerText = getAmPmText(fromH);
+      if (document.getElementById('toAmPmBadge')) document.getElementById('toAmPmBadge').innerText = getAmPmText(toH);
+      if (document.getElementById('mFromAmPmBadge')) document.getElementById('mFromAmPmBadge').innerText = getAmPmText(mFromH);
+      if (document.getElementById('mToAmPmBadge')) document.getElementById('mToAmPmBadge').innerText = getAmPmText(mToH);
     }
 
     /* 3D WHEEL SCROLL LOGIC + SOUND EFFECTS */
@@ -1676,6 +1724,8 @@
           item.style.opacity = `${Math.max(0.25, 1 - dist * 0.35)}`;
         }
       });
+      
+      updateAmPmBadges();
       if (wheelId.startsWith('from') || wheelId.startsWith('to')) calculateRequestedDuration();
     }
 
