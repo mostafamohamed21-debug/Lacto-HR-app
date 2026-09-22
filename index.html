@@ -393,7 +393,7 @@
       align-items: center;
     }
     
-    /* Flip Card Digit (Inspired by physical scoreboards) */
+    /* Flip Card Digit */
     .flip-card-digit {
       position: relative;
       background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
@@ -404,7 +404,6 @@
       box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.2);
       overflow: hidden;
     }
-    /* Horizontal Split Line across center */
     .flip-card-digit::before {
       content: '';
       position: absolute;
@@ -414,7 +413,6 @@
       box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12);
       z-index: 3;
     }
-    /* Side Hinge Clips */
     .flip-card-digit::after {
       content: '';
       position: absolute;
@@ -454,7 +452,7 @@
     }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
 
-    /* Dynamic Sleek Vector Buttons */
+    /* Dynamic Vector Buttons */
     .permission-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin: 0.8rem 0 1rem 0; }
     .type-btn {
       background: rgba(15, 23, 42, 0.8); 
@@ -491,24 +489,30 @@
       transform: scale(1.1);
     }
 
+    /* --- 3D TUMBLER WHEEL PICKER WITH TACTILE SOUND EFFECTS --- */
     .time-picker-card {
       background: linear-gradient(135deg, rgba(11, 19, 41, 0.9) 0%, rgba(30, 58, 138, 0.4) 100%);
       border: 1px solid var(--border-color); border-radius: 1.25rem; padding: 0.75rem;
       margin-top: 0.4rem; display: flex; align-items: center; justify-content: space-around;
       box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
     }
-    .wheel-container { display: flex; align-items: center; gap: 0.3rem; direction: ltr; }
+    .wheel-container { display: flex; align-items: center; gap: 0.3rem; direction: ltr; perspective: 600px; }
     .wheel-scroll-box {
-      height: 90px; width: 55px; overflow-y: scroll; scroll-snap-type: y mandatory;
-      scrollbar-width: none; border-radius: 0.6rem; background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(56, 189, 248, 0.3); text-align: center;
+      height: 90px; width: 60px; overflow-y: scroll; scroll-snap-type: y mandatory;
+      scrollbar-width: none; border-radius: 0.8rem; background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.35); text-align: center;
+      perspective: 400px; transform-style: preserve-3d;
     }
     .wheel-scroll-box::-webkit-scrollbar { display: none; }
     .wheel-item {
       height: 30px; line-height: 30px; font-size: 0.95rem; font-weight: 700;
-      color: var(--muted); scroll-snap-align: center; transition: all 0.2s;
+      color: var(--muted); scroll-snap-align: center; transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s, color 0.2s;
+      transform-origin: center center; opacity: 0.4;
     }
-    .wheel-item.selected { color: #38bdf8; font-size: 1.15rem; font-weight: 800; text-shadow: 0 0 8px #38bdf8; }
+    .wheel-item.selected { 
+      color: #38bdf8; font-size: 1.2rem; font-weight: 800; 
+      text-shadow: 0 0 12px #38bdf8; opacity: 1; transform: scale(1.15) rotateX(0deg); 
+    }
 
     .duration-result-box {
       background: rgba(56, 189, 248, 0.12); border: 1px solid #38bdf8;
@@ -1063,7 +1067,7 @@
       </div>
     </div>
 
-    <!-- 4.2. Personal Permission Request View (FLIP CLOCK & MODERN VECTOR SELECTION) -->
+    <!-- 4.2. Personal Permission Request View (FLIP CLOCK & 3D TUMBLER WHEEL) -->
     <div id="view-permission-request" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
@@ -1115,7 +1119,7 @@
       <label style="font-size: 0.75rem; color: var(--muted); text-align:right; display:block; margin-top:0.5rem;" data-ar="تاريخ الإذن:" data-en="Permission Date:">تاريخ الإذن:</label>
       <input type="text" id="permissionDate" class="custom-date-input" readonly data-ar-placeholder="اختر تاريخ الإذن..." data-en-placeholder="Select permission date..." placeholder="اختر تاريخ الإذن..." onclick="openCustomCalendar('permissionDate')">
 
-      <!-- وقت البداية -->
+      <!-- وقت البداية 3D Tumbler -->
       <div style="font-size:0.8rem; color:var(--muted); text-align:right; margin-top:0.5rem;" data-ar="من الساعة:" data-en="From Time:">من الساعة:</div>
       <div class="time-picker-card">
         <div class="wheel-container">
@@ -1141,7 +1145,7 @@
         </div>
       </div>
 
-      <!-- وقت النهاية -->
+      <!-- وقت النهاية 3D Tumbler -->
       <div style="font-size:0.8rem; color:var(--muted); text-align:right; margin-top:0.5rem;" data-ar="إلى الساعة:" data-en="To Time:">إلى الساعة:</div>
       <div class="time-picker-card">
         <div class="wheel-container">
@@ -1388,8 +1392,31 @@
     let currentLang = localStorage.getItem('lacto_lang') || 'ar';
     let returnToView = 'view-dashboard';
     
-    /* Total Permission Balance Counter in Seconds (Default: 4 hours = 14400s) */
     let totalPermBalanceSeconds = 14400;
+
+    /* Web Audio API Mechanical Click Sound Synthesizer */
+    let audioCtx = null;
+    function playClickSound() {
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(180, audioCtx.currentTime + 0.012);
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.012);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.012);
+      } catch(e) {}
+    }
 
     function updateDynamicGreeting() {
       const hour = new Date().getHours();
@@ -1558,7 +1585,7 @@
       }
     }
 
-    /* PERMISSION COUNTER & WHEEL LOGIC */
+    /* PERMISSION COUNTER & 3D TUMBLER WHEEL LOGIC */
     function updateDigitalClockDisplay(seconds) {
       let h = Math.floor(seconds / 3600);
       let m = Math.floor((seconds % 3600) / 60);
@@ -1582,6 +1609,8 @@
       }
     }
 
+    const lastWheelIndices = {};
+
     function handleWheelScroll(wheelId, targetInputId) {
       const wheel = document.getElementById(wheelId);
       if (!wheel) return;
@@ -1590,12 +1619,24 @@
       if (selectedIndex < 1) selectedIndex = 1;
       if (selectedIndex >= items.length - 1) selectedIndex = items.length - 2;
 
+      /* Play click sound upon step change */
+      if (lastWheelIndices[wheelId] !== selectedIndex) {
+        lastWheelIndices[wheelId] = selectedIndex;
+        playClickSound();
+      }
+
       items.forEach((item, idx) => {
+        const dist = Math.abs(idx - selectedIndex);
         if (idx === selectedIndex) {
           item.classList.add('selected');
+          item.style.transform = 'scale(1.15) rotateX(0deg)';
+          item.style.opacity = '1';
           document.getElementById(targetInputId).value = item.innerText.trim();
         } else {
           item.classList.remove('selected');
+          const angle = (idx - selectedIndex) * 28;
+          item.style.transform = `scale(${Math.max(0.7, 1 - dist * 0.18)}) rotateX(${angle}deg)`;
+          item.style.opacity = `${Math.max(0.25, 1 - dist * 0.35)}`;
         }
       });
       calculateRequestedDuration();
