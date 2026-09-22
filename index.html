@@ -346,6 +346,7 @@
       text-align: center;
       margin: 0.5rem 0;
       box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);
+      transition: all 0.3s ease;
     }
     .medical-upload-box input[type="file"] { display: none; }
     .upload-btn-label {
@@ -393,7 +394,6 @@
       align-items: center;
     }
     
-    /* Flip Card Digit */
     .flip-card-digit {
       position: relative;
       background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
@@ -452,7 +452,6 @@
     }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
 
-    /* Dynamic Vector Buttons */
     .permission-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin: 0.8rem 0 1rem 0; }
     .type-btn {
       background: rgba(15, 23, 42, 0.8); 
@@ -489,7 +488,6 @@
       transform: scale(1.1);
     }
 
-    /* --- 3D TUMBLER WHEEL PICKER WITH TACTILE SOUND EFFECTS --- */
     .time-picker-card {
       background: linear-gradient(135deg, rgba(11, 19, 41, 0.9) 0%, rgba(30, 58, 138, 0.4) 100%);
       border: 1px solid var(--border-color); border-radius: 1.25rem; padding: 0.75rem;
@@ -986,11 +984,11 @@
           <span data-ar="📁 طلب أصول أوراق من ملفي" data-en="📁 Original Docs Request">📁 طلب أصول أوراق من ملفي</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
-        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+        <button class="service-row-btn" onclick="openLeaveRequestWithType('hajj')">
           <span data-ar="🕋 طلب إجازة حج" data-en="🕋 Hajj Leave Request">🕋 طلب إجازة حج</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
-        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+        <button class="service-row-btn" onclick="openLeaveRequestWithType('umrah')">
           <span data-ar="🕌 طلب إجازة عمرة" data-en="🕌 Umrah Leave Request">🕌 طلب إجازة عمرة</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
@@ -1031,6 +1029,8 @@
             <div class="dropdown-option" onclick="selectLeaveOption('sick')" data-ar="إجازة مرضية" data-en="Sick Leave">إجازة مرضية</div>
             <div class="dropdown-option" onclick="selectLeaveOption('bereavement')" data-ar="إجازة وفاة (أقارب درجة أولى - يوم)" data-en="Bereavement Leave (1st degree - 1 day)">إجازة وفاة (أقارب درجة أولى - يوم)</div>
             <div class="dropdown-option" onclick="selectLeaveOption('paternity')" data-ar="إجازة ولادة (يوم الولادة للموظف)" data-en="Paternity Leave (Birth day)">إجازة ولادة (يوم الولادة للموظف)</div>
+            <div class="dropdown-option" onclick="selectLeaveOption('hajj')" data-ar="إجازة حج" data-en="Hajj Leave">إجازة حج</div>
+            <div class="dropdown-option" onclick="selectLeaveOption('umrah')" data-ar="إجازة عمرة" data-en="Umrah Leave">إجازة عمرة</div>
             <div class="dropdown-option" onclick="selectLeaveOption('unpaid')" data-ar="إجازة بدون مرتب (بحد أقصى شهر)" data-en="Unpaid Leave (Max 1 Month)">إجازة بدون مرتب (بحد أقصى شهر)</div>
           </div>
         </div>
@@ -1040,10 +1040,11 @@
           ⚠️ <strong data-ar="تنبيه هام:" data-en="Important Notice:">تنبيه هام:</strong> <span data-ar="الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة." data-en="Unpaid leave is for a maximum of 1 month, and the employee is committed to paying their share of social insurance for this period.">الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة.</span>
         </div>
 
+        <!-- Muted Dynamic Attachment Upload Box -->
         <div id="medicalReportSection" class="medical-upload-box hidden">
-          <div style="font-size: 0.8rem; color: #38bdf8; font-weight: 700; margin-bottom: 0.5rem;" data-ar="🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):" data-en="🏥 Upload or capture medical report (Image or PDF):">🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):</div>
-          <label class="upload-btn-label" for="medicalReportFile" data-ar="📁 اختر الملف أو صور التقرير" data-en="📁 Choose file or capture report">
-            📁 اختر الملف أو صور التقرير
+          <div style="font-size: 0.8rem; color: #38bdf8; font-weight: 700; margin-bottom: 0.5rem;" id="attachmentTitleText">🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):</div>
+          <label class="upload-btn-label" for="medicalReportFile" data-ar="📁 اختر الملف أو صور المستند" data-en="📁 Choose file or capture document">
+            📁 اختر الملف أو صور المستند
           </label>
           <input type="file" id="medicalReportFile" accept="image/*,application/pdf" onchange="handleMedicalFileSelected(this)">
           <div id="medicalFileName" data-ar="لم يتم اختيار ملف" data-en="No file chosen" style="font-size: 0.75rem; color: var(--muted); margin-top: 0.4rem;">لم يتم اختيار ملف</div>
@@ -1474,6 +1475,11 @@
       calculateLeaveDays();
     }
 
+    function openLeaveRequestWithType(typeVal) {
+      showPage('view-leave-request');
+      selectLeaveOption(typeVal);
+    }
+
     function handleMedicalFileSelected(input) {
       const fileNameEl = document.getElementById('medicalFileName');
       if (input.files && input.files[0]) {
@@ -1619,7 +1625,6 @@
       if (selectedIndex < 1) selectedIndex = 1;
       if (selectedIndex >= items.length - 1) selectedIndex = items.length - 2;
 
-      /* Play click sound upon step change */
       if (lastWheelIndices[wheelId] !== selectedIndex) {
         lastWheelIndices[wheelId] = selectedIndex;
         playClickSound();
@@ -1740,13 +1745,13 @@
         const lowerText = text.toLowerCase();
         if (currentLang === 'ar') {
           if (lowerText.includes('إجازة') || lowerText.includes('اجازات')) {
-            botMsg.innerText = "يمكنك تقديم طلب إجازة جديد (سنوية، وفاة، ولادة، بدون مرتب) مباشرة من خدماتي.";
+            botMsg.innerText = "يمكنك تقديم طلب إجازة جديد (سنوية، وفاة، ولادة، حج، عمرة) مباشرة من خدماتي.";
           } else {
             botMsg.innerText = "شكراً لتواصلك! تم تسجيل استفسارك وسيتم الرد عليك قريباً من قبل ممثل الموارد البشرية.";
           }
         } else {
           if (lowerText.includes('leave') || lowerText.includes('vacation')) {
-            botMsg.innerText = "You can apply for leave (annual, bereavement, paternity, unpaid) directly from Services.";
+            botMsg.innerText = "You can apply for leave (annual, bereavement, paternity, Hajj, Umrah, unpaid) directly from Services.";
           } else {
             botMsg.innerText = "Thank you for your message! Your query has been noted and HR will follow up with you.";
           }
@@ -1858,13 +1863,28 @@
     function handleLeaveTypeChange() {
       const leaveType = document.getElementById('leaveType').value;
       const noticeBox = document.getElementById('unpaidInsuranceNotice');
-      const medicalBox = document.getElementById('medicalReportSection');
+      const attachBox = document.getElementById('medicalReportSection');
+      const titleText = document.getElementById('attachmentTitleText');
 
       if (leaveType === 'unpaid') noticeBox.classList.remove('hidden');
       else noticeBox.classList.add('hidden');
 
-      if (leaveType === 'sick') medicalBox.classList.remove('hidden');
-      else medicalBox.classList.add('hidden');
+      const requiredAttachmentTypes = ['sick', 'bereavement', 'paternity', 'hajj', 'umrah'];
+      
+      if (requiredAttachmentTypes.includes(leaveType)) {
+        attachBox.classList.remove('hidden');
+        if (leaveType === 'sick') {
+          titleText.innerText = currentLang === 'ar' ? "🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):" : "🏥 Upload or capture medical report (Image or PDF):";
+        } else if (leaveType === 'bereavement') {
+          titleText.innerText = currentLang === 'ar' ? "📜 رفع أو تصوير شهادة الوفاة (صورة أو PDF):" : "📜 Upload or capture death certificate (Image or PDF):";
+        } else if (leaveType === 'paternity') {
+          titleText.innerText = currentLang === 'ar' ? "👶 رفع أو تصوير شهادة الميلاد (صورة أو PDF):" : "👶 Upload or capture birth certificate (Image or PDF):";
+        } else if (leaveType === 'hajj' || leaveType === 'umrah') {
+          titleText.innerText = currentLang === 'ar' ? "✈️ رفع أو تصوير التأشيرة وتذكرة الطيران (صورة أو PDF):" : "✈️ Upload or capture visa and flight ticket (Image or PDF):";
+        }
+      } else {
+        attachBox.classList.add('hidden');
+      }
     }
 
     function calculateLeaveDays() {
@@ -1905,11 +1925,16 @@
         return;
       }
 
-      if (leaveType === 'sick') {
+      const requiredAttachmentTypes = ['sick', 'bereavement', 'paternity', 'hajj', 'umrah'];
+      
+      if (requiredAttachmentTypes.includes(leaveType)) {
         const fileInput = document.getElementById('medicalReportFile');
         if (!fileInput.files || !fileInput.files[0]) {
           msg.style.color = '#ef4444';
-          msg.innerText = currentLang === 'ar' ? "⚠️ يرجى اختيار أو تصوير التقرير الطبي للإجازة المرضية!" : "⚠️ Please attach or capture medical report for sick leave!";
+          if (leaveType === 'sick') msg.innerText = currentLang === 'ar' ? "⚠️ يرجى رفع أو تصوير التقرير الطبي!" : "⚠️ Please attach medical report!";
+          else if (leaveType === 'bereavement') msg.innerText = currentLang === 'ar' ? "⚠️ يرجى رفع أو تصوير شهادة الوفاة لاعتماد الإجازة!" : "⚠️ Please attach death certificate!";
+          else if (leaveType === 'paternity') msg.innerText = currentLang === 'ar' ? "⚠️ يرجى رفع أو تصوير شهادة الميلاد لاعتماد الإجازة!" : "⚠️ Please attach birth certificate!";
+          else if (leaveType === 'hajj' || leaveType === 'umrah') msg.innerText = currentLang === 'ar' ? "⚠️ يرجى رفع أو تصوير التأشيرة وتذكرة الطيران!" : "⚠️ Please attach visa and flight ticket!";
           return;
         }
       }
@@ -1927,7 +1952,7 @@
 
       db.ref('leave_requests/' + currentEmpCode).push(leaveData).then(() => {
         msg.style.color = '#10b981';
-        msg.innerText = currentLang === 'ar' ? "✅ تم تقديم طلب الإجازة بنجاح في النظام!" : "✅ Leave request submitted successfully!";
+        msg.innerText = currentLang === 'ar' ? "✅ تم تقديم طلب الإجازة والمستندات بنجاح!" : "✅ Leave request & documents submitted successfully!";
         setTimeout(() => { showPage('view-dashboard'); }, 2000);
       }).catch(() => {
         msg.style.color = '#ef4444';
