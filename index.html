@@ -55,6 +55,12 @@
       overflow-x: hidden;
     }
     
+    /* الإجبار اللحظي لمحاذاة النصوص (يمين/يسار) بناءً على لغة التطبيق */
+    [dir="ltr"] [style*="text-align: right"],
+    [dir="ltr"] [style*="text-align:right"] {
+      text-align: left !important;
+    }
+
     /* Intro Screen */
     #intro-screen {
       position: fixed;
@@ -776,7 +782,6 @@
           <div class="progress-bar-container"><div class="progress-bar-fill" id="permsProgressBar" style="width: 100%;"></div></div>
         </div>
 
-        <!-- SALARY CARD CLEANED FROM ARABIC LEAK -->
         <div class="summary-card clickable-card" onclick="showPage('view-payslip-request')">
           <div class="summary-title"><span data-ar="صافي آخر مرتب" data-en="Last Net Salary">صافي آخر مرتب</span></div>
           <div class="salary-row">
@@ -1736,17 +1741,24 @@
       }
     }
 
+    // تم التحديث لسد الثقب الأزرق في العداد
     function populate24HourWheels() {
       const createWheelItems = (containerId, max, defaultVal) => {
         const box = document.getElementById(containerId);
         if (!box) return;
-        box.innerHTML = '<div class="wheel-item"></div>';
+        
+        // وضع آخر رقم في الدائرة (59 أو 23)
+        const lastValStr = String(max - 1).padStart(2, '0');
+        box.innerHTML = `<div class="wheel-item">${lastValStr}</div>`;
+        
         for (let i = 0; i < max; i++) {
           const valStr = String(i).padStart(2, '0');
           const isSelected = valStr === defaultVal;
           box.innerHTML += `<div class="wheel-item ${isSelected ? 'selected' : ''}">${valStr}</div>`;
         }
-        box.innerHTML += '<div class="wheel-item"></div>';
+        
+        // وضع الصفر في النهاية لعمل تكرار مرئي
+        box.innerHTML += `<div class="wheel-item">00</div>`;
       };
 
       createWheelItems('fromHourWheel', 24, '08');
