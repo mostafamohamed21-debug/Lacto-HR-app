@@ -1443,6 +1443,17 @@
       document.querySelectorAll('[data-ar-placeholder][data-en-placeholder]').forEach(el => {
         el.placeholder = el.getAttribute(`data-${lang}-placeholder`);
       });
+      
+      // Dynamic synchronization for leave dropdown text & dynamic attachment text
+      const currentLeaveVal = document.getElementById('leaveType') ? document.getElementById('leaveType').value : 'annual';
+      const selectedOptionEl = document.querySelector(`.dropdown-option[onclick*="${currentLeaveVal}"]`);
+      if (selectedOptionEl && document.getElementById('selectedLeaveText')) {
+        document.getElementById('selectedLeaveText').innerText = selectedOptionEl.getAttribute(`data-${lang}`);
+      }
+
+      handleLeaveTypeChange();
+      calculateLeaveDays();
+      if (typeof calculateRequestedDuration === 'function') calculateRequestedDuration();
       updateDynamicGreeting();
     }
 
@@ -1874,14 +1885,19 @@
       if (requiredAttachmentTypes.includes(leaveType)) {
         attachBox.classList.remove('hidden');
         if (leaveType === 'sick') {
-          titleText.innerText = currentLang === 'ar' ? "🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):" : "🏥 Upload or capture medical report (Image or PDF):";
+          titleText.setAttribute('data-ar', '🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):');
+          titleText.setAttribute('data-en', '🏥 Upload or capture medical report (Image or PDF):');
         } else if (leaveType === 'bereavement') {
-          titleText.innerText = currentLang === 'ar' ? "📜 رفع أو تصوير شهادة الوفاة (صورة أو PDF):" : "📜 Upload or capture death certificate (Image or PDF):";
+          titleText.setAttribute('data-ar', '📜 رفع أو تصوير شهادة الوفاة (صورة أو PDF):');
+          titleText.setAttribute('data-en', '📜 Upload or capture death certificate (Image or PDF):');
         } else if (leaveType === 'paternity') {
-          titleText.innerText = currentLang === 'ar' ? "👶 رفع أو تصوير شهادة الميلاد (صورة أو PDF):" : "👶 Upload or capture birth certificate (Image or PDF):";
+          titleText.setAttribute('data-ar', '👶 رفع أو تصوير شهادة الميلاد (صورة أو PDF):');
+          titleText.setAttribute('data-en', '👶 Upload or capture birth certificate (Image or PDF):');
         } else if (leaveType === 'hajj' || leaveType === 'umrah') {
-          titleText.innerText = currentLang === 'ar' ? "✈️ رفع أو تصوير التأشيرة وتذكرة الطيران (صورة أو PDF):" : "✈️ Upload or capture visa and flight ticket (Image or PDF):";
+          titleText.setAttribute('data-ar', '✈️ رفع أو تصوير التأشيرة وتذكرة الطيران (صورة أو PDF):');
+          titleText.setAttribute('data-en', '✈️ Upload or capture visa and flight ticket (Image or PDF):');
         }
+        titleText.innerText = titleText.getAttribute(`data-${currentLang}`);
       } else {
         attachBox.classList.add('hidden');
       }
@@ -2012,7 +2028,8 @@
           const medFileEl = document.getElementById('medicalFileName');
           medFileEl.innerText = medFileEl.getAttribute(`data-${currentLang}`);
           document.getElementById('leaveType').value = 'annual';
-          document.getElementById('selectedLeaveText').innerText = document.querySelector('.dropdown-option').getAttribute(`data-${currentLang}`);
+          const annualOption = document.querySelector('.dropdown-option[onclick*="annual"]');
+          if (annualOption) document.getElementById('selectedLeaveText').innerText = annualOption.getAttribute(`data-${currentLang}`);
           handleLeaveTypeChange();
         }
 
