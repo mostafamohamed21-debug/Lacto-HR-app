@@ -365,7 +365,7 @@
     }
     .upload-btn-label:hover { transform: scale(1.03); }
 
-    /* --- FLIP CLOCK & DYNAMIC SELECTION MODERN STYLING --- */
+    /* FLIP CLOCK & DYNAMIC STYLING */
     .digital-quota-card-seamless {
       background: transparent;
       border: none;
@@ -489,24 +489,14 @@
       gap: 0.5rem;
       backdrop-filter: blur(12px);
     }
-    .type-btn svg {
-      width: 28px;
-      height: 28px;
-      fill: var(--muted);
-      transition: all 0.3s ease;
-    }
+    .type-btn svg { width: 28px; height: 28px; fill: var(--muted); transition: all 0.3s ease; }
     .type-btn.active {
       background: linear-gradient(135deg, rgba(2, 132, 199, 0.35) 0%, rgba(56, 189, 248, 0.15) 100%);
-      border-color: #38bdf8; 
-      color: #38bdf8;
+      border-color: #38bdf8; color: #38bdf8;
       box-shadow: 0 0 20px rgba(56, 189, 248, 0.35), inset 0 0 10px rgba(56, 189, 248, 0.2); 
       transform: translateY(-2px);
     }
-    .type-btn.active svg {
-      fill: #38bdf8;
-      filter: drop-shadow(0 0 8px #38bdf8);
-      transform: scale(1.1);
-    }
+    .type-btn.active svg { fill: #38bdf8; filter: drop-shadow(0 0 8px #38bdf8); transform: scale(1.1); }
 
     .time-picker-card {
       background: linear-gradient(135deg, rgba(11, 19, 41, 0.9) 0%, rgba(30, 58, 138, 0.4) 100%);
@@ -538,9 +528,7 @@
       color: #38bdf8; font-size: 0.9rem; margin-top: 0.75rem;
     }
 
-    .password-container { 
-      position: relative; width: 100%; margin: 0.5rem 0; display: flex; align-items: center;
-    }
+    .password-container { position: relative; width: 100%; margin: 0.5rem 0; display: flex; align-items: center; }
     .password-container input { margin: 0; width: 100%; }
     [dir="rtl"] .password-container input { padding-left: 3.5rem; padding-right: 1rem; text-align: right; }
     [dir="ltr"] .password-container input { padding-right: 3.5rem; padding-left: 1rem; text-align: left; }
@@ -814,7 +802,7 @@
         <input type="password" id="empPass" data-ar-placeholder="كلمة السر" data-en-placeholder="Password" placeholder="كلمة السر">
         <button type="button" class="toggle-password" onclick="togglePasswordVisibility()" title="إظهار / إخفاء كلمة السر">
           <svg id="eyeIcon" viewBox="0 0 24 24">
-            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
           </svg>
         </button>
       </div>
@@ -931,7 +919,6 @@
           <div class="progress-bar-container"><div class="progress-bar-fill" id="leavesProgressBar" style="width: 46.6%;"></div></div>
         </div>
 
-        <!-- كارت الأذونات الجديد المدمج بـ Flip Clock ثلاثي الأبعاد المضيء وشريط التقدم -->
         <div class="summary-card clickable-card" onclick="showPage('view-permission-request')">
           <div class="summary-title"><span data-ar="الأذونات المتاحة" data-en="Available Permissions">الأذونات المتاحة</span><span style="font-size:0.75rem; color: #38bdf8;" id="permRatioText" data-ar="100% متاح" data-en="100% Available">100% متاح</span></div>
           
@@ -966,7 +953,7 @@
           <div class="salary-row">
             <div class="salary-masked" id="salaryDisplayVal">••••••••</div>
             <button type="button" class="toggle-salary-btn" onclick="toggleSalaryVisibility()" title="إظهار / إخفاء الراتب">
-              <svg id="salaryEyeIcon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+              <svg id="salaryEyeIcon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
             </button>
           </div>
         </div>
@@ -1015,8 +1002,9 @@
           <span data-ar="🚪 طلب إذن شخصي" data-en="🚪 Personal Permission">🚪 طلب إذن شخصي</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
-        <button class="service-row-btn" onclick="showComingSoon('view-services')">
-          <span data-ar="✈️ طلب مأمورية" data-en="✈️ Mission Request">✈️ طلب مأمورية</span>
+        <!-- زر المأمورية المحدث -->
+        <button class="service-row-btn" onclick="showPage('view-mission-request')">
+          <span data-ar="✈️ طلب مأمورية خارجية" data-en="✈️ Mission Request">✈️ طلب مأمورية خارجية</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
         <button class="service-row-btn" onclick="showComingSoon('view-services')">
@@ -1079,7 +1067,6 @@
           ⚠️ <strong data-ar="تنبيه هام:" data-en="Important Notice:">تنبيه هام:</strong> <span data-ar="الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة." data-en="Unpaid leave is for a maximum of 1 month, and the employee is committed to paying their share of social insurance for this period.">الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة.</span>
         </div>
 
-        <!-- Muted Dynamic Attachment Upload Box -->
         <div id="medicalReportSection" class="medical-upload-box hidden">
           <div style="font-size: 0.8rem; color: #38bdf8; font-weight: 700; margin-bottom: 0.5rem;" id="attachmentTitleText">🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):</div>
           <label class="upload-btn-label" for="medicalReportFile" data-ar="📁 اختر الملف أو صور المستند" data-en="📁 Choose file or capture document">
@@ -1107,41 +1094,33 @@
       </div>
     </div>
 
-    <!-- 4.2. Personal Permission Request View (FLIP CLOCK & 3D TUMBLER WHEEL) -->
+    <!-- 4.2. Personal Permission Request View -->
     <div id="view-permission-request" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
         <span style="font-weight: 700; color: #38bdf8;" data-ar="طلب إذن شخصي" data-en="Personal Permission">طلب إذن شخصي</span>
       </div>
 
-      <!-- العداد الديجيتال المضيء بتصميم الـ FLIP CLOCK الدايب -->
       <div class="digital-quota-card-seamless">
         <div class="quota-label-glow" data-ar="المتبقي من الرصيد الشهري للأذونات" data-en="Monthly Permission Balance">المتبقي من الرصيد الشهري للأذونات</div>
         <div class="flip-clock-display">
           <div class="flip-unit-box">
-            <div class="flip-card-digit">
-              <span class="digit-val-glow" id="cntHours">04</span>
-            </div>
+            <div class="flip-card-digit"><span class="digit-val-glow" id="cntHours">04</span></div>
             <span class="digit-sub-text" data-ar="ساعة" data-en="Hours">ساعة</span>
           </div>
           <span class="flip-clock-colon">:</span>
           <div class="flip-unit-box">
-            <div class="flip-card-digit">
-              <span class="digit-val-glow" id="cntMins">00</span>
-            </div>
+            <div class="flip-card-digit"><span class="digit-val-glow" id="cntMins">00</span></div>
             <span class="digit-sub-text" data-ar="دقيقة" data-en="Mins">دقيقة</span>
           </div>
           <span class="flip-clock-colon">:</span>
           <div class="flip-unit-box">
-            <div class="flip-card-digit">
-              <span class="digit-val-glow" id="cntSecs">00</span>
-            </div>
+            <div class="flip-card-digit"><span class="digit-val-glow" id="cntSecs">00</span></div>
             <span class="digit-sub-text" data-ar="ثانية" data-en="Secs">ثانية</span>
           </div>
         </div>
       </div>
 
-      <!-- اختيار نوع الإذن بأيقونات فيكتور ديناميكية -->
       <div style="font-size:0.8rem; color:var(--muted); text-align:right; margin-bottom:0.3rem;" data-ar="نوع الإذن:" data-en="Permission Type:">نوع الإذن:</div>
       <div class="permission-type-grid">
         <div class="type-btn active" id="btnTypeLate" onclick="setPermissionType('late_arrival')">
@@ -1155,11 +1134,9 @@
       </div>
       <input type="hidden" id="permTypeVal" value="late_arrival">
 
-      <!-- تاريخ الإذن -->
       <label style="font-size: 0.75rem; color: var(--muted); text-align:right; display:block; margin-top:0.5rem;" data-ar="تاريخ الإذن:" data-en="Permission Date:">تاريخ الإذن:</label>
       <input type="text" id="permissionDate" class="custom-date-input" readonly data-ar-placeholder="اختر تاريخ الإذن..." data-en-placeholder="Select permission date..." placeholder="اختر تاريخ الإذن..." onclick="openCustomCalendar('permissionDate')">
 
-      <!-- وقت البداية 3D Tumbler -->
       <div style="font-size:0.8rem; color:var(--muted); text-align:right; margin-top:0.5rem;" data-ar="من الساعة:" data-en="From Time:">من الساعة:</div>
       <div class="time-picker-card">
         <div class="wheel-container">
@@ -1185,7 +1162,6 @@
         </div>
       </div>
 
-      <!-- وقت النهاية 3D Tumbler -->
       <div style="font-size:0.8rem; color:var(--muted); text-align:right; margin-top:0.5rem;" data-ar="إلى الساعة:" data-en="To Time:">إلى الساعة:</div>
       <div class="time-picker-card">
         <div class="wheel-container">
@@ -1214,7 +1190,6 @@
       <input type="hidden" id="fromHourVal" value="08"><input type="hidden" id="fromMinVal" value="00"><input type="hidden" id="fromAmpmVal" value="ص">
       <input type="hidden" id="toHourVal" value="09"><input type="hidden" id="toMinVal" value="00"><input type="hidden" id="toAmpmVal" value="ص">
 
-      <!-- إجمالي المدة المجهزة -->
       <div class="duration-result-box" id="durationResultText">
         ⏱️ مدة الإذن المطلوبة: 1 ساعة و 0 دقيقة
       </div>
@@ -1223,6 +1198,55 @@
 
       <button onclick="submitPermissionRequest()" class="btn-success" data-ar="إرسال طلب الإذن" data-en="Submit Permission Request" style="margin-top:0.75rem;">إرسال طلب الإذن</button>
       <p id="permMsg" style="font-size: 0.85rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
+    </div>
+
+    <!-- 4.3. NEW MISSION REQUEST VIEW (المأموريات الخارجية مع فتح البصمة واللوكيشن للـ HR) -->
+    <div id="view-mission-request" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span style="font-weight: 700; color: #38bdf8;" data-ar="طلب مأمورية خارجية" data-en="Mission Request">طلب مأمورية خارجية</span>
+      </div>
+
+      <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;">
+        <!-- تاريخ المأمورية -->
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="تاريخ المأمورية:" data-en="Mission Date:">تاريخ المأمورية:</label>
+        <input type="text" id="missionDate" class="custom-date-input" readonly data-ar-placeholder="اختر تاريخ المأمورية..." data-en-placeholder="Select mission date..." placeholder="اختر تاريخ المأمورية..." onclick="openCustomCalendar('missionDate')">
+
+        <!-- كامل اليوم Checkbox -->
+        <label class="checkbox-container" style="margin: 0.25rem 0;">
+          <input type="checkbox" id="chkFullDayMission" onchange="toggleFullDayMission(this.checked)">
+          <span style="color: #38bdf8; font-weight: 700;" data-ar="كامل اليوم (من بداية الشيفت إلى نهايته)" data-en="Full Day (Entire Shift)">كامل اليوم (من بداية الشيفت إلى نهايته)</span>
+        </label>
+
+        <!-- أوقات المأمورية (تختفي لو اخترنا كامل اليوم) -->
+        <div id="missionTimesWrapper" style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+            <div>
+              <label style="font-size: 0.7rem; color: var(--muted);" data-ar="توقيت البدء:" data-en="Start Time:">توقيت البدء:</label>
+              <input type="time" id="missionStartTime" value="08:00" style="text-align: center; font-weight: 700; color: #38bdf8;">
+            </div>
+            <div>
+              <label style="font-size: 0.7rem; color: var(--muted);" data-ar="توقيت النهاية:" data-en="End Time:">توقيت النهاية:</label>
+              <input type="time" id="missionEndTime" value="16:00" style="text-align: center; font-weight: 700; color: #38bdf8;">
+            </div>
+          </div>
+        </div>
+
+        <!-- جهة المأمورية -->
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="الجهة المتجه إليها للمأمورية:" data-en="Destination Location:">الجهة المتجه إليها للمأمورية:</label>
+        <input type="text" id="missionDestination" data-ar-placeholder="مثال: مصنع العاشر من رمضان / الهيئة العامة..." data-en-placeholder="e.g. Factory, Government Dept..." placeholder="مثال: مصنع العاشر من رمضان / الهيئة العامة...">
+
+        <!-- الغرض من المأمورية -->
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="الغرض من المأمورية:" data-en="Mission Purpose:">الغرض من المأمورية:</label>
+        <textarea id="missionPurpose" rows="3" data-ar-placeholder="اشرح الهدف من المأمورية والمهام المطلوبة..." data-en-placeholder="Explain purpose and tasks..." placeholder="اشرح الهدف من المأمورية والمهام المطلوبة..." style="resize: none;"></textarea>
+
+        <div style="background: rgba(56, 189, 248, 0.1); border: 1px dashed rgba(56, 189, 248, 0.4); border-radius: 0.8rem; padding: 0.65rem; font-size: 0.75rem; color: #38bdf8; line-height: 1.4; text-align: right;">
+          📍 <strong data-ar="تنبيه الـ GPS:" data-en="GPS Notice:">تنبيه الـ GPS:</strong> <span data-ar="بعد اعتماد الطلب من المدير المباشر والـ HR، سيُتاح لك تسجيل الحضور والانصراف من موقع المأمورية وسيم تحويل الإحداثيات مباشرة للـ HR." data-en="Once approved by Manager & HR, remote GPS check-in will be unlocked for your destination and logged to HR.">بعد اعتماد الطلب من المدير المباشر والـ HR، سيُتاح لك تسجيل الحضور والانصراف من موقع المأمورية وسيم تحويل الإحداثيات مباشرة للـ HR.</span>
+        </div>
+
+        <button onclick="submitMissionRequest()" class="btn-success" data-ar="إرسال طلب المأمورية" data-en="Submit Mission Request" style="margin-top:0.5rem;">إرسال طلب المأمورية</button>
+        <p id="missionMsg" style="font-size: 0.85rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
+      </div>
     </div>
     
     <!-- 5. Settings View -->
@@ -1303,7 +1327,7 @@
     </div>
   </div>
 
-  <!-- Bottom Navigation Bar (STABLE & SECURE) -->
+  <!-- Bottom Navigation Bar -->
   <div id="bottomNavBar">
     <button class="bottom-nav-item active" onclick="switchTab('view-dashboard', this)">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -1434,16 +1458,12 @@
     
     let totalPermBalanceSeconds = 14400; // 4 Hours
 
-    /* Web Audio API Mechanical Click Sound Synthesizer */
+    /* Web Audio API Sound Generator */
     let audioCtx = null;
     function playClickSound() {
       try {
-        if (!audioCtx) {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        if (audioCtx.state === 'suspended') {
-          audioCtx.resume();
-        }
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'triangle';
@@ -1451,10 +1471,8 @@
         osc.frequency.exponentialRampToValueAtTime(180, audioCtx.currentTime + 0.012);
         gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.012);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.012);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.012);
       } catch(e) {}
     }
 
@@ -1544,7 +1562,6 @@
 
     const monthNamesAr = ["يناير", "فبراير", "مارس", "إبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
     const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
     const dayNamesAr = ["س", "ح", "ن", "ث", "ر", "خ", "ج"];
     const dayNamesEn = ["Sa", "Su", "Mo", "Tu", "We", "Th", "Fr"];
 
@@ -1554,14 +1571,9 @@
       tempSelectedDate = val;
       if (val) {
         const parts = val.split('-');
-        if (parts.length === 3) {
-          calYear = parseInt(parts[0]);
-          calMonth = parseInt(parts[1]) - 1;
-        }
+        if (parts.length === 3) { calYear = parseInt(parts[0]); calMonth = parseInt(parts[1]) - 1; }
       } else {
-        const now = new Date();
-        calYear = now.getFullYear();
-        calMonth = now.getMonth();
+        const now = new Date(); calYear = now.getFullYear(); calMonth = now.getMonth();
       }
       renderCustomCalendar();
       document.getElementById('customCalendarModal').classList.add('show');
@@ -1570,14 +1582,12 @@
     function confirmCustomCalendar() {
       if (tempSelectedDate && activeDateInputId) {
         document.getElementById(activeDateInputId).value = tempSelectedDate;
-        calculateLeaveDays();
+        if (activeDateInputId.includes('leave')) calculateLeaveDays();
       }
       closeCustomCalendar();
     }
 
-    function closeCustomCalendar() {
-      document.getElementById('customCalendarModal').classList.remove('show');
-    }
+    function closeCustomCalendar() { document.getElementById('customCalendarModal').classList.remove('show'); }
 
     function changeCalendarMonth(direction) {
       calMonth += direction;
@@ -1595,8 +1605,7 @@
       const activeDayNames = currentLang === 'ar' ? dayNamesAr : dayNamesEn;
       activeDayNames.forEach(dName => {
         const nameEl = document.createElement('div');
-        nameEl.className = 'calendar-day-name';
-        nameEl.innerText = dName;
+        nameEl.className = 'calendar-day-name'; nameEl.innerText = dName;
         headerGrid.appendChild(nameEl);
       });
 
@@ -1615,28 +1624,22 @@
 
       for (let day = 1; day <= totalDays; day++) {
         const dayCell = document.createElement('div');
-        dayCell.className = 'calendar-day';
-        dayCell.innerText = day;
-
+        dayCell.className = 'calendar-day'; dayCell.innerText = day;
         const mStr = String(calMonth + 1).padStart(2, '0');
         const dStr = String(day).padStart(2, '0');
         const formattedDate = `${calYear}-${mStr}-${dStr}`;
 
-        if (formattedDate === tempSelectedDate) {
-          dayCell.classList.add('selected');
-        }
+        if (formattedDate === tempSelectedDate) dayCell.classList.add('selected');
 
         dayCell.onclick = () => {
           grid.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
           dayCell.classList.add('selected');
           tempSelectedDate = formattedDate;
         };
-
         grid.appendChild(dayCell);
       }
     }
 
-    /* PERMISSION COUNTER & DUAL FLIP CLOCK SYNC LOGIC */
     function updateDigitalClockDisplay(seconds) {
       let h = Math.floor(seconds / 3600);
       let m = Math.floor((seconds % 3600) / 60);
@@ -1646,7 +1649,6 @@
       const strM = String(m).padStart(2, '0');
       const strS = String(s).padStart(2, '0');
 
-      // 1. Permission Form Flip Clock
       const cntH = document.getElementById('cntHours');
       const cntM = document.getElementById('cntMins');
       const cntS = document.getElementById('cntSecs');
@@ -1654,7 +1656,6 @@
       if (cntM) cntM.innerText = strM;
       if (cntS) cntS.innerText = strS;
 
-      // 2. Dashboard Card Compact Flip Clock
       const dashH = document.getElementById('dashCntHours');
       const dashM = document.getElementById('dashCntMins');
       const dashS = document.getElementById('dashCntSecs');
@@ -1662,17 +1663,12 @@
       if (dashM) dashM.innerText = strM;
       if (dashS) dashS.innerText = strS;
 
-      // 3. Progress Bar & Percentage Ratio
       const ratioText = document.getElementById('permRatioText');
       const permsProgressBar = document.getElementById('permsProgressBar');
       const pct = Math.round((seconds / 14400) * 100);
       
-      if (ratioText) {
-        ratioText.innerText = currentLang === 'ar' ? `${pct}% متاح` : `${pct}% Available`;
-      }
-      if (permsProgressBar) {
-        permsProgressBar.style.width = pct + '%';
-      }
+      if (ratioText) ratioText.innerText = currentLang === 'ar' ? `${pct}% متاح` : `${pct}% Available`;
+      if (permsProgressBar) permsProgressBar.style.width = pct + '%';
     }
 
     function setPermissionType(type) {
@@ -1687,7 +1683,6 @@
     }
 
     const lastWheelIndices = {};
-
     function handleWheelScroll(wheelId, targetInputId) {
       const wheel = document.getElementById(wheelId);
       if (!wheel) return;
@@ -1722,7 +1717,6 @@
       let fH = parseInt(document.getElementById('fromHourVal').value) || 8;
       let fM = parseInt(document.getElementById('fromMinVal').value) || 0;
       let fAp = document.getElementById('fromAmpmVal').value;
-
       let tH = parseInt(document.getElementById('toHourVal').value) || 9;
       let tM = parseInt(document.getElementById('toMinVal').value) || 0;
       let tAp = document.getElementById('toAmpmVal').value;
@@ -1792,10 +1786,59 @@
       });
     }
 
-    function toggleChatbot() {
-      const chatWin = document.getElementById('chatbot-window');
-      chatWin.classList.toggle('show');
+    /* MISSION REQUEST LOGIC & FULL DAY TOGGLE */
+    function toggleFullDayMission(isChecked) {
+      const timesWrapper = document.getElementById('missionTimesWrapper');
+      if (isChecked) {
+        timesWrapper.style.opacity = '0.4';
+        timesWrapper.style.pointerEvents = 'none';
+      } else {
+        timesWrapper.style.opacity = '1';
+        timesWrapper.style.pointerEvents = 'auto';
+      }
     }
+
+    function submitMissionRequest() {
+      const mDate = document.getElementById('missionDate').value;
+      const isFullDay = document.getElementById('chkFullDayMission').checked;
+      const startTime = isFullDay ? '08:00' : document.getElementById('missionStartTime').value;
+      const endTime = isFullDay ? '16:00' : document.getElementById('missionEndTime').value;
+      const destination = document.getElementById('missionDestination').value.trim();
+      const purpose = document.getElementById('missionPurpose').value.trim();
+      const msg = document.getElementById('missionMsg');
+
+      if (!mDate || !destination || !purpose) {
+        msg.style.color = '#ef4444';
+        msg.innerText = currentLang === 'ar' ? '⚠️ يرجى استكمال جميع الخانات (التاريخ، الجهة، والغرض)!' : '⚠️ Please complete all required fields!';
+        return;
+      }
+
+      const missionData = {
+        code: currentEmpCode,
+        name: (currentUserData && currentUserData.name) || 'Unknown',
+        date: mDate,
+        isFullDay: isFullDay,
+        startTime: startTime,
+        endTime: endTime,
+        destination: destination,
+        purpose: purpose,
+        status: 'Pending', // يحتاج موافقة المدير والـ HR
+        managerApproved: false,
+        hrApproved: false,
+        timestamp: Date.now()
+      };
+
+      db.ref('mission_requests/' + currentEmpCode).push(missionData).then(() => {
+        msg.style.color = '#10b981';
+        msg.innerText = currentLang === 'ar' ? '✅ تم تقديم طلب المأمورية بنجاح وهي قيد اعتماد المدير والـ HR!' : '✅ Mission request submitted for approval!';
+        setTimeout(() => { showPage('view-dashboard'); }, 2000);
+      }).catch(() => {
+        msg.style.color = '#ef4444';
+        msg.innerText = currentLang === 'ar' ? '❌ حدث خطأ أثناء الحفظ، حاول ثانية.' : '❌ Error saving request.';
+      });
+    }
+
+    function toggleChatbot() { document.getElementById('chatbot-window').classList.toggle('show'); }
     function handleChatKeyPress(e) { if (e.key === 'Enter') sendChatMessage(); }
     function sendChatMessage() {
       const input = document.getElementById('chatInput');
@@ -1817,14 +1860,16 @@
         if (currentLang === 'ar') {
           if (lowerText.includes('إجازة') || lowerText.includes('اجازات')) {
             botMsg.innerText = "يمكنك تقديم طلب إجازة جديد (سنوية، وفاة، ولادة، حج، عمرة) مباشرة من خدماتي.";
+          } else if (lowerText.includes('مأمورية') || lowerText.includes('مامورية')) {
+            botMsg.innerText = "يمكنك الآن تقديم طلب مأمورية خارجية وسيقوم النظام بتفعيل تسجيل الحضور من موقع المأمورية فور اعتمادها من الـ HR.";
           } else {
             botMsg.innerText = "شكراً لتواصلك! تم تسجيل استفسارك وسيتم الرد عليك قريباً من قبل ممثل الموارد البشرية.";
           }
         } else {
           if (lowerText.includes('leave') || lowerText.includes('vacation')) {
-            botMsg.innerText = "You can apply for leave (annual, bereavement, paternity, Hajj, Umrah, unpaid) directly from Services.";
+            botMsg.innerText = "You can apply for leave directly from Services.";
           } else {
-            botMsg.innerText = "Thank you for your message! Your query has been noted and HR will follow up with you.";
+            botMsg.innerText = "Thank you for your message! HR will follow up with you.";
           }
         }
         messagesContainer.appendChild(botMsg);
@@ -1881,6 +1926,7 @@
       return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
     }
 
+    /* تسجيل الحضور والانصراف المطور مع كشف ومتابعة المأموريات المعتمدة للـ HR */
     function verifyLocationAndCheckIn() {
       const statusText = document.getElementById('t-checkinStatusText');
       const valIn = document.getElementById('valInTime');
@@ -1889,46 +1935,87 @@
       const ledGreen = document.getElementById('ledGreen');
       const ledRed = document.getElementById('ledRed');
 
-      statusText.innerText = currentLang === 'ar' ? "جاري تفعيل الـ GPS والتحقق من الموقع..." : "Activating GPS & verifying location...";
+      statusText.innerText = currentLang === 'ar' ? "جاري تحديد الموقع والتحقق من المأموريات..." : "Checking location & approved missions...";
       if (!navigator.geolocation) { statusText.innerText = currentLang === 'ar' ? "متصفحك لا يدعم الـ GPS." : "Geolocation not supported."; return; }
       
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const distance = calculateDistance(position.coords.latitude, position.coords.longitude, COMPANY_LAT, COMPANY_LNG);
-          if (distance <= ALLOWED_RADIUS_METERS) {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            const todayStr = now.toISOString().split('T')[0];
-            if (!currentEmpCode) return;
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const todayStr = now.toISOString().split('T')[0];
 
-            const refPath = db.ref('attendance/' + currentEmpCode + '/' + todayStr);
-            refPath.once('value').then(snapshot => {
-              let attData = snapshot.val() || {};
-              let currentTimeMs = now.getTime();
-              if (!attData.inTime) {
-                attData.inTime = timeStr; attData.inTimestamp = currentTimeMs;
-                statusText.innerText = currentLang === 'ar' ? `✅ تم تسجيل الحضور الساعة ${timeStr}` : `✅ Check-In saved at ${timeStr}`;
-                ledGreen.classList.add('active'); ledRed.classList.remove('active');
-              } else {
-                attData.outTime = timeStr; attData.outTimestamp = currentTimeMs;
-                const diffMs = attData.outTimestamp - attData.inTimestamp;
-                const totalMins = Math.floor(diffMs / 60000);
-                attData.workingHours = `${String(Math.floor(totalMins / 60)).padStart(2, '0')}:${String(totalMins % 60).padStart(2, '0')}`;
-                statusText.innerText = currentLang === 'ar' ? `✅ تم تسجيل الانصراف الساعة ${timeStr}` : `✅ Check-Out recorded at ${timeStr}`;
-                ledRed.classList.add('active'); ledGreen.classList.remove('active');
-              }
-              refPath.set(attData);
-              if (attData.inTime) valIn.innerText = attData.inTime;
-              if (attData.outTime) valOut.innerText = attData.outTime;
-              if (attData.workingHours) valWorking.innerText = attData.workingHours;
-            });
-          } else {
-            statusText.innerText = currentLang === 'ar' ? `❌ خارج نطاق الشركة (${Math.round(distance)} متر)` : `❌ Outside range (${Math.round(distance)}m)`;
+      if (!currentEmpCode) return;
+
+      // 1. التحقق أولاً هل للموظف مأمورية معتمدة اليوم؟
+      db.ref('mission_requests/' + currentEmpCode).once('value').then(snap => {
+        let hasApprovedMission = false;
+        let missionDetails = null;
+
+        if (snap.exists()) {
+          const missions = snap.val();
+          for (let k in missions) {
+            if (missions[k].date === todayStr && (missions[k].status === 'Approved' || missions[k].hrApproved === true)) {
+              hasApprovedMission = true;
+              missionDetails = missions[k];
+              break;
+            }
           }
-        },
-        () => { statusText.innerText = currentLang === 'ar' ? "تعذر الحصول على موقعك. تأكد من تفعيل GPS." : "Unable to retrieve location."; },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-      );
+        }
+
+        // 2. قراءة موقع الموظف الآن
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const userLat = position.coords.latitude;
+            const userLng = position.coords.longitude;
+            const distance = calculateDistance(userLat, userLng, COMPANY_LAT, COMPANY_LNG);
+            const googleMapsUrl = `https://maps.google.com/?q=${userLat},${userLng}`;
+
+            // لو عنده مأمورية معتمدة OR الموظف داخل نطاق الشركة
+            if (hasApprovedMission || distance <= ALLOWED_RADIUS_METERS) {
+              const refPath = db.ref('attendance/' + currentEmpCode + '/' + todayStr);
+              refPath.once('value').then(snapshot => {
+                let attData = snapshot.val() || {};
+                let currentTimeMs = now.getTime();
+
+                if (!attData.inTime) {
+                  attData.inTime = timeStr; 
+                  attData.inTimestamp = currentTimeMs;
+                  attData.inLocation = { lat: userLat, lng: userLng, mapUrl: googleMapsUrl, isMission: hasApprovedMission };
+                  
+                  statusText.innerText = hasApprovedMission 
+                    ? (currentLang === 'ar' ? `📍 تم تسجيل حضور المأمورية الساعة ${timeStr}` : `📍 Mission Check-In at ${timeStr}`)
+                    : (currentLang === 'ar' ? `✅ تم تسجيل الحضور الساعة ${timeStr}` : `✅ Check-In saved at ${timeStr}`);
+                  
+                  ledGreen.classList.add('active'); ledRed.classList.remove('active');
+                } else {
+                  attData.outTime = timeStr; 
+                  attData.outTimestamp = currentTimeMs;
+                  attData.outLocation = { lat: userLat, lng: userLng, mapUrl: googleMapsUrl, isMission: hasApprovedMission };
+
+                  const diffMs = attData.outTimestamp - attData.inTimestamp;
+                  const totalMins = Math.floor(diffMs / 60000);
+                  attData.workingHours = `${String(Math.floor(totalMins / 60)).padStart(2, '0')}:${String(totalMins % 60).padStart(2, '0')}`;
+                  
+                  statusText.innerText = hasApprovedMission 
+                    ? (currentLang === 'ar' ? `📍 تم تسجيل انصراف المأمورية الساعة ${timeStr}` : `📍 Mission Check-Out at ${timeStr}`)
+                    : (currentLang === 'ar' ? `✅ تم تسجيل الانصراف الساعة ${timeStr}` : `✅ Check-Out recorded at ${timeStr}`);
+                  
+                  ledRed.classList.add('active'); ledGreen.classList.remove('active');
+                }
+
+                refPath.set(attData);
+                if (attData.inTime) valIn.innerText = attData.inTime;
+                if (attData.outTime) valOut.innerText = attData.outTime;
+                if (attData.workingHours) valWorking.innerText = attData.workingHours;
+              });
+            } else {
+              statusText.innerText = currentLang === 'ar' 
+                ? `❌ خارج نطاق الشركة (${Math.round(distance)} متر) وليس لديك مأمورية معتمدة اليوم!` 
+                : `❌ Outside company radius (${Math.round(distance)}m) with no approved mission!`;
+            }
+          },
+          () => { statusText.innerText = currentLang === 'ar' ? "تعذر الحصول على موقعك. تأكد من تفعيل الـ GPS." : "Unable to retrieve location."; },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+      });
     }
 
     function handleLeaveTypeChange() {
@@ -2059,7 +2146,7 @@
         if (bottomNavBar) bottomNavBar.classList.add('show');
       }
       
-      ['view-login', 'view-dashboard', 'view-id-card', 'view-services', 'view-leave-request', 'view-permission-request', 'view-settings', 'view-profile', 'view-coming-soon', 'view-suggestion-page'].forEach(id => {
+      ['view-login', 'view-dashboard', 'view-id-card', 'view-services', 'view-leave-request', 'view-permission-request', 'view-mission-request', 'view-settings', 'view-profile', 'view-coming-soon', 'view-suggestion-page'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.add('hidden');
       });
@@ -2100,6 +2187,15 @@
           document.getElementById('permMsg').innerText = '';
           updateDigitalClockDisplay(totalPermBalanceSeconds);
           calculateRequestedDuration();
+        }
+
+        if (pageId === 'view-mission-request') {
+          document.getElementById('missionDate').value = '';
+          document.getElementById('chkFullDayMission').checked = false;
+          toggleFullDayMission(false);
+          document.getElementById('missionDestination').value = '';
+          document.getElementById('missionPurpose').value = '';
+          document.getElementById('missionMsg').innerText = '';
         }
 
         if (pageId === 'view-suggestion-page' && currentUserData) {
