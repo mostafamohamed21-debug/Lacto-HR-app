@@ -303,7 +303,7 @@
     .time-picker-card {
       background: linear-gradient(135deg, rgba(11, 19, 41, 0.9) 0%, rgba(30, 58, 138, 0.4) 100%);
       border: 1px solid var(--border-color); border-radius: 1.25rem; padding: 0.75rem;
-      margin-top: 0.4rem; display: flex; align-items: center; justify-content: space-around;
+      margin-top: 0.4rem; display: flex; align-items: center; justify-style: space-around;
       box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
     }
     .wheel-container { display: flex; align-items: center; gap: 0.4rem; direction: ltr; perspective: 600px; }
@@ -1328,7 +1328,7 @@
   </div>
 
   <script>
-    /* AUDIO SYNTHESIZER: SOFT PIANO MELODY & EXIT SOUNDS */
+    /* AUDIO SYNTHESIZER: ENHANCED CLICK & HARMONIC PIANO SOUNDS */
     let audioCtx = null;
 
     function getAudioContext() {
@@ -1361,7 +1361,6 @@
     }
 
     function playIntroPianoMelody() {
-      // Gentle harmonic piano chord sequence synced with intro duration (4.5s total)
       const notes = [
         { f: 523.25, d: 1.2, delay: 0.1 },  // C5
         { f: 659.25, d: 1.2, delay: 0.4 },  // E5
@@ -1383,20 +1382,47 @@
       notes.forEach(n => playNote(n.f, n.d, n.delay, 0.15));
     }
 
+    /* ENHANCED CLICK & SCROLL SOUNDS */
     function playClickSound() {
       try {
         const ctx = getAudioContext();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(587.33, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(293.66, ctx.currentTime + 0.08);
-        gain.gain.setValueAtTime(0.1, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.start(); osc.stop(ctx.currentTime + 0.08);
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(800, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.04);
+        gain.gain.setValueAtTime(0.12, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+        osc.connect(gain); 
+        gain.connect(ctx.destination);
+        osc.start(); 
+        osc.stop(ctx.currentTime + 0.04);
       } catch(e) {}
     }
+
+    function playWheelScrollTick() {
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1200, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.02);
+        gain.gain.setValueAtTime(0.05, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.02);
+        osc.connect(gain); 
+        gain.connect(ctx.destination);
+        osc.start(); 
+        osc.stop(ctx.currentTime + 0.02);
+      } catch(e) {}
+    }
+
+    /* Attach sound to all buttons and interactive elements automatically */
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('button, .clickable-card, .dropdown-option, .lang-option, .type-btn, .calendar-day, .bottom-nav-item, .radio-option-btn, .checkin-card, .service-row-btn')) {
+        playClickSound();
+      }
+    });
 
     /* Leaf Fall Intro with Synced Music */
     function runLeafFallIntro() {
@@ -1854,7 +1880,6 @@
     function manualToggleAmPm(badgeId) {
       const badge = document.getElementById(badgeId);
       if (!badge) return;
-      playClickSound();
       if (currentLang === 'ar') {
         badge.innerText = (badge.innerText === 'صباحاً') ? 'مساءً' : 'صباحاً';
       } else {
@@ -1893,7 +1918,7 @@
 
       if (lastWheelIndices[wheelId] !== selectedIndex) {
         lastWheelIndices[wheelId] = selectedIndex;
-        playClickSound();
+        playWheelScrollTick(); // HAPTIC TICK SOUND ON SCROLL
       }
 
       items.forEach((item, idx) => {
