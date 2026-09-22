@@ -30,7 +30,7 @@
       --accent: #38bdf8;
       --accent-glow: rgba(56, 189, 248, 0.4);
       --danger: #ef4444;
-      --success: #10b981;
+      --success: #0284c7;
       --muted: #cbd5e1;
     }
     * {
@@ -164,7 +164,7 @@
     }
     [dir="ltr"] .payslip-breakdown-container { text-align: left; }
     .payslip-col-title { font-size: 0.8rem; font-weight: 800; padding-bottom: 0.35rem; border-bottom: 1px solid var(--border-color); margin-bottom: 0.5rem; }
-    .payslip-col-title.earnings { color: #10b981; }
+    .payslip-col-title.earnings { color: #38bdf8; }
     .payslip-col-title.deductions { color: #ef4444; }
     .payslip-item { display: flex; justify-content: space-between; font-size: 0.72rem; margin-bottom: 0.35rem; }
     .payslip-item-label { color: var(--muted); }
@@ -297,7 +297,7 @@
     }
     .type-btn.active svg { fill: #38bdf8; filter: drop-shadow(0 0 8px #38bdf8); transform: scale(1.1); }
 
-    /* 3D WHEEL SCROLL PICKER STYLES */
+    /* 3D WHEEL SCROLL PICKER STYLES (FIXED ALIGNMENT) */
     .time-picker-card {
       background: linear-gradient(135deg, rgba(11, 19, 41, 0.9) 0%, rgba(30, 58, 138, 0.4) 100%);
       border: 1px solid var(--border-color); border-radius: 1.25rem; padding: 0.75rem;
@@ -306,20 +306,20 @@
     }
     .wheel-container { display: flex; align-items: center; gap: 0.3rem; direction: ltr; perspective: 600px; }
     .wheel-scroll-box {
-      height: 90px; width: 60px; overflow-y: scroll; scroll-snap-type: y mandatory;
+      height: 90px; width: 62px; overflow-y: scroll; scroll-snap-type: y mandatory;
       scrollbar-width: none; border-radius: 0.8rem; background: rgba(15, 23, 42, 0.85);
       border: 1px solid rgba(56, 189, 248, 0.35); text-align: center;
-      perspective: 400px; transform-style: preserve-3d;
+      perspective: 400px; transform-style: preserve-3d; scroll-padding: 30px 0;
     }
     .wheel-scroll-box::-webkit-scrollbar { display: none; }
     .wheel-item {
       height: 30px; line-height: 30px; font-size: 0.95rem; font-weight: 700;
       color: var(--muted); scroll-snap-align: center; transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s, color 0.2s;
-      transform-origin: center center; opacity: 0.4;
+      transform-origin: center center; opacity: 0.4; display: flex; align-items: center; justify-content: center;
     }
     .wheel-item.selected { 
-      color: #38bdf8; font-size: 1.2rem; font-weight: 800; 
-      text-shadow: 0 0 12px #38bdf8; opacity: 1; transform: scale(1.15) rotateX(0deg); 
+      color: #38bdf8; font-size: 1.15rem; font-weight: 800; 
+      text-shadow: 0 0 12px #38bdf8; opacity: 1; transform: scale(1.1) rotateX(0deg); 
     }
 
     .duration-result-box {
@@ -347,20 +347,36 @@
     
     .checkbox-container { display: flex; align-items: center; justify-content: flex-start; gap: 0.5rem; margin: 0.75rem 0; font-size: 0.85rem; color: var(--muted); cursor: pointer; }
     .checkbox-container input[type="checkbox"] { width: 18px; height: 18px; accent-color: #38bdf8; margin: 0; }
+    
+    /* UNIFIED LUXURY BLUE GLASSMORPHISM BUTTONS */
     button {
-      width: 100%; padding: 0.95rem; border-radius: 1.25rem; border: none;
-      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
-      color: #0b0f19; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 0.85rem;
-      box-shadow: 0 8px 0 #026595, 0 12px 20px rgba(0, 0, 0, 0.4); transition: all 0.15s ease;
+      width: 100%; padding: 0.95rem; border-radius: 1.25rem; border: 1px solid rgba(56, 189, 248, 0.5);
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #0f172a 100%);
+      color: #ffffff; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 0.85rem;
+      box-shadow: 0 8px 20px rgba(2, 132, 199, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px); transition: all 0.2s ease; text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     }
-    button:active { transform: translateY(6px); box-shadow: 0 2px 0 #026595; }
-    .btn-danger { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 8px 0 #991b1b, 0 12px 20px rgba(220, 38, 38, 0.3); color: #fff; }
-    .btn-success { background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 8px 0 #047857, 0 12px 20px rgba(16, 185, 129, 0.3); color: #fff; }
+    button:hover {
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 50%, #0f172a 100%);
+      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+    }
+    button:active { transform: translateY(2px); box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3); }
+
+    .btn-danger {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.85) 0%, rgba(153, 27, 27, 0.85) 100%);
+      border-color: rgba(239, 68, 68, 0.6); box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3); color: #fff;
+    }
+    .btn-success {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #0f172a 100%);
+      border: 1px solid rgba(56, 189, 248, 0.6);
+      box-shadow: 0 8px 20px rgba(2, 132, 199, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3); color: #fff;
+    }
 
     .hidden { display: none !important; }
     
     .service-row-btn {
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(15, 23, 42, 0.95));
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(15, 23, 42, 0.95));
       border: 1px solid rgba(56, 189, 248, 0.45); border-radius: 1.25rem;
       padding: 1.1rem 1.25rem; color: var(--text); font-weight: 700; font-size: 0.95rem;
       cursor: pointer; display: flex; align-items: center; justify-content: space-between;
@@ -418,8 +434,8 @@
     .external-attendance-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0.2rem 0.5rem; margin-top: -0.2rem; }
     .action-btn-item { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; }
     .indicator-dot { width: 10px; height: 10px; border-radius: 50%; transition: all 0.4s ease; opacity: 0.3; }
-    .dot-green { background: #10b981; border: 1px solid #34d399; }
-    .dot-green.active { opacity: 1; box-shadow: 0 0 12px #10b981, 0 0 25px #10b981; }
+    .dot-green { background: #38bdf8; border: 1px solid #7dd3fc; }
+    .dot-green.active { opacity: 1; box-shadow: 0 0 12px #38bdf8, 0 0 25px #38bdf8; }
     .dot-red { background: #ef4444; border: 1px solid #f87171; }
     .dot-red.active { opacity: 1; box-shadow: 0 0 12px #ef4444, 0 0 25px #ef4444; }
 
@@ -616,7 +632,7 @@
         <span id="t-remember" data-ar="تذكرني" data-en="Remember Me">تذكرني</span>
       </label>
       
-      <button id="t-loginBtn" data-ar="دخول الحساب" data-en="Sign In" onclick="login()">دخول الحساب</button>
+      <button id="t-loginBtn" class="btn-success" data-ar="دخول الحساب" data-en="Sign In" onclick="login()">دخول الحساب</button>
       <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.85rem; font-weight: bold;"></p>
     </div>
     
@@ -1004,7 +1020,7 @@
       <p id="permMsg" style="font-size: 0.85rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
     </div>
 
-    <!-- 4.3. MISSION REQUEST VIEW (مع ساعات الـ 3D Wheel Scroll وتوليد التصريح بـ QR و PDF) -->
+    <!-- 4.3. MISSION REQUEST VIEW (مع إشعار صلاحيات الـ GPS المكتوب ورسالة التنبيه) -->
     <div id="view-mission-request" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
@@ -1012,6 +1028,13 @@
       </div>
 
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;">
+        
+        <!-- رسالة تنبيه الـ GPS والصلاحيات الممتازة -->
+        <div style="background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 1rem; padding: 0.8rem; font-size: 0.78rem; color: #38bdf8; line-height: 1.5; text-align: right;">
+          📍 <strong data-ar="تنبيه نظام بصمة المأموريات (GPS):" data-en="GPS Mission Notice:">تنبيه نظام بصمة المأموريات (GPS):</strong><br>
+          <span data-ar="بمجرد موافقة مدير الإدارة وكذلك الـ HR على المأمورية، سيتم منحك كامل الصلاحية لتسجيل الحضور والانصراف من أي مكان، وسيتم إرسال الموقع الإلكتروني للـ HR." data-en="Upon approval from your Department Manager & HR, full authority will be granted to check in/out from any location, and location data will be submitted directly to HR.">بمجرد موافقة مدير الإدارة وكذلك الـ HR على المأمورية، سيتم منحك كامل الصلاحية لتسجيل الحضور والانصراف من أي مكان، وسيتم إرسال الموقع الإلكتروني للـ HR.</span>
+        </div>
+
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="تاريخ المأمورية:" data-en="Mission Date:">تاريخ المأمورية:</label>
         <input type="text" id="missionDate" class="custom-date-input" readonly data-ar-placeholder="اختر تاريخ المأمورية..." data-en-placeholder="Select mission date..." placeholder="اختر تاريخ المأمورية..." onclick="openCustomCalendar('missionDate')">
 
@@ -1107,7 +1130,7 @@
       </div>
     </div>
 
-    <!-- 4.4. PAYSLIP REQUEST VIEW (مفردات المرتب بالكامل) -->
+    <!-- 4.4. PAYSLIP REQUEST VIEW (مفردات المرتب بالبنود المحددة بالمليمتر) -->
     <div id="view-payslip-request" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
@@ -1131,31 +1154,28 @@
       </div>
 
       <!-- 2. زرار الاطلاع على مفردات مرتبي -->
-      <button type="button" onclick="togglePayslipBreakdown()" style="margin-top:0; background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(15, 23, 42, 0.9)); border: 1px solid #38bdf8; color: #38bdf8; font-size: 0.85rem;">
+      <button type="button" onclick="togglePayslipBreakdown()" style="margin-top:0; font-size: 0.85rem;" class="btn-success">
         👁️ <span id="btnPayslipToggleText">الاطلاع على تفاصيل مفردات مرتبي</span>
       </button>
 
-      <!-- 3. جدول تفاصيل الاستحقاقات والاستقطاعات (Dummy Data Collapsible) -->
+      <!-- 3. جدول تفاصيل الاستحقاقات والاستقطاعات المعتمدة بالكامل -->
       <div id="payslipDetailsBreakdown" class="hidden">
         <div class="payslip-breakdown-container">
           <!-- الاستحقاقات -->
           <div>
             <div class="payslip-col-title earnings">➕ الاستحقاقات</div>
-            <div class="payslip-item"><span class="payslip-item-label">المرتب الأساسي:</span><span class="payslip-item-val">10,000</span></div>
-            <div class="payslip-item"><span class="payslip-item-label">بدل طبيعة عمل:</span><span class="payslip-item-val">3,000</span></div>
-            <div class="payslip-item"><span class="payslip-item-label">بدل انتقال:</span><span class="payslip-item-val">2,500</span></div>
-            <div class="payslip-item"><span class="payslip-item-label">حافز الأداء:</span><span class="payslip-item-val">3,000</span></div>
-            <div class="payslip-item" style="border-top:1px dashed var(--border-color); padding-top:0.3rem; margin-top:0.3rem;"><strong style="color:#10b981;">الإجمالي:</strong><strong style="color:#10b981;">18,500</strong></div>
+            <div class="payslip-item"><span class="payslip-item-label">أجر شامل:</span><span class="payslip-item-val">18,500</span></div>
+            <div class="payslip-item"><span class="payslip-item-label">بدلات مستحقة:</span><span class="payslip-item-val">2,500</span></div>
+            <div class="payslip-item" style="border-top:1px dashed var(--border-color); padding-top:0.3rem; margin-top:0.3rem;"><strong style="color:#38bdf8;">الإجمالي:</strong><strong style="color:#38bdf8;">21,000</strong></div>
           </div>
           <!-- الاستقطاعات -->
           <div>
             <div class="payslip-col-title deductions">➖ الاستقطاعات</div>
+            <div class="payslip-item"><span class="payslip-item-label">جزاءات:</span><span class="payslip-item-val">300</span></div>
+            <div class="payslip-item"><span class="payslip-item-label">خصومات التأخيرات:</span><span class="payslip-item-val">150</span></div>
+            <div class="payslip-item"><span class="payslip-item-label">حصة الموظف تأمينات:</span><span class="payslip-item-val">1,100</span></div>
             <div class="payslip-item"><span class="payslip-item-label">ضريبة الدخل:</span><span class="payslip-item-val">1,850</span></div>
-            <div class="payslip-item"><span class="payslip-item-label">خصم التأمينات:</span><span class="payslip-item-val">1,100</span></div>
-            <div class="payslip-item"><span class="payslip-item-label">الجزاءات:</span><span class="payslip-item-val">300</span></div>
-            <div class="payslip-item"><span class="payslip-item-label">خصم التأخيرات:</span><span class="payslip-item-val">150</span></div>
-            <div class="payslip-item"><span class="payslip-item-label">إجازات مرضية:</span><span class="payslip-item-val">0</span></div>
-            <div class="payslip-item"><span class="payslip-item-label">قسط سلفة:</span><span class="payslip-item-val">850</span></div>
+            <div class="payslip-item"><span class="payslip-item-label">أقساط سلفة شخصية:</span><span class="payslip-item-val">850</span></div>
             <div class="payslip-item" style="border-top:1px dashed var(--border-color); padding-top:0.3rem; margin-top:0.3rem;"><strong style="color:#ef4444;">الإجمالي:</strong><strong style="color:#ef4444;">4,250</strong></div>
           </div>
         </div>
@@ -1205,7 +1225,7 @@
       <div style="text-align: right; display: flex; flex-direction: column; gap: 1rem; padding: 1rem 0;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <span style="font-size: 0.9rem;" data-ar="لغة التطبيق / Language" data-en="App Language / اللغة">لغة التطبيق / Language</span>
-          <button onclick="selectLanguage(currentLang === 'ar' ? 'en' : 'ar')" style="width: auto; padding: 0.4rem 1rem; font-size: 0.8rem; margin:0;" data-ar="تغيير اللغة" data-en="Change Language">تغيير اللغة</button>
+          <button onclick="selectLanguage(currentLang === 'ar' ? 'en' : 'ar')" class="btn-success" style="width: auto; padding: 0.4rem 1rem; font-size: 0.8rem; margin:0;" data-ar="تغيير اللغة" data-en="Change Language">تغيير اللغة</button>
         </div>
       </div>
     </div>
@@ -1312,7 +1332,7 @@
     </div>
     <div class="chatbot-input-area">
       <input type="text" id="chatInput" data-ar-placeholder="اكتب سؤالك هنا..." data-en-placeholder="Type your question here..." placeholder="اكتب سؤالك هنا..." onkeypress="handleChatKeyPress(event)">
-      <button class="chatbot-send-btn" onclick="sendChatMessage()" data-ar="إرسال" data-en="Send">إرسال</button>
+      <button class="chatbot-send-btn btn-success" onclick="sendChatMessage()" data-ar="إرسال" data-en="Send">إرسال</button>
     </div>
   </div>
 
@@ -1420,7 +1440,7 @@
       if (!dest) {
         msg.style.color = '#ef4444'; msg.innerText = '⚠️ يرجى تحديد الجهة الموجه إليها الخطاب!'; return;
       }
-      msg.style.color = '#10b981'; msg.innerText = '✅ تم إرسال طلب مفردات المرتب بنجاح للـ HR!';
+      msg.style.color = '#38bdf8'; msg.innerText = '✅ تم إرسال طلب مفردات المرتب بنجاح للـ HR!';
       setTimeout(() => showPage('view-dashboard'), 1800);
     }
     
@@ -1660,7 +1680,7 @@
       }
     }
 
-    /* 3D WHEEL SCROLL LOGIC + SOUND EFFECTS */
+    /* 3D WHEEL SCROLL LOGIC + SOUND EFFECTS (FIXED CENTER ALIGNMENT) */
     const lastWheelIndices = {};
     function handleWheelScroll(wheelId, targetInputId) {
       const wheel = document.getElementById(wheelId);
@@ -1679,7 +1699,7 @@
         const dist = Math.abs(idx - selectedIndex);
         if (idx === selectedIndex) {
           item.classList.add('selected');
-          item.style.transform = 'scale(1.15) rotateX(0deg)';
+          item.style.transform = 'scale(1.1) rotateX(0deg)';
           item.style.opacity = '1';
           document.getElementById(targetInputId).value = item.innerText.trim();
         } else {
@@ -1756,7 +1776,7 @@
       db.ref('permission_requests/' + currentEmpCode).push(permData).then(() => {
         totalPermBalanceSeconds -= reqSecs;
         updateDigitalClockDisplay(totalPermBalanceSeconds);
-        msg.style.color = '#10b981';
+        msg.style.color = '#38bdf8';
         msg.innerText = currentLang === 'ar' ? '✅ تم تقديم طلب الإذن الشخصي بنجاح!' : '✅ Permission request submitted successfully!';
         setTimeout(() => { showPage('view-dashboard'); }, 1800);
       }).catch(() => {
@@ -1799,7 +1819,7 @@
       new QRCode(qrContainer, { text: `LACTO-MISSION|${currentEmpCode}|${mDate}`, width: 50, height: 50 });
 
       document.getElementById('missionSlipModal').classList.remove('hidden');
-      msg.style.color = '#10b981';
+      msg.style.color = '#38bdf8';
       msg.innerText = currentLang === 'ar' ? '✅ تم توليد تصريح المأمورية الإلكتروني بنجاح!' : '✅ Mission permit generated successfully!';
     }
 
@@ -2074,7 +2094,7 @@
       };
 
       db.ref('leave_requests/' + currentEmpCode).push(leaveData).then(() => {
-        msg.style.color = '#10b981';
+        msg.style.color = '#38bdf8';
         msg.innerText = currentLang === 'ar' ? "✅ تم تقديم طلب الإجازة والمستندات بنجاح!" : "✅ Leave request & documents submitted successfully!";
         setTimeout(() => { showPage('view-dashboard'); }, 2000);
       }).catch(() => {
@@ -2190,7 +2210,7 @@
       db.ref('suggestions/' + currentEmpCode).push({
         code: currentEmpCode, name: currentUserData.name || 'Unknown', suggestion: text, timestamp: Date.now()
       }).then(() => {
-        msg.style.color = '#10b981';
+        msg.style.color = '#38bdf8';
         msg.innerText = currentLang === 'ar' ? "✅ تم إرسال مقترحك بنجاح!" : "✅ Suggestion submitted successfully!";
         setTimeout(() => { showPage('view-dashboard'); }, 2000);
       }).catch(() => {
