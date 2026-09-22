@@ -20,7 +20,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
   
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&family=Share+Tech+Mono&display=swap');
     :root {
       --bg: #0b0f19;
       --card-bg: rgba(15, 23, 42, 0.78);
@@ -137,7 +137,6 @@
     [dir="ltr"] input, [dir="ltr"] textarea, [dir="ltr"] select { text-align: left; }
     input:focus, textarea:focus, select:focus { border-color: #38bdf8; box-shadow: 0 0 15px var(--accent-glow); }
     
-    /* Custom Glowing Date Input Trigger */
     .custom-date-input {
       background: rgba(56, 189, 248, 0.08) !important;
       border: 1px solid rgba(56, 189, 248, 0.5) !important;
@@ -148,7 +147,6 @@
       text-align: center !important;
     }
 
-    /* Custom Glowing Dropdown Styling for Leave Type */
     .custom-dropdown {
       position: relative;
       width: 100%;
@@ -193,9 +191,7 @@
       max-height: 240px;
       overflow-y: auto;
     }
-    .dropdown-options.show {
-      display: block;
-    }
+    .dropdown-options.show { display: block; }
     
     .dropdown-option {
       padding: 0.8rem 1rem;
@@ -205,9 +201,7 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       transition: all 0.2s ease;
     }
-    .dropdown-option:last-child {
-      border-bottom: none;
-    }
+    .dropdown-option:last-child { border-bottom: none; }
     .dropdown-option:hover {
       background: rgba(56, 189, 248, 0.25);
       color: #38bdf8;
@@ -218,7 +212,6 @@
       padding-right: 1rem;
     }
 
-    /* Custom Glowing Calendar Modal Overlay */
     .calendar-modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
@@ -307,7 +300,6 @@
     }
     .calendar-day.empty { cursor: default; }
 
-    /* Professional Glowing Light-Blue Text-Only Action Buttons for Calendar */
     .calendar-text-btn {
       background: none;
       border: none;
@@ -332,7 +324,6 @@
       box-shadow: none !important;
     }
 
-    /* Fully Glowing Badge for Leave Days Total Result */
     .glowing-result-badge {
       background: rgba(56, 189, 248, 0.22);
       border: 1px solid rgba(56, 189, 248, 0.8);
@@ -347,7 +338,6 @@
       text-shadow: 0 0 12px rgba(56, 189, 248, 0.7);
     }
 
-    /* File Upload Styling for Medical Report */
     .medical-upload-box {
       background: rgba(56, 189, 248, 0.1);
       border: 1px dashed rgba(56, 189, 248, 0.6);
@@ -357,9 +347,7 @@
       margin: 0.5rem 0;
       box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);
     }
-    .medical-upload-box input[type="file"] {
-      display: none;
-    }
+    .medical-upload-box input[type="file"] { display: none; }
     .upload-btn-label {
       background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
       color: #0b0f19;
@@ -374,56 +362,90 @@
       box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
       transition: transform 0.2s;
     }
-    .upload-btn-label:hover {
-      transform: scale(1.03);
+    .upload-btn-label:hover { transform: scale(1.03); }
+
+    /* DIGITAL PERMISSION COUNTER & WHEEL PICKER STYLING */
+    .digital-quota-card {
+      background: linear-gradient(135deg, #0b1329 0%, #1e3a8a 40%, #0284c7 75%, #38bdf8 100%);
+      border: 1px solid rgba(56, 189, 248, 0.6);
+      border-radius: 1.5rem;
+      padding: 1.25rem 1rem;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(2, 132, 199, 0.35), inset 0 0 20px rgba(125, 211, 252, 0.3);
+      margin-bottom: 1rem;
+    }
+    .quota-label { font-size: 0.85rem; font-weight: 700; color: #e0f2fe; margin-bottom: 0.6rem; }
+    .digital-clock-display { display: flex; justify-content: center; align-items: center; gap: 0.4rem; direction: ltr; }
+    .time-unit-box {
+      display: flex; flex-direction: column; align-items: center;
+      background: rgba(11, 19, 41, 0.85); border: 1px solid rgba(125, 211, 252, 0.6);
+      border-radius: 0.85rem; padding: 0.4rem 0.65rem; min-width: 65px;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
+    }
+    .digit-val {
+      font-family: 'Share Tech Mono', monospace, sans-serif; font-size: 1.6rem; font-weight: 800;
+      color: #7dd3fc; text-shadow: 0 0 10px #38bdf8; line-height: 1;
+    }
+    .digit-sub { font-size: 0.65rem; color: #bae6fd; margin-top: 0.25rem; font-weight: 600; }
+    .clock-separator { font-family: 'Share Tech Mono', monospace, sans-serif; font-size: 1.6rem; color: #7dd3fc; text-shadow: 0 0 8px #38bdf8; animation: blink 1s infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    .permission-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 0.6rem 0; }
+    .type-btn {
+      background: rgba(30, 58, 138, 0.3); border: 1px solid var(--border-color);
+      border-radius: 1.25rem; padding: 0.85rem 0.5rem; color: var(--text);
+      font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease;
+      display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+    }
+    .type-btn.active {
+      background: linear-gradient(135deg, #1e3a8a 0%, #0284c7 100%);
+      border-color: #38bdf8; color: #fff;
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.4); transform: scale(1.02);
     }
 
-    /* Login Password Container with Stylish Eye Toggle */
+    .time-picker-card {
+      background: linear-gradient(135deg, rgba(11, 19, 41, 0.9) 0%, rgba(30, 58, 138, 0.4) 100%);
+      border: 1px solid var(--border-color); border-radius: 1.25rem; padding: 0.75rem;
+      margin-top: 0.4rem; display: flex; align-items: center; justify-content: space-around;
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+    .wheel-container { display: flex; align-items: center; gap: 0.3rem; direction: ltr; }
+    .wheel-scroll-box {
+      height: 90px; width: 55px; overflow-y: scroll; scroll-snap-type: y mandatory;
+      scrollbar-width: none; border-radius: 0.6rem; background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.3); text-align: center;
+    }
+    .wheel-scroll-box::-webkit-scrollbar { display: none; }
+    .wheel-item {
+      height: 30px; line-height: 30px; font-size: 0.95rem; font-weight: 700;
+      color: var(--muted); scroll-snap-align: center; transition: all 0.2s;
+    }
+    .wheel-item.selected { color: #38bdf8; font-size: 1.15rem; font-weight: 800; text-shadow: 0 0 8px #38bdf8; }
+
+    .duration-result-box {
+      background: rgba(56, 189, 248, 0.12); border: 1px solid #38bdf8;
+      border-radius: 1rem; padding: 0.75rem; text-align: center; font-weight: 800;
+      color: #38bdf8; font-size: 0.9rem; margin-top: 0.75rem;
+    }
+
     .password-container { 
-      position: relative; 
-      width: 100%; 
-      margin: 0.5rem 0; 
-      display: flex;
-      align-items: center;
+      position: relative; width: 100%; margin: 0.5rem 0; display: flex; align-items: center;
     }
-    .password-container input { 
-      margin: 0; 
-      width: 100%; 
-    }
+    .password-container input { margin: 0; width: 100%; }
     [dir="rtl"] .password-container input { padding-left: 3.5rem; padding-right: 1rem; text-align: right; }
     [dir="ltr"] .password-container input { padding-right: 3.5rem; padding-left: 1rem; text-align: left; }
     
     .toggle-password {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(56, 189, 248, 0.15);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: #38bdf8;
-      box-shadow: none !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      transition: all 0.2s ease;
-      z-index: 10;
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4);
+      width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #38bdf8; box-shadow: none !important; margin: 0 !important; padding: 0 !important;
+      transition: all 0.2s ease; z-index: 10;
     }
     [dir="rtl"] .toggle-password { left: 8px; right: auto; }
     [dir="ltr"] .toggle-password { right: 8px; left: auto; }
-    .toggle-password:hover {
-      background: rgba(56, 189, 248, 0.3);
-      transform: translateY(-50%) scale(1.05);
-    }
-    .toggle-password svg { 
-      width: 20px; 
-      height: 20px; 
-      fill: currentColor; 
-    }
+    .toggle-password:hover { background: rgba(56, 189, 248, 0.3); transform: translateY(-50%) scale(1.05); }
+    .toggle-password svg { width: 20px; height: 20px; fill: currentColor; }
     
     .checkbox-container { display: flex; align-items: center; justify-content: flex-start; gap: 0.5rem; margin: 0.75rem 0; font-size: 0.85rem; color: var(--muted); cursor: pointer; }
     .checkbox-container input[type="checkbox"] { width: 18px; height: 18px; accent-color: #38bdf8; margin: 0; }
@@ -852,7 +874,7 @@
           <span data-ar="📅 طلب إجازة" data-en="📅 Leave Request">📅 طلب إجازة</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
-        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+        <button class="service-row-btn" onclick="showPage('view-permission-request')">
           <span data-ar="🚪 طلب إذن شخصي" data-en="🚪 Personal Permission">🚪 طلب إذن شخصي</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
@@ -906,7 +928,6 @@
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;" id="leaveFormWrapper">
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="نوع الإجازة:" data-en="Leave Type:">نوع الإجازة:</label>
         
-        <!-- Custom Glowing Dropdown for Leave Type -->
         <div class="custom-dropdown" id="customLeaveDropdown">
           <div class="dropdown-selected" onclick="toggleCustomDropdown(event)">
             <span id="selectedLeaveText" data-ar="إجازة سنوية" data-en="Annual Leave">إجازة سنوية</span>
@@ -927,7 +948,6 @@
           ⚠️ <strong data-ar="تنبيه هام:" data-en="Important Notice:">تنبيه هام:</strong> <span data-ar="الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة." data-en="Unpaid leave is for a maximum of 1 month, and the employee is committed to paying their share of social insurance for this period.">الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة.</span>
         </div>
 
-        <!-- Medical Report Upload Section -->
         <div id="medicalReportSection" class="medical-upload-box hidden">
           <div style="font-size: 0.8rem; color: #38bdf8; font-weight: 700; margin-bottom: 0.5rem;" data-ar="🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):" data-en="🏥 Upload or capture medical report (Image or PDF):">🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):</div>
           <label class="upload-btn-label" for="medicalReportFile" data-ar="📁 اختر الملف أو صور التقرير" data-en="📁 Choose file or capture report">
@@ -953,6 +973,118 @@
         <button onclick="submitLeaveRequest()" class="btn-success" data-ar="إرسال طلب الإجازة" data-en="Submit Leave Request" style="margin-top: 0.5rem;">إرسال طلب الإجازة</button>
         <p id="leaveMsg" style="font-size: 0.8rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
       </div>
+    </div>
+
+    <!-- 4.2. Personal Permission Request View (INTEGRATED & STABLE) -->
+    <div id="view-permission-request" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span style="font-weight: 700; color: #38bdf8;" data-ar="طلب إذن شخصي" data-en="Personal Permission">طلب إذن شخصي</span>
+      </div>
+
+      <!-- العداد الديجيتال المضيء -->
+      <div class="digital-quota-card">
+        <div class="quota-label" data-ar="المتبقي من الرصيد الشهري للأذونات" data-en="Monthly Permission Balance">المتبقي من الرصيد الشهري للأذونات</div>
+        <div class="digital-clock-display">
+          <div class="time-unit-box">
+            <span class="digit-val" id="cntHours">04</span>
+            <span class="digit-sub" data-ar="ساعة" data-en="Hours">ساعة</span>
+          </div>
+          <span class="clock-separator">:</span>
+          <div class="time-unit-box">
+            <span class="digit-val" id="cntMins">00</span>
+            <span class="digit-sub" data-ar="دقيقة" data-en="Mins">دقيقة</span>
+          </div>
+          <span class="clock-separator">:</span>
+          <div class="time-unit-box">
+            <span class="digit-val" id="cntSecs">00</span>
+            <span class="digit-sub" data-ar="ثانية" data-en="Secs">ثانية</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- اختيار نوع الإذن -->
+      <div style="font-size:0.8rem; color:var(--muted); text-align:right; margin-bottom:0.3rem;" data-ar="نوع الإذن:" data-en="Permission Type:">نوع الإذن:</div>
+      <div class="permission-type-grid">
+        <div class="type-btn active" id="btnTypeLate" onclick="setPermissionType('late_arrival')">
+          <span style="font-size:1.2rem;">🌅</span>
+          <span data-ar="تأخير صباحي" data-en="Morning Late">تأخير صباحي</span>
+        </div>
+        <div class="type-btn" id="btnTypeEarly" onclick="setPermissionType('early_leave')">
+          <span style="font-size:1.2rem;">🌆</span>
+          <span data-ar="انصراف مبكر" data-en="Early Departure">انصراف مبكر</span>
+        </div>
+      </div>
+      <input type="hidden" id="permTypeVal" value="late_arrival">
+
+      <!-- تاريخ الإذن -->
+      <label style="font-size: 0.75rem; color: var(--muted); text-align:right; display:block; margin-top:0.5rem;" data-ar="تاريخ الإذن:" data-en="Permission Date:">تاريخ الإذن:</label>
+      <input type="text" id="permissionDate" class="custom-date-input" readonly data-ar-placeholder="اختر تاريخ الإذن..." data-en-placeholder="Select permission date..." placeholder="اختر تاريخ الإذن..." onclick="openCustomCalendar('permissionDate')">
+
+      <!-- وقت البداية -->
+      <div style="font-size:0.8rem; color:var(--muted); text-align:right; margin-top:0.5rem;" data-ar="من الساعة:" data-en="From Time:">من الساعة:</div>
+      <div class="time-picker-card">
+        <div class="wheel-container">
+          <div class="wheel-scroll-box" id="fromHourWheel" onscroll="handleWheelScroll('fromHourWheel', 'fromHourVal')">
+            <div class="wheel-item"></div>
+            <div class="wheel-item selected">08</div><div class="wheel-item">09</div><div class="wheel-item">10</div>
+            <div class="wheel-item">11</div><div class="wheel-item">12</div><div class="wheel-item">01</div>
+            <div class="wheel-item">02</div><div class="wheel-item">03</div><div class="wheel-item">04</div>
+            <div class="wheel-item"></div>
+          </div>
+          <span style="color:#38bdf8; font-weight:800;">:</span>
+          <div class="wheel-scroll-box" id="fromMinWheel" onscroll="handleWheelScroll('fromMinWheel', 'fromMinVal')">
+            <div class="wheel-item"></div>
+            <div class="wheel-item selected">00</div><div class="wheel-item">15</div>
+            <div class="wheel-item">30</div><div class="wheel-item">45</div>
+            <div class="wheel-item"></div>
+          </div>
+          <div class="wheel-scroll-box" id="fromAmpmWheel" onscroll="handleWheelScroll('fromAmpmWheel', 'fromAmpmVal')">
+            <div class="wheel-item"></div>
+            <div class="wheel-item selected">ص</div><div class="wheel-item">م</div>
+            <div class="wheel-item"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- وقت النهاية -->
+      <div style="font-size:0.8rem; color:var(--muted); text-align:right; margin-top:0.5rem;" data-ar="إلى الساعة:" data-en="To Time:">إلى الساعة:</div>
+      <div class="time-picker-card">
+        <div class="wheel-container">
+          <div class="wheel-scroll-box" id="toHourWheel" onscroll="handleWheelScroll('toHourWheel', 'toHourVal')">
+            <div class="wheel-item"></div>
+            <div class="wheel-item">08</div><div class="wheel-item selected">09</div><div class="wheel-item">10</div>
+            <div class="wheel-item">11</div><div class="wheel-item">12</div><div class="wheel-item">01</div>
+            <div class="wheel-item">02</div><div class="wheel-item">03</div><div class="wheel-item">04</div>
+            <div class="wheel-item"></div>
+          </div>
+          <span style="color:#38bdf8; font-weight:800;">:</span>
+          <div class="wheel-scroll-box" id="toMinWheel" onscroll="handleWheelScroll('toMinWheel', 'toMinVal')">
+            <div class="wheel-item"></div>
+            <div class="wheel-item selected">00</div><div class="wheel-item">15</div>
+            <div class="wheel-item">30</div><div class="wheel-item">45</div>
+            <div class="wheel-item"></div>
+          </div>
+          <div class="wheel-scroll-box" id="toAmpmWheel" onscroll="handleWheelScroll('toAmpmWheel', 'toAmpmVal')">
+            <div class="wheel-item"></div>
+            <div class="wheel-item selected">ص</div><div class="wheel-item">م</div>
+            <div class="wheel-item"></div>
+          </div>
+        </div>
+      </div>
+
+      <input type="hidden" id="fromHourVal" value="08"><input type="hidden" id="fromMinVal" value="00"><input type="hidden" id="fromAmpmVal" value="ص">
+      <input type="hidden" id="toHourVal" value="09"><input type="hidden" id="toMinVal" value="00"><input type="hidden" id="toAmpmVal" value="ص">
+
+      <!-- إجمالي المدة المجهزة -->
+      <div class="duration-result-box" id="durationResultText">
+        ⏱️ مدة الإذن المطلوبة: 1 ساعة و 0 دقيقة
+      </div>
+
+      <textarea id="permissionNotes" rows="2" data-ar-placeholder="سبب الإذن / ملاحظات إضافية..." data-en-placeholder="Reason / Notes..." placeholder="سبب الإذن / ملاحظات إضافية..." style="margin-top:0.75rem; resize:none;"></textarea>
+
+      <button onclick="submitPermissionRequest()" class="btn-success" data-ar="إرسال طلب الإذن" data-en="Submit Permission Request" style="margin-top:0.75rem;">إرسال طلب الإذن</button>
+      <p id="permMsg" style="font-size: 0.85rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
     </div>
     
     <!-- 5. Settings View -->
@@ -1016,7 +1148,7 @@
     </div>
   </div>
 
-  <!-- Custom Glowing Calendar Modal with Unified Professional Light-Blue Theme -->
+  <!-- Custom Glowing Calendar Modal -->
   <div id="customCalendarModal" class="calendar-modal-overlay" onclick="closeCustomCalendar()">
     <div class="calendar-box" onclick="event.stopPropagation()">
       <div class="calendar-header">
@@ -1033,7 +1165,7 @@
     </div>
   </div>
 
-  <!-- Bottom Navigation Bar -->
+  <!-- Bottom Navigation Bar (STABLE & SECURE) -->
   <div id="bottomNavBar">
     <button class="bottom-nav-item active" onclick="switchTab('view-dashboard', this)">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -1162,6 +1294,9 @@
     let currentLang = localStorage.getItem('lacto_lang') || 'ar';
     let returnToView = 'view-dashboard';
     
+    /* Total Permission Balance Counter in Seconds (Default: 4 hours = 14400s) */
+    let totalPermBalanceSeconds = 14400;
+
     function updateDynamicGreeting() {
       const hour = new Date().getHours();
       const greetingEl = document.getElementById('dash-greeting');
@@ -1180,15 +1315,12 @@
 
     function updateContentTranslations() {
       const lang = currentLang;
-      // Loop through all elements with data-ar and data-en
       document.querySelectorAll('[data-ar][data-en]').forEach(el => {
         el.innerText = el.getAttribute(`data-${lang}`);
       });
-      // Loop through placeholders
       document.querySelectorAll('[data-ar-placeholder][data-en-placeholder]').forEach(el => {
         el.placeholder = el.getAttribute(`data-${lang}-placeholder`);
       });
-      
       updateDynamicGreeting();
     }
 
@@ -1204,7 +1336,6 @@
       if (dropdownOptions && dropdownOptions.classList.contains('show')) dropdownOptions.classList.remove('show');
     });
 
-    /* Custom Dropdown Control */
     function toggleCustomDropdown(event) {
       if (event) event.stopPropagation();
       const options = document.getElementById('dropdownOptions');
@@ -1233,7 +1364,7 @@
       }
     }
 
-    /* Custom Glowing Calendar Logic */
+    /* Custom Calendar Modal */
     let activeDateInputId = null;
     let tempSelectedDate = "";
     let calYear = new Date().getFullYear();
@@ -1331,6 +1462,123 @@
 
         grid.appendChild(dayCell);
       }
+    }
+
+    /* PERMISSION COUNTER & WHEEL LOGIC */
+    function updateDigitalClockDisplay(seconds) {
+      let h = Math.floor(seconds / 3600);
+      let m = Math.floor((seconds % 3600) / 60);
+      let s = seconds % 60;
+      const cntH = document.getElementById('cntHours');
+      const cntM = document.getElementById('cntMins');
+      const cntS = document.getElementById('cntSecs');
+      if (cntH) cntH.innerText = String(h).padStart(2, '0');
+      if (cntM) cntM.innerText = String(m).padStart(2, '0');
+      if (cntS) cntS.innerText = String(s).padStart(2, '0');
+    }
+
+    function setPermissionType(type) {
+      document.getElementById('permTypeVal').value = type;
+      if (type === 'late_arrival') {
+        document.getElementById('btnTypeLate').classList.add('active');
+        document.getElementById('btnTypeEarly').classList.remove('active');
+      } else {
+        document.getElementById('btnTypeEarly').classList.add('active');
+        document.getElementById('btnTypeLate').classList.remove('active');
+      }
+    }
+
+    function handleWheelScroll(wheelId, targetInputId) {
+      const wheel = document.getElementById(wheelId);
+      if (!wheel) return;
+      const items = wheel.querySelectorAll('.wheel-item');
+      let selectedIndex = Math.round(wheel.scrollTop / 30) + 1;
+      if (selectedIndex < 1) selectedIndex = 1;
+      if (selectedIndex >= items.length - 1) selectedIndex = items.length - 2;
+
+      items.forEach((item, idx) => {
+        if (idx === selectedIndex) {
+          item.classList.add('selected');
+          document.getElementById(targetInputId).value = item.innerText.trim();
+        } else {
+          item.classList.remove('selected');
+        }
+      });
+      calculateRequestedDuration();
+    }
+
+    function calculateRequestedDuration() {
+      let fH = parseInt(document.getElementById('fromHourVal').value) || 8;
+      let fM = parseInt(document.getElementById('fromMinVal').value) || 0;
+      let fAp = document.getElementById('fromAmpmVal').value;
+
+      let tH = parseInt(document.getElementById('toHourVal').value) || 9;
+      let tM = parseInt(document.getElementById('toMinVal').value) || 0;
+      let tAp = document.getElementById('toAmpmVal').value;
+
+      if (fAp === 'م' && fH < 12) fH += 12;
+      if (fAp === 'ص' && fH === 12) fH = 0;
+      if (tAp === 'م' && tH < 12) tH += 12;
+      if (tAp === 'ص' && tH === 12) tH = 0;
+
+      let diffMins = (tH * 60 + tM) - (fH * 60 + fM);
+      const resBox = document.getElementById('durationResultText');
+      if (!resBox) return 0;
+
+      if (diffMins <= 0) {
+        resBox.style.color = '#ef4444';
+        resBox.innerText = currentLang === 'ar' ? '⚠️ وقت النهاية يجب أن يكون بعد وقت البداية!' : '⚠️ End time must be after start time!';
+        return 0;
+      }
+
+      let durH = Math.floor(diffMins / 60);
+      let durM = diffMins % 60;
+      resBox.style.color = '#38bdf8';
+      resBox.innerText = currentLang === 'ar' 
+        ? `⏱️ مدة الإذن المطلوبة: ${durH} ساعة و ${durM} دقيقة`
+        : `⏱️ Requested Duration: ${durH}h ${durM}m`;
+      return diffMins;
+    }
+
+    function submitPermissionRequest() {
+      const diffMins = calculateRequestedDuration();
+      const msg = document.getElementById('permMsg');
+      const date = document.getElementById('permissionDate').value;
+
+      if (diffMins <= 0 || !date) {
+        msg.style.color = '#ef4444';
+        msg.innerText = currentLang === 'ar' ? 'يرجى اختيار التاريخ وضبط أوقات الإذن!' : 'Please select date and set permission times!';
+        return;
+      }
+
+      let reqSecs = diffMins * 60;
+      if (reqSecs > totalPermBalanceSeconds) {
+        msg.style.color = '#ef4444';
+        msg.innerText = currentLang === 'ar' ? '❌ مدة الإذن تتجاوز رصيدك المتبقي الشهرى!' : '❌ Duration exceeds your remaining monthly balance!';
+        return;
+      }
+
+      const permData = {
+        code: currentEmpCode,
+        name: (currentUserData && currentUserData.name) || 'Unknown',
+        type: document.getElementById('permTypeVal').value,
+        date: date,
+        durationMins: diffMins,
+        notes: document.getElementById('permissionNotes').value.trim(),
+        status: 'Pending',
+        timestamp: Date.now()
+      };
+
+      db.ref('permission_requests/' + currentEmpCode).push(permData).then(() => {
+        totalPermBalanceSeconds -= reqSecs;
+        updateDigitalClockDisplay(totalPermBalanceSeconds);
+        msg.style.color = '#10b981';
+        msg.innerText = currentLang === 'ar' ? '✅ تم تقديم طلب الإذن الشخصي بنجاح!' : '✅ Permission request submitted successfully!';
+        setTimeout(() => { showPage('view-dashboard'); }, 1800);
+      }).catch(() => {
+        msg.style.color = '#ef4444';
+        msg.innerText = currentLang === 'ar' ? '❌ حدث خطأ، حاول مرة أخرى.' : '❌ Error occurred, try again.';
+      });
     }
 
     function toggleChatbot() {
@@ -1477,17 +1725,11 @@
       const noticeBox = document.getElementById('unpaidInsuranceNotice');
       const medicalBox = document.getElementById('medicalReportSection');
 
-      if (leaveType === 'unpaid') {
-        noticeBox.classList.remove('hidden');
-      } else {
-        noticeBox.classList.add('hidden');
-      }
+      if (leaveType === 'unpaid') noticeBox.classList.remove('hidden');
+      else noticeBox.classList.add('hidden');
 
-      if (leaveType === 'sick') {
-        medicalBox.classList.remove('hidden');
-      } else {
-        medicalBox.classList.add('hidden');
-      }
+      if (leaveType === 'sick') medicalBox.classList.remove('hidden');
+      else medicalBox.classList.add('hidden');
     }
 
     function calculateLeaveDays() {
@@ -1581,7 +1823,7 @@
         if (bottomNavBar) bottomNavBar.classList.add('show');
       }
       
-      ['view-login', 'view-dashboard', 'view-id-card', 'view-services', 'view-leave-request', 'view-settings', 'view-profile', 'view-coming-soon', 'view-suggestion-page'].forEach(id => {
+      ['view-login', 'view-dashboard', 'view-id-card', 'view-services', 'view-leave-request', 'view-permission-request', 'view-settings', 'view-profile', 'view-coming-soon', 'view-suggestion-page'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.add('hidden');
       });
@@ -1612,6 +1854,14 @@
           document.getElementById('leaveType').value = 'annual';
           document.getElementById('selectedLeaveText').innerText = document.querySelector('.dropdown-option').getAttribute(`data-${currentLang}`);
           handleLeaveTypeChange();
+        }
+
+        if (pageId === 'view-permission-request') {
+          document.getElementById('permissionDate').value = '';
+          document.getElementById('permissionNotes').value = '';
+          document.getElementById('permMsg').innerText = '';
+          updateDigitalClockDisplay(totalPermBalanceSeconds);
+          calculateRequestedDuration();
         }
 
         if (pageId === 'view-suggestion-page' && currentUserData) {
