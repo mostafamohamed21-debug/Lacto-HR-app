@@ -24,13 +24,13 @@
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&family=Share+Tech+Mono&display=swap');
     :root {
       --bg: #0b0f19;
-      --card-bg: rgba(15, 23, 42, 0.78);
+      --card-bg: rgba(15, 23, 42, 0.82);
       --border-color: rgba(255, 255, 255, 0.16);
       --text: #f8fafc;
       --accent: #38bdf8;
       --accent-glow: rgba(56, 189, 248, 0.4);
       --danger: #ef4444;
-      --success: #0284c7;
+      --success: #10b981;
       --muted: #cbd5e1;
     }
     * {
@@ -41,7 +41,7 @@
       -webkit-tap-highlight-color: transparent;
     }
     body {
-      background: linear-gradient(rgba(11, 15, 25, 0.78), rgba(11, 15, 25, 0.88)), url('background.jpg');
+      background: linear-gradient(rgba(11, 15, 25, 0.82), rgba(11, 15, 25, 0.92)), url('background.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -51,7 +51,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 1.5rem 1rem 6rem 1rem;
+      padding: 4.5rem 1rem 6rem 1rem;
       overflow-x: hidden;
     }
     
@@ -87,7 +87,6 @@
       display: flex; justify-content: space-between; align-items: center;
       position: fixed; top: 0; left: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4);
     }
-    body { padding-top: 4.5rem; }
     .brand-container { display: flex; align-items: center; gap: 0.6rem; perspective: 800px; }
     .brand-logo {
       width: 36px; height: 36px; object-fit: contain; border-radius: 10px;
@@ -297,16 +296,16 @@
     }
     .type-btn.active svg { fill: #38bdf8; filter: drop-shadow(0 0 8px #38bdf8); transform: scale(1.1); }
 
-    /* 3D WHEEL SCROLL PICKER STYLES (FIXED ALIGNMENT) */
+    /* 3D WHEEL SCROLL PICKER STYLES (24-HOUR FULL DAY WHEELS) */
     .time-picker-card {
       background: linear-gradient(135deg, rgba(11, 19, 41, 0.9) 0%, rgba(30, 58, 138, 0.4) 100%);
       border: 1px solid var(--border-color); border-radius: 1.25rem; padding: 0.75rem;
       margin-top: 0.4rem; display: flex; align-items: center; justify-content: space-around;
       box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
     }
-    .wheel-container { display: flex; align-items: center; gap: 0.3rem; direction: ltr; perspective: 600px; }
+    .wheel-container { display: flex; align-items: center; gap: 0.5rem; direction: ltr; perspective: 600px; }
     .wheel-scroll-box {
-      height: 90px; width: 62px; overflow-y: scroll; scroll-snap-type: y mandatory;
+      height: 90px; width: 75px; overflow-y: scroll; scroll-snap-type: y mandatory;
       scrollbar-width: none; border-radius: 0.8rem; background: rgba(15, 23, 42, 0.85);
       border: 1px solid rgba(56, 189, 248, 0.35); text-align: center;
       perspective: 400px; transform-style: preserve-3d; scroll-padding: 30px 0;
@@ -431,11 +430,12 @@
     .checkin-card:hover { border-color: #38bdf8; box-shadow: 0 15px 30px rgba(0,0,0,0.6), inset 0 0 20px rgba(56, 189, 248, 0.3); }
     .checkin-top-row { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 0.2rem; font-size: 0.75rem; }
 
+    /* REAL EMERALD GREEN AND RED GLOW LED INDICATORS */
     .external-attendance-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0.2rem 0.5rem; margin-top: -0.2rem; }
     .action-btn-item { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; }
-    .indicator-dot { width: 10px; height: 10px; border-radius: 50%; transition: all 0.4s ease; opacity: 0.3; }
-    .dot-green { background: #38bdf8; border: 1px solid #7dd3fc; }
-    .dot-green.active { opacity: 1; box-shadow: 0 0 12px #38bdf8, 0 0 25px #38bdf8; }
+    .indicator-dot { width: 12px; height: 12px; border-radius: 50%; transition: all 0.4s ease; opacity: 0.3; }
+    .dot-green { background: #10b981; border: 1px solid #34d399; }
+    .dot-green.active { opacity: 1; box-shadow: 0 0 12px #10b981, 0 0 25px #10b981; }
     .dot-red { background: #ef4444; border: 1px solid #f87171; }
     .dot-red.active { opacity: 1; box-shadow: 0 0 12px #ef4444, 0 0 25px #ef4444; }
 
@@ -769,8 +769,9 @@
           <div class="progress-bar-container"><div class="progress-bar-fill" id="permsProgressBar" style="width: 100%;"></div></div>
         </div>
 
+        <!-- SALARY CARD CLEANED FROM ARABIC LEAK -->
         <div class="summary-card clickable-card" onclick="showPage('view-payslip-request')">
-          <div class="summary-title"><span>صافي آخر مرتب</span><span style="font-size:0.75rem; color: #38bdf8;">تفاصيل إلكترونية 💳</span></div>
+          <div class="summary-title"><span data-ar="صافي آخر مرتب" data-en="Last Net Salary">صافي آخر مرتب</span></div>
           <div class="salary-row">
             <div class="salary-masked" id="salaryDisplayVal">••••••••</div>
             <button type="button" class="toggle-salary-btn" onclick="toggleSalaryVisibility(event)" title="إظهار / إخفاء الراتب">
@@ -888,7 +889,7 @@
         </div>
 
         <div id="medicalReportSection" class="medical-upload-box hidden">
-          <div style="font-size: 0.8rem; color: #38bdf8; font-weight: 700; margin-bottom: 0.5rem;" id="attachmentTitleText">🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):</div>
+          <div style="font-size: 0.8rem; color: #38bdf8; font-weight: 700; margin-bottom: 0.5rem;" id="attachmentTitleText" data-ar="🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):" data-en="🏥 Upload or capture medical report (Image or PDF):">🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):</div>
           <label class="upload-btn-label" for="medicalReportFile" data-ar="📁 اختر الملف أو صور المستند" data-en="📁 Choose file or capture document">
             📁 اختر الملف أو صور المستند
           </label>
@@ -914,7 +915,7 @@
       </div>
     </div>
 
-    <!-- 4.2. Personal Permission Request View -->
+    <!-- 4.2. Personal Permission Request View (24-HOUR WHEELS + EXACT MINUTES) -->
     <div id="view-permission-request" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
@@ -957,60 +958,28 @@
       <label style="font-size: 0.75rem; color: var(--muted); text-align:right; display:block; margin-top:0.5rem;" data-ar="تاريخ الإذن:" data-en="Permission Date:">تاريخ الإذن:</label>
       <input type="text" id="permissionDate" class="custom-date-input" readonly data-ar-placeholder="اختر تاريخ الإذن..." data-en-placeholder="Select permission date..." placeholder="اختر تاريخ الإذن..." onclick="openCustomCalendar('permissionDate')">
 
-      <div style="font-size:0.8rem; color:var(--muted); text-align:right; margin-top:0.5rem;" data-ar="من الساعة:" data-en="From Time:">من الساعة:</div>
+      <div style="font-size:0.8rem; color:var(--muted); text-align:right; margin-top:0.5rem;" data-ar="من الساعة (24 ساعة):" data-en="From Time (24h):">من الساعة (24 ساعة):</div>
       <div class="time-picker-card">
         <div class="wheel-container">
-          <div class="wheel-scroll-box" id="fromHourWheel" onscroll="handleWheelScroll('fromHourWheel', 'fromHourVal')">
-            <div class="wheel-item"></div>
-            <div class="wheel-item selected">08</div><div class="wheel-item">09</div><div class="wheel-item">10</div>
-            <div class="wheel-item">11</div><div class="wheel-item">12</div><div class="wheel-item">01</div>
-            <div class="wheel-item">02</div><div class="wheel-item">03</div><div class="wheel-item">04</div>
-            <div class="wheel-item"></div>
-          </div>
+          <div class="wheel-scroll-box" id="fromHourWheel" onscroll="handleWheelScroll('fromHourWheel', 'fromHourVal')"></div>
           <span style="color:#38bdf8; font-weight:800;">:</span>
-          <div class="wheel-scroll-box" id="fromMinWheel" onscroll="handleWheelScroll('fromMinWheel', 'fromMinVal')">
-            <div class="wheel-item"></div>
-            <div class="wheel-item selected">00</div><div class="wheel-item">15</div>
-            <div class="wheel-item">30</div><div class="wheel-item">45</div>
-            <div class="wheel-item"></div>
-          </div>
-          <div class="wheel-scroll-box" id="fromAmpmWheel" onscroll="handleWheelScroll('fromAmpmWheel', 'fromAmpmVal')">
-            <div class="wheel-item"></div>
-            <div class="wheel-item selected">ص</div><div class="wheel-item">م</div>
-            <div class="wheel-item"></div>
-          </div>
+          <div class="wheel-scroll-box" id="fromMinWheel" onscroll="handleWheelScroll('fromMinWheel', 'fromMinVal')"></div>
         </div>
       </div>
 
-      <div style="font-size:0.8rem; color:var(--muted); text-align:right; margin-top:0.5rem;" data-ar="إلى الساعة:" data-en="To Time:">إلى الساعة:</div>
+      <div style="font-size:0.8rem; color:var(--muted); text-align:right; margin-top:0.5rem;" data-ar="إلى الساعة (24 ساعة):" data-en="To Time (24h):">إلى الساعة (24 ساعة):</div>
       <div class="time-picker-card">
         <div class="wheel-container">
-          <div class="wheel-scroll-box" id="toHourWheel" onscroll="handleWheelScroll('toHourWheel', 'toHourVal')">
-            <div class="wheel-item"></div>
-            <div class="wheel-item">08</div><div class="wheel-item selected">09</div><div class="wheel-item">10</div>
-            <div class="wheel-item">11</div><div class="wheel-item">12</div><div class="wheel-item">01</div>
-            <div class="wheel-item">02</div><div class="wheel-item">03</div><div class="wheel-item">04</div>
-            <div class="wheel-item"></div>
-          </div>
+          <div class="wheel-scroll-box" id="toHourWheel" onscroll="handleWheelScroll('toHourWheel', 'toHourVal')"></div>
           <span style="color:#38bdf8; font-weight:800;">:</span>
-          <div class="wheel-scroll-box" id="toMinWheel" onscroll="handleWheelScroll('toMinWheel', 'toMinVal')">
-            <div class="wheel-item"></div>
-            <div class="wheel-item selected">00</div><div class="wheel-item">15</div>
-            <div class="wheel-item">30</div><div class="wheel-item">45</div>
-            <div class="wheel-item"></div>
-          </div>
-          <div class="wheel-scroll-box" id="toAmpmWheel" onscroll="handleWheelScroll('toAmpmWheel', 'toAmpmVal')">
-            <div class="wheel-item"></div>
-            <div class="wheel-item selected">ص</div><div class="wheel-item">م</div>
-            <div class="wheel-item"></div>
-          </div>
+          <div class="wheel-scroll-box" id="toMinWheel" onscroll="handleWheelScroll('toMinWheel', 'toMinVal')"></div>
         </div>
       </div>
 
-      <input type="hidden" id="fromHourVal" value="08"><input type="hidden" id="fromMinVal" value="00"><input type="hidden" id="fromAmpmVal" value="ص">
-      <input type="hidden" id="toHourVal" value="09"><input type="hidden" id="toMinVal" value="00"><input type="hidden" id="toAmpmVal" value="ص">
+      <input type="hidden" id="fromHourVal" value="08"><input type="hidden" id="fromMinVal" value="00">
+      <input type="hidden" id="toHourVal" value="09"><input type="hidden" id="toMinVal" value="00">
 
-      <div class="duration-result-box" id="durationResultText">
+      <div class="duration-result-box" id="durationResultText" data-ar="⏱️ مدة الإذن المطلوبة: 1 ساعة و 0 دقيقة" data-en="⏱️ Requested Duration: 1h 0m">
         ⏱️ مدة الإذن المطلوبة: 1 ساعة و 0 دقيقة
       </div>
 
@@ -1020,7 +989,7 @@
       <p id="permMsg" style="font-size: 0.85rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
     </div>
 
-    <!-- 4.3. MISSION REQUEST VIEW (مع إشعار صلاحيات الـ GPS المكتوب ورسالة التنبيه) -->
+    <!-- 4.3. MISSION REQUEST VIEW (24-HOUR WHEELS + EXACT MINUTES) -->
     <div id="view-mission-request" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
@@ -1029,7 +998,7 @@
 
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;">
         
-        <!-- رسالة تنبيه الـ GPS والصلاحيات الممتازة -->
+        <!-- GPS Notice Banner -->
         <div style="background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 1rem; padding: 0.8rem; font-size: 0.78rem; color: #38bdf8; line-height: 1.5; text-align: right;">
           📍 <strong data-ar="تنبيه نظام بصمة المأموريات (GPS):" data-en="GPS Mission Notice:">تنبيه نظام بصمة المأموريات (GPS):</strong><br>
           <span data-ar="بمجرد موافقة مدير الإدارة وكذلك الـ HR على المأمورية، سيتم منحك كامل الصلاحية لتسجيل الحضور والانصراف من أي مكان، وسيتم إرسال الموقع الإلكتروني للـ HR." data-en="Upon approval from your Department Manager & HR, full authority will be granted to check in/out from any location, and location data will be submitted directly to HR.">بمجرد موافقة مدير الإدارة وكذلك الـ HR على المأمورية، سيتم منحك كامل الصلاحية لتسجيل الحضور والانصراف من أي مكان، وسيتم إرسال الموقع الإلكتروني للـ HR.</span>
@@ -1044,59 +1013,27 @@
         </label>
 
         <div id="missionTimesWrapper" style="display: flex; flex-direction: column; gap: 0.5rem; transition: opacity 0.3s ease;">
-          <div style="font-size:0.75rem; color:var(--muted); text-align:right;" data-ar="توقيت بدء المأمورية:" data-en="Start Time:">توقيت بدء المأمورية:</div>
+          <div style="font-size:0.75rem; color:var(--muted); text-align:right;" data-ar="توقيت بدء المأمورية (24 ساعة):" data-en="Start Time (24h):">توقيت بدء المأمورية (24 ساعة):</div>
           <div class="time-picker-card">
             <div class="wheel-container">
-              <div class="wheel-scroll-box" id="mFromHourWheel" onscroll="handleWheelScroll('mFromHourWheel', 'mFromHourVal')">
-                <div class="wheel-item"></div>
-                <div class="wheel-item selected">08</div><div class="wheel-item">09</div><div class="wheel-item">10</div>
-                <div class="wheel-item">11</div><div class="wheel-item">12</div><div class="wheel-item">01</div>
-                <div class="wheel-item">02</div><div class="wheel-item">03</div><div class="wheel-item">04</div>
-                <div class="wheel-item"></div>
-              </div>
+              <div class="wheel-scroll-box" id="mFromHourWheel" onscroll="handleWheelScroll('mFromHourWheel', 'mFromHourVal')"></div>
               <span style="color:#38bdf8; font-weight:800;">:</span>
-              <div class="wheel-scroll-box" id="mFromMinWheel" onscroll="handleWheelScroll('mFromMinWheel', 'mFromMinVal')">
-                <div class="wheel-item"></div>
-                <div class="wheel-item selected">00</div><div class="wheel-item">15</div>
-                <div class="wheel-item">30</div><div class="wheel-item">45</div>
-                <div class="wheel-item"></div>
-              </div>
-              <div class="wheel-scroll-box" id="mFromAmpmWheel" onscroll="handleWheelScroll('mFromAmpmWheel', 'mFromAmpmVal')">
-                <div class="wheel-item"></div>
-                <div class="wheel-item selected">ص</div><div class="wheel-item">م</div>
-                <div class="wheel-item"></div>
-              </div>
+              <div class="wheel-scroll-box" id="mFromMinWheel" onscroll="handleWheelScroll('mFromMinWheel', 'mFromMinVal')"></div>
             </div>
           </div>
 
-          <div style="font-size:0.75rem; color:var(--muted); text-align:right; margin-top:0.3rem;" data-ar="توقيت نهاية المأمورية:" data-en="End Time:">توقيت نهاية المأمورية:</div>
+          <div style="font-size:0.75rem; color:var(--muted); text-align:right; margin-top:0.3rem;" data-ar="توقيت نهاية المأمورية (24 ساعة):" data-en="End Time (24h):">توقيت نهاية المأمورية (24 ساعة):</div>
           <div class="time-picker-card">
             <div class="wheel-container">
-              <div class="wheel-scroll-box" id="mToHourWheel" onscroll="handleWheelScroll('mToHourWheel', 'mToHourVal')">
-                <div class="wheel-item"></div>
-                <div class="wheel-item">08</div><div class="wheel-item">09</div><div class="wheel-item">10</div>
-                <div class="wheel-item">11</div><div class="wheel-item">12</div><div class="wheel-item">01</div>
-                <div class="wheel-item">02</div><div class="wheel-item">03</div><div class="wheel-item selected">04</div>
-                <div class="wheel-item"></div>
-              </div>
+              <div class="wheel-scroll-box" id="mToHourWheel" onscroll="handleWheelScroll('mToHourWheel', 'mToHourVal')"></div>
               <span style="color:#38bdf8; font-weight:800;">:</span>
-              <div class="wheel-scroll-box" id="mToMinWheel" onscroll="handleWheelScroll('mToMinWheel', 'mToMinVal')">
-                <div class="wheel-item"></div>
-                <div class="wheel-item selected">00</div><div class="wheel-item">15</div>
-                <div class="wheel-item">30</div><div class="wheel-item">45</div>
-                <div class="wheel-item"></div>
-              </div>
-              <div class="wheel-scroll-box" id="mToAmpmWheel" onscroll="handleWheelScroll('mToAmpmWheel', 'mToAmpmVal')">
-                <div class="wheel-item"></div>
-                <div class="wheel-item">ص</div><div class="wheel-item selected">م</div>
-                <div class="wheel-item"></div>
-              </div>
+              <div class="wheel-scroll-box" id="mToMinWheel" onscroll="handleWheelScroll('mToMinWheel', 'mToMinVal')"></div>
             </div>
           </div>
         </div>
 
-        <input type="hidden" id="mFromHourVal" value="08"><input type="hidden" id="mFromMinVal" value="00"><input type="hidden" id="mFromAmpmVal" value="ص">
-        <input type="hidden" id="mToHourVal" value="04"><input type="hidden" id="mToMinVal" value="00"><input type="hidden" id="mToAmpmVal" value="م">
+        <input type="hidden" id="mFromHourVal" value="08"><input type="hidden" id="mFromMinVal" value="00">
+        <input type="hidden" id="mToHourVal" value="16"><input type="hidden" id="mToMinVal" value="00">
 
         <label style="font-size: 0.75rem; color: var(--muted); margin-top:0.3rem;" data-ar="الجهة المتجه إليها للمأمورية:" data-en="Destination Location:">الجهة المتجه إليها للمأمورية:</label>
         <input type="text" id="missionDestination" data-ar-placeholder="مثال: مصنع العاشر من رمضان / الهيئة العامة..." data-en-placeholder="e.g. Factory, Government Dept..." placeholder="مثال: مصنع العاشر من رمضان / الهيئة العامة...">
@@ -1107,111 +1044,111 @@
         <button onclick="submitMissionRequest()" class="btn-success" data-ar="إرسال طلب المأمورية وتوليد التصريح" data-en="Submit Mission & Generate Permit" style="margin-top:0.5rem;">إرسال طلب المأمورية وتوليد التصريح</button>
         <p id="missionMsg" style="font-size: 0.85rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
 
-        <!-- مستند تصريح المأمورية المولد بـ QR كود و PDF -->
+        <!-- Mission PDF Slip -->
         <div id="missionSlipModal" class="hidden">
           <div class="official-doc-card" id="missionPrintSlip">
             <div class="doc-header-row">
               <div>
                 <div class="doc-company-title">LACTO MISR S.A.E</div>
-                <div style="font-size:0.65rem; color:#64748b;">تصريح مأمورية رسمية إلكتروني</div>
+                <div style="font-size:0.65rem; color:#64748b;" data-ar="تصريح مأمورية رسمية إلكتروني" data-en="Official Digital Mission Permit">تصريح مأمورية رسمية إلكتروني</div>
               </div>
               <div id="missionQR" style="background:#fff; padding:0.2rem; border-radius:0.4rem;"></div>
             </div>
             <div class="doc-grid">
-              <div><span style="font-weight:700; color:#475569;">اسم الموظف:</span> <span id="slipEmpName" style="font-weight:800;">مصطفى السيد</span></div>
-              <div><span style="font-weight:700; color:#475569;">كود الموظف:</span> <span id="slipEmpCode" style="font-weight:800;">10024</span></div>
-              <div><span style="font-weight:700; color:#475569;">تاريخ المأمورية:</span> <span id="slipDate" style="font-weight:800;">--</span></div>
-              <div><span style="font-weight:700; color:#475569;">جهة المأمورية:</span> <span id="slipDest" style="font-weight:800;">--</span></div>
+              <div><span style="font-weight:700; color:#475569;" data-ar="اسم الموظف:" data-en="Name:">اسم الموظف:</span> <span id="slipEmpName" style="font-weight:800;">--</span></div>
+              <div><span style="font-weight:700; color:#475569;" data-ar="كود الموظف:" data-en="Code:">كود الموظف:</span> <span id="slipEmpCode" style="font-weight:800;">--</span></div>
+              <div><span style="font-weight:700; color:#475569;" data-ar="تاريخ المأمورية:" data-en="Date:">تاريخ المأمورية:</span> <span id="slipDate" style="font-weight:800;">--</span></div>
+              <div><span style="font-weight:700; color:#475569;" data-ar="جهة المأمورية:" data-en="Destination:">جهة المأمورية:</span> <span id="slipDest" style="font-weight:800;">--</span></div>
             </div>
           </div>
-          <button type="button" onclick="downloadMissionPDF()" class="btn-success" style="font-size:0.85rem; padding:0.6rem;">📄 تحميل تصريح المأمورية كملف PDF</button>
+          <button type="button" onclick="downloadMissionPDF()" class="btn-success" style="font-size:0.85rem; padding:0.6rem;" data-ar="📄 تحميل تصريح المأمورية كملف PDF" data-en="📄 Download Mission Permit as PDF">📄 تحميل تصريح المأمورية كملف PDF</button>
         </div>
 
       </div>
     </div>
 
-    <!-- 4.4. PAYSLIP REQUEST VIEW (مفردات المرتب بالبنود المحددة بالمليمتر) -->
+    <!-- 4.4. PAYSLIP REQUEST VIEW (ACCURATE HR & INSURANCE MATH LOGIC) -->
     <div id="view-payslip-request" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
         <span style="font-weight: 700; color: #38bdf8;" data-ar="مفردات المرتب الرسمية" data-en="Official Payslip">مفردات المرتب الرسمية</span>
       </div>
 
-      <!-- 1. الأجور الثلاثية المباشرة -->
+      <!-- 1. الأجور الثلاثية المباشرة بالحسابات المضبوطة بـ 30% معفاه والـ 11% تأمينات -->
       <div class="payslip-summary-grid">
         <div class="payslip-badge">
-          <div class="payslip-badge-title">الأجر الشامل</div>
-          <div class="payslip-badge-val">18,500 ج.م</div>
+          <div class="payslip-badge-title" data-ar="الأجر الشامل" data-en="Gross Salary">الأجر الشامل</div>
+          <div class="payslip-badge-val">18,500 <span style="font-size:0.65rem;">EGP</span></div>
         </div>
         <div class="payslip-badge">
-          <div class="payslip-badge-title">الاشتراك التأميني</div>
-          <div class="payslip-badge-val">4,000 ج.م</div>
+          <div class="payslip-badge-title" data-ar="الاشتراك التأميني" data-en="Insurable Wage">الاشتراك التأميني</div>
+          <div class="payslip-badge-val">14,300 <span style="font-size:0.65rem;">EGP</span></div>
         </div>
         <div class="payslip-badge">
-          <div class="payslip-badge-title">الأجر الصافي</div>
-          <div class="payslip-badge-val">14,250 ج.م</div>
+          <div class="payslip-badge-title" data-ar="الأجر الصافي" data-en="Net Salary">الأجر الصافي</div>
+          <div class="payslip-badge-val">16,277 <span style="font-size:0.65rem;">EGP</span></div>
         </div>
       </div>
 
-      <!-- 2. زرار الاطلاع على مفردات مرتبي -->
+      <!-- 2. Toggle Button -->
       <button type="button" onclick="togglePayslipBreakdown()" style="margin-top:0; font-size: 0.85rem;" class="btn-success">
-        👁️ <span id="btnPayslipToggleText">الاطلاع على تفاصيل مفردات مرتبي</span>
+        👁️ <span id="btnPayslipToggleText" data-ar="الاطلاع على تفاصيل مفردات مرتبي" data-en="View Payslip Breakdown">الاطلاع على تفاصيل مفردات مرتبي</span>
       </button>
 
-      <!-- 3. جدول تفاصيل الاستحقاقات والاستقطاعات المعتمدة بالكامل -->
+      <!-- 3. Breakdown Grid with Strict Mathematical Accuracy -->
       <div id="payslipDetailsBreakdown" class="hidden">
         <div class="payslip-breakdown-container">
-          <!-- الاستحقاقات -->
+          <!-- Earnings -->
           <div>
-            <div class="payslip-col-title earnings">➕ الاستحقاقات</div>
-            <div class="payslip-item"><span class="payslip-item-label">أجر شامل:</span><span class="payslip-item-val">18,500</span></div>
-            <div class="payslip-item"><span class="payslip-item-label">بدلات مستحقة:</span><span class="payslip-item-val">2,500</span></div>
-            <div class="payslip-item" style="border-top:1px dashed var(--border-color); padding-top:0.3rem; margin-top:0.3rem;"><strong style="color:#38bdf8;">الإجمالي:</strong><strong style="color:#38bdf8;">21,000</strong></div>
+            <div class="payslip-col-title earnings" data-ar="➕ الاستحقاقات" data-en="➕ Earnings">➕ الاستحقاقات</div>
+            <div class="payslip-item"><span class="payslip-item-label" data-ar="أجر شامل:" data-en="Gross Salary:">أجر شامل:</span><span class="payslip-item-val">18,500</span></div>
+            <div class="payslip-item"><span class="payslip-item-label" data-ar="بدلات مستحقة:" data-en="Allowances:">بدلات مستحقة:</span><span class="payslip-item-val">2,500</span></div>
+            <div class="payslip-item" style="border-top:1px dashed var(--border-color); padding-top:0.3rem; margin-top:0.3rem;"><strong style="color:#38bdf8;" data-ar="الإجمالي:" data-en="Total:">الإجمالي:</strong><strong style="color:#38bdf8;">21,000</strong></div>
           </div>
-          <!-- الاستقطاعات -->
+          <!-- Deductions -->
           <div>
-            <div class="payslip-col-title deductions">➖ الاستقطاعات</div>
-            <div class="payslip-item"><span class="payslip-item-label">جزاءات:</span><span class="payslip-item-val">300</span></div>
-            <div class="payslip-item"><span class="payslip-item-label">خصومات التأخيرات:</span><span class="payslip-item-val">150</span></div>
-            <div class="payslip-item"><span class="payslip-item-label">حصة الموظف تأمينات:</span><span class="payslip-item-val">1,100</span></div>
-            <div class="payslip-item"><span class="payslip-item-label">ضريبة الدخل:</span><span class="payslip-item-val">1,850</span></div>
-            <div class="payslip-item"><span class="payslip-item-label">أقساط سلفة شخصية:</span><span class="payslip-item-val">850</span></div>
-            <div class="payslip-item" style="border-top:1px dashed var(--border-color); padding-top:0.3rem; margin-top:0.3rem;"><strong style="color:#ef4444;">الإجمالي:</strong><strong style="color:#ef4444;">4,250</strong></div>
+            <div class="payslip-col-title deductions" data-ar="➖ الاستقطاعات" data-en="➖ Deductions">➖ الاستقطاعات</div>
+            <div class="payslip-item"><span class="payslip-item-label" data-ar="جزاءات:" data-en="Penalties:">جزاءات:</span><span class="payslip-item-val">300</span></div>
+            <div class="payslip-item"><span class="payslip-item-label" data-ar="خصومات التأخيرات:" data-en="Late Deductions:">خصومات التأخيرات:</span><span class="payslip-item-val">150</span></div>
+            <div class="payslip-item"><span class="payslip-item-label" data-ar="تأمينات الموظف (11%):" data-en="Insurance (11%):">تأمينات الموظف (11%):</span><span class="payslip-item-val">1,573</span></div>
+            <div class="payslip-item"><span class="payslip-item-label" data-ar="ضريبة الدخل:" data-en="Income Tax:">ضريبة الدخل:</span><span class="payslip-item-val">1,850</span></div>
+            <div class="payslip-item"><span class="payslip-item-label" data-ar="أقساط سلفة:" data-en="Loan Installment:">أقساط سلفة:</span><span class="payslip-item-val">850</span></div>
+            <div class="payslip-item" style="border-top:1px dashed var(--border-color); padding-top:0.3rem; margin-top:0.3rem;"><strong style="color:#ef4444;" data-ar="الإجمالي:" data-en="Total:">الإجمالي:</strong><strong style="color:#ef4444;">4,723</strong></div>
           </div>
         </div>
       </div>
 
       <hr style="border: 0; height: 1px; background: var(--border-color); margin: 1rem 0;">
 
-      <!-- 4. نموذج تقديم طلب الخطاب الرسمي -->
+      <!-- 4. Payslip Request Form -->
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;">
-        <label style="font-size: 0.75rem; color: var(--muted);">الجهة الموجه إليها الخطاب:</label>
-        <input type="text" id="payslipDestination" placeholder="مثال: البنك الأهلي المصري / السفارة...">
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="الجهة الموجه إليها الخطاب:" data-en="Addressed To:">الجهة الموجه إليها الخطاب:</label>
+        <input type="text" id="payslipDestination" data-ar-placeholder="مثال: البنك الأهلي المصري / السفارة..." data-en-placeholder="e.g. National Bank of Egypt / Embassy..." placeholder="مثال: البنك الأهلي المصري / السفارة...">
 
-        <label style="font-size: 0.75rem; color: var(--muted); margin-top:0.2rem;">نوع الأجر المطلوب إظهاره بالنموذج:</label>
+        <label style="font-size: 0.75rem; color: var(--muted); margin-top:0.2rem;" data-ar="نوع الأجر المطلوب إظهاره بالنموذج:" data-en="Salary Type in Document:">نوع الأجر المطلوب إظهاره بالنموذج:</label>
         <div class="radio-group-container">
-          <div class="radio-option-btn active" id="optGross" onclick="setPayslipWageType('gross')">بالأجر الشامل</div>
-          <div class="radio-option-btn" id="optNet" onclick="setPayslipWageType('net')">بالأجر الصافي</div>
+          <div class="radio-option-btn active" id="optGross" onclick="setPayslipWageType('gross')" data-ar="بالأجر الشامل" data-en="Gross Salary">بالأجر الشامل</div>
+          <div class="radio-option-btn" id="optNet" onclick="setPayslipWageType('net')" data-ar="بالأجر الصافي" data-en="Net Salary">بالأجر الصافي</div>
         </div>
 
-        <label style="font-size: 0.75rem; color: var(--muted); margin-top:0.4rem;">طريقة الاستلام المطلوبة:</label>
+        <label style="font-size: 0.75rem; color: var(--muted); margin-top:0.4rem;" data-ar="طريقة الاستلام المطلوبة:" data-en="Delivery Method:">طريقة الاستلام المطلوبة:</label>
         
         <label class="checkbox-container">
           <input type="checkbox" id="chkPrintout" onchange="handleDeliveryCheckboxes()">
-          <span>نسخة مطبوعة ومختومة (استلام من الـ HR)</span>
+          <span data-ar="نسخة مطبوعة ومختومة (استلام من الـ HR)" data-en="Hardcopy Stamped (Pick up from HR)">نسخة مطبوعة ومختومة (استلام من الـ HR)</span>
         </label>
         
         <label class="checkbox-container" style="margin-top:0.2rem;">
           <input type="checkbox" id="chkDigitalEmail" onchange="handleDeliveryCheckboxes()">
-          <span>نسخة رقمية PDF على البريد الإلكتروني المسجل</span>
+          <span data-ar="نسخة رقمية PDF على البريد الإلكتروني المسجل" data-en="Digital PDF via Registered Email">نسخة رقمية PDF على البريد الإلكتروني المسجل</span>
         </label>
 
         <label class="checkbox-container" style="margin-top:0.2rem; background: rgba(56,189,248,0.1); padding: 0.4rem 0.6rem; border-radius: 0.6rem; border: 1px dashed rgba(56,189,248,0.4);">
           <input type="checkbox" id="chkBothDelivery" onchange="handleBothCheckbox(this.checked)">
-          <span style="color:#38bdf8; font-weight:800;">كلاهما (Both)</span>
+          <span style="color:#38bdf8; font-weight:800;" data-ar="كلاهما (Both)" data-en="Both Methods">كلاهما (Both)</span>
         </label>
 
-        <button onclick="submitPayslipRequest()" class="btn-success" style="margin-top:0.75rem;">إرسال طلب مفردات المرتب</button>
+        <button onclick="submitPayslipRequest()" class="btn-success" data-ar="إرسال طلب مفردات المرتب" data-en="Submit Payslip Request" style="margin-top:0.75rem;">إرسال طلب مفردات المرتب</button>
         <p id="payslipMsg" style="font-size: 0.85rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
       </div>
     </div>
@@ -1245,7 +1182,7 @@
       </div>
     </div>
 
-    <!-- Coming Soon Generic View -->
+    <!-- Coming Soon View -->
     <div id="view-coming-soon" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="goBackFromComingSoon()"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
@@ -1399,7 +1336,7 @@
       const salaryValEl = document.getElementById('salaryDisplayVal');
       const eyeIconEl = document.getElementById('salaryEyeIcon');
       if (isSalaryVisible) {
-        salaryValEl.innerText = "14,250 EGP";
+        salaryValEl.innerText = "16,277 EGP";
         eyeIconEl.innerHTML = `<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2z"/>`;
       } else {
         salaryValEl.innerText = "••••••••";
@@ -1412,9 +1349,11 @@
       const breakdownEl = document.getElementById('payslipDetailsBreakdown');
       const btnTextEl = document.getElementById('btnPayslipToggleText');
       if (breakdownEl.classList.contains('hidden')) {
-        breakdownEl.classList.remove('hidden'); btnTextEl.innerText = 'إخفاء تفاصيل مفردات مرتبي';
+        breakdownEl.classList.remove('hidden'); 
+        btnTextEl.innerText = btnTextEl.getAttribute(currentLang === 'ar' ? 'data-ar-hide' : 'data-en-hide') || (currentLang === 'ar' ? 'إخفاء تفاصيل مفردات مرتبي' : 'Hide Payslip Breakdown');
       } else {
-        breakdownEl.classList.add('hidden'); btnTextEl.innerText = 'الاطلاع على تفاصيل مفردات مرتبي';
+        breakdownEl.classList.add('hidden'); 
+        btnTextEl.innerText = btnTextEl.getAttribute(`data-${currentLang}`);
       }
     }
 
@@ -1438,9 +1377,12 @@
       const dest = document.getElementById('payslipDestination').value.trim();
       const msg = document.getElementById('payslipMsg');
       if (!dest) {
-        msg.style.color = '#ef4444'; msg.innerText = '⚠️ يرجى تحديد الجهة الموجه إليها الخطاب!'; return;
+        msg.style.color = '#ef4444'; 
+        msg.innerText = currentLang === 'ar' ? '⚠️ يرجى تحديد الجهة الموجه إليها الخطاب!' : '⚠️ Please specify the destination entity!'; 
+        return;
       }
-      msg.style.color = '#38bdf8'; msg.innerText = '✅ تم إرسال طلب مفردات المرتب بنجاح للـ HR!';
+      msg.style.color = '#38bdf8'; 
+      msg.innerText = currentLang === 'ar' ? '✅ تم إرسال طلب مفردات المرتب بنجاح للـ HR!' : '✅ Payslip request submitted to HR!';
       setTimeout(() => showPage('view-dashboard'), 1800);
     }
     
@@ -1462,7 +1404,7 @@
     
     let totalPermBalanceSeconds = 14400; // 4 Hours
 
-    /* Web Audio API Sound Generator (تكات العجلة 🔊) */
+    /* Web Audio API Sound Generator */
     let audioCtx = null;
     function playClickSound() {
       try {
@@ -1680,7 +1622,32 @@
       }
     }
 
-    /* 3D WHEEL SCROLL LOGIC + SOUND EFFECTS (FIXED CENTER ALIGNMENT) */
+    /* POPULATE 24-HOUR WHEELS WITH EXACT MINUTES */
+    function populate24HourWheels() {
+      const createWheelItems = (containerId, max, defaultVal) => {
+        const box = document.getElementById(containerId);
+        if (!box) return;
+        box.innerHTML = '<div class="wheel-item"></div>';
+        for (let i = 0; i < max; i++) {
+          const valStr = String(i).padStart(2, '0');
+          const isSelected = valStr === defaultVal;
+          box.innerHTML += `<div class="wheel-item ${isSelected ? 'selected' : ''}">${valStr}</div>`;
+        }
+        box.innerHTML += '<div class="wheel-item"></div>';
+      };
+
+      createWheelItems('fromHourWheel', 24, '08');
+      createWheelItems('fromMinWheel', 60, '00');
+      createWheelItems('toHourWheel', 24, '09');
+      createWheelItems('toMinWheel', 60, '00');
+
+      createWheelItems('mFromHourWheel', 24, '08');
+      createWheelItems('mFromMinWheel', 60, '00');
+      createWheelItems('mToHourWheel', 24, '16');
+      createWheelItems('mToMinWheel', 60, '00');
+    }
+
+    /* 3D WHEEL SCROLL LOGIC + SOUND EFFECTS */
     const lastWheelIndices = {};
     function handleWheelScroll(wheelId, targetInputId) {
       const wheel = document.getElementById(wheelId);
@@ -1715,15 +1682,8 @@
     function calculateRequestedDuration() {
       let fH = parseInt(document.getElementById('fromHourVal').value) || 8;
       let fM = parseInt(document.getElementById('fromMinVal').value) || 0;
-      let fAp = document.getElementById('fromAmpmVal').value;
       let tH = parseInt(document.getElementById('toHourVal').value) || 9;
       let tM = parseInt(document.getElementById('toMinVal').value) || 0;
-      let tAp = document.getElementById('toAmpmVal').value;
-
-      if (fAp === 'م' && fH < 12) fH += 12;
-      if (fAp === 'ص' && fH === 12) fH = 0;
-      if (tAp === 'م' && tH < 12) tH += 12;
-      if (tAp === 'ص' && tH === 12) tH = 0;
 
       let diffMins = (tH * 60 + tM) - (fH * 60 + fM);
       const resBox = document.getElementById('durationResultText');
@@ -1889,6 +1849,7 @@
     });
 
     window.addEventListener('DOMContentLoaded', () => {
+      populate24HourWheels();
       selectLanguage(currentLang);
       resetSlideTimer();
       const savedCode = localStorage.getItem('lacto_saved_code');
@@ -2186,7 +2147,7 @@
           document.getElementById('chkBothDelivery').checked = false;
           document.getElementById('payslipMsg').innerText = '';
           document.getElementById('payslipDetailsBreakdown').classList.add('hidden');
-          document.getElementById('btnPayslipToggleText').innerText = 'الاطلاع على تفاصيل مفردات مرتبي';
+          document.getElementById('btnPayslipToggleText').innerText = currentLang === 'ar' ? 'الاطلاع على تفاصيل مفردات مرتبي' : 'View Payslip Breakdown';
         }
 
         if (pageId === 'view-suggestion-page' && currentUserData) {
