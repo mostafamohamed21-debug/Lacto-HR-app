@@ -839,7 +839,7 @@
           <span data-ar="💰 طلب مفردات مرتب" data-en="💰 Payslip Request">💰 طلب مفردات مرتب</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
-        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+        <button class="service-row-btn" onclick="showPage('view-loan-request')">
           <span data-ar="💳 طلب سلفة مالية مقسطة" data-en="💳 Installment Advance">💳 طلب سلفة مالية مقسطة</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
@@ -1156,6 +1156,49 @@
       </div>
     </div>
     
+    <!-- 4.5. LOAN REQUEST VIEW -->
+    <div id="view-loan-request" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span style="font-weight: 700; color: #38bdf8;" data-ar="طلب سلفة مالية" data-en="Loan Request">طلب سلفة مالية</span>
+      </div>
+
+      <div style="background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 1rem; padding: 0.75rem 1rem; margin-bottom: 1rem; text-align: center;">
+        <span style="font-size: 0.8rem; color: var(--muted);" data-ar="الحد الأقصى المسموح للسلفة:" data-en="Max Allowed Advance:">الحد الأقصى المسموح للسلفة:</span>
+        <div style="font-size: 1.15rem; font-weight: 800; color: #38bdf8;">10,000 <span style="font-size:0.7rem;">EGP</span></div>
+      </div>
+
+      <div style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;">
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="المبلغ المطلوب:" data-en="Requested Amount:">المبلغ المطلوب:</label>
+        <input type="number" id="loanAmount" oninput="calculateInstallment()" data-ar-placeholder="أدخل المبلغ المطلوب..." data-en-placeholder="Enter requested amount..." placeholder="أدخل المبلغ المطلوب..." min="500" max="10000">
+
+        <label style="font-size: 0.75rem; color: var(--muted); margin-top:0.2rem;" data-ar="مدة التقسيط (بالشهور):" data-en="Installment Months:">مدة التقسيط (بالشهور):</label>
+        <div class="custom-dropdown" id="loanMonthsDropdown">
+          <div class="dropdown-selected" onclick="toggleLoanDropdown(event)">
+            <span id="selectedLoanMonthText" data-ar="3 شهور" data-en="3 Months">3 شهور</span>
+            <span style="font-size: 0.8rem;">▼</span>
+          </div>
+          <div class="dropdown-options" id="loanMonthsOptions">
+            <div class="dropdown-option" onclick="selectLoanMonth(1)" data-ar="1 شهر" data-en="1 Month">1 شهر</div>
+            <div class="dropdown-option" onclick="selectLoanMonth(3)" data-ar="3 شهور" data-en="3 Months">3 شهور</div>
+            <div class="dropdown-option" onclick="selectLoanMonth(6)" data-ar="6 شهور" data-en="6 Months">6 شهور</div>
+            <div class="dropdown-option" onclick="selectLoanMonth(12)" data-ar="12 شهر" data-en="12 Months">12 شهر</div>
+          </div>
+        </div>
+        <input type="hidden" id="loanMonthsVal" value="3">
+
+        <div class="glowing-result-badge" id="loanInstallmentText" data-ar="القيمة التقديرية للقسط: 0 EGP / شهر" data-en="Est. Installment: 0 EGP / month">
+          القيمة التقديرية للقسط: 0 EGP / شهر
+        </div>
+
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="سبب السلفة / مبرر الطلب:" data-en="Reason for Advance:">سبب السلفة / مبرر الطلب:</label>
+        <textarea id="loanReason" rows="3" data-ar-placeholder="اشرح سبب طلبك للسلفة هنا (سكن، علاج، مصاريف دراسية...)" data-en-placeholder="Type the reason for the loan here..." placeholder="اشرح سبب طلبك للسلفة هنا (سكن، علاج، مصاريف دراسية...)" style="resize: none;"></textarea>
+
+        <button onclick="submitLoanRequest()" class="btn-success" data-ar="إرسال طلب السلفة" data-en="Submit Loan Request" style="margin-top: 0.75rem;">إرسال طلب السلفة</button>
+        <p id="loanMsg" style="font-size: 0.85rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
+      </div>
+    </div>
+
     <!-- 5. Settings View -->
     <div id="view-settings" class="card hidden">
       <div class="nav-bar">
@@ -1253,7 +1296,7 @@
       <span data-ar="الهوية" data-en="ID Card">الهوية</span>
     </button>
     <button class="bottom-nav-item" onclick="switchTab('view-settings', this)">
-      <svg viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.03 2.18 13.82 2 13.6 2h-4c-.22 0-.42.18-.45.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.45.42h4c.22 0 .42-.18.45-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.03 2.18 13.82 2 13.6 2h-4c-.22 0-.42.18-.45.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49-.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.45.42h4c.22 0 .42-.18.45-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
       <span data-ar="الضبط" data-en="Settings">الضبط</span>
     </button>
   </div>
@@ -1508,10 +1551,17 @@
       if (selectedOptionEl && document.getElementById('selectedLeaveText')) {
         document.getElementById('selectedLeaveText').innerText = selectedOptionEl.getAttribute(`data-${lang}`);
       }
+      
+      const currentLoanVal = document.getElementById('loanMonthsVal') ? document.getElementById('loanMonthsVal').value : '3';
+      const selectedLoanOptionEl = document.querySelector(`#loanMonthsOptions .dropdown-option[onclick*="selectLoanMonth(${currentLoanVal})"]`);
+      if (selectedLoanOptionEl && document.getElementById('selectedLoanMonthText')) {
+        document.getElementById('selectedLoanMonthText').innerText = selectedLoanOptionEl.getAttribute(`data-${lang}`);
+      }
 
       handleLeaveTypeChange();
       calculateLeaveDays();
       if (typeof calculateRequestedDuration === 'function') calculateRequestedDuration();
+      calculateInstallment();
       updateDigitalClockDisplay(totalPermBalanceSeconds);
       updateDynamicGreeting();
       updateAmPmBadges();
@@ -1527,6 +1577,8 @@
       if (popup && popup.classList.contains('show')) popup.classList.remove('show');
       const dropdownOptions = document.getElementById('dropdownOptions');
       if (dropdownOptions && dropdownOptions.classList.contains('show')) dropdownOptions.classList.remove('show');
+      const loanOpts = document.getElementById('loanMonthsOptions');
+      if (loanOpts && loanOpts.classList.contains('show')) loanOpts.classList.remove('show');
     });
 
     function toggleCustomDropdown(event) {
@@ -1881,6 +1933,84 @@
       const element = document.getElementById('missionPrintSlip');
       html2pdf().set({ margin: 0.5, filename: 'Mission_Permit_' + currentEmpCode + '.pdf', html2canvas: { scale: 2 } }).from(element).save();
     }
+    
+    /* LOAN REQUEST FUNCTIONS */
+    function toggleLoanDropdown(event) {
+      if (event) event.stopPropagation();
+      document.getElementById('loanMonthsOptions').classList.toggle('show');
+    }
+
+    function selectLoanMonth(months) {
+      document.getElementById('loanMonthsVal').value = months;
+      const optionEl = document.querySelector(`#loanMonthsOptions .dropdown-option[onclick="selectLoanMonth(${months})"]`);
+      if (optionEl) {
+        document.getElementById('selectedLoanMonthText').innerText = optionEl.getAttribute(`data-${currentLang}`);
+      }
+      document.getElementById('loanMonthsOptions').classList.remove('show');
+      calculateInstallment();
+    }
+
+    function calculateInstallment() {
+      const amount = parseFloat(document.getElementById('loanAmount').value) || 0;
+      const months = parseInt(document.getElementById('loanMonthsVal').value) || 1;
+      const textEl = document.getElementById('loanInstallmentText');
+      
+      if (amount > 10000) {
+        textEl.style.color = '#ef4444';
+        textEl.innerText = currentLang === 'ar' ? '⚠️ الحد الأقصى للسلفة هو 10,000 EGP!' : '⚠️ Max advance limit is 10,000 EGP!';
+        return;
+      }
+      
+      textEl.style.color = '#38bdf8';
+      if (amount > 0) {
+        const installment = Math.ceil(amount / months);
+        textEl.innerText = currentLang === 'ar' 
+          ? `القيمة التقديرية للقسط: ${installment} EGP / شهر`
+          : `Est. Installment: ${installment} EGP / month`;
+      } else {
+        textEl.innerText = currentLang === 'ar' 
+          ? `القيمة التقديرية للقسط: 0 EGP / شهر`
+          : `Est. Installment: 0 EGP / month`;
+      }
+    }
+
+    function submitLoanRequest() {
+      const amount = parseFloat(document.getElementById('loanAmount').value);
+      const months = document.getElementById('loanMonthsVal').value;
+      const reason = document.getElementById('loanReason').value.trim();
+      const msg = document.getElementById('loanMsg');
+
+      if (!amount || amount <= 0 || amount > 10000) {
+        msg.style.color = '#ef4444';
+        msg.innerText = currentLang === 'ar' ? '⚠️ يرجى إدخال مبلغ صحيح لا يتجاوز 10,000!' : '⚠️ Please enter a valid amount up to 10,000!';
+        return;
+      }
+      if (!reason) {
+        msg.style.color = '#ef4444';
+        msg.innerText = currentLang === 'ar' ? '⚠️ يرجى توضيح سبب طلب السلفة!' : '⚠️ Please clarify the reason for the advance!';
+        return;
+      }
+
+      const loanData = {
+        code: currentEmpCode,
+        name: (currentUserData && currentUserData.name) ? currentUserData.name : 'Unknown',
+        amount: amount,
+        months: months,
+        installment: Math.ceil(amount / months),
+        reason: reason,
+        status: 'Pending',
+        timestamp: Date.now()
+      };
+
+      db.ref('loan_requests/' + currentEmpCode).push(loanData).then(() => {
+        msg.style.color = '#38bdf8';
+        msg.innerText = currentLang === 'ar' ? '✅ تم إرسال طلب السلفة بنجاح للمراجعة!' : '✅ Loan request submitted successfully for review!';
+        setTimeout(() => { showPage('view-dashboard'); }, 2000);
+      }).catch(() => {
+        msg.style.color = '#ef4444';
+        msg.innerText = currentLang === 'ar' ? '❌ حدث خطأ في الاتصال، حاول مرة أخرى.' : '❌ Error occurred, try again.';
+      });
+    }
 
     function toggleChatbot() { document.getElementById('chatbot-window').classList.toggle('show'); }
     function handleChatKeyPress(e) { if (e.key === 'Enter') sendChatMessage(); }
@@ -2181,7 +2311,7 @@
         if (bottomNavBar) bottomNavBar.classList.add('show');
       }
       
-      ['view-login', 'view-dashboard', 'view-id-card', 'view-services', 'view-leave-request', 'view-permission-request', 'view-mission-request', 'view-payslip-request', 'view-settings', 'view-profile', 'view-coming-soon', 'view-suggestion-page'].forEach(id => {
+      ['view-login', 'view-dashboard', 'view-id-card', 'view-services', 'view-leave-request', 'view-permission-request', 'view-mission-request', 'view-payslip-request', 'view-loan-request', 'view-settings', 'view-profile', 'view-coming-soon', 'view-suggestion-page'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.add('hidden');
       });
@@ -2242,6 +2372,13 @@
           document.getElementById('payslipMsg').innerText = '';
           document.getElementById('payslipDetailsBreakdown').classList.add('hidden');
           document.getElementById('btnPayslipToggleText').innerText = currentLang === 'ar' ? 'الاطلاع على تفاصيل مفردات مرتبي' : 'View Payslip Breakdown';
+        }
+
+        if (pageId === 'view-loan-request') {
+          document.getElementById('loanAmount').value = '';
+          document.getElementById('loanReason').value = '';
+          document.getElementById('loanMsg').innerText = '';
+          selectLoanMonth(3);
         }
 
         if (pageId === 'view-suggestion-page' && currentUserData) {
