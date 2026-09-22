@@ -364,43 +364,131 @@
     }
     .upload-btn-label:hover { transform: scale(1.03); }
 
-    /* DIGITAL PERMISSION COUNTER & WHEEL PICKER STYLING */
-    .digital-quota-card {
-      background: linear-gradient(135deg, #0b1329 0%, #1e3a8a 40%, #0284c7 75%, #38bdf8 100%);
-      border: 1px solid rgba(56, 189, 248, 0.6);
-      border-radius: 1.5rem;
-      padding: 1.25rem 1rem;
+    /* --- FLIP CLOCK & DYNAMIC SELECTION MODERN STYLING --- */
+    .digital-quota-card-seamless {
+      background: transparent;
+      border: none;
+      padding: 0.5rem 0 1rem 0;
       text-align: center;
-      box-shadow: 0 15px 35px rgba(2, 132, 199, 0.35), inset 0 0 20px rgba(125, 211, 252, 0.3);
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
     }
-    .quota-label { font-size: 0.85rem; font-weight: 700; color: #e0f2fe; margin-bottom: 0.6rem; }
-    .digital-clock-display { display: flex; justify-content: center; align-items: center; gap: 0.4rem; direction: ltr; }
-    .time-unit-box {
-      display: flex; flex-direction: column; align-items: center;
-      background: rgba(11, 19, 41, 0.85); border: 1px solid rgba(125, 211, 252, 0.6);
-      border-radius: 0.85rem; padding: 0.4rem 0.65rem; min-width: 65px;
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
+    .quota-label-glow { 
+      font-size: 0.85rem; 
+      font-weight: 700; 
+      color: #38bdf8; 
+      margin-bottom: 0.8rem;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
     }
-    .digit-val {
-      font-family: 'Share Tech Mono', monospace, sans-serif; font-size: 1.6rem; font-weight: 800;
-      color: #7dd3fc; text-shadow: 0 0 10px #38bdf8; line-height: 1;
+    
+    .flip-clock-display { 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      gap: 0.5rem; 
+      direction: ltr; 
     }
-    .digit-sub { font-size: 0.65rem; color: #bae6fd; margin-top: 0.25rem; font-weight: 600; }
-    .clock-separator { font-family: 'Share Tech Mono', monospace, sans-serif; font-size: 1.6rem; color: #7dd3fc; text-shadow: 0 0 8px #38bdf8; animation: blink 1s infinite; }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .flip-unit-box {
+      display: flex; 
+      flex-direction: column; 
+      align-items: center;
+    }
+    
+    /* Flip Card Digit (Inspired by physical scoreboards) */
+    .flip-card-digit {
+      position: relative;
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 0.75rem;
+      padding: 0.6rem 0.8rem;
+      min-width: 68px;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      overflow: hidden;
+    }
+    /* Horizontal Split Line across center */
+    .flip-card-digit::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 0; right: 0;
+      height: 1px;
+      background: rgba(0, 0, 0, 0.95);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12);
+      z-index: 3;
+    }
+    /* Side Hinge Clips */
+    .flip-card-digit::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 2px; right: 2px;
+      transform: translateY(-50%);
+      height: 4px;
+      border-left: 3px solid rgba(56, 189, 248, 0.8);
+      border-right: 3px solid rgba(56, 189, 248, 0.8);
+      z-index: 4;
+      pointer-events: none;
+    }
 
-    .permission-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 0.6rem 0; }
+    .digit-val-glow {
+      font-family: 'Share Tech Mono', monospace, sans-serif; 
+      font-size: 1.85rem; 
+      font-weight: 800;
+      background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.6));
+      line-height: 1;
+    }
+    .digit-sub-text { 
+      font-size: 0.65rem; 
+      color: var(--muted); 
+      margin-top: 0.4rem; 
+      font-weight: 700; 
+      letter-spacing: 0.5px;
+    }
+    .flip-clock-colon { 
+      font-family: 'Share Tech Mono', monospace, sans-serif; 
+      font-size: 1.8rem; 
+      color: #38bdf8; 
+      text-shadow: 0 0 12px #38bdf8; 
+      animation: blink 1s infinite; 
+      margin-bottom: 1.2rem;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+    /* Dynamic Sleek Vector Buttons */
+    .permission-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin: 0.8rem 0 1rem 0; }
     .type-btn {
-      background: rgba(30, 58, 138, 0.3); border: 1px solid var(--border-color);
-      border-radius: 1.25rem; padding: 0.85rem 0.5rem; color: var(--text);
-      font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease;
-      display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+      background: rgba(15, 23, 42, 0.8); 
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 1.25rem; 
+      padding: 1rem 0.6rem; 
+      color: var(--text);
+      font-size: 0.85rem; 
+      font-weight: 700; 
+      cursor: pointer; 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      gap: 0.5rem;
+      backdrop-filter: blur(12px);
+    }
+    .type-btn svg {
+      width: 28px;
+      height: 28px;
+      fill: var(--muted);
+      transition: all 0.3s ease;
     }
     .type-btn.active {
-      background: linear-gradient(135deg, #1e3a8a 0%, #0284c7 100%);
-      border-color: #38bdf8; color: #fff;
-      box-shadow: 0 0 18px rgba(56, 189, 248, 0.4); transform: scale(1.02);
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.35) 0%, rgba(56, 189, 248, 0.15) 100%);
+      border-color: #38bdf8; 
+      color: #38bdf8;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.35), inset 0 0 10px rgba(56, 189, 248, 0.2); 
+      transform: translateY(-2px);
+    }
+    .type-btn.active svg {
+      fill: #38bdf8;
+      filter: drop-shadow(0 0 8px #38bdf8);
+      transform: scale(1.1);
     }
 
     .time-picker-card {
@@ -975,43 +1063,49 @@
       </div>
     </div>
 
-    <!-- 4.2. Personal Permission Request View (INTEGRATED & STABLE) -->
+    <!-- 4.2. Personal Permission Request View (FLIP CLOCK & MODERN VECTOR SELECTION) -->
     <div id="view-permission-request" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
         <span style="font-weight: 700; color: #38bdf8;" data-ar="طلب إذن شخصي" data-en="Personal Permission">طلب إذن شخصي</span>
       </div>
 
-      <!-- العداد الديجيتال المضيء -->
-      <div class="digital-quota-card">
-        <div class="quota-label" data-ar="المتبقي من الرصيد الشهري للأذونات" data-en="Monthly Permission Balance">المتبقي من الرصيد الشهري للأذونات</div>
-        <div class="digital-clock-display">
-          <div class="time-unit-box">
-            <span class="digit-val" id="cntHours">04</span>
-            <span class="digit-sub" data-ar="ساعة" data-en="Hours">ساعة</span>
+      <!-- العداد الديجيتال المضيء بتصميم الـ FLIP CLOCK الدايب -->
+      <div class="digital-quota-card-seamless">
+        <div class="quota-label-glow" data-ar="المتبقي من الرصيد الشهري للأذونات" data-en="Monthly Permission Balance">المتبقي من الرصيد الشهري للأذونات</div>
+        <div class="flip-clock-display">
+          <div class="flip-unit-box">
+            <div class="flip-card-digit">
+              <span class="digit-val-glow" id="cntHours">04</span>
+            </div>
+            <span class="digit-sub-text" data-ar="ساعة" data-en="Hours">ساعة</span>
           </div>
-          <span class="clock-separator">:</span>
-          <div class="time-unit-box">
-            <span class="digit-val" id="cntMins">00</span>
-            <span class="digit-sub" data-ar="دقيقة" data-en="Mins">دقيقة</span>
+          <span class="flip-clock-colon">:</span>
+          <div class="flip-unit-box">
+            <div class="flip-card-digit">
+              <span class="digit-val-glow" id="cntMins">00</span>
+            </div>
+            <span class="digit-sub-text" data-ar="دقيقة" data-en="Mins">دقيقة</span>
           </div>
-          <span class="clock-separator">:</span>
-          <div class="time-unit-box">
-            <span class="digit-val" id="cntSecs">00</span>
-            <span class="digit-sub" data-ar="ثانية" data-en="Secs">ثانية</span>
+          <span class="flip-clock-colon">:</span>
+          <div class="flip-unit-box">
+            <div class="flip-card-digit">
+              <span class="digit-val-glow" id="cntSecs">00</span>
+            </div>
+            <span class="digit-sub-text" data-ar="ثانية" data-en="Secs">ثانية</span>
           </div>
         </div>
       </div>
 
-      <!-- اختيار نوع الإذن -->
+      <!-- اختيار نوع الإذن بأيقونات فيكتور ديناميكية -->
       <div style="font-size:0.8rem; color:var(--muted); text-align:right; margin-bottom:0.3rem;" data-ar="نوع الإذن:" data-en="Permission Type:">نوع الإذن:</div>
       <div class="permission-type-grid">
         <div class="type-btn active" id="btnTypeLate" onclick="setPermissionType('late_arrival')">
-          <span style="font-size:1.2rem;">🌅</span>
+          <svg viewBox="0 0 24 24"><path d="M12 4c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L3.5 20.09c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C8.35 20.4 10.1 20.8 12 20.8c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm.5-10H11v5l4.25 2.52.77-1.28-3.52-2.09V9z"/></svg>
           <span data-ar="تأخير صباحي" data-en="Morning Late">تأخير صباحي</span>
         </div>
         <div class="type-btn" id="btnTypeEarly" onclick="setPermissionType('early_leave')">
-          <span style="font-size:1.2rem;">🌆</span>
+          <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
           <span data-ar="انصراف مبكر" data-en="Early Departure">انصراف مبكر</span>
         </div>
       </div>
@@ -1259,7 +1353,7 @@
         eyeIconEl.innerHTML = `<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2z"/>`;
       } else {
         pass.type = 'password';
-        eyeIconEl.innerHTML = `<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3 z"/>`;
+        eyeIconEl.innerHTML = `<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>`;
       }
     }
 
