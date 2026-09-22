@@ -24,11 +24,11 @@
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&family=Share+Tech+Mono&display=swap');
     :root {
       --bg: #0b0f19;
-      --card-bg: rgba(15, 23, 42, 0.82);
-      --border-color: rgba(255, 255, 255, 0.16);
+      --card-bg: rgba(15, 23, 42, 0.85);
+      --border-color: rgba(56, 189, 248, 0.25);
       --text: #f8fafc;
       --accent: #38bdf8;
-      --accent-glow: rgba(56, 189, 248, 0.4);
+      --accent-glow: rgba(56, 189, 248, 0.45);
       --danger: #ef4444;
       --success: #10b981;
       --muted: #cbd5e1;
@@ -41,7 +41,7 @@
       -webkit-tap-highlight-color: transparent;
     }
     body {
-      background: linear-gradient(rgba(11, 15, 25, 0.82), rgba(11, 15, 25, 0.92)), url('background.jpg');
+      background: linear-gradient(rgba(11, 15, 25, 0.85), rgba(11, 15, 25, 0.95)), url('background.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -59,33 +59,34 @@
     #intro-screen {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
-      background: linear-gradient(rgba(11, 15, 25, 0.92), rgba(11, 15, 25, 0.96)), url('background.jpg');
+      background: linear-gradient(rgba(11, 15, 25, 0.94), rgba(11, 15, 25, 0.98)), url('background.jpg');
       background-size: cover; background-position: center;
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
       display: flex; flex-direction: column; justify-content: center; align-items: center;
-      z-index: 9999; perspective: 1200px; overflow: hidden;
+      z-index: 99999; perspective: 1200px; overflow: hidden;
       transition: opacity 1.5s ease, visibility 1.5s ease;
     }
     #intro-screen.fade-out { opacity: 0; visibility: hidden; }
     .intro-content-wrapper { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; text-align: center; padding: 0 1rem; width: 100%; }
     .intro-title-container { width: 100%; display: flex; gap: 0.15rem; flex-wrap: nowrap; justify-content: center; align-items: center; direction: ltr; }
     .intro-char {
-      font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: 800;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(1.3rem, 4.5vw, 2rem); font-weight: 800;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6); display: inline-block;
+      filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.7)); display: inline-block;
     }
     .intro-space { width: 0.4rem; }
     .intro-subtitle {
-      font-family: 'Great Vibes', cursive; font-size: clamp(1.5rem, 5vw, 2.5rem);
-      color: #38bdf8; text-shadow: 0 0 20px rgba(56, 189, 248, 0.6); opacity: 0; line-height: 1.4; width: 100%; text-align: center; white-space: nowrap;
+      font-family: 'Great Vibes', cursive; font-size: clamp(1.6rem, 5.5vw, 2.7rem);
+      color: #38bdf8; text-shadow: 0 0 20px rgba(56, 189, 248, 0.7); opacity: 0; line-height: 1.4; width: 100%; text-align: center; white-space: nowrap;
     }
     
     /* App Header & 3D Rotating Logo */
     .app-header {
-      width: 100vw; background: #0d1527; padding: 0.75rem 1rem;
+      width: 100vw; background: rgba(13, 21, 39, 0.95); padding: 0.75rem 1rem;
       display: flex; justify-content: space-between; align-items: center;
-      position: fixed; top: 0; left: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      position: fixed; top: 0; left: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      border-bottom: 1px solid var(--border-color); backdrop-filter: blur(12px);
     }
     .brand-container { display: flex; align-items: center; gap: 0.6rem; perspective: 800px; }
     .brand-logo {
@@ -108,34 +109,35 @@
       background: rgba(30, 41, 59, 0.85); border: 1px solid var(--border-color); color: var(--text);
       padding: 0.45rem 0.85rem; border-radius: 1rem; font-size: 0.8rem; font-weight: 700; cursor: pointer;
       display: flex; align-items: center; gap: 0.4rem; backdrop-filter: blur(12px); outline: none; margin: 0; width: auto;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.2s ease;
     }
+    .lang-dropdown-btn:hover { border-color: #38bdf8; box-shadow: 0 0 12px var(--accent-glow); }
     .lang-dropdown-menu {
       position: absolute; top: calc(100% + 8px); background: rgba(15, 23, 42, 0.98);
-      border: 1px solid var(--border-color); border-radius: 1rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-color); border-radius: 1rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
       display: none; z-index: 300; min-width: 130px; backdrop-filter: blur(16px); overflow: hidden;
     }
     [dir="rtl"] .lang-dropdown-menu { left: 0; right: auto; }
     [dir="ltr"] .lang-dropdown-menu { right: 0; left: auto; }
     .lang-dropdown-menu.show { display: block; }
     .lang-option { padding: 0.7rem 1rem; font-size: 0.85rem; color: var(--text); cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: background 0.2s; }
-    .lang-option:hover { background: rgba(56, 189, 248, 0.3); color: #38bdf8; }
+    .lang-option:hover { background: rgba(56, 189, 248, 0.25); color: #38bdf8; }
     
     .container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 1rem; }
     .card {
       background: var(--card-bg); border: 1px solid var(--border-color);
       backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
       padding: 1.75rem 1.5rem; border-radius: 1.5rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.15);
       text-align: center;
     }
-    input, textarea, select {
+    input, textarea {
       width: 100%; padding: 0.9rem 1rem; margin: 0.5rem 0; border-radius: 1rem;
       border: 1px solid var(--border-color); background: rgba(15, 23, 42, 0.85);
-      color: var(--text); font-size: 0.95rem; text-align: right; outline: none;
+      color: var(--text); font-size: 0.95rem; text-align: right; outline: none; transition: all 0.2s ease;
     }
-    [dir="ltr"] input, [dir="ltr"] textarea, [dir="ltr"] select { text-align: left; }
-    input:focus, textarea:focus, select:focus { border-color: #38bdf8; box-shadow: 0 0 15px var(--accent-glow); }
+    [dir="ltr"] input, [dir="ltr"] textarea { text-align: left; }
+    input:focus, textarea:focus { border-color: #38bdf8; box-shadow: 0 0 15px var(--accent-glow); }
     
     .custom-date-input {
       background: rgba(56, 189, 248, 0.08) !important;
@@ -146,6 +148,31 @@
       cursor: pointer;
       text-align: center !important;
     }
+
+    /* CUSTOM LUXURY DROPDOWNS */
+    .custom-dropdown { position: relative; width: 100%; margin: 0.5rem 0; text-align: right; }
+    [dir="ltr"] .custom-dropdown { text-align: left; }
+    
+    .dropdown-selected {
+      width: 100%; padding: 0.9rem 1rem; border-radius: 1rem;
+      background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.5);
+      color: #38bdf8; font-weight: 700; font-size: 0.95rem; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); transition: all 0.2s ease;
+    }
+    .dropdown-selected:hover { border-color: #38bdf8; box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); }
+    
+    .dropdown-options {
+      position: absolute; top: calc(100% + 6px); left: 0; width: 100%;
+      background: rgba(15, 23, 42, 0.98); border: 1px solid rgba(56, 189, 248, 0.6);
+      border-radius: 1rem; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(56, 189, 248, 0.25);
+      backdrop-filter: blur(16px); display: none; z-index: 500; max-height: 240px; overflow-y: auto;
+    }
+    .dropdown-options.show { display: block; }
+    .dropdown-option { padding: 0.8rem 1rem; font-size: 0.9rem; color: var(--text); cursor: pointer; border-bottom: 1px solid rgba(255, 255, 255, 0.06); transition: all 0.2s ease; }
+    .dropdown-option:last-child { border-bottom: none; }
+    .dropdown-option:hover { background: rgba(56, 189, 248, 0.25); color: #38bdf8; padding-right: 1.25rem; }
+    [dir="ltr"] .dropdown-option:hover { padding-left: 1.25rem; padding-right: 1rem; }
 
     /* PAYSLIP SPECIFIC STYLES */
     .payslip-summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 0.8rem; }
@@ -175,30 +202,6 @@
       border: 1px solid var(--border-color); color: var(--text); font-size: 0.8rem; font-weight: 700; cursor: pointer; text-align: center; transition: all 0.2s ease;
     }
     .radio-option-btn.active { background: rgba(56, 189, 248, 0.2); border-color: #38bdf8; color: #38bdf8; box-shadow: 0 0 12px rgba(56, 189, 248, 0.3); }
-
-    .custom-dropdown { position: relative; width: 100%; margin: 0.5rem 0; text-align: right; }
-    [dir="ltr"] .custom-dropdown { text-align: left; }
-    
-    .dropdown-selected {
-      width: 100%; padding: 0.9rem 1rem; border-radius: 1rem;
-      background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.6);
-      color: #38bdf8; font-weight: 700; font-size: 0.95rem; cursor: pointer;
-      display: flex; justify-content: space-between; align-items: center;
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.25); transition: all 0.2s ease;
-    }
-    .dropdown-selected:hover { border-color: #38bdf8; box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); }
-    
-    .dropdown-options {
-      position: absolute; top: calc(100% + 6px); left: 0; width: 100%;
-      background: rgba(15, 23, 42, 0.98); border: 1px solid rgba(56, 189, 248, 0.6);
-      border-radius: 1rem; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 189, 248, 0.25);
-      backdrop-filter: blur(16px); display: none; z-index: 500; max-height: 240px; overflow-y: auto;
-    }
-    .dropdown-options.show { display: block; }
-    .dropdown-option { padding: 0.8rem 1rem; font-size: 0.9rem; color: var(--text); cursor: pointer; border-bottom: 1px solid rgba(255, 255, 255, 0.06); transition: all 0.2s ease; }
-    .dropdown-option:last-child { border-bottom: none; }
-    .dropdown-option:hover { background: rgba(56, 189, 248, 0.25); color: #38bdf8; padding-right: 1.25rem; }
-    [dir="ltr"] .dropdown-option:hover { padding-left: 1.25rem; padding-right: 1rem; }
 
     .calendar-modal-overlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -239,9 +242,9 @@
     .calendar-text-btn:hover { opacity: 0.85; transform: scale(1.05); text-shadow: 0 0 15px rgba(56, 189, 248, 0.7); }
 
     .glowing-result-badge {
-      background: rgba(56, 189, 248, 0.22); border: 1px solid rgba(56, 189, 248, 0.8);
+      background: rgba(56, 189, 248, 0.18); border: 1px solid rgba(56, 189, 248, 0.8);
       border-radius: 1rem; padding: 0.85rem; font-size: 0.95rem; color: #38bdf8; font-weight: 800;
-      text-align: center; margin: 0.6rem 0; box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); text-shadow: 0 0 12px rgba(56, 189, 248, 0.7);
+      text-align: center; margin: 0.6rem 0; box-shadow: 0 0 20px rgba(56, 189, 248, 0.35); text-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
     }
 
     .medical-upload-box {
@@ -296,7 +299,7 @@
     }
     .type-btn.active svg { fill: #38bdf8; filter: drop-shadow(0 0 8px #38bdf8); transform: scale(1.1); }
 
-    /* 3D WHEEL SCROLL PICKER STYLES (WITH CLICKABLE TOGGLEABLE AM/PM BADGE) */
+    /* 3D WHEEL SCROLL PICKER STYLES */
     .time-picker-card {
       background: linear-gradient(135deg, rgba(11, 19, 41, 0.9) 0%, rgba(30, 58, 138, 0.4) 100%);
       border: 1px solid var(--border-color); border-radius: 1.25rem; padding: 0.75rem;
@@ -321,7 +324,6 @@
       text-shadow: 0 0 12px #38bdf8; opacity: 1; transform: scale(1.1) rotateX(0deg); 
     }
     
-    /* CLICKABLE TOGGLEABLE AM/PM BADGE */
     .ampm-badge {
       background: rgba(56, 189, 248, 0.22); border: 1px solid rgba(56, 189, 248, 0.6);
       color: #38bdf8; font-weight: 800; font-size: 0.75rem; padding: 0.4rem 0.65rem;
@@ -440,7 +442,6 @@
     .checkin-card:hover { border-color: #38bdf8; box-shadow: 0 15px 30px rgba(0,0,0,0.6), inset 0 0 20px rgba(56, 189, 248, 0.3); }
     .checkin-top-row { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 0.2rem; font-size: 0.75rem; }
 
-    /* REAL EMERALD GREEN AND RED GLOW LED INDICATORS */
     .external-attendance-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0.2rem 0.5rem; margin-top: -0.2rem; }
     .action-btn-item { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; }
     .indicator-dot { width: 12px; height: 12px; border-radius: 50%; transition: all 0.4s ease; opacity: 0.3; }
@@ -876,11 +877,11 @@
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="نوع الإجازة:" data-en="Leave Type:">نوع الإجازة:</label>
         
         <div class="custom-dropdown" id="customLeaveDropdown">
-          <div class="dropdown-selected" onclick="toggleCustomDropdown(event)">
+          <div class="dropdown-selected" onclick="toggleCustomDropdown('dropdownOptionsLeave', event)">
             <span id="selectedLeaveText" data-ar="إجازة سنوية" data-en="Annual Leave">إجازة سنوية</span>
             <span style="font-size: 0.8rem;">▼</span>
           </div>
-          <div class="dropdown-options" id="dropdownOptions">
+          <div class="dropdown-options" id="dropdownOptionsLeave">
             <div class="dropdown-option" onclick="selectLeaveOption('annual')" data-ar="إجازة سنوية" data-en="Annual Leave">إجازة سنوية</div>
             <div class="dropdown-option" onclick="selectLeaveOption('casual')" data-ar="إجازة عارضة" data-en="Casual Leave">إجازة عارضة</div>
             <div class="dropdown-option" onclick="selectLeaveOption('sick')" data-ar="إجازة مرضية" data-en="Sick Leave">إجازة مرضية</div>
@@ -1159,7 +1160,7 @@
       </div>
     </div>
 
-    <!-- 4.5. INSTALLMENT LOAN ADVANCE VIEW (الموديول المطلوب بالكامل) -->
+    <!-- 4.5. INSTALLMENT LOAN ADVANCE VIEW (CUSTOM LUXURY DROPDOWN FIX) -->
     <div id="view-loan-request" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
@@ -1174,15 +1175,24 @@
         </div>
 
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="مبلغ السلفة المطلوب (جنيه):" data-en="Requested Loan Amount (EGP):">مبلغ السلفة المطلوب (جنيه):</label>
-        <input type="number" id="loanAmount" placeholder="مثال: 5000" oninput="calculateLoanInstallment()">
+        <input type="number" id="loanAmount" placeholder="5000" oninput="calculateLoanInstallment()">
 
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="عدد أشهر السداد (الأقساط):" data-en="Installment Months:">عدد أشهر السداد (الأقساط):</label>
-        <select id="loanMonths" onchange="calculateLoanInstallment()">
-          <option value="3">3 أشهر</option>
-          <option value="6" selected>6 أشهر</option>
-          <option value="9">9 أشهر</option>
-          <option value="12">12 شهر</option>
-        </select>
+        
+        <!-- FIX: CUSTOM GLASSMORPHISM DROPDOWN FOR LOAN MONTHS -->
+        <div class="custom-dropdown" id="customLoanMonthsDropdown">
+          <div class="dropdown-selected" onclick="toggleCustomDropdown('dropdownOptionsLoan', event)">
+            <span id="selectedLoanMonthsText" data-ar="6 أشهر" data-en="6 Months">6 أشهر</span>
+            <span style="font-size: 0.8rem;">▼</span>
+          </div>
+          <div class="dropdown-options" id="dropdownOptionsLoan">
+            <div class="dropdown-option" onclick="selectLoanMonthsOption(3)" data-ar="3 أشهر" data-en="3 Months">3 أشهر</div>
+            <div class="dropdown-option" onclick="selectLoanMonthsOption(6)" data-ar="6 أشهر" data-en="6 Months">6 أشهر</div>
+            <div class="dropdown-option" onclick="selectLoanMonthsOption(9)" data-ar="9 أشهر" data-en="9 Months">9 أشهر</div>
+            <div class="dropdown-option" onclick="selectLoanMonthsOption(12)" data-ar="12 شهر" data-en="12 Months">12 Months</div>
+          </div>
+        </div>
+        <input type="hidden" id="loanMonths" value="6">
 
         <div class="glowing-result-badge" id="loanInstallmentResult" data-ar="قيمة القسط الشهري: 0 جنيه" data-en="Monthly Installment: 0 EGP">
           قيمة القسط الشهري: 0 جنيه
@@ -1318,8 +1328,79 @@
   </div>
 
   <script>
-    /* Leaf Fall Intro */
+    /* AUDIO SYNTHESIZER: SOFT PIANO MELODY & EXIT SOUNDS */
+    let audioCtx = null;
+
+    function getAudioContext() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    }
+
+    function playNote(freq, duration, delay = 0, volume = 0.15) {
+      setTimeout(() => {
+        try {
+          const ctx = getAudioContext();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          
+          osc.type = 'sine'; // Soft Piano Sine Wave
+          osc.frequency.setValueAtTime(freq, ctx.currentTime);
+          
+          gain.gain.setValueAtTime(0, ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(volume, ctx.currentTime + 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+          
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          
+          osc.start();
+          osc.stop(ctx.currentTime + duration);
+        } catch(e) {}
+      }, delay * 1000);
+    }
+
+    function playIntroPianoMelody() {
+      // Gentle harmonic piano chord sequence synced with intro duration (4.5s total)
+      const notes = [
+        { f: 523.25, d: 1.2, delay: 0.1 },  // C5
+        { f: 659.25, d: 1.2, delay: 0.4 },  // E5
+        { f: 783.99, d: 1.5, delay: 0.8 },  // G5
+        { f: 1046.50, d: 2.0, delay: 1.2 }, // C6
+        { f: 880.00, d: 1.5, delay: 2.2 },  // A5
+        { f: 659.25, d: 1.8, delay: 2.8 },  // E5
+        { f: 523.25, d: 2.2, delay: 3.4 }   // C5
+      ];
+      notes.forEach(n => playNote(n.f, n.d, n.delay, 0.18));
+    }
+
+    function playExitSound() {
+      const notes = [
+        { f: 523.25, d: 0.4, delay: 0 },
+        { f: 392.00, d: 0.5, delay: 0.2 },
+        { f: 261.63, d: 0.8, delay: 0.4 }
+      ];
+      notes.forEach(n => playNote(n.f, n.d, n.delay, 0.15));
+    }
+
+    function playClickSound() {
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(293.66, ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(); osc.stop(ctx.currentTime + 0.08);
+      } catch(e) {}
+    }
+
+    /* Leaf Fall Intro with Synced Music */
     function runLeafFallIntro() {
+      playIntroPianoMelody();
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
       const subtitle = document.getElementById('introSubtitle');
@@ -1353,7 +1434,7 @@
       const tl = gsap.timeline({ onComplete: () => document.getElementById('intro-screen').classList.add('fade-out') });
       tl.to(charElements, { duration: 1.5, x: 0, y: 0, rotation: 360, opacity: 1, scale: 1, stagger: 0.08, ease: "power2.out" });
       tl.to(subtitle, { duration: 1.2, opacity: 1, y: 0, ease: "power2.out" }, "-=0.8");
-      tl.to(subtitle, { duration: 1.2, opacity: 0, y: -20, ease: "power1.in" }, "+=2.0");
+      tl.to(subtitle, { duration: 1.2, opacity: 0, y: -20, ease: "power1.in" }, "+=1.8");
       charElements.forEach((el, index) => {
         const dir = directions[index % directions.length];
         tl.to(el, { duration: 1.5, x: dir.x, y: dir.y, opacity: 0, scale: 0.5, ease: "power1.inOut" }, index === 0 ? "scatter" : `-=1.35`);
@@ -1450,10 +1531,20 @@
       setTimeout(() => showPage('view-dashboard'), 1800);
     }
 
-    /* LOAN ADVANCE FUNCTIONS */
+    /* LOAN ADVANCE CUSTOM DROPDOWN LOGIC & CALCULATION */
+    function selectLoanMonthsOption(months) {
+      document.getElementById('loanMonths').value = months;
+      const optionEl = document.querySelector(`.dropdown-option[onclick*="selectLoanMonthsOption(${months})"]`);
+      if (optionEl) {
+        document.getElementById('selectedLoanMonthsText').innerText = optionEl.getAttribute(`data-${currentLang}`);
+      }
+      document.getElementById('dropdownOptionsLoan').classList.remove('show');
+      calculateLoanInstallment();
+    }
+
     function calculateLoanInstallment() {
       const amount = parseFloat(document.getElementById('loanAmount').value) || 0;
-      const months = parseInt(document.getElementById('loanMonths').value) || 1;
+      const months = parseInt(document.getElementById('loanMonths').value) || 6;
       const resultEl = document.getElementById('loanInstallmentResult');
 
       if (amount > 0) {
@@ -1517,24 +1608,6 @@
     
     let totalPermBalanceSeconds = 14400; // 4 Hours
 
-    /* WEB AUDIO PIANO SOUND GENERATOR */
-    let audioCtx = null;
-    function playClickSound() {
-      try {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sine'; // Soft Piano Tone
-        osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5 Note
-        osc.frequency.exponentialRampToValueAtTime(261.63, audioCtx.currentTime + 0.08);
-        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.start(); osc.stop(audioCtx.currentTime + 0.08);
-      } catch(e) {}
-    }
-
     function updateDynamicGreeting() {
       const hour = new Date().getHours();
       const greetingEl = document.getElementById('dash-greeting');
@@ -1556,9 +1629,15 @@
       document.querySelectorAll('[data-ar-placeholder][data-en-placeholder]').forEach(el => { el.placeholder = el.getAttribute(`data-${lang}-placeholder`); });
       
       const currentLeaveVal = document.getElementById('leaveType') ? document.getElementById('leaveType').value : 'annual';
-      const selectedOptionEl = document.querySelector(`.dropdown-option[onclick*="${currentLeaveVal}"]`);
+      const selectedOptionEl = document.querySelector(`#dropdownOptionsLeave .dropdown-option[onclick*="${currentLeaveVal}"]`);
       if (selectedOptionEl && document.getElementById('selectedLeaveText')) {
         document.getElementById('selectedLeaveText').innerText = selectedOptionEl.getAttribute(`data-${lang}`);
+      }
+
+      const currentLoanMonths = document.getElementById('loanMonths') ? document.getElementById('loanMonths').value : '6';
+      const selectedLoanOpt = document.querySelector(`#dropdownOptionsLoan .dropdown-option[onclick*="selectLoanMonthsOption(${currentLoanMonths})"]`);
+      if (selectedLoanOpt && document.getElementById('selectedLoanMonthsText')) {
+        document.getElementById('selectedLoanMonthsText').innerText = selectedLoanOpt.getAttribute(`data-${lang}`);
       }
 
       handleLeaveTypeChange();
@@ -1585,22 +1664,24 @@
         langMenu.classList.remove('show');
       }
 
-      const dropdownOptions = document.getElementById('dropdownOptions');
-      if (dropdownOptions && dropdownOptions.classList.contains('show')) dropdownOptions.classList.remove('show');
+      document.querySelectorAll('.dropdown-options').forEach(opt => opt.classList.remove('show'));
     });
 
-    function toggleCustomDropdown(event) {
+    function toggleCustomDropdown(dropdownId, event) {
       if (event) event.stopPropagation();
-      document.getElementById('dropdownOptions').classList.toggle('show');
+      document.querySelectorAll('.dropdown-options').forEach(opt => {
+        if (opt.id !== dropdownId) opt.classList.remove('show');
+      });
+      document.getElementById(dropdownId).classList.toggle('show');
     }
 
     function selectLeaveOption(value) {
       document.getElementById('leaveType').value = value;
-      const selectedOptionEl = document.querySelector(`.dropdown-option[onclick*="${value}"]`);
+      const selectedOptionEl = document.querySelector(`#dropdownOptionsLeave .dropdown-option[onclick*="${value}"]`);
       if (selectedOptionEl) {
         document.getElementById('selectedLeaveText').innerText = selectedOptionEl.getAttribute(`data-${currentLang}`);
       }
-      document.getElementById('dropdownOptions').classList.remove('show');
+      document.getElementById('dropdownOptionsLeave').classList.remove('show');
       handleLeaveTypeChange();
       calculateLeaveDays();
     }
@@ -2009,7 +2090,6 @@
       selectLanguage(currentLang);
       resetSlideTimer();
 
-      // Fix Language Button Listener
       const langBtn = document.getElementById('langDropdownBtn');
       if (langBtn) {
         langBtn.onclick = (e) => {
@@ -2018,7 +2098,6 @@
         };
       }
 
-      // Fix Check-in Card Listener
       const checkinBtn = document.getElementById('btnCheckinCard');
       if (checkinBtn) {
         checkinBtn.onclick = () => verifyLocationAndCheckIn();
@@ -2289,7 +2368,7 @@
           const medFileEl = document.getElementById('medicalFileName');
           medFileEl.innerText = medFileEl.getAttribute(`data-${currentLang}`);
           document.getElementById('leaveType').value = 'annual';
-          const annualOption = document.querySelector('.dropdown-option[onclick*="annual"]');
+          const annualOption = document.querySelector('#dropdownOptionsLeave .dropdown-option[onclick*="annual"]');
           if (annualOption) document.getElementById('selectedLeaveText').innerText = annualOption.getAttribute(`data-${currentLang}`);
           handleLeaveTypeChange();
         }
@@ -2324,10 +2403,9 @@
 
         if (pageId === 'view-loan-request') {
           document.getElementById('loanAmount').value = '';
-          document.getElementById('loanMonths').value = '6';
           document.getElementById('loanReason').value = '';
           document.getElementById('loanMsg').innerText = '';
-          calculateLoanInstallment();
+          selectLoanMonthsOption(6);
         }
 
         if (pageId === 'view-suggestion-page' && currentUserData) {
@@ -2427,9 +2505,10 @@
     }
 
     function logout() { 
+      playExitSound();
       localStorage.removeItem('lacto_saved_code');
       localStorage.removeItem('lacto_saved_pass');
-      window.location.reload(); 
+      setTimeout(() => { window.location.reload(); }, 600);
     }
     
     function toggleLangMenu() { document.getElementById('langMenu').classList.toggle('show'); }
