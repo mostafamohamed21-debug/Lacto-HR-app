@@ -89,7 +89,13 @@
       color: #38bdf8; text-shadow: 0 0 20px rgba(56, 189, 248, 0.6); opacity: 0; line-height: 1.4; width: 100%; text-align: center; white-space: nowrap;
     }
     
-    /* Header & Navigation Tools */
+    #introFooter {
+      position: absolute; bottom: -20vh; width: 100%; text-align: center; opacity: 0; display: flex; flex-direction: column; gap: 0.5rem; z-index: 10;
+    }
+    #copyrightText {
+      font-size: 0.9rem; color: #94a3b8; font-family: 'Cairo', sans-serif; font-weight: 600; letter-spacing: 1px;
+    }
+
     .app-header {
       width: 100vw; background: #0d1527; padding: 0.75rem 1rem;
       display: flex; justify-content: space-between; align-items: center;
@@ -123,7 +129,6 @@
     .notification-btn svg { width: 18px; height: 18px; fill: currentColor; }
     .notification-badge { position: absolute; top: 0px; right: 2px; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; border: 2px solid #0d1527; }
     
-    /* Notification Popup Header Dropdown */
     .notification-popup {
       position: absolute; top: calc(100% + 12px); left: 0; 
       background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(56, 189, 248, 0.6);
@@ -430,7 +435,6 @@
     }
     .service-row-btn:hover { border-color: #38bdf8; transform: translateY(-2px); box-shadow: 0 12px 30px rgba(56, 189, 248, 0.25); }
     
-    /* Cleaned up Profile Card - Removed Notification Bell and overlapping margins */
     .user-profile-card {
       width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw;
       background: rgba(15, 23, 42, 0.95); border-left: 1px solid rgba(56, 189, 248, 0.35); border-right: 1px solid rgba(56, 189, 248, 0.35);
@@ -449,7 +453,6 @@
     .doc-company-title { font-weight: 800; font-size: 0.95rem; color: #0284c7; }
     .doc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; font-size: 0.75rem; margin-bottom: 0.75rem; }
     
-    /* Fixed Checkin Card Margin - No more overlapping */
     .checkin-card {
       background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(15, 23, 42, 0.98));
       border: 1px solid rgba(56, 189, 248, 0.5); border-radius: 1.5rem; padding: 0.85rem 1.25rem;
@@ -631,14 +634,13 @@
       <div class="intro-subtitle" id="introSubtitle" data-ar="شركاء في رحلة نمو طفلك." data-en="Partners in your child's growth journey.">Partners in your child's growth journey.</div>
     </div>
     
-    <!-- Footer / Copyright for Intro - Fixed Position to % -->
-    <div id="introFooter" style="position: absolute; bottom: -20vh; width: 100%; text-align: center; opacity: 0; display: flex; flex-direction: column; gap: 0.5rem; z-index: 10;">
-      <div id="copyrightText" data-ar="© 2026 جميع حقوق الإنشاء والطبع محفوظة" data-en="© 2026 All Creation & Copyrights Reserved" style="font-size: 0.9rem; color: #94a3b8; font-family: 'Cairo', sans-serif; font-weight: 600; letter-spacing: 1px;">© 2026 جميع حقوق الإنشاء والطبع محفوظة</div>
+    <div id="introFooter">
+      <div id="copyrightText" data-ar="© 2026 جميع حقوق الإنشاء والطبع محفوظة" data-en="© 2026 All Creation & Copyrights Reserved">© 2026 جميع حقوق الإنشاء والطبع محفوظة</div>
       <div style="font-family: 'Great Vibes', cursive; font-size: 1rem; color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);">Powered by Mostafa Elsayed - HR Section Head</div>
     </div>
   </div>
   
-  <!-- App Header & 3D Rotating Logo with Tools -->
+  <!-- App Header & Tools -->
   <div class="app-header">
     <div class="brand-container">
       <img src="logo.png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
@@ -646,7 +648,7 @@
     </div>
     
     <div class="header-tools">
-      <!-- Notification Bell in Header -->
+      <!-- Notification -->
       <div class="notification-wrapper">
         <div class="notification-btn" onclick="toggleNotificationPopup(event)" title="الإشعارات">
           <div class="notification-badge"></div>
@@ -658,7 +660,7 @@
         </div>
       </div>
 
-      <!-- Language Dropdown -->
+      <!-- Language -->
       <div class="lang-dropdown-container">
         <button class="lang-dropdown-btn" onclick="toggleLangMenu()">
           🌐 <span id="current-lang-short">AR</span> ▼
@@ -700,7 +702,7 @@
     <div id="view-dashboard" class="hidden"></div>
   </div>
 
-  <!-- User Profile Header Card - Notification removed from here -->
+  <!-- User Profile Header Card -->
   <div id="dashboard-header-container" class="hidden">
     <div class="user-profile-card">
       <div class="profile-top-row">
@@ -719,7 +721,6 @@
   <!-- Dashboard Content Container -->
   <div class="container">
     <div id="dashboard-content-container" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
-      <!-- Margin overlap fixed here -->
       <div class="checkin-card" onclick="verifyLocationAndCheckIn()">
         <div class="checkin-top-row">
           <span style="font-weight: 700; color: #38bdf8;"><span data-ar="ساعات العمل" data-en="Working Hours">ساعات العمل</span> ⏱️ <span id="valWorkingHours">00:00</span></span>
@@ -886,16 +887,16 @@
           <span data-ar="💳 طلب سلفة مالية مقسطة" data-en="💳 Installment Advance">💳 طلب سلفة مالية مقسطة</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
-        <button class="service-row-btn" onclick="showComingSoon('view-services')">
+        <button class="service-row-btn" onclick="showPage('view-doc-request')">
           <span data-ar="📁 طلب أصول أوراق من ملفي" data-en="📁 Original Docs Request">📁 طلب أصول أوراق من ملفي</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
-        <button class="service-row-btn" onclick="showComingSoon('view-services')">
-          <span data-ar="🛠️ طلب دعم فني" data-en="🛠️ Technical Support">🛠️ طلب دعم فني</span>
+        <button class="service-row-btn" onclick="showPage('view-tech-support')">
+          <span data-ar="🛠️ طلب دعم فني (IT)" data-en="🛠️ Technical Support">🛠️ طلب دعم فني (IT)</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
-        <button class="service-row-btn" onclick="showComingSoon('view-services')">
-          <span data-ar="🏥 طلب حجز عيادة" data-en="🏥 Clinic Reservation">🏥 طلب حجز عيادة</span>
+        <button class="service-row-btn" onclick="showPage('view-clinic-request')">
+          <span data-ar="🏥 حجز كشف طبي" data-en="🏥 Clinic Reservation">🏥 حجز كشف طبي</span>
           <span style="color: #38bdf8; font-size: 1.1rem;">➔</span>
         </button>
       </div>
@@ -934,7 +935,6 @@
         </div>
         <input type="hidden" id="leaveType" value="annual">
 
-        <!-- Dynamic Leave Notice Box -->
         <div id="dynamicLeaveNotice" class="hidden" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 0.8rem; padding: 0.65rem; font-size: 0.75rem; color: #f87171; text-align: right; line-height: 1.4; margin-bottom: 0.5rem;">
           ⚠️ <strong data-ar="تنبيه هام:" data-en="Important Notice:">تنبيه هام:</strong> <span id="leaveNoticeText"></span>
         </div>
@@ -1248,6 +1248,139 @@
 
         <button onclick="submitLoanRequest()" class="btn-success" data-ar="إرسال طلب السلفة" data-en="Submit Loan Request" style="margin-top: 0.75rem;">إرسال طلب السلفة</button>
         <p id="loanMsg" style="font-size: 0.85rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
+      </div>
+    </div>
+
+    <!-- 4.6. ORIGINAL DOC REQUEST VIEW -->
+    <div id="view-doc-request" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span style="font-weight: 700; color: #38bdf8;" data-ar="طلب أصول مستندات" data-en="Original Docs Request">طلب أصول مستندات</span>
+      </div>
+      <div style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;">
+        
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="نوع المستند المطلوب:" data-en="Requested Document:">نوع المستند المطلوب:</label>
+        <select id="docTypeSelect" onchange="toggleDocOther()" style="appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=\"%2338bdf8\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\"/></svg>'); background-repeat: no-repeat; background-position: left 1rem center; background-size: 20px;">
+          <option value="qualification" data-ar="شهادة المؤهل الدراسي" data-en="Qualification Certificate">شهادة المؤهل الدراسي</option>
+          <option value="military" data-ar="شهادة الخدمة العسكرية" data-en="Military Service Certificate">شهادة الخدمة العسكرية</option>
+          <option value="birth" data-ar="شهادة الميلاد" data-en="Birth Certificate">شهادة الميلاد</option>
+          <option value="other" data-ar="أخرى (تحديد مستند آخر)" data-en="Other (Specify)">أخرى (تحديد مستند آخر)</option>
+        </select>
+
+        <div id="otherDocWrapper" class="hidden" style="animation: fadeDown 0.3s ease;">
+          <label style="font-size: 0.75rem; color: #38bdf8;" data-ar="يرجى تحديد المستند بدقة:" data-en="Please specify the document:">يرجى تحديد المستند بدقة:</label>
+          <input type="text" id="otherDocText" data-ar-placeholder="اكتب اسم المستند هنا..." data-en-placeholder="Type document name here..." placeholder="اكتب اسم المستند هنا..." style="border-color: rgba(56, 189, 248, 0.5);">
+        </div>
+
+        <label style="font-size: 0.75rem; color: var(--muted); margin-top:0.4rem;" data-ar="سبب طلب المستند:" data-en="Reason for Request:">سبب طلب المستند:</label>
+        <textarea id="docReason" rows="2" data-ar-placeholder="مثال: تحديث بيانات، استخراج جواز سفر..." data-en-placeholder="Reason for requesting..." placeholder="مثال: تحديث بيانات، استخراج جواز سفر..." style="resize: none;"></textarea>
+
+        <button onclick="submitDocRequest()" class="btn-success" data-ar="إرسال الطلب" data-en="Submit Request" style="margin-top: 0.75rem;">إرسال الطلب</button>
+        <p id="docMsg" style="font-size: 0.85rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
+      </div>
+    </div>
+
+    <!-- 4.7. TECH SUPPORT VIEW -->
+    <div id="view-tech-support" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span style="font-weight: 700; color: #38bdf8;" data-ar="الدعم الفني (IT)" data-en="IT Support">الدعم الفني (IT)</span>
+      </div>
+      <div style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;">
+        
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="تصنيف المشكلة:" data-en="Issue Category:">تصنيف المشكلة:</label>
+        <div class="radio-group-container">
+          <div class="radio-option-btn active" id="optTechApp" onclick="setTechCategory('app')" data-ar="📱 مشكلة بالتطبيق" data-en="📱 App Issue">📱 مشكلة بالتطبيق</div>
+          <div class="radio-option-btn" id="optTechHW" onclick="setTechCategory('hardware')" data-ar="💻 أجهزة وشبكات" data-en="💻 Devices & Network">💻 أجهزة وشبكات</div>
+        </div>
+        <input type="hidden" id="techCategoryVal" value="app">
+
+        <div id="hwSubCategoryWrapper" class="hidden" style="animation: fadeDown 0.3s ease;">
+          <label style="font-size: 0.75rem; color: var(--muted);" data-ar="نوع العطل (لأجهزة المكتب):" data-en="Hardware/Network Issue Type:">نوع العطل (لأجهزة المكتب):</label>
+          <select id="hwSubCategory" style="appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=\"%2338bdf8\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\"/></svg>'); background-repeat: no-repeat; background-position: left 1rem center; background-size: 20px;">
+            <option value="hardware" data-ar="عطل في الجهاز (Hardware)" data-en="Hardware Error">عطل في الجهاز (Hardware)</option>
+            <option value="network" data-ar="مشكلة بالإنترنت / الشبكة" data-en="Network / Internet Issue">مشكلة بالإنترنت / الشبكة</option>
+            <option value="software_install" data-ar="طلب تثبيت برنامج جديد" data-en="New Software Installation">طلب تثبيت برنامج جديد</option>
+            <option value="software_error" data-ar="خطأ في برنامج موجود" data-en="Existing Software Error">خطأ في برنامج موجود</option>
+          </select>
+        </div>
+
+        <label style="font-size: 0.75rem; color: var(--muted); margin-top:0.4rem;" data-ar="درجة الأهمية:" data-en="Priority Level:">درجة الأهمية:</label>
+        <div class="radio-group-container" style="gap:0.25rem;">
+          <div class="radio-option-btn active" style="font-size: 0.75rem;" id="optPriNormal" onclick="setTechPriority('normal')" data-ar="عادي" data-en="Normal">عادي</div>
+          <div class="radio-option-btn" style="font-size: 0.75rem; color: #f59e0b;" id="optPriUrgent" onclick="setTechPriority('urgent')" data-ar="عاجل" data-en="Urgent">عاجل</div>
+          <div class="radio-option-btn" style="font-size: 0.75rem; color: #ef4444;" id="optPriEmergency" onclick="setTechPriority('emergency')" data-ar="طارئ" data-en="Emergency">طارئ</div>
+        </div>
+        <input type="hidden" id="techPriorityVal" value="normal">
+
+        <label style="font-size: 0.75rem; color: var(--muted); margin-top:0.4rem;" data-ar="وصف المشكلة:" data-en="Issue Description:">وصف المشكلة:</label>
+        <textarea id="techDesc" rows="3" data-ar-placeholder="اشرح المشكلة بالتفصيل لتسهيل حلها..." data-en-placeholder="Describe the issue in detail..." placeholder="اشرح المشكلة بالتفصيل لتسهيل حلها..." style="resize: none;"></textarea>
+
+        <div class="medical-upload-box" style="margin-top:0.2rem; padding: 0.75rem;">
+          <label class="upload-btn-label" for="techScreenshot" style="font-size:0.75rem;" data-ar="📸 إرفاق لقطة شاشة (إن وجد)" data-en="📸 Attach Screenshot (Optional)">📸 إرفاق لقطة شاشة (إن وجد)</label>
+          <input type="file" id="techScreenshot" accept="image/*" onchange="handleGenericFileSelected(this, 'techFileName')">
+          <div id="techFileName" data-ar="اختياري لمساعدتنا في فهم المشكلة" data-en="Optional to help us understand" style="font-size: 0.65rem; color: var(--muted); margin-top: 0.4rem;">اختياري لمساعدتنا في فهم المشكلة</div>
+        </div>
+
+        <button onclick="submitTechSupport()" class="btn-success" data-ar="إرسال طلب الدعم" data-en="Submit Support Ticket" style="margin-top: 0.5rem;">إرسال طلب الدعم</button>
+        <p id="techMsg" style="font-size: 0.85rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
+      </div>
+    </div>
+
+    <!-- 4.8. CLINIC RESERVATION VIEW -->
+    <div id="view-clinic-request" class="card hidden">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <span style="font-weight: 700; color: #10b981;" data-ar="حجز عيادة الشركة" data-en="Clinic Reservation">حجز عيادة الشركة</span>
+      </div>
+      
+      <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 1rem; padding: 0.75rem 1rem; margin-bottom: 1rem; text-align: center; color:#34d399; font-size:0.8rem; font-weight:700;">
+        ℹ️ <span data-ar="مواعيد عمل العيادة: (الأحد - الثلاثاء - الخميس)" data-en="Clinic Days: (Sun - Tue - Thu)">مواعيد عمل العيادة: (الأحد - الثلاثاء - الخميس)</span>
+      </div>
+
+      <div id="clinicFormArea" style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;">
+        
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="التخصص الطبي المطلوب:" data-en="Medical Specialty:">التخصص الطبي المطلوب:</label>
+        <select id="clinicSpecialty" style="appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=\"%2310b981\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\"/></svg>'); background-repeat: no-repeat; background-position: left 1rem center; background-size: 20px; border-color: rgba(16, 185, 129, 0.4);">
+          <option value="باطنة" data-ar="🩺 باطنة عامة" data-en="🩺 Internal Medicine">🩺 باطنة عامة</option>
+          <option value="عظام" data-ar="🦴 عظام ومفاصل" data-en="🦴 Orthopedics">🦴 عظام ومفاصل</option>
+          <option value="أسنان" data-ar="🦷 طب أسنان" data-en="🦷 Dentistry">🦷 طب أسنان</option>
+          <option value="رمد" data-ar="👁️ رمد (عيون)" data-en="👁️ Ophthalmology">👁️ رمد (عيون)</option>
+        </select>
+
+        <label style="font-size: 0.75rem; color: var(--muted); margin-top:0.4rem;" data-ar="تاريخ الحجز:" data-en="Reservation Date:">تاريخ الحجز:</label>
+        <input type="text" id="clinicDate" class="custom-date-input" style="color: #34d399 !important; border-color: rgba(16, 185, 129, 0.5) !important; background: rgba(16, 185, 129, 0.08) !important;" readonly data-ar-placeholder="اختر تاريخ الكشف..." data-en-placeholder="Select reservation date..." placeholder="اختر تاريخ الكشف..." onclick="openCustomCalendar('clinicDate')">
+
+        <label style="font-size: 0.75rem; color: var(--muted); margin-top:0.4rem;" data-ar="أعراض الشكوى (اختياري):" data-en="Symptoms (Optional):">أعراض الشكوى (اختياري):</label>
+        <textarea id="clinicSymptoms" rows="2" data-ar-placeholder="اكتب الأعراض باختصار..." data-en-placeholder="Briefly describe symptoms..." placeholder="اكتب الأعراض باختصار..." style="resize: none;"></textarea>
+
+        <button onclick="submitClinicRequest()" class="btn-success" style="background: linear-gradient(135deg, #047857 0%, #065f46 100%); border-color: #10b981; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);" data-ar="تأكيد حجز العيادة" data-en="Confirm Reservation">تأكيد حجز العيادة</button>
+        <p id="clinicMsg" style="font-size: 0.85rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
+      </div>
+
+      <!-- Clinic Digital Ticket (Hidden by default) -->
+      <div id="clinicTicketModal" class="hidden" style="margin-top: 1rem;">
+        <div class="official-doc-card" id="clinicPrintSlip" style="border: 2px solid #10b981; background: linear-gradient(to bottom right, #ffffff, #f0fdf4);">
+          <div class="doc-header-row" style="border-bottom: 2px solid #10b981;">
+            <div>
+              <div class="doc-company-title" style="color: #047857;">LACTO MEDICAL CARE</div>
+              <div style="font-size:0.65rem; color:#64748b;" data-ar="تذكرة حجز عيادة رقمية" data-en="Digital Clinic Ticket">تذكرة حجز عيادة رقمية</div>
+            </div>
+            <div style="font-size: 2rem;">🏥</div>
+          </div>
+          
+          <div style="text-align: center; margin-bottom: 1rem;">
+            <div style="font-size: 0.75rem; color: #64748b; font-weight: 700;" data-ar="رقم الحجز (الطابور)" data-en="Queue Number">رقم الحجز (الطابور)</div>
+            <div id="ticketQueueNum" style="font-size: 2.5rem; font-weight: 900; color: #10b981; letter-spacing: 2px;">#00</div>
+          </div>
+
+          <div class="doc-grid">
+            <div><span style="font-weight:700; color:#475569;" data-ar="اسم الموظف:" data-en="Name:">اسم الموظف:</span> <span id="ticketEmpName" style="font-weight:800; color:#0f172a;">--</span></div>
+            <div><span style="font-weight:700; color:#475569;" data-ar="التخصص:" data-en="Specialty:">التخصص:</span> <span id="ticketSpecialty" style="font-weight:800; color:#0f172a;">--</span></div>
+            <div style="grid-column: span 2;"><span style="font-weight:700; color:#475569;" data-ar="تاريخ الكشف:" data-en="Date:">تاريخ الكشف:</span> <span id="ticketDate" style="font-weight:800; color:#0f172a;">--</span></div>
+          </div>
+        </div>
+        <button type="button" onclick="downloadClinicTicket()" class="btn-success" style="font-size:0.85rem; padding:0.6rem; margin-top:0.75rem; background: #10b981; border-color: #059669;" data-ar="⬇️ حفظ التذكرة كصورة للموبايل" data-en="⬇️ Save Ticket to Mobile">⬇️ حفظ التذكرة كصورة للموبايل</button>
       </div>
     </div>
 
@@ -1970,40 +2103,17 @@
       });
     }
 
-    // دالة جديدة لتصفير فورم الإجازات كلياً
     function resetLeaveForm() {
-      // 1. إعادة النوع إلى إجازة سنوية
       document.getElementById('leaveType').value = 'annual';
       document.getElementById('selectedLeaveText').innerText = currentLang === 'ar' ? 'إجازة سنوية' : 'Annual Leave';
-      
-      // 2. تفريغ التواريخ
-      document.getElementById('leaveStartDate').value = '';
-      document.getElementById('leaveEndDate').value = '';
-      
-      // 3. تفريغ الملاحظات
+      document.getElementById('leaveStartDate').value = ''; document.getElementById('leaveEndDate').value = '';
       document.getElementById('leaveNotes').value = '';
-      
-      // 4. تفريغ المرفقات (إن وجدت)
-      const fileInput = document.getElementById('medicalReportFile');
-      if(fileInput) fileInput.value = '';
+      const fileInput = document.getElementById('medicalReportFile'); if(fileInput) fileInput.value = '';
       const fileNameEl = document.getElementById('medicalFileName');
-      if(fileNameEl) {
-        fileNameEl.innerText = fileNameEl.getAttribute(`data-${currentLang}`);
-        fileNameEl.style.color = "var(--muted)";
-      }
-      
-      // 5. تصفير عدد الأيام
+      if(fileNameEl) { fileNameEl.innerText = fileNameEl.getAttribute(`data-${currentLang}`); fileNameEl.style.color = "var(--muted)"; }
       const daysText = document.getElementById('leaveTotalDaysText');
-      if(daysText) {
-        daysText.innerText = currentLang === 'ar' ? "إجمالي الأيام المطلوبة: 0 يوم" : "Total requested days: 0 days";
-        daysText.style.color = '#38bdf8';
-      }
-      
-      // 6. تفريغ رسالة الإرسال
-      const msg = document.getElementById('leaveMsg');
-      if(msg) msg.innerText = '';
-      
-      // 7. إخفاء أي تنبيهات ديناميكية متعلقة بنوع الإجازة السابق
+      if(daysText) { daysText.innerText = currentLang === 'ar' ? "إجمالي الأيام المطلوبة: 0 يوم" : "Total requested days: 0 days"; daysText.style.color = '#38bdf8'; }
+      const msg = document.getElementById('leaveMsg'); if(msg) msg.innerText = '';
       handleLeaveTypeChange();
     }
 
@@ -2014,7 +2124,6 @@
       const attachBox = document.getElementById('medicalReportSection'); 
       const titleText = document.getElementById('attachmentTitleText');
       
-      // Dynamic Leave Notices Logic
       if (leaveType === 'unpaid') { 
         noticeBox.classList.remove('hidden'); 
         noticeText.setAttribute('data-ar', 'الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة.');
@@ -2027,13 +2136,9 @@
         noticeBox.classList.remove('hidden'); 
         noticeText.setAttribute('data-ar', 'تُحسب إجازة العمرة وتُخصم من رصيد الإجازات السنوية للموظف.');
         noticeText.setAttribute('data-en', 'Umrah leave is deducted from the employee\'s annual leave balance.');
-      } else { 
-        noticeBox.classList.add('hidden'); 
-      }
+      } else { noticeBox.classList.add('hidden'); }
 
-      if (noticeBox && !noticeBox.classList.contains('hidden')) {
-         noticeText.innerText = noticeText.getAttribute(`data-${currentLang}`);
-      }
+      if (noticeBox && !noticeBox.classList.contains('hidden')) { noticeText.innerText = noticeText.getAttribute(`data-${currentLang}`); }
 
       const requiredAttachmentTypes = ['sick', 'bereavement', 'paternity', 'hajj', 'umrah'];
       if (requiredAttachmentTypes.includes(leaveType)) {
@@ -2065,9 +2170,7 @@
       const requiredAttachmentTypes = ['sick', 'bereavement', 'paternity', 'hajj', 'umrah'];
       if (requiredAttachmentTypes.includes(leaveType)) {
         const fileInput = document.getElementById('medicalReportFile');
-        if (!fileInput.files || !fileInput.files[0]) {
-          msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? "⚠️ يرجى رفع المستندات المطلوبة لاعتماد الإجازة!" : "⚠️ Please attach required documents!"; return;
-        }
+        if (!fileInput.files || !fileInput.files[0]) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? "⚠️ يرجى رفع المستندات المطلوبة لاعتماد الإجازة!" : "⚠️ Please attach required documents!"; return; }
       }
       const leaveData = { code: currentEmpCode, name: currentUserData.name || 'Unknown', type: leaveType, startDate: startDate, endDate: endDate, notes: notes, status: 'Pending', timestamp: Date.now() };
       db.ref('leave_requests/' + currentEmpCode).push(leaveData).then(() => {
@@ -2085,16 +2188,11 @@
       if (pageId === 'view-login') { if (chatbotFab) chatbotFab.style.display = 'none'; if (bottomNavBar) bottomNavBar.classList.remove('show'); } 
       else { if (chatbotFab) chatbotFab.style.display = 'flex'; if (bottomNavBar) bottomNavBar.classList.add('show'); }
       
-      ['view-login', 'view-dashboard', 'view-id-card', 'view-services', 'view-leave-request', 'view-permission-request', 'view-mission-request', 'view-payslip-request', 'view-loan-request', 'view-settings', 'view-profile', 'view-coming-soon', 'view-suggestion-page'].forEach(id => {
-        const el = document.getElementById(id); if (el) el.classList.add('hidden');
-      });
+      const allPages = ['view-login', 'view-dashboard', 'view-id-card', 'view-services', 'view-leave-request', 'view-permission-request', 'view-mission-request', 'view-payslip-request', 'view-loan-request', 'view-settings', 'view-profile', 'view-coming-soon', 'view-suggestion-page', 'view-doc-request', 'view-tech-support', 'view-clinic-request'];
+      allPages.forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); });
       
       const headerCard = document.getElementById('dashboard-header-container'); const contentCard = document.getElementById('dashboard-content-container');
-      
-      // تنفيذ دالة تصفير فورم الإجازات عند الدخول لصفحة الإجازات
-      if (pageId === 'view-leave-request') {
-        resetLeaveForm();
-      }
+      if (pageId === 'view-leave-request') { resetLeaveForm(); }
 
       if (pageId === 'view-dashboard') {
         document.getElementById('view-dashboard').classList.remove('hidden'); if (headerCard) headerCard.classList.remove('hidden'); if (contentCard) contentCard.classList.remove('hidden');
@@ -2102,9 +2200,7 @@
       } else {
         document.getElementById('view-dashboard').classList.add('hidden'); if (headerCard) headerCard.classList.add('hidden'); if (contentCard) contentCard.classList.add('hidden');
         document.getElementById(pageId).classList.remove('hidden');
-        if (pageId === 'view-permission-request' || pageId === 'view-mission-request') {
-          setTimeout(centerTimeWheels, 50);
-        }
+        if (pageId === 'view-permission-request' || pageId === 'view-mission-request') { setTimeout(centerTimeWheels, 50); }
       }
     }
 
@@ -2168,11 +2264,99 @@
       if (document.getElementById('langMenu').classList.contains('show')) toggleLangMenu();
       currentLang = lang; localStorage.setItem('lacto_lang', lang);
       document.documentElement.lang = lang; document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
-      
       const shortEl = document.getElementById('current-lang-short');
       if(shortEl) shortEl.innerText = (lang === 'ar') ? "AR" : "EN";
-      
       updateContentTranslations(); showSlide(currentSlideIndex);
+    }
+
+    /* =========================================
+       DOC REQUEST LOGIC
+    ========================================= */
+    function toggleDocOther() {
+      const selectVal = document.getElementById('docTypeSelect').value;
+      const otherWrapper = document.getElementById('otherDocWrapper');
+      if (selectVal === 'other') { otherWrapper.classList.remove('hidden'); } 
+      else { otherWrapper.classList.add('hidden'); document.getElementById('otherDocText').value = ""; }
+    }
+
+    function submitDocRequest() {
+      const docType = document.getElementById('docTypeSelect').value;
+      const otherText = document.getElementById('otherDocText').value.trim();
+      const msg = document.getElementById('docMsg');
+      if (docType === 'other' && !otherText) {
+        msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? "⚠️ يرجى كتابة اسم المستند المطلوب في الخانة المخصصة!" : "⚠️ Please type the requested document name!"; return;
+      }
+      msg.style.color = '#38bdf8'; msg.innerText = currentLang === 'ar' ? "✅ تم إرسال طلب سحب الأصل بنجاح إلى HR!" : "✅ Request sent to HR successfully!";
+      setTimeout(() => { 
+        showPage('view-dashboard'); document.getElementById('docTypeSelect').value = 'qualification'; toggleDocOther();
+        document.getElementById('docReason').value = ''; msg.innerText = '';
+      }, 2000);
+    }
+
+    /* =========================================
+       TECH SUPPORT LOGIC
+    ========================================= */
+    function setTechCategory(cat) {
+      document.getElementById('techCategoryVal').value = cat;
+      const hwWrapper = document.getElementById('hwSubCategoryWrapper');
+      if (cat === 'app') {
+        document.getElementById('optTechApp').classList.add('active'); document.getElementById('optTechHW').classList.remove('active'); hwWrapper.classList.add('hidden');
+      } else {
+        document.getElementById('optTechHW').classList.add('active'); document.getElementById('optTechApp').classList.remove('active'); hwWrapper.classList.remove('hidden');
+      }
+    }
+
+    function setTechPriority(pri) {
+      document.getElementById('techPriorityVal').value = pri;
+      document.getElementById('optPriNormal').classList.remove('active'); document.getElementById('optPriUrgent').classList.remove('active'); document.getElementById('optPriEmergency').classList.remove('active');
+      if(pri === 'normal') document.getElementById('optPriNormal').classList.add('active');
+      if(pri === 'urgent') document.getElementById('optPriUrgent').classList.add('active');
+      if(pri === 'emergency') document.getElementById('optPriEmergency').classList.add('active');
+    }
+
+    function handleGenericFileSelected(input, textElementId) {
+      const fileNameEl = document.getElementById(textElementId);
+      if (input.files && input.files[0]) { fileNameEl.innerText = "✅ " + input.files[0].name; fileNameEl.style.color = "#38bdf8"; } 
+      else { fileNameEl.innerText = fileNameEl.getAttribute(`data-${currentLang}`); fileNameEl.style.color = "var(--muted)"; }
+    }
+
+    function submitTechSupport() {
+      const desc = document.getElementById('techDesc').value.trim(); const msg = document.getElementById('techMsg');
+      if (!desc) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? "⚠️ يرجى كتابة وصف دقيق للمشكلة!" : "⚠️ Please provide an issue description!"; return; }
+      msg.style.color = '#38bdf8'; msg.innerText = currentLang === 'ar' ? "✅ تم إنشاء تذكرة الدعم الفني، قسم الـ IT هيتواصل معاك!" : "✅ IT Ticket created successfully!";
+      setTimeout(() => { showPage('view-dashboard'); document.getElementById('techDesc').value = ''; msg.innerText = ''; }, 2000);
+    }
+
+    /* =========================================
+       CLINIC RESERVATION LOGIC
+    ========================================= */
+    function submitClinicRequest() {
+      const dateVal = document.getElementById('clinicDate').value;
+      const specialtyVal = document.getElementById('clinicSpecialty').options[document.getElementById('clinicSpecialty').selectedIndex].text;
+      const msg = document.getElementById('clinicMsg');
+      if (!dateVal) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? "⚠️ يرجى تحديد تاريخ الكشف!" : "⚠️ Please select a reservation date!"; return; }
+      const selectedDateObj = new Date(dateVal); const dayOfWeek = selectedDateObj.getDay();
+      if (dayOfWeek !== 0 && dayOfWeek !== 2 && dayOfWeek !== 4) {
+        msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? "❌ عذراً! العيادة تعمل فقط أيام (الأحد، الثلاثاء، الخميس)." : "❌ Sorry! Clinic only operates on (Sun, Tue, Thu)."; return;
+      }
+      document.getElementById('clinicFormArea').classList.add('hidden');
+      const randomQueue = Math.floor(Math.random() * 50) + 1; 
+      document.getElementById('ticketQueueNum').innerText = "#" + String(randomQueue).padStart(2, '0');
+      document.getElementById('ticketEmpName').innerText = (currentUserData && currentUserData.name) ? currentUserData.name : "الاسم غير مسجل";
+      document.getElementById('ticketSpecialty').innerText = specialtyVal; document.getElementById('ticketDate').innerText = dateVal;
+      document.getElementById('clinicTicketModal').classList.remove('hidden');
+      msg.style.color = '#10b981'; msg.innerText = currentLang === 'ar' ? "✅ تم تأكيد الحجز بنجاح!" : "✅ Reservation confirmed!";
+    }
+
+    function downloadClinicTicket() {
+      const element = document.getElementById('clinicPrintSlip'); 
+      html2canvas(element, { scale: 3, backgroundColor: "#ffffff" }).then(canvas => {
+        const link = document.createElement('a'); link.download = 'Clinic_Ticket_' + currentEmpCode + '.png'; link.href = canvas.toDataURL('image/png'); link.click();
+        setTimeout(() => {
+          document.getElementById('clinicFormArea').classList.remove('hidden'); document.getElementById('clinicTicketModal').classList.add('hidden');
+          document.getElementById('clinicDate').value = ''; document.getElementById('clinicSymptoms').value = ''; document.getElementById('clinicMsg').innerText = ''; showPage('view-dashboard');
+        }, 1500);
+      });
     }
   </script>
 </body>
