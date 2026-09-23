@@ -41,7 +41,7 @@
       -webkit-tap-highlight-color: transparent;
     }
     html {
-      background-color: #0b0f19; /* لسد أي ثقوب زرقاء أثناء السحب */
+      background-color: #0b0f19;
       height: 100%;
     }
     body {
@@ -59,13 +59,11 @@
       overflow-x: hidden;
     }
     
-    /* الإجبار اللحظي لمحاذاة النصوص (يمين/يسار) بناءً على لغة التطبيق */
     [dir="ltr"] [style*="text-align: right"],
     [dir="ltr"] [style*="text-align:right"] {
       text-align: left !important;
     }
 
-    /* Intro Screen */
     #intro-screen {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
@@ -91,7 +89,6 @@
       color: #38bdf8; text-shadow: 0 0 20px rgba(56, 189, 248, 0.6); opacity: 0; line-height: 1.4; width: 100%; text-align: center; white-space: nowrap;
     }
     
-    /* App Header & 3D Rotating Logo */
     .app-header {
       width: 100vw; background: #0d1527; padding: 0.75rem 1rem;
       display: flex; justify-content: space-between; align-items: center;
@@ -157,7 +154,6 @@
       text-align: center !important;
     }
 
-    /* PAYSLIP SPECIFIC STYLES */
     .payslip-summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 0.8rem; }
     .payslip-badge {
       background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.4);
@@ -267,7 +263,6 @@
     }
     .upload-btn-label:hover { transform: scale(1.03); }
 
-    /* FLIP CLOCK & DYNAMIC STYLING */
     .digital-quota-card-seamless { background: transparent; border: none; padding: 0.5rem 0 1rem 0; text-align: center; margin-bottom: 0.5rem; }
     .quota-label-glow { font-size: 0.85rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.8rem; text-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
     .flip-clock-display { display: flex; justify-content: center; align-items: center; gap: 0.5rem; direction: ltr; }
@@ -306,7 +301,6 @@
     }
     .type-btn.active svg { fill: #38bdf8; filter: drop-shadow(0 0 8px #38bdf8); transform: scale(1.1); }
 
-    /* 3D WHEEL SCROLL PICKER STYLES */
     .time-picker-card {
       background: linear-gradient(135deg, rgba(11, 19, 41, 0.9) 0%, rgba(30, 58, 138, 0.4) 100%);
       border: 1px solid var(--border-color); border-radius: 1.25rem; padding: 0.75rem;
@@ -1338,10 +1332,13 @@
 
   <script>
     /* --- AUDIO SYSTEM --- */
+    window.audioCtx = null;
     window.playClickSound = function() {
       try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const ctx = new AudioContext();
+        if (!window.audioCtx) window.audioCtx = new AudioContext();
+        const ctx = window.audioCtx;
+        if (ctx.state === 'suspended') ctx.resume();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = 'sine';
@@ -1353,20 +1350,46 @@
       } catch(e) {}
     };
 
-    // Global Click Listener for all buttons/cards
     document.addEventListener('click', (e) => {
       if (e.target.closest('button, .clickable-card, .dropdown-option, .lang-option, .type-btn, .bottom-nav-item, .ampm-badge, .wheel-item, .calendar-day, .radio-option-btn, .toggle-salary-btn, .toggle-password')) {
         window.playClickSound();
       }
     });
 
-    // استخدام ملف mp3 الخارجي بدل توليد الصوت
     window.playIntroMusic = function() {
       try {
-        const audio = new Audio('intro.mp3');
-        audio.volume = 0.5; // مستوى الصوت 50%
-        audio.play().catch(e => console.log("تحتاج لمس الشاشة أولاً لتشغيل الصوت"));
-      } catch(e) {}
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!window.audioCtx) window.audioCtx = new AudioContext();
+        const ctx = window.audioCtx;
+
+        function playNote(freq, startTime, duration, type = 'sine') {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = type;
+          osc.frequency.value = freq;
+
+          gain.gain.setValueAtTime(0, startTime);
+          gain.gain.linearRampToValueAtTime(0.08, startTime + duration * 0.4);
+          gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(startTime);
+          osc.stop(startTime + duration);
+        }
+
+        const t = ctx.currentTime;
+        
+        playNote(440.00, t, 2.5, 'sine');       // A4
+        playNote(523.25, t + 0.6, 2.5, 'sine'); // C5
+        playNote(659.25, t + 1.2, 3.0, 'sine'); // E5
+        playNote(587.33, t + 2.2, 3.5, 'sine'); // D5
+        
+        playNote(329.63, t, 4.5, 'triangle');   // E4
+        
+      } catch(e) {
+        console.log("Audio not supported or blocked");
+      }
     };
 
     /* Leaf Fall Intro */
@@ -1412,7 +1435,22 @@
         tl.to(el, { duration: 1.5, x: dir.x, y: dir.y, opacity: 0, scale: 0.5, ease: "power1.inOut" }, index === 0 ? "scatter" : `-=1.35`);
       });
     }
-    window.addEventListener('DOMContentLoaded', runLeafFallIntro);
+
+    // التشغيل التلقائي بمجرد التحميل
+    window.addEventListener('DOMContentLoaded', () => {
+      runLeafFallIntro();
+      
+      // التريك المخفي: لو المتصفح عمل بلوك للصوت أوتوماتيك، هيشتغل فوراً أول ما تدوس على كود الموظف
+      const silentResume = () => {
+        if (window.audioCtx && window.audioCtx.state === 'suspended') {
+          window.audioCtx.resume();
+        }
+        document.removeEventListener('click', silentResume);
+        document.removeEventListener('touchstart', silentResume);
+      };
+      document.addEventListener('click', silentResume);
+      document.addEventListener('touchstart', silentResume);
+    });
     
     function togglePasswordVisibility() {
       const pass = document.getElementById('empPass');
@@ -2102,19 +2140,6 @@
       resetSlideTimer();
     });
 
-    window.addEventListener('DOMContentLoaded', () => {
-      populate24HourWheels();
-      selectLanguage(currentLang);
-      resetSlideTimer();
-      const savedCode = localStorage.getItem('lacto_saved_code');
-      const savedPass = localStorage.getItem('lacto_saved_pass');
-      if (savedCode && savedPass) {
-        document.getElementById('empCode').value = savedCode;
-        document.getElementById('empPass').value = savedPass;
-        document.getElementById('rememberMe').checked = true;
-      }
-    });
-
     const COMPANY_LAT = 30.235154;
     const COMPANY_LNG = 31.743997;
     const ALLOWED_RADIUS_METERS = 75;
@@ -2515,6 +2540,19 @@
       window.location.reload(); 
     }
     
+    window.addEventListener('DOMContentLoaded', () => {
+      populate24HourWheels();
+      selectLanguage(currentLang);
+      resetSlideTimer();
+      const savedCode = localStorage.getItem('lacto_saved_code');
+      const savedPass = localStorage.getItem('lacto_saved_pass');
+      if (savedCode && savedPass) {
+        document.getElementById('empCode').value = savedCode;
+        document.getElementById('empPass').value = savedPass;
+        document.getElementById('rememberMe').checked = true;
+      }
+    });
+
     function toggleLangMenu() { document.getElementById('langMenu').classList.toggle('show'); }
     
     function selectLanguage(lang) {
