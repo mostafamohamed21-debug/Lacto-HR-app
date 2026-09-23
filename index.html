@@ -401,7 +401,7 @@
       border-radius: 0 0 1.75rem 1.75rem; padding: 1.15rem 1.5rem 1.75rem 1.5rem; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
       margin-bottom: 0; z-index: 2; display: flex; flex-direction: column; gap: 0.75rem;
     }
-    .profile-top-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+    .profile-top-row { display: flex; justify-content: space-between; align-items: center; width: 100%; position: relative; }
     .profile-info-group { display: flex; align-items: center; gap: 0.85rem; }
     .header-avatar { width: 55px; height: 55px; border-radius: 50%; border: 2px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); }
     .profile-text-content { display: flex; flex-direction: column; text-align: right; }
@@ -413,7 +413,7 @@
     .doc-company-title { font-weight: 800; font-size: 0.95rem; color: #0284c7; }
     .doc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; font-size: 0.75rem; margin-bottom: 0.75rem; }
     
-    .notification-wrapper { position: relative; display: inline-block; }
+    .notification-wrapper { position: relative; display: inline-block; z-index: 99999; }
     .notification-btn {
       width: 45px; height: 45px; background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.4);
       border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
@@ -423,15 +423,20 @@
     .notification-btn svg { width: 22px; height: 22px; fill: currentColor; }
     .notification-badge { position: absolute; top: 2px; right: 2px; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; border: 2px solid #0d1527; }
     
+    /* Notification Popup Updated: Glassy, Centered below button, High z-index */
     .notification-popup {
-      position: absolute; top: 0; left: calc(100% + 12px); background: rgba(15, 23, 42, 0.98);
-      border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 1rem; padding: 0.75rem 1rem; width: 210px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.6); backdrop-filter: blur(12px); z-index: 400; display: none; text-align: right;
+      position: absolute; top: calc(100% + 12px); left: 50%; transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(56, 189, 248, 0.6); 
+      border-radius: 1rem; padding: 0.85rem 1rem; width: 240px; text-align: right;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 0 15px rgba(255, 255, 255, 0.05); 
+      backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
+      z-index: 999999; display: none;
     }
-    [dir="ltr"] .notification-popup { left: auto; right: calc(100% + 12px); text-align: left; }
-    .notification-popup.show { display: block; }
-    .notification-popup-title { font-size: 0.75rem; font-weight: 800; color: #38bdf8; margin-bottom: 0.2rem; }
-    .notification-popup-desc { font-size: 0.7rem; color: var(--muted); line-height: 1.4; }
+    [dir="ltr"] .notification-popup { text-align: left; }
+    .notification-popup.show { display: block; animation: fadeDown 0.3s ease; }
+    @keyframes fadeDown { from { opacity: 0; transform: translate(-50%, -10px); } to { opacity: 1; transform: translate(-50%, 0); } }
+    .notification-popup-title { font-size: 0.8rem; font-weight: 800; color: #38bdf8; margin-bottom: 0.4rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.3rem;}
+    .notification-popup-desc { font-size: 0.75rem; color: var(--text); line-height: 1.5; }
     
     .checkin-card {
       background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(15, 23, 42, 0.98));
@@ -614,10 +619,9 @@
       <div class="intro-subtitle" id="introSubtitle" data-ar="شركاء في رحلة نمو طفلك." data-en="Partners in your child's growth journey.">Partners in your child's growth journey.</div>
     </div>
     
-    <!-- Footer / Copyright for Intro -->
-    <div id="introFooter" style="position: absolute; bottom: -100px; width: 100%; text-align: center; opacity: 0; display: flex; flex-direction: column; gap: 0.5rem; z-index: 10;">
+    <!-- Footer / Copyright for Intro - Fixed Position to % -->
+    <div id="introFooter" style="position: absolute; bottom: -20vh; width: 100%; text-align: center; opacity: 0; display: flex; flex-direction: column; gap: 0.5rem; z-index: 10;">
       <div id="copyrightText" data-ar="© 2026 جميع حقوق الإنشاء والطبع محفوظة" data-en="© 2026 All Creation & Copyrights Reserved" style="font-size: 0.9rem; color: #94a3b8; font-family: 'Cairo', sans-serif; font-weight: 600; letter-spacing: 1px;">© 2026 جميع حقوق الإنشاء والطبع محفوظة</div>
-      <!-- تم تصغير الخط إلى 1rem كأنه توقيع رقيق ومش يافطة -->
       <div style="font-family: 'Great Vibes', cursive; font-size: 1rem; color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);">Powered by Mostafa Elsayed - HR Section Head</div>
     </div>
   </div>
@@ -929,7 +933,7 @@
         <input type="text" id="leaveStartDate" class="custom-date-input" readonly data-ar-placeholder="اختر تاريخ البداية..." data-en-placeholder="Select start date..." placeholder="اختر تاريخ البداية..." onclick="openCustomCalendar('leaveStartDate')">
 
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="تاريخ نهاية الأجازة:" data-en="End Date:">تاريخ نهاية الأجازة:</label>
-        <input type="text" id="leaveEndDate" class="custom-date-input" readonly data-ar-placeholder="اختر تاريخ النهاية..." data-en-placeholder="Select end date..." placeholder="اختر تاريخ النهاية..." onclick="openCustomCalendar('leaveEndDate')">
+        <input type="text" id="leaveEndDate" class="custom-date-input" class="custom-date-input" readonly data-ar-placeholder="اختر تاريخ النهاية..." data-en-placeholder="Select end date..." placeholder="اختر تاريخ النهاية..." onclick="openCustomCalendar('leaveEndDate')">
 
         <div class="glowing-result-badge" id="leaveTotalDaysText" data-ar="إجمالي الأيام المطلوبة: 0 يوم" data-en="Total requested days: 0 days">
           إجمالي الأيام المطلوبة: 0 يوم
@@ -1368,7 +1372,6 @@
       } catch(e) {}
     };
 
-    // إضافة كل العناصر الممكنة للكليك
     document.addEventListener('click', (e) => {
       const clickSelectors = [
         'button', 'a', '.clickable-card', '.dropdown-option', '.lang-option', 
@@ -1383,7 +1386,6 @@
       }
     });
 
-    // سيمفونية الأنترو
     window.playIntroMusic = function() {
       try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -1391,7 +1393,7 @@
         const ctx = window.audioCtx;
         if (ctx.state === 'suspended') ctx.resume();
 
-        function playNote(freq, startTime, duration, type = 'sine', volume = 0.06) {
+        function playNote(freq, startTime, duration, type = 'sine', volume = 0.015) {
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
           osc.type = type;
@@ -1406,10 +1408,19 @@
         }
 
         const t = ctx.currentTime;
-        playNote(220.00, t, 4.0, 'sine', 0.06); playNote(329.63, t + 0.5, 4.0, 'sine', 0.05); playNote(523.25, t + 1.0, 4.0, 'sine', 0.05);
-        playNote(174.61, t + 3.0, 4.0, 'sine', 0.06); playNote(349.23, t + 3.5, 4.0, 'sine', 0.05); playNote(523.25, t + 4.0, 4.0, 'sine', 0.05); playNote(698.46, t + 4.5, 4.0, 'triangle', 0.04);
-        playNote(196.00, t + 6.0, 5.0, 'sine', 0.06); playNote(392.00, t + 6.5, 5.0, 'sine', 0.05); playNote(587.33, t + 7.0, 5.0, 'sine', 0.05);
-        playNote(261.63, t + 9.0, 6.0, 'sine', 0.06); playNote(392.00, t + 9.5, 6.0, 'sine', 0.05); playNote(523.25, t + 10.0, 7.0, 'sine', 0.05); playNote(659.25, t + 10.5, 7.0, 'triangle', 0.04);
+        // مزيكا أنعم وأقصر بمقدار ثانيتين
+        playNote(220.00, t, 3.0, 'sine', 0.02); 
+        playNote(329.63, t + 0.5, 3.0, 'sine', 0.015); 
+        playNote(523.25, t + 1.0, 3.0, 'sine', 0.015);
+        playNote(174.61, t + 2.0, 3.0, 'sine', 0.02); 
+        playNote(349.23, t + 2.5, 3.0, 'sine', 0.015); 
+        playNote(523.25, t + 3.0, 3.0, 'sine', 0.015); 
+        playNote(196.00, t + 4.5, 4.0, 'sine', 0.02); 
+        playNote(392.00, t + 5.0, 4.0, 'sine', 0.015); 
+        playNote(587.33, t + 5.5, 4.0, 'sine', 0.015);
+        playNote(261.63, t + 7.0, 4.0, 'sine', 0.02); 
+        playNote(392.00, t + 7.5, 4.0, 'sine', 0.015); 
+        playNote(523.25, t + 8.0, 5.0, 'sine', 0.015);
       } catch(e) {}
     };
 
@@ -1434,20 +1445,20 @@
         gsap.set(el, { y: -250, x: randomX, rotation: randomRotation, opacity: 0, scale: 0.8 });
       });
       gsap.set(subtitle, { opacity: 0, y: 20 });
-      gsap.set('#introFooter', { opacity: 0, bottom: -100 });
+      gsap.set('#introFooter', { opacity: 0, bottom: "-20vh" });
 
       const tl = gsap.timeline({ 
         onStart: () => { window.playIntroMusic(); },
         onComplete: () => document.getElementById('intro-screen').classList.add('fade-out') 
       });
 
-      tl.to(charElements, { duration: 2.5, x: 0, y: 0, rotation: 360, opacity: 1, scale: 1, stagger: 0.15, ease: "power2.out" }, "start");
-      tl.to(subtitle, { duration: 1.5, opacity: 1, y: 0, ease: "power2.out" }, "start+=1.5");
-      tl.to('#introFooter', { duration: 1.5, bottom: 40, opacity: 1, ease: "power2.out" }, "start+=2.5");
-      tl.to([subtitle, '#introFooter'], { duration: 1.5, opacity: 0, y: 20, ease: "power1.in" }, "start+=8.5");
+      tl.to(charElements, { duration: 2.5, x: 0, y: 0, rotation: 360, opacity: 1, scale: 1, stagger: 0.1, ease: "power2.out" }, "start");
+      tl.to(subtitle, { duration: 1.5, opacity: 1, y: 0, ease: "power2.out" }, "start+=1.0");
+      tl.to('#introFooter', { duration: 1.5, bottom: "12%", opacity: 1, ease: "power2.out" }, "start+=1.5");
+      tl.to([subtitle, '#introFooter'], { duration: 1.5, opacity: 0, y: 20, ease: "power1.in" }, "start+=6.5");
       charElements.forEach((el, index) => {
         const dir = directions[index % directions.length];
-        tl.to(el, { duration: 2.0, x: dir.x, y: dir.y, opacity: 0, scale: 0.5, ease: "power1.inOut" }, `start+=9.5`);
+        tl.to(el, { duration: 2.0, x: dir.x, y: dir.y, opacity: 0, scale: 0.5, ease: "power1.inOut" }, `start+=7.5`);
       });
     }
 
@@ -1475,6 +1486,7 @@
 
     let isSalaryVisible = false;
     function toggleSalaryVisibility(event) {
+      window.playClickSound(); // إصلاح صوت الكليك هنا
       if (event) event.stopPropagation();
       isSalaryVisible = !isSalaryVisible;
       const salaryValEl = document.getElementById('salaryDisplayVal');
@@ -1580,7 +1592,12 @@
       calculateInstallment(); updateDigitalClockDisplay(totalPermBalanceSeconds); updateDynamicGreeting(); updateAmPmBadges();
     }
 
-    function toggleNotificationPopup(event) { event.stopPropagation(); document.getElementById('notificationPopup').classList.toggle('show'); }
+    function toggleNotificationPopup(event) { 
+      window.playClickSound(); // إصلاح صوت الكليك هنا
+      event.stopPropagation(); 
+      document.getElementById('notificationPopup').classList.toggle('show'); 
+    }
+    
     window.addEventListener('click', () => {
       const popup = document.getElementById('notificationPopup'); if (popup && popup.classList.contains('show')) popup.classList.remove('show');
       const dropdownOptions = document.getElementById('dropdownOptions'); if (dropdownOptions && dropdownOptions.classList.contains('show')) dropdownOptions.classList.remove('show');
@@ -1614,10 +1631,21 @@
 
     function openCustomCalendar(inputId) {
       activeDateInputId = inputId;
-      const val = document.getElementById(inputId).value; tempSelectedDate = val;
-      if (val) { const parts = val.split('-'); if (parts.length === 3) { calYear = parseInt(parts[0]); calMonth = parseInt(parts[1]) - 1; } } 
-      else { const now = new Date(); calYear = now.getFullYear(); calMonth = now.getMonth(); }
-      renderCustomCalendar(); document.getElementById('customCalendarModal').classList.add('show');
+      const val = document.getElementById(inputId).value;
+      if (val) {
+        tempSelectedDate = val;
+        const parts = val.split('-');
+        if (parts.length === 3) { calYear = parseInt(parts[0]); calMonth = parseInt(parts[1]) - 1; }
+      } else {
+        const now = new Date();
+        calYear = now.getFullYear();
+        calMonth = now.getMonth();
+        const dStr = String(now.getDate()).padStart(2, '0');
+        const mStr = String(now.getMonth() + 1).padStart(2, '0');
+        tempSelectedDate = `${calYear}-${mStr}-${dStr}`;
+      }
+      renderCustomCalendar();
+      document.getElementById('customCalendarModal').classList.add('show');
     }
 
     function confirmCustomCalendar() {
@@ -1667,7 +1695,7 @@
       else { document.getElementById('btnTypeEarly').classList.add('active'); document.getElementById('btnTypeLate').classList.remove('active'); }
     }
 
-    let isProgrammaticScroll = false; // كتم الصوت للتمرير البرمجي
+    let isProgrammaticScroll = false; 
 
     function populate24HourWheels() {
       const createWheelItems = (containerId, max, defaultVal) => {
@@ -1734,7 +1762,7 @@
 
       if (lastWheelIndices[wheelId] !== selectedIndex) {
         lastWheelIndices[wheelId] = selectedIndex;
-        if (!isProgrammaticScroll) window.playClickSound(); // الكليك يشتغل فقط لو اليوزر اللي بيحرك العجلة
+        if (!isProgrammaticScroll) window.playClickSound(); 
       }
 
       items.forEach((item, idx) => {
@@ -1972,7 +2000,7 @@
         document.getElementById('view-dashboard').classList.add('hidden'); if (headerCard) headerCard.classList.add('hidden'); if (contentCard) contentCard.classList.add('hidden');
         document.getElementById(pageId).classList.remove('hidden');
         if (pageId === 'view-permission-request' || pageId === 'view-mission-request') {
-          setTimeout(centerTimeWheels, 50); // توسيط العجلات بدون حفلة الكليك
+          setTimeout(centerTimeWheels, 50);
         }
       }
     }
