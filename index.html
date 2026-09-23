@@ -591,7 +591,19 @@
         } catch (err) { console.log('Wake Lock error:', err); }
       }
     }
-    window.addEventListener('DOMContentLoaded', () => { requestWakeLock(); });
+    
+    // إعداد اللغة بمجرد تحميل الصفحة وقبل الأنترو
+    window.addEventListener('DOMContentLoaded', () => { 
+      requestWakeLock(); 
+      let storedLang = localStorage.getItem('lacto_lang') || 'ar';
+      const copyrightEl = document.getElementById('copyrightText');
+      if (copyrightEl) {
+        copyrightEl.innerText = storedLang === 'ar' 
+          ? '© 2026 جميع حقوق الإنشاء والطبع محفوظة' 
+          : '© 2026 All Creation & Copyrights Reserved';
+      }
+    });
+    
     document.addEventListener('visibilitychange', async () => { if (document.visibilityState === 'visible') { await requestWakeLock(); } });
   </script>
 </head>
@@ -600,13 +612,14 @@
   <div id="intro-screen">
     <div class="intro-content-wrapper">
       <div class="intro-title-container" id="introTitle"></div>
-      <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
+      <div class="intro-subtitle" id="introSubtitle" data-ar="شركاء في رحلة نمو طفلك." data-en="Partners in your child's growth journey.">Partners in your child's growth journey.</div>
     </div>
     
     <!-- Footer / Copyright for Intro -->
     <div id="introFooter" style="position: absolute; bottom: -100px; width: 100%; text-align: center; opacity: 0; display: flex; flex-direction: column; gap: 0.5rem; z-index: 10;">
-      <div style="font-size: 0.9rem; color: #94a3b8; font-family: 'Cairo', sans-serif; font-weight: 600; letter-spacing: 1px;">© 2026 جميع حقوق الإنشاء والطبع محفوظة</div>
-      <div style="font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: #38bdf8; text-shadow: 0 0 15px rgba(56, 189, 248, 0.8);">Powered by Mostafa Elsayed - HR Section Head</div>
+      <div id="copyrightText" data-ar="© 2026 جميع حقوق الإنشاء والطبع محفوظة" data-en="© 2026 All Creation & Copyrights Reserved" style="font-size: 0.9rem; color: #94a3b8; font-family: 'Cairo', sans-serif; font-weight: 600; letter-spacing: 1px;">© 2026 جميع حقوق الإنشاء والطبع محفوظة</div>
+      <!-- تم تصغير الخط هنا إلى 1.3rem ليكون توقيع أنيق -->
+      <div style="font-family: 'Great Vibes', cursive; font-size: 1.3rem; color: #38bdf8; text-shadow: 0 0 15px rgba(56, 189, 248, 0.8);">Powered by Mostafa Elsayed - HR Section Head</div>
     </div>
   </div>
   
@@ -1415,7 +1428,7 @@
       }
     };
 
-    /* Leaf Fall Intro - مدة أطول لتصل لـ 13 ثانية وتناسب الموسيقى */
+    /* Leaf Fall Intro */
     function runLeafFallIntro() {
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
