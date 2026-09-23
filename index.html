@@ -1203,7 +1203,7 @@
     <!-- 4.5. LOAN REQUEST VIEW -->
     <div id="view-loan-request" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
         <span style="font-weight: 700; color: #38bdf8;" data-ar="طلب سلفة مالية" data-en="Loan Request">طلب سلفة مالية</span>
       </div>
 
@@ -1970,6 +1970,43 @@
       });
     }
 
+    // دالة جديدة لتصفير فورم الإجازات كلياً
+    function resetLeaveForm() {
+      // 1. إعادة النوع إلى إجازة سنوية
+      document.getElementById('leaveType').value = 'annual';
+      document.getElementById('selectedLeaveText').innerText = currentLang === 'ar' ? 'إجازة سنوية' : 'Annual Leave';
+      
+      // 2. تفريغ التواريخ
+      document.getElementById('leaveStartDate').value = '';
+      document.getElementById('leaveEndDate').value = '';
+      
+      // 3. تفريغ الملاحظات
+      document.getElementById('leaveNotes').value = '';
+      
+      // 4. تفريغ المرفقات (إن وجدت)
+      const fileInput = document.getElementById('medicalReportFile');
+      if(fileInput) fileInput.value = '';
+      const fileNameEl = document.getElementById('medicalFileName');
+      if(fileNameEl) {
+        fileNameEl.innerText = fileNameEl.getAttribute(`data-${currentLang}`);
+        fileNameEl.style.color = "var(--muted)";
+      }
+      
+      // 5. تصفير عدد الأيام
+      const daysText = document.getElementById('leaveTotalDaysText');
+      if(daysText) {
+        daysText.innerText = currentLang === 'ar' ? "إجمالي الأيام المطلوبة: 0 يوم" : "Total requested days: 0 days";
+        daysText.style.color = '#38bdf8';
+      }
+      
+      // 6. تفريغ رسالة الإرسال
+      const msg = document.getElementById('leaveMsg');
+      if(msg) msg.innerText = '';
+      
+      // 7. إخفاء أي تنبيهات ديناميكية متعلقة بنوع الإجازة السابق
+      handleLeaveTypeChange();
+    }
+
     function handleLeaveTypeChange() {
       const leaveType = document.getElementById('leaveType').value; 
       const noticeBox = document.getElementById('dynamicLeaveNotice');
@@ -2053,6 +2090,12 @@
       });
       
       const headerCard = document.getElementById('dashboard-header-container'); const contentCard = document.getElementById('dashboard-content-container');
+      
+      // تنفيذ دالة تصفير فورم الإجازات عند الدخول لصفحة الإجازات
+      if (pageId === 'view-leave-request') {
+        resetLeaveForm();
+      }
+
       if (pageId === 'view-dashboard') {
         document.getElementById('view-dashboard').classList.remove('hidden'); if (headerCard) headerCard.classList.remove('hidden'); if (contentCard) contentCard.classList.remove('hidden');
         updateDynamicGreeting(); updateDigitalClockDisplay(totalPermBalanceSeconds);
