@@ -602,6 +602,12 @@
       <div class="intro-title-container" id="introTitle"></div>
       <div class="intro-subtitle" id="introSubtitle">Partners in your child's growth journey.</div>
     </div>
+    
+    <!-- Footer / Copyright for Intro -->
+    <div id="introFooter" style="position: absolute; bottom: -100px; width: 100%; text-align: center; opacity: 0; display: flex; flex-direction: column; gap: 0.5rem; z-index: 10;">
+      <div style="font-size: 0.9rem; color: #94a3b8; font-family: 'Cairo', sans-serif; font-weight: 600; letter-spacing: 1px;">© 2026 جميع حقوق الإنشاء والطبع محفوظة</div>
+      <div style="font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: #38bdf8; text-shadow: 0 0 15px rgba(56, 189, 248, 0.8);">Powered by Mostafa Elsayed - HR Section Head</div>
+    </div>
   </div>
   
   <!-- App Header & 3D Rotating Logo -->
@@ -1356,20 +1362,22 @@
       }
     });
 
+    // سيمفونية هادية متصاعدة مدتها حوالي 13 ثانية للأنترو
     window.playIntroMusic = function() {
       try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         if (!window.audioCtx) window.audioCtx = new AudioContext();
         const ctx = window.audioCtx;
+        if (ctx.state === 'suspended') ctx.resume();
 
-        function playNote(freq, startTime, duration, type = 'sine') {
+        function playNote(freq, startTime, duration, type = 'sine', volume = 0.06) {
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
           osc.type = type;
           osc.frequency.value = freq;
 
           gain.gain.setValueAtTime(0, startTime);
-          gain.gain.linearRampToValueAtTime(0.08, startTime + duration * 0.4);
+          gain.gain.linearRampToValueAtTime(volume, startTime + duration * 0.2);
           gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
 
           osc.connect(gain);
@@ -1380,22 +1388,35 @@
 
         const t = ctx.currentTime;
         
-        playNote(440.00, t, 2.5, 'sine');       // A4
-        playNote(523.25, t + 0.6, 2.5, 'sine'); // C5
-        playNote(659.25, t + 1.2, 3.0, 'sine'); // E5
-        playNote(587.33, t + 2.2, 3.5, 'sine'); // D5
+        // Chord 1 (A minor)
+        playNote(220.00, t, 4.0, 'sine', 0.06);
+        playNote(329.63, t + 0.5, 4.0, 'sine', 0.05);
+        playNote(523.25, t + 1.0, 4.0, 'sine', 0.05);
         
-        playNote(329.63, t, 4.5, 'triangle');   // E4
+        // Chord 2 (F major)
+        playNote(174.61, t + 3.0, 4.0, 'sine', 0.06);
+        playNote(349.23, t + 3.5, 4.0, 'sine', 0.05);
+        playNote(523.25, t + 4.0, 4.0, 'sine', 0.05);
+        playNote(698.46, t + 4.5, 4.0, 'triangle', 0.04);
+
+        // Chord 3 (G major)
+        playNote(196.00, t + 6.0, 5.0, 'sine', 0.06);
+        playNote(392.00, t + 6.5, 5.0, 'sine', 0.05);
+        playNote(587.33, t + 7.0, 5.0, 'sine', 0.05);
+        
+        // Final Resolve (C major)
+        playNote(261.63, t + 9.0, 6.0, 'sine', 0.06);
+        playNote(392.00, t + 9.5, 6.0, 'sine', 0.05);
+        playNote(523.25, t + 10.0, 7.0, 'sine', 0.05);
+        playNote(659.25, t + 10.5, 7.0, 'triangle', 0.04);
         
       } catch(e) {
         console.log("Audio not supported or blocked");
       }
     };
 
-    /* Leaf Fall Intro */
+    /* Leaf Fall Intro - مدة أطول لتصل لـ 13 ثانية وتناسب الموسيقى */
     function runLeafFallIntro() {
-      window.playIntroMusic(); // Trigger the intro music
-      
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
       const subtitle = document.getElementById('introSubtitle');
@@ -1426,13 +1447,32 @@
         gsap.set(el, { y: -250, x: randomX, rotation: randomRotation, opacity: 0, scale: 0.8 });
       });
       gsap.set(subtitle, { opacity: 0, y: 20 });
-      const tl = gsap.timeline({ onComplete: () => document.getElementById('intro-screen').classList.add('fade-out') });
-      tl.to(charElements, { duration: 1.5, x: 0, y: 0, rotation: 360, opacity: 1, scale: 1, stagger: 0.08, ease: "power2.out" });
-      tl.to(subtitle, { duration: 1.2, opacity: 1, y: 0, ease: "power2.out" }, "-=0.8");
-      tl.to(subtitle, { duration: 1.2, opacity: 0, y: -20, ease: "power1.in" }, "+=2.0");
+      gsap.set('#introFooter', { opacity: 0, bottom: -100 });
+
+      // تشغيل المزيكا تماماً مع بداية الـ Timeline
+      const tl = gsap.timeline({ 
+        onStart: () => { window.playIntroMusic(); },
+        onComplete: () => document.getElementById('intro-screen').classList.add('fade-out') 
+      });
+
+      // 1. تجميع الحروف (حركة سينمائية أبطأ)
+      tl.to(charElements, { duration: 2.5, x: 0, y: 0, rotation: 360, opacity: 1, scale: 1, stagger: 0.15, ease: "power2.out" }, "start");
+      
+      // 2. ظهور الـ Slogan
+      tl.to(subtitle, { duration: 1.5, opacity: 1, y: 0, ease: "power2.out" }, "start+=1.5");
+      
+      // 3. ظهور الفوتر و حقوق الملكية من الأسفل
+      tl.to('#introFooter', { duration: 1.5, bottom: 40, opacity: 1, ease: "power2.out" }, "start+=2.5");
+      
+      // ثبات على الشاشة...
+      
+      // 4. إخفاء الـ Slogan والفوتر
+      tl.to([subtitle, '#introFooter'], { duration: 1.5, opacity: 0, y: 20, ease: "power1.in" }, "start+=8.5");
+      
+      // 5. تشتت الحروف مرة تانية واختفائها
       charElements.forEach((el, index) => {
         const dir = directions[index % directions.length];
-        tl.to(el, { duration: 1.5, x: dir.x, y: dir.y, opacity: 0, scale: 0.5, ease: "power1.inOut" }, index === 0 ? "scatter" : `-=1.35`);
+        tl.to(el, { duration: 2.0, x: dir.x, y: dir.y, opacity: 0, scale: 0.5, ease: "power1.inOut" }, `start+=9.5`);
       });
     }
 
@@ -1440,7 +1480,6 @@
     window.addEventListener('DOMContentLoaded', () => {
       runLeafFallIntro();
       
-      // التريك المخفي: لو المتصفح عمل بلوك للصوت أوتوماتيك، هيشتغل فوراً أول ما تدوس على كود الموظف
       const silentResume = () => {
         if (window.audioCtx && window.audioCtx.state === 'suspended') {
           window.audioCtx.resume();
@@ -1769,7 +1808,6 @@
       }
     }
 
-    // العداد بنظام الدورة المتصلة (Looping Cycle) 25 مرة
     function populate24HourWheels() {
       const createWheelItems = (containerId, max, defaultVal) => {
         const box = document.getElementById(containerId);
@@ -1786,7 +1824,6 @@
         for (let c = 0; c < cycles; c++) {
           for (let i = 0; i < max; i++) {
             const valStr = String(i).padStart(2, '0');
-            // التمركز في الدورة 12 عشان يكون في مساحة كافية فوق وتحت
             const isSelected = (c === 12 && valStr === defaultVal);
             if (isSelected) middleIndex = currentIndex;
             
@@ -1815,7 +1852,6 @@
       updateAmPmBadges();
     }
 
-    // دالة لسنترة العدادات عند فتح الصفحات المخفية عشان متقفش
     function centerTimeWheels() {
       const wheels = ['fromHourWheel', 'fromMinWheel', 'toHourWheel', 'toMinWheel', 
                       'mFromHourWheel', 'mFromMinWheel', 'mToHourWheel', 'mToMinWheel'];
