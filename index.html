@@ -40,6 +40,10 @@
       font-family: 'Cairo', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
+    html {
+      background-color: #0b0f19; /* لسد أي ثقوب زرقاء أثناء السحب */
+      height: 100%;
+    }
     body {
       background: linear-gradient(rgba(11, 15, 25, 0.82), rgba(11, 15, 25, 0.92)), url('background.jpg');
       background-size: cover;
@@ -47,7 +51,7 @@
       background-repeat: no-repeat;
       background-attachment: fixed;
       color: var(--text);
-      min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1334,17 +1338,10 @@
 
   <script>
     /* --- AUDIO SYSTEM --- */
-    let audioCtx = null;
-    function getAudioContext() {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      return audioCtx;
-    }
-
-    // 1. Clean Crisp Click Sound (No Air/Noise)
     window.playClickSound = function() {
       try {
-        const ctx = getAudioContext();
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioContext();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = 'sine';
@@ -1363,33 +1360,18 @@
       }
     });
 
-    // 2. Calm Intro Music (Fmaj7 Chord - Softer & Longer)
+    // استخدام ملف mp3 الخارجي بدل توليد الصوت
     window.playIntroMusic = function() {
       try {
-        const ctx = getAudioContext();
-        // هادئة جداً (Fmaj7 chord) مع مدة أطول 4 ثواني
-        const freqs = [174.61, 220.00, 261.63, 329.63];
-        freqs.forEach((freq, i) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, ctx.currentTime);
-          
-          gain.gain.setValueAtTime(0, ctx.currentTime);
-          gain.gain.linearRampToValueAtTime(0.04, ctx.currentTime + 1.5 + (i * 0.5)); // هدوء في الدخول
-          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 10.5); // وقت أطول لانتهاء الصوت
-          
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start();
-          osc.stop(ctx.currentTime + 11.0); // زيادة 4 ثواني عن الـ 7 القديمة
-        });
+        const audio = new Audio('intro.mp3');
+        audio.volume = 0.5; // مستوى الصوت 50%
+        audio.play().catch(e => console.log("تحتاج لمس الشاشة أولاً لتشغيل الصوت"));
       } catch(e) {}
     };
 
     /* Leaf Fall Intro */
     function runLeafFallIntro() {
-      window.playIntroMusic(); // Trigger the calm intro music
+      window.playIntroMusic(); // Trigger the intro music
       
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
@@ -1749,14 +1731,14 @@
       }
     }
 
-    // العداد بنظام الدورة المتصلة (Looping Cycle) لتسهيل الاستخدام
+    // العداد بنظام الدورة المتصلة (Looping Cycle) 25 مرة
     function populate24HourWheels() {
       const createWheelItems = (containerId, max, defaultVal) => {
         const box = document.getElementById(containerId);
         if (!box) return;
         box.innerHTML = '';
         
-        const cycles = 5; 
+        const cycles = 25; 
         let middleIndex = 0;
         let currentIndex = 0;
         
@@ -1766,7 +1748,8 @@
         for (let c = 0; c < cycles; c++) {
           for (let i = 0; i < max; i++) {
             const valStr = String(i).padStart(2, '0');
-            const isSelected = (c === 2 && valStr === defaultVal);
+            // التمركز في الدورة 12 عشان يكون في مساحة كافية فوق وتحت
+            const isSelected = (c === 12 && valStr === defaultVal);
             if (isSelected) middleIndex = currentIndex;
             
             box.innerHTML += `<div class="wheel-item ${isSelected ? 'selected' : ''}">${valStr}</div>`;
@@ -1792,6 +1775,21 @@
       createWheelItems('mToMinWheel', 60, '00');
 
       updateAmPmBadges();
+    }
+
+    // دالة لسنترة العدادات عند فتح الصفحات المخفية عشان متقفش
+    function centerTimeWheels() {
+      const wheels = ['fromHourWheel', 'fromMinWheel', 'toHourWheel', 'toMinWheel', 
+                      'mFromHourWheel', 'mFromMinWheel', 'mToHourWheel', 'mToMinWheel'];
+      wheels.forEach(id => {
+        const box = document.getElementById(id);
+        if(box) {
+          const selected = box.querySelector('.wheel-item.selected');
+          if(selected) {
+            box.scrollTop = selected.offsetTop - 30;
+          }
+        }
+      });
     }
 
     function manualToggleAmPm(badgeId) {
@@ -2384,6 +2382,7 @@
           document.getElementById('permMsg').innerText = '';
           updateDigitalClockDisplay(totalPermBalanceSeconds);
           calculateRequestedDuration();
+          setTimeout(centerTimeWheels, 50); // سنترة العدادات
         }
 
         if (pageId === 'view-mission-request') {
@@ -2394,6 +2393,7 @@
           document.getElementById('missionPurpose').value = '';
           document.getElementById('missionMsg').innerText = '';
           document.getElementById('missionSlipModal').classList.add('hidden');
+          setTimeout(centerTimeWheels, 50); // سنترة العدادات
         }
 
         if (pageId === 'view-payslip-request') {
