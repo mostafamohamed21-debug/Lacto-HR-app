@@ -592,7 +592,6 @@
       }
     }
     
-    // إعداد اللغة بمجرد تحميل الصفحة وقبل الأنترو
     window.addEventListener('DOMContentLoaded', () => { 
       requestWakeLock(); 
       let storedLang = localStorage.getItem('lacto_lang') || 'ar';
@@ -618,8 +617,8 @@
     <!-- Footer / Copyright for Intro -->
     <div id="introFooter" style="position: absolute; bottom: -100px; width: 100%; text-align: center; opacity: 0; display: flex; flex-direction: column; gap: 0.5rem; z-index: 10;">
       <div id="copyrightText" data-ar="© 2026 جميع حقوق الإنشاء والطبع محفوظة" data-en="© 2026 All Creation & Copyrights Reserved" style="font-size: 0.9rem; color: #94a3b8; font-family: 'Cairo', sans-serif; font-weight: 600; letter-spacing: 1px;">© 2026 جميع حقوق الإنشاء والطبع محفوظة</div>
-      <!-- تم تصغير الخط هنا إلى 1.3rem ليكون توقيع أنيق -->
-      <div style="font-family: 'Great Vibes', cursive; font-size: 1.3rem; color: #38bdf8; text-shadow: 0 0 15px rgba(56, 189, 248, 0.8);">Powered by Mostafa Elsayed - HR Section Head</div>
+      <!-- تم تصغير الخط إلى 1rem كأنه توقيع رقيق ومش يافطة -->
+      <div style="font-family: 'Great Vibes', cursive; font-size: 1rem; color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);">Powered by Mostafa Elsayed - HR Section Head</div>
     </div>
   </div>
   
@@ -1369,13 +1368,22 @@
       } catch(e) {}
     };
 
+    // إضافة كل العناصر الممكنة للكليك
     document.addEventListener('click', (e) => {
-      if (e.target.closest('button, .clickable-card, .dropdown-option, .lang-option, .type-btn, .bottom-nav-item, .ampm-badge, .wheel-item, .calendar-day, .radio-option-btn, .toggle-salary-btn, .toggle-password')) {
+      const clickSelectors = [
+        'button', 'a', '.clickable-card', '.dropdown-option', '.lang-option', 
+        '.type-btn', '.bottom-nav-item', '.ampm-badge', '.wheel-item', '.calendar-day', 
+        '.radio-option-btn', '.toggle-salary-btn', '.toggle-password', '.dropdown-selected', 
+        '.checkin-card', '.action-btn-item', '.dot', '.custom-date-input', 
+        'label.checkbox-container', '.upload-btn-label', '#chatbot-fab', '.notification-btn'
+      ].join(', ');
+      
+      if (e.target.closest(clickSelectors)) {
         window.playClickSound();
       }
     });
 
-    // سيمفونية هادية متصاعدة مدتها حوالي 13 ثانية للأنترو
+    // سيمفونية الأنترو
     window.playIntroMusic = function() {
       try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -1388,11 +1396,9 @@
           const gain = ctx.createGain();
           osc.type = type;
           osc.frequency.value = freq;
-
           gain.gain.setValueAtTime(0, startTime);
           gain.gain.linearRampToValueAtTime(volume, startTime + duration * 0.2);
           gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
-
           osc.connect(gain);
           gain.connect(ctx.destination);
           osc.start(startTime);
@@ -1400,35 +1406,13 @@
         }
 
         const t = ctx.currentTime;
-        
-        // Chord 1 (A minor)
-        playNote(220.00, t, 4.0, 'sine', 0.06);
-        playNote(329.63, t + 0.5, 4.0, 'sine', 0.05);
-        playNote(523.25, t + 1.0, 4.0, 'sine', 0.05);
-        
-        // Chord 2 (F major)
-        playNote(174.61, t + 3.0, 4.0, 'sine', 0.06);
-        playNote(349.23, t + 3.5, 4.0, 'sine', 0.05);
-        playNote(523.25, t + 4.0, 4.0, 'sine', 0.05);
-        playNote(698.46, t + 4.5, 4.0, 'triangle', 0.04);
-
-        // Chord 3 (G major)
-        playNote(196.00, t + 6.0, 5.0, 'sine', 0.06);
-        playNote(392.00, t + 6.5, 5.0, 'sine', 0.05);
-        playNote(587.33, t + 7.0, 5.0, 'sine', 0.05);
-        
-        // Final Resolve (C major)
-        playNote(261.63, t + 9.0, 6.0, 'sine', 0.06);
-        playNote(392.00, t + 9.5, 6.0, 'sine', 0.05);
-        playNote(523.25, t + 10.0, 7.0, 'sine', 0.05);
-        playNote(659.25, t + 10.5, 7.0, 'triangle', 0.04);
-        
-      } catch(e) {
-        console.log("Audio not supported or blocked");
-      }
+        playNote(220.00, t, 4.0, 'sine', 0.06); playNote(329.63, t + 0.5, 4.0, 'sine', 0.05); playNote(523.25, t + 1.0, 4.0, 'sine', 0.05);
+        playNote(174.61, t + 3.0, 4.0, 'sine', 0.06); playNote(349.23, t + 3.5, 4.0, 'sine', 0.05); playNote(523.25, t + 4.0, 4.0, 'sine', 0.05); playNote(698.46, t + 4.5, 4.0, 'triangle', 0.04);
+        playNote(196.00, t + 6.0, 5.0, 'sine', 0.06); playNote(392.00, t + 6.5, 5.0, 'sine', 0.05); playNote(587.33, t + 7.0, 5.0, 'sine', 0.05);
+        playNote(261.63, t + 9.0, 6.0, 'sine', 0.06); playNote(392.00, t + 9.5, 6.0, 'sine', 0.05); playNote(523.25, t + 10.0, 7.0, 'sine', 0.05); playNote(659.25, t + 10.5, 7.0, 'triangle', 0.04);
+      } catch(e) {}
     };
 
-    /* Leaf Fall Intro */
     function runLeafFallIntro() {
       const text = "LACTO MISR S.A.E";
       const container = document.getElementById('introTitle');
@@ -1438,70 +1422,43 @@
       
       for (let char of text) {
         if (char === ' ') {
-          const space = document.createElement('span');
-          space.className = 'intro-space';
-          container.appendChild(space);
+          const space = document.createElement('span'); space.className = 'intro-space'; container.appendChild(space);
         } else {
-          const span = document.createElement('span');
-          span.className = 'intro-char';
-          span.innerText = char;
-          container.appendChild(span);
-          charElements.push(span);
+          const span = document.createElement('span'); span.className = 'intro-char'; span.innerText = char;
+          container.appendChild(span); charElements.push(span);
         }
       }
-      const directions = [
-        {x:-900, y:-700}, {x:0, y:-900}, {x:900, y:-700}, 
-        {x:900, y:0}, {x:900, y:700}, {x:0, y:900}, 
-        {x:-900, y:700}, {x:-900, y:0}
-      ];
+      const directions = [ {x:-900, y:-700}, {x:0, y:-900}, {x:900, y:-700}, {x:900, y:0}, {x:900, y:700}, {x:0, y:900}, {x:-900, y:700}, {x:-900, y:0} ];
       charElements.forEach((el) => {
-        const randomX = (Math.random() - 0.5) * 400; 
-        const randomRotation = (Math.random() - 0.5) * 720;
+        const randomX = (Math.random() - 0.5) * 400; const randomRotation = (Math.random() - 0.5) * 720;
         gsap.set(el, { y: -250, x: randomX, rotation: randomRotation, opacity: 0, scale: 0.8 });
       });
       gsap.set(subtitle, { opacity: 0, y: 20 });
       gsap.set('#introFooter', { opacity: 0, bottom: -100 });
 
-      // تشغيل المزيكا تماماً مع بداية الـ Timeline
       const tl = gsap.timeline({ 
         onStart: () => { window.playIntroMusic(); },
         onComplete: () => document.getElementById('intro-screen').classList.add('fade-out') 
       });
 
-      // 1. تجميع الحروف (حركة سينمائية أبطأ)
       tl.to(charElements, { duration: 2.5, x: 0, y: 0, rotation: 360, opacity: 1, scale: 1, stagger: 0.15, ease: "power2.out" }, "start");
-      
-      // 2. ظهور الـ Slogan
       tl.to(subtitle, { duration: 1.5, opacity: 1, y: 0, ease: "power2.out" }, "start+=1.5");
-      
-      // 3. ظهور الفوتر و حقوق الملكية من الأسفل
       tl.to('#introFooter', { duration: 1.5, bottom: 40, opacity: 1, ease: "power2.out" }, "start+=2.5");
-      
-      // ثبات على الشاشة...
-      
-      // 4. إخفاء الـ Slogan والفوتر
       tl.to([subtitle, '#introFooter'], { duration: 1.5, opacity: 0, y: 20, ease: "power1.in" }, "start+=8.5");
-      
-      // 5. تشتت الحروف مرة تانية واختفائها
       charElements.forEach((el, index) => {
         const dir = directions[index % directions.length];
         tl.to(el, { duration: 2.0, x: dir.x, y: dir.y, opacity: 0, scale: 0.5, ease: "power1.inOut" }, `start+=9.5`);
       });
     }
 
-    // التشغيل التلقائي بمجرد التحميل
     window.addEventListener('DOMContentLoaded', () => {
       runLeafFallIntro();
-      
       const silentResume = () => {
-        if (window.audioCtx && window.audioCtx.state === 'suspended') {
-          window.audioCtx.resume();
-        }
+        if (window.audioCtx && window.audioCtx.state === 'suspended') window.audioCtx.resume();
         document.removeEventListener('click', silentResume);
         document.removeEventListener('touchstart', silentResume);
       };
-      document.addEventListener('click', silentResume);
-      document.addEventListener('touchstart', silentResume);
+      document.addEventListener('click', silentResume); document.addEventListener('touchstart', silentResume);
     });
     
     function togglePasswordVisibility() {
@@ -1531,7 +1488,6 @@
       }
     }
 
-    /* PAYSLIP FUNCTIONS */
     function togglePayslipBreakdown() {
       const breakdownEl = document.getElementById('payslipDetailsBreakdown');
       const btnTextEl = document.getElementById('btnPayslipToggleText');
@@ -1553,16 +1509,9 @@
       const chkPrint = document.getElementById('chkPrintout');
       const chkDigital = document.getElementById('chkDigitalEmail');
       const chkBoth = document.getElementById('chkBothDelivery');
-
-      if (changedType === 'printout' && chkPrint.checked) {
-        chkDigital.checked = false;
-        chkBoth.checked = false;
-      } else if (changedType === 'digital' && chkDigital.checked) {
-        chkPrint.checked = false;
-        chkBoth.checked = false;
-      } else {
-        chkBoth.checked = false;
-      }
+      if (changedType === 'printout' && chkPrint.checked) { chkDigital.checked = false; chkBoth.checked = false; }
+      else if (changedType === 'digital' && chkDigital.checked) { chkPrint.checked = false; chkBoth.checked = false; }
+      else { chkBoth.checked = false; }
     }
 
     function handleBothCheckbox(isChecked) {
@@ -1575,21 +1524,9 @@
       const chkPrint = document.getElementById('chkPrintout').checked;
       const chkDigital = document.getElementById('chkDigitalEmail').checked;
       const msg = document.getElementById('payslipMsg');
-
-      if (!dest) {
-        msg.style.color = '#ef4444'; 
-        msg.innerText = currentLang === 'ar' ? '⚠️ يرجى تحديد الجهة الموجه إليها الخطاب!' : '⚠️ Please specify the destination entity!'; 
-        return;
-      }
-
-      if (!chkPrint && !chkDigital) {
-        msg.style.color = '#ef4444';
-        msg.innerText = currentLang === 'ar' ? '⚠️ يرجى اختيار طريقة استلام واحدة على الأقل!' : '⚠️ Please choose at least one delivery method!';
-        return;
-      }
-
-      msg.style.color = '#38bdf8'; 
-      msg.innerText = currentLang === 'ar' ? '✅ تم إرسال طلب مفردات المرتب بنجاح للـ HR!' : '✅ Payslip request submitted to HR!';
+      if (!dest) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? '⚠️ يرجى تحديد الجهة الموجه إليها الخطاب!' : '⚠️ Please specify the destination entity!'; return; }
+      if (!chkPrint && !chkDigital) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? '⚠️ يرجى اختيار طريقة استلام واحدة على الأقل!' : '⚠️ Please choose at least one delivery method!'; return; }
+      msg.style.color = '#38bdf8'; msg.innerText = currentLang === 'ar' ? '✅ تم إرسال طلب مفردات المرتب بنجاح للـ HR!' : '✅ Payslip request submitted to HR!';
       setTimeout(() => showPage('view-dashboard'), 1800);
     }
     
@@ -1608,7 +1545,6 @@
     let currentEmpCode = "";
     let currentLang = localStorage.getItem('lacto_lang') || 'ar';
     let returnToView = 'view-dashboard';
-    
     let totalPermBalanceSeconds = 14400;
 
     function updateDynamicGreeting() {
@@ -1633,89 +1569,55 @@
       
       const currentLeaveVal = document.getElementById('leaveType') ? document.getElementById('leaveType').value : 'annual';
       const selectedOptionEl = document.querySelector(`.dropdown-option[onclick*="${currentLeaveVal}"]`);
-      if (selectedOptionEl && document.getElementById('selectedLeaveText')) {
-        document.getElementById('selectedLeaveText').innerText = selectedOptionEl.getAttribute(`data-${lang}`);
-      }
+      if (selectedOptionEl && document.getElementById('selectedLeaveText')) document.getElementById('selectedLeaveText').innerText = selectedOptionEl.getAttribute(`data-${lang}`);
       
       const currentLoanVal = document.getElementById('loanMonthsVal') ? document.getElementById('loanMonthsVal').value : '3';
       const selectedLoanOptionEl = document.querySelector(`#loanMonthsOptions .dropdown-option[onclick*="selectLoanMonth(${currentLoanVal})"]`);
-      if (selectedLoanOptionEl && document.getElementById('selectedLoanMonthText')) {
-        document.getElementById('selectedLoanMonthText').innerText = selectedLoanOptionEl.getAttribute(`data-${lang}`);
-      }
+      if (selectedLoanOptionEl && document.getElementById('selectedLoanMonthText')) document.getElementById('selectedLoanMonthText').innerText = selectedLoanOptionEl.getAttribute(`data-${lang}`);
 
-      handleLeaveTypeChange();
-      calculateLeaveDays();
+      handleLeaveTypeChange(); calculateLeaveDays();
       if (typeof calculateRequestedDuration === 'function') calculateRequestedDuration();
-      calculateInstallment();
-      updateDigitalClockDisplay(totalPermBalanceSeconds);
-      updateDynamicGreeting();
-      updateAmPmBadges();
+      calculateInstallment(); updateDigitalClockDisplay(totalPermBalanceSeconds); updateDynamicGreeting(); updateAmPmBadges();
     }
 
-    function toggleNotificationPopup(event) {
-      event.stopPropagation();
-      const popup = document.getElementById('notificationPopup');
-      popup.classList.toggle('show');
-    }
+    function toggleNotificationPopup(event) { event.stopPropagation(); document.getElementById('notificationPopup').classList.toggle('show'); }
     window.addEventListener('click', () => {
-      const popup = document.getElementById('notificationPopup');
-      if (popup && popup.classList.contains('show')) popup.classList.remove('show');
-      const dropdownOptions = document.getElementById('dropdownOptions');
-      if (dropdownOptions && dropdownOptions.classList.contains('show')) dropdownOptions.classList.remove('show');
-      const loanOpts = document.getElementById('loanMonthsOptions');
-      if (loanOpts && loanOpts.classList.contains('show')) loanOpts.classList.remove('show');
+      const popup = document.getElementById('notificationPopup'); if (popup && popup.classList.contains('show')) popup.classList.remove('show');
+      const dropdownOptions = document.getElementById('dropdownOptions'); if (dropdownOptions && dropdownOptions.classList.contains('show')) dropdownOptions.classList.remove('show');
+      const loanOpts = document.getElementById('loanMonthsOptions'); if (loanOpts && loanOpts.classList.contains('show')) loanOpts.classList.remove('show');
     });
 
-    function toggleCustomDropdown(event) {
-      if (event) event.stopPropagation();
-      document.getElementById('dropdownOptions').classList.toggle('show');
-    }
+    function toggleCustomDropdown(event) { if (event) event.stopPropagation(); document.getElementById('dropdownOptions').classList.toggle('show'); }
 
     function selectLeaveOption(value) {
       document.getElementById('leaveType').value = value;
       const selectedOptionEl = document.querySelector(`.dropdown-option[onclick*="${value}"]`);
-      if (selectedOptionEl) {
-        document.getElementById('selectedLeaveText').innerText = selectedOptionEl.getAttribute(`data-${currentLang}`);
-      }
+      if (selectedOptionEl) document.getElementById('selectedLeaveText').innerText = selectedOptionEl.getAttribute(`data-${currentLang}`);
       document.getElementById('dropdownOptions').classList.remove('show');
-      handleLeaveTypeChange();
-      calculateLeaveDays();
+      handleLeaveTypeChange(); calculateLeaveDays();
     }
 
     function handleMedicalFileSelected(input) {
       const fileNameEl = document.getElementById('medicalFileName');
       if (input.files && input.files[0]) {
-        fileNameEl.innerText = "📄 " + input.files[0].name;
-        fileNameEl.style.color = "#38bdf8";
+        fileNameEl.innerText = "📄 " + input.files[0].name; fileNameEl.style.color = "#38bdf8";
       } else {
-        fileNameEl.innerText = fileNameEl.getAttribute(`data-${currentLang}`);
-        fileNameEl.style.color = "var(--muted)";
+        fileNameEl.innerText = fileNameEl.getAttribute(`data-${currentLang}`); fileNameEl.style.color = "var(--muted)";
       }
     }
 
     /* Custom Calendar Modal */
-    let activeDateInputId = null;
-    let tempSelectedDate = "";
-    let calYear = new Date().getFullYear();
-    let calMonth = new Date().getMonth();
-
+    let activeDateInputId = null; let tempSelectedDate = ""; let calYear = new Date().getFullYear(); let calMonth = new Date().getMonth();
     const monthNamesAr = ["يناير", "فبراير", "مارس", "إبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
     const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const dayNamesAr = ["س", "ح", "ن", "ث", "ر", "خ", "ج"];
-    const dayNamesEn = ["Sa", "Su", "Mo", "Tu", "We", "Th", "Fr"];
+    const dayNamesAr = ["س", "ح", "ن", "ث", "ر", "خ", "ج"]; const dayNamesEn = ["Sa", "Su", "Mo", "Tu", "We", "Th", "Fr"];
 
     function openCustomCalendar(inputId) {
       activeDateInputId = inputId;
-      const val = document.getElementById(inputId).value;
-      tempSelectedDate = val;
-      if (val) {
-        const parts = val.split('-');
-        if (parts.length === 3) { calYear = parseInt(parts[0]); calMonth = parseInt(parts[1]) - 1; }
-      } else {
-        const now = new Date(); calYear = now.getFullYear(); calMonth = now.getMonth();
-      }
-      renderCustomCalendar();
-      document.getElementById('customCalendarModal').classList.add('show');
+      const val = document.getElementById(inputId).value; tempSelectedDate = val;
+      if (val) { const parts = val.split('-'); if (parts.length === 3) { calYear = parseInt(parts[0]); calMonth = parseInt(parts[1]) - 1; } } 
+      else { const now = new Date(); calYear = now.getFullYear(); calMonth = now.getMonth(); }
+      renderCustomCalendar(); document.getElementById('customCalendarModal').classList.add('show');
     }
 
     function confirmCustomCalendar() {
@@ -1725,185 +1627,98 @@
       }
       closeCustomCalendar();
     }
-
     function closeCustomCalendar() { document.getElementById('customCalendarModal').classList.remove('show'); }
-
-    function changeCalendarMonth(direction) {
-      calMonth += direction;
-      if (calMonth > 11) { calMonth = 0; calYear++; }
-      else if (calMonth < 0) { calMonth = 11; calYear--; }
-      renderCustomCalendar();
-    }
+    function changeCalendarMonth(direction) { calMonth += direction; if (calMonth > 11) { calMonth = 0; calYear++; } else if (calMonth < 0) { calMonth = 11; calYear--; } renderCustomCalendar(); }
 
     function renderCustomCalendar() {
       const mNames = currentLang === 'ar' ? monthNamesAr : monthNamesEn;
       document.getElementById('calMonthYearTitle').innerText = `${mNames[calMonth]} ${calYear}`;
-      
-      const headerGrid = document.getElementById('calendarHeaderGrid');
-      headerGrid.innerHTML = "";
+      const headerGrid = document.getElementById('calendarHeaderGrid'); headerGrid.innerHTML = "";
       const activeDayNames = currentLang === 'ar' ? dayNamesAr : dayNamesEn;
-      activeDayNames.forEach(dName => {
-        const nameEl = document.createElement('div');
-        nameEl.className = 'calendar-day-name'; nameEl.innerText = dName;
-        headerGrid.appendChild(nameEl);
-      });
-
-      const grid = document.getElementById('calendarDaysGrid');
-      grid.innerHTML = "";
-
-      const jsDay = new Date(calYear, calMonth, 1).getDay();
-      const firstDayIndex = (jsDay + 1) % 7;
-      const totalDays = new Date(calYear, calMonth + 1, 0).getDate();
-
-      for (let i = 0; i < firstDayIndex; i++) {
-        const emptyCell = document.createElement('div');
-        emptyCell.className = 'calendar-day empty';
-        grid.appendChild(emptyCell);
-      }
-
+      activeDayNames.forEach(dName => { const nameEl = document.createElement('div'); nameEl.className = 'calendar-day-name'; nameEl.innerText = dName; headerGrid.appendChild(nameEl); });
+      const grid = document.getElementById('calendarDaysGrid'); grid.innerHTML = "";
+      const jsDay = new Date(calYear, calMonth, 1).getDay(); const firstDayIndex = (jsDay + 1) % 7; const totalDays = new Date(calYear, calMonth + 1, 0).getDate();
+      for (let i = 0; i < firstDayIndex; i++) { const emptyCell = document.createElement('div'); emptyCell.className = 'calendar-day empty'; grid.appendChild(emptyCell); }
       for (let day = 1; day <= totalDays; day++) {
-        const dayCell = document.createElement('div');
-        dayCell.className = 'calendar-day'; dayCell.innerText = day;
-        const mStr = String(calMonth + 1).padStart(2, '0');
-        const dStr = String(day).padStart(2, '0');
-        const formattedDate = `${calYear}-${mStr}-${dStr}`;
-
+        const dayCell = document.createElement('div'); dayCell.className = 'calendar-day'; dayCell.innerText = day;
+        const formattedDate = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         if (formattedDate === tempSelectedDate) dayCell.classList.add('selected');
-
-        dayCell.onclick = () => {
-          grid.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
-          dayCell.classList.add('selected');
-          tempSelectedDate = formattedDate;
-        };
+        dayCell.onclick = () => { grid.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected')); dayCell.classList.add('selected'); tempSelectedDate = formattedDate; };
         grid.appendChild(dayCell);
       }
     }
 
     function updateDigitalClockDisplay(seconds) {
-      let h = Math.floor(seconds / 3600);
-      let m = Math.floor((seconds % 3600) / 60);
-      let s = seconds % 60;
-
-      const strH = String(h).padStart(2, '0');
-      const strM = String(m).padStart(2, '0');
-      const strS = String(s).padStart(2, '0');
-
-      const cntH = document.getElementById('cntHours');
-      const cntM = document.getElementById('cntMins');
-      const cntS = document.getElementById('cntSecs');
-      if (cntH) cntH.innerText = strH;
-      if (cntM) cntM.innerText = strM;
-      if (cntS) cntS.innerText = strS;
-
-      const dashH = document.getElementById('dashCntHours');
-      const dashM = document.getElementById('dashCntMins');
-      const dashS = document.getElementById('dashCntSecs');
-      if (dashH) dashH.innerText = strH;
-      if (dashM) dashM.innerText = strM;
-      if (dashS) dashS.innerText = strS;
-
-      const ratioText = document.getElementById('permRatioText');
-      const permsProgressBar = document.getElementById('permsProgressBar');
+      let h = Math.floor(seconds / 3600); let m = Math.floor((seconds % 3600) / 60); let s = seconds % 60;
+      const strH = String(h).padStart(2, '0'); const strM = String(m).padStart(2, '0'); const strS = String(s).padStart(2, '0');
+      const cntH = document.getElementById('cntHours'); const cntM = document.getElementById('cntMins'); const cntS = document.getElementById('cntSecs');
+      if (cntH) cntH.innerText = strH; if (cntM) cntM.innerText = strM; if (cntS) cntS.innerText = strS;
+      const dashH = document.getElementById('dashCntHours'); const dashM = document.getElementById('dashCntMins'); const dashS = document.getElementById('dashCntSecs');
+      if (dashH) dashH.innerText = strH; if (dashM) dashM.innerText = strM; if (dashS) dashS.innerText = strS;
+      const ratioText = document.getElementById('permRatioText'); const permsProgressBar = document.getElementById('permsProgressBar');
       const pct = Math.round((seconds / 14400) * 100);
-      
       if (ratioText) ratioText.innerText = currentLang === 'ar' ? `${pct}% متاح` : `${pct}% Available`;
       if (permsProgressBar) permsProgressBar.style.width = pct + '%';
     }
 
     function setPermissionType(type) {
       document.getElementById('permTypeVal').value = type;
-      if (type === 'late_arrival') {
-        document.getElementById('btnTypeLate').classList.add('active');
-        document.getElementById('btnTypeEarly').classList.remove('active');
-      } else {
-        document.getElementById('btnTypeEarly').classList.add('active');
-        document.getElementById('btnTypeLate').classList.remove('active');
-      }
+      if (type === 'late_arrival') { document.getElementById('btnTypeLate').classList.add('active'); document.getElementById('btnTypeEarly').classList.remove('active'); } 
+      else { document.getElementById('btnTypeEarly').classList.add('active'); document.getElementById('btnTypeLate').classList.remove('active'); }
     }
+
+    let isProgrammaticScroll = false; // كتم الصوت للتمرير البرمجي
 
     function populate24HourWheels() {
       const createWheelItems = (containerId, max, defaultVal) => {
-        const box = document.getElementById(containerId);
-        if (!box) return;
-        box.innerHTML = '';
-        
-        const cycles = 25; 
-        let middleIndex = 0;
-        let currentIndex = 0;
-        
-        box.innerHTML += `<div class="wheel-item"></div>`;
-        currentIndex++;
-
+        const box = document.getElementById(containerId); if (!box) return; box.innerHTML = '';
+        const cycles = 25; let middleIndex = 0; let currentIndex = 0;
+        box.innerHTML += `<div class="wheel-item"></div>`; currentIndex++;
         for (let c = 0; c < cycles; c++) {
           for (let i = 0; i < max; i++) {
-            const valStr = String(i).padStart(2, '0');
-            const isSelected = (c === 12 && valStr === defaultVal);
+            const valStr = String(i).padStart(2, '0'); const isSelected = (c === 12 && valStr === defaultVal);
             if (isSelected) middleIndex = currentIndex;
-            
-            box.innerHTML += `<div class="wheel-item ${isSelected ? 'selected' : ''}">${valStr}</div>`;
-            currentIndex++;
+            box.innerHTML += `<div class="wheel-item ${isSelected ? 'selected' : ''}">${valStr}</div>`; currentIndex++;
           }
         }
-        
         box.innerHTML += `<div class="wheel-item"></div>`;
-
         setTimeout(() => {
+          isProgrammaticScroll = true;
           box.scrollTop = (middleIndex * 30) - 30;
+          setTimeout(() => isProgrammaticScroll = false, 150);
         }, 50);
       };
-
-      createWheelItems('fromHourWheel', 24, '08');
-      createWheelItems('fromMinWheel', 60, '00');
-      createWheelItems('toHourWheel', 24, '09');
-      createWheelItems('toMinWheel', 60, '00');
-
-      createWheelItems('mFromHourWheel', 24, '08');
-      createWheelItems('mFromMinWheel', 60, '00');
-      createWheelItems('mToHourWheel', 24, '16');
-      createWheelItems('mToMinWheel', 60, '00');
-
+      createWheelItems('fromHourWheel', 24, '08'); createWheelItems('fromMinWheel', 60, '00'); createWheelItems('toHourWheel', 24, '09'); createWheelItems('toMinWheel', 60, '00');
+      createWheelItems('mFromHourWheel', 24, '08'); createWheelItems('mFromMinWheel', 60, '00'); createWheelItems('mToHourWheel', 24, '16'); createWheelItems('mToMinWheel', 60, '00');
       updateAmPmBadges();
     }
 
     function centerTimeWheels() {
-      const wheels = ['fromHourWheel', 'fromMinWheel', 'toHourWheel', 'toMinWheel', 
-                      'mFromHourWheel', 'mFromMinWheel', 'mToHourWheel', 'mToMinWheel'];
+      isProgrammaticScroll = true;
+      const wheels = ['fromHourWheel', 'fromMinWheel', 'toHourWheel', 'toMinWheel', 'mFromHourWheel', 'mFromMinWheel', 'mToHourWheel', 'mToMinWheel'];
       wheels.forEach(id => {
         const box = document.getElementById(id);
-        if(box) {
-          const selected = box.querySelector('.wheel-item.selected');
-          if(selected) {
-            box.scrollTop = selected.offsetTop - 30;
-          }
-        }
+        if(box) { const selected = box.querySelector('.wheel-item.selected'); if(selected) { box.scrollTop = selected.offsetTop - 30; } }
       });
+      setTimeout(() => isProgrammaticScroll = false, 150);
     }
 
     function manualToggleAmPm(badgeId) {
-      const badge = document.getElementById(badgeId);
-      if (!badge) return;
-      window.playClickSound();
-      if (currentLang === 'ar') {
-        badge.innerText = (badge.innerText === 'صباحاً') ? 'مساءً' : 'صباحاً';
-      } else {
-        badge.innerText = (badge.innerText === 'AM') ? 'PM' : 'AM';
-      }
+      const badge = document.getElementById(badgeId); if (!badge) return;
+      if (currentLang === 'ar') { badge.innerText = (badge.innerText === 'صباحاً') ? 'مساءً' : 'صباحاً'; } 
+      else { badge.innerText = (badge.innerText === 'AM') ? 'PM' : 'AM'; }
       calculateRequestedDuration();
     }
 
     function updateAmPmBadges() {
       const getAmPmText = (hourVal) => {
-        const h = parseInt(hourVal);
-        if (isNaN(h)) return currentLang === 'ar' ? 'صباحاً' : 'AM';
-        if (h >= 12) return currentLang === 'ar' ? 'مساءً' : 'PM';
-        return currentLang === 'ar' ? 'صباحاً' : 'AM';
+        const h = parseInt(hourVal); if (isNaN(h)) return currentLang === 'ar' ? 'صباحاً' : 'AM';
+        if (h >= 12) return currentLang === 'ar' ? 'مساءً' : 'PM'; return currentLang === 'ar' ? 'صباحاً' : 'AM';
       };
-
       const fromH = document.getElementById('fromHourVal') ? document.getElementById('fromHourVal').value : '08';
       const toH = document.getElementById('toHourVal') ? document.getElementById('toHourVal').value : '09';
       const mFromH = document.getElementById('mFromHourVal') ? document.getElementById('mFromHourVal').value : '08';
       const mToH = document.getElementById('mToHourVal') ? document.getElementById('mToHourVal').value : '16';
-
       if (document.getElementById('fromAmPmBadge')) document.getElementById('fromAmPmBadge').innerText = getAmPmText(fromH);
       if (document.getElementById('toAmPmBadge')) document.getElementById('toAmPmBadge').innerText = getAmPmText(toH);
       if (document.getElementById('mFromAmPmBadge')) document.getElementById('mFromAmPmBadge').innerText = getAmPmText(mFromH);
@@ -1912,374 +1727,178 @@
 
     const lastWheelIndices = {};
     function handleWheelScroll(wheelId, targetInputId) {
-      const wheel = document.getElementById(wheelId);
-      if (!wheel) return;
+      const wheel = document.getElementById(wheelId); if (!wheel) return;
       const items = wheel.querySelectorAll('.wheel-item');
       let selectedIndex = Math.round(wheel.scrollTop / 30) + 1;
-      if (selectedIndex < 1) selectedIndex = 1;
-      if (selectedIndex >= items.length - 1) selectedIndex = items.length - 2;
+      if (selectedIndex < 1) selectedIndex = 1; if (selectedIndex >= items.length - 1) selectedIndex = items.length - 2;
 
       if (lastWheelIndices[wheelId] !== selectedIndex) {
         lastWheelIndices[wheelId] = selectedIndex;
-        window.playClickSound();
+        if (!isProgrammaticScroll) window.playClickSound(); // الكليك يشتغل فقط لو اليوزر اللي بيحرك العجلة
       }
 
       items.forEach((item, idx) => {
         const dist = Math.abs(idx - selectedIndex);
         if (idx === selectedIndex) {
-          item.classList.add('selected');
-          item.style.transform = 'scale(1.1) rotateX(0deg)';
-          item.style.opacity = '1';
-          document.getElementById(targetInputId).value = item.innerText.trim();
+          item.classList.add('selected'); item.style.transform = 'scale(1.1) rotateX(0deg)'; item.style.opacity = '1'; document.getElementById(targetInputId).value = item.innerText.trim();
         } else {
-          item.classList.remove('selected');
-          const angle = (idx - selectedIndex) * 28;
-          item.style.transform = `scale(${Math.max(0.7, 1 - dist * 0.18)}) rotateX(${angle}deg)`;
-          item.style.opacity = `${Math.max(0.25, 1 - dist * 0.35)}`;
+          item.classList.remove('selected'); const angle = (idx - selectedIndex) * 28;
+          item.style.transform = `scale(${Math.max(0.7, 1 - dist * 0.18)}) rotateX(${angle}deg)`; item.style.opacity = `${Math.max(0.25, 1 - dist * 0.35)}`;
         }
       });
-      
-      updateAmPmBadges();
-      if (wheelId.startsWith('from') || wheelId.startsWith('to')) calculateRequestedDuration();
+      updateAmPmBadges(); if (wheelId.startsWith('from') || wheelId.startsWith('to')) calculateRequestedDuration();
     }
 
     function calculateRequestedDuration() {
-      let fH = parseInt(document.getElementById('fromHourVal').value) || 8;
-      let fM = parseInt(document.getElementById('fromMinVal').value) || 0;
-      let tH = parseInt(document.getElementById('toHourVal').value) || 9;
-      let tM = parseInt(document.getElementById('toMinVal').value) || 0;
-
-      let diffMins = (tH * 60 + tM) - (fH * 60 + fM);
-      const resBox = document.getElementById('durationResultText');
-      if (!resBox) return 0;
-
-      if (diffMins <= 0) {
-        resBox.style.color = '#ef4444';
-        resBox.innerText = currentLang === 'ar' ? '⚠️ وقت النهاية يجب أن يكون بعد وقت البداية!' : '⚠️ End time must be after start time!';
-        return 0;
-      }
-
-      let durH = Math.floor(diffMins / 60);
-      let durM = diffMins % 60;
-      resBox.style.color = '#38bdf8';
-      resBox.innerText = currentLang === 'ar' 
-        ? `⏱️ مدة الإذن المطلوبة: ${durH} ساعة و ${durM} دقيقة`
-        : `⏱️ Requested Duration: ${durH}h ${durM}m`;
+      let fH = parseInt(document.getElementById('fromHourVal').value) || 8; let fM = parseInt(document.getElementById('fromMinVal').value) || 0;
+      let tH = parseInt(document.getElementById('toHourVal').value) || 9; let tM = parseInt(document.getElementById('toMinVal').value) || 0;
+      let diffMins = (tH * 60 + tM) - (fH * 60 + fM); const resBox = document.getElementById('durationResultText'); if (!resBox) return 0;
+      if (diffMins <= 0) { resBox.style.color = '#ef4444'; resBox.innerText = currentLang === 'ar' ? '⚠️ وقت النهاية يجب أن يكون بعد وقت البداية!' : '⚠️ End time must be after start time!'; return 0; }
+      let durH = Math.floor(diffMins / 60); let durM = diffMins % 60; resBox.style.color = '#38bdf8';
+      resBox.innerText = currentLang === 'ar' ? `⏱️ مدة الإذن المطلوبة: ${durH} ساعة و ${durM} دقيقة` : `⏱️ Requested Duration: ${durH}h ${durM}m`;
       return diffMins;
     }
 
     function submitPermissionRequest() {
-      const diffMins = calculateRequestedDuration();
-      const msg = document.getElementById('permMsg');
-      const date = document.getElementById('permissionDate').value;
-
-      if (diffMins <= 0 || !date) {
-        msg.style.color = '#ef4444';
-        msg.innerText = currentLang === 'ar' ? 'يرجى اختيار التاريخ وضبط أوقات الإذن!' : 'Please select date and set permission times!';
-        return;
-      }
-
+      const diffMins = calculateRequestedDuration(); const msg = document.getElementById('permMsg'); const date = document.getElementById('permissionDate').value;
+      if (diffMins <= 0 || !date) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? 'يرجى اختيار التاريخ وضبط أوقات الإذن!' : 'Please select date and set permission times!'; return; }
       let reqSecs = diffMins * 60;
-      if (reqSecs > totalPermBalanceSeconds) {
-        msg.style.color = '#ef4444';
-        msg.innerText = currentLang === 'ar' ? '❌ مدة الإذن تتجاوز رصيدك المتبقي الشهرى!' : '❌ Duration exceeds your remaining monthly balance!';
-        return;
-      }
-
-      const permData = {
-        code: currentEmpCode,
-        name: (currentUserData && currentUserData.name) || 'Unknown',
-        type: document.getElementById('permTypeVal').value,
-        date: date,
-        durationMins: diffMins,
-        notes: document.getElementById('permissionNotes').value.trim(),
-        status: 'Pending',
-        timestamp: Date.now()
-      };
-
+      if (reqSecs > totalPermBalanceSeconds) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? '❌ مدة الإذن تتجاوز رصيدك المتبقي الشهرى!' : '❌ Duration exceeds your remaining monthly balance!'; return; }
+      const permData = { code: currentEmpCode, name: (currentUserData && currentUserData.name) || 'Unknown', type: document.getElementById('permTypeVal').value, date: date, durationMins: diffMins, notes: document.getElementById('permissionNotes').value.trim(), status: 'Pending', timestamp: Date.now() };
       db.ref('permission_requests/' + currentEmpCode).push(permData).then(() => {
-        totalPermBalanceSeconds -= reqSecs;
-        updateDigitalClockDisplay(totalPermBalanceSeconds);
-        msg.style.color = '#38bdf8';
+        totalPermBalanceSeconds -= reqSecs; updateDigitalClockDisplay(totalPermBalanceSeconds); msg.style.color = '#38bdf8';
         msg.innerText = currentLang === 'ar' ? '✅ تم تقديم طلب الإذن الشخصي بنجاح!' : '✅ Permission request submitted successfully!';
         setTimeout(() => { showPage('view-dashboard'); }, 1800);
-      }).catch(() => {
-        msg.style.color = '#ef4444';
-        msg.innerText = currentLang === 'ar' ? '❌ حدث خطأ، حاول مرة أخرى.' : '❌ Error occurred, try again.';
-      });
+      }).catch(() => { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? '❌ حدث خطأ، حاول مرة أخرى.' : '❌ Error occurred, try again.'; });
     }
 
     function toggleFullDayMission(isChecked) {
       const timesWrapper = document.getElementById('missionTimesWrapper');
-      if (isChecked) {
-        timesWrapper.style.opacity = '0.3';
-        timesWrapper.style.pointerEvents = 'none';
-      } else {
-        timesWrapper.style.opacity = '1';
-        timesWrapper.style.pointerEvents = 'auto';
-      }
+      if (isChecked) { timesWrapper.style.opacity = '0.3'; timesWrapper.style.pointerEvents = 'none'; } 
+      else { timesWrapper.style.opacity = '1'; timesWrapper.style.pointerEvents = 'auto'; }
     }
 
     function submitMissionRequest() {
-      const mDate = document.getElementById('missionDate').value;
-      const destination = document.getElementById('missionDestination').value.trim();
-      const purpose = document.getElementById('missionPurpose').value.trim();
-      const msg = document.getElementById('missionMsg');
-
-      if (!mDate || !destination || !purpose) {
-        msg.style.color = '#ef4444';
-        msg.innerText = currentLang === 'ar' ? '⚠️ يرجى استكمال جميع الخانات (التاريخ، الجهة، والغرض)!' : '⚠️ Please complete all required fields!';
-        return;
-      }
-
+      const mDate = document.getElementById('missionDate').value; const destination = document.getElementById('missionDestination').value.trim();
+      const purpose = document.getElementById('missionPurpose').value.trim(); const msg = document.getElementById('missionMsg');
+      if (!mDate || !destination || !purpose) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? '⚠️ يرجى استكمال جميع الخانات (التاريخ، الجهة، والغرض)!' : '⚠️ Please complete all required fields!'; return; }
       document.getElementById('slipEmpName').innerText = (currentUserData && currentUserData.name) ? currentUserData.name : "مصطفى السيد";
-      document.getElementById('slipEmpCode').innerText = currentEmpCode || "10024";
-      document.getElementById('slipDate').innerText = mDate;
-      document.getElementById('slipDest').innerText = destination;
-
-      const qrContainer = document.getElementById('missionQR');
-      qrContainer.innerHTML = '';
-      new QRCode(qrContainer, { text: `LACTO-MISSION|${currentEmpCode}|${mDate}`, width: 50, height: 50 });
-
-      document.getElementById('missionSlipModal').classList.remove('hidden');
-      msg.style.color = '#38bdf8';
+      document.getElementById('slipEmpCode').innerText = currentEmpCode || "10024"; document.getElementById('slipDate').innerText = mDate; document.getElementById('slipDest').innerText = destination;
+      const qrContainer = document.getElementById('missionQR'); qrContainer.innerHTML = ''; new QRCode(qrContainer, { text: `LACTO-MISSION|${currentEmpCode}|${mDate}`, width: 50, height: 50 });
+      document.getElementById('missionSlipModal').classList.remove('hidden'); msg.style.color = '#38bdf8';
       msg.innerText = currentLang === 'ar' ? '✅ تم توليد تصريح المأمورية الإلكتروني بنجاح!' : '✅ Mission permit generated successfully!';
     }
 
-    function downloadMissionPDF() {
-      const element = document.getElementById('missionPrintSlip');
-      html2pdf().set({ margin: 0.5, filename: 'Mission_Permit_' + currentEmpCode + '.pdf', html2canvas: { scale: 2 } }).from(element).save();
-    }
+    function downloadMissionPDF() { const element = document.getElementById('missionPrintSlip'); html2pdf().set({ margin: 0.5, filename: 'Mission_Permit_' + currentEmpCode + '.pdf', html2canvas: { scale: 2 } }).from(element).save(); }
     
-    /* LOAN REQUEST FUNCTIONS */
-    function toggleLoanDropdown(event) {
-      if (event) event.stopPropagation();
-      document.getElementById('loanMonthsOptions').classList.toggle('show');
-    }
+    function toggleLoanDropdown(event) { if (event) event.stopPropagation(); document.getElementById('loanMonthsOptions').classList.toggle('show'); }
 
     function selectLoanMonth(months) {
       document.getElementById('loanMonthsVal').value = months;
       const optionEl = document.querySelector(`#loanMonthsOptions .dropdown-option[onclick="selectLoanMonth(${months})"]`);
-      if (optionEl) {
-        document.getElementById('selectedLoanMonthText').innerText = optionEl.getAttribute(`data-${currentLang}`);
-      }
-      document.getElementById('loanMonthsOptions').classList.remove('show');
-      calculateInstallment();
+      if (optionEl) document.getElementById('selectedLoanMonthText').innerText = optionEl.getAttribute(`data-${currentLang}`);
+      document.getElementById('loanMonthsOptions').classList.remove('show'); calculateInstallment();
     }
 
     function calculateInstallment() {
-      const amount = parseFloat(document.getElementById('loanAmount').value) || 0;
-      const months = parseInt(document.getElementById('loanMonthsVal').value) || 1;
+      const amount = parseFloat(document.getElementById('loanAmount').value) || 0; const months = parseInt(document.getElementById('loanMonthsVal').value) || 1;
       const textEl = document.getElementById('loanInstallmentText');
-      
-      if (amount > 10000) {
-        textEl.style.color = '#ef4444';
-        textEl.innerText = currentLang === 'ar' ? '⚠️ الحد الأقصى للسلفة هو 10,000 EGP!' : '⚠️ Max advance limit is 10,000 EGP!';
-        return;
-      }
-      
+      if (amount > 10000) { textEl.style.color = '#ef4444'; textEl.innerText = currentLang === 'ar' ? '⚠️ الحد الأقصى للسلفة هو 10,000 EGP!' : '⚠️ Max advance limit is 10,000 EGP!'; return; }
       textEl.style.color = '#38bdf8';
-      if (amount > 0) {
-        const installment = Math.ceil(amount / months);
-        textEl.innerText = currentLang === 'ar' 
-          ? `القيمة التقديرية للقسط: ${installment} EGP / شهر`
-          : `Est. Installment: ${installment} EGP / month`;
-      } else {
-        textEl.innerText = currentLang === 'ar' 
-          ? `القيمة التقديرية للقسط: 0 EGP / شهر`
-          : `Est. Installment: 0 EGP / month`;
-      }
+      if (amount > 0) { const installment = Math.ceil(amount / months); textEl.innerText = currentLang === 'ar' ? `القيمة التقديرية للقسط: ${installment} EGP / شهر` : `Est. Installment: ${installment} EGP / month`; } 
+      else { textEl.innerText = currentLang === 'ar' ? `القيمة التقديرية للقسط: 0 EGP / شهر` : `Est. Installment: 0 EGP / month`; }
     }
 
     function submitLoanRequest() {
-      const amount = parseFloat(document.getElementById('loanAmount').value);
-      const months = document.getElementById('loanMonthsVal').value;
-      const reason = document.getElementById('loanReason').value.trim();
-      const msg = document.getElementById('loanMsg');
-
-      if (!amount || amount <= 0 || amount > 10000) {
-        msg.style.color = '#ef4444';
-        msg.innerText = currentLang === 'ar' ? '⚠️ يرجى إدخال مبلغ صحيح لا يتجاوز 10,000!' : '⚠️ Please enter a valid amount up to 10,000!';
-        return;
-      }
-      if (!reason) {
-        msg.style.color = '#ef4444';
-        msg.innerText = currentLang === 'ar' ? '⚠️ يرجى توضيح سبب طلب السلفة!' : '⚠️ Please clarify the reason for the advance!';
-        return;
-      }
-
-      const loanData = {
-        code: currentEmpCode,
-        name: (currentUserData && currentUserData.name) ? currentUserData.name : 'Unknown',
-        amount: amount,
-        months: months,
-        installment: Math.ceil(amount / months),
-        reason: reason,
-        status: 'Pending',
-        timestamp: Date.now()
-      };
-
+      const amount = parseFloat(document.getElementById('loanAmount').value); const months = document.getElementById('loanMonthsVal').value;
+      const reason = document.getElementById('loanReason').value.trim(); const msg = document.getElementById('loanMsg');
+      if (!amount || amount <= 0 || amount > 10000) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? '⚠️ يرجى إدخال مبلغ صحيح لا يتجاوز 10,000!' : '⚠️ Please enter a valid amount up to 10,000!'; return; }
+      if (!reason) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? '⚠️ يرجى توضيح سبب طلب السلفة!' : '⚠️ Please clarify the reason for the advance!'; return; }
+      const loanData = { code: currentEmpCode, name: (currentUserData && currentUserData.name) ? currentUserData.name : 'Unknown', amount: amount, months: months, installment: Math.ceil(amount / months), reason: reason, status: 'Pending', timestamp: Date.now() };
       db.ref('loan_requests/' + currentEmpCode).push(loanData).then(() => {
-        msg.style.color = '#38bdf8';
-        msg.innerText = currentLang === 'ar' ? '✅ تم إرسال طلب السلفة بنجاح للمراجعة!' : '✅ Loan request submitted successfully for review!';
-        setTimeout(() => { showPage('view-dashboard'); }, 2000);
-      }).catch(() => {
-        msg.style.color = '#ef4444';
-        msg.innerText = currentLang === 'ar' ? '❌ حدث خطأ في الاتصال، حاول مرة أخرى.' : '❌ Error occurred, try again.';
-      });
+        msg.style.color = '#38bdf8'; msg.innerText = currentLang === 'ar' ? '✅ تم إرسال طلب السلفة بنجاح للمراجعة!' : '✅ Loan request submitted successfully for review!'; setTimeout(() => { showPage('view-dashboard'); }, 2000);
+      }).catch(() => { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? '❌ حدث خطأ في الاتصال، حاول مرة أخرى.' : '❌ Error occurred, try again.'; });
     }
 
     function toggleChatbot() { document.getElementById('chatbot-window').classList.toggle('show'); }
     function handleChatKeyPress(e) { if (e.key === 'Enter') sendChatMessage(); }
     function sendChatMessage() {
-      const input = document.getElementById('chatInput');
-      const text = input.value.trim();
-      if (!text) return;
+      const input = document.getElementById('chatInput'); const text = input.value.trim(); if (!text) return;
       const messagesContainer = document.getElementById('chatbotMessages');
-      
-      const userMsg = document.createElement('div');
-      userMsg.className = 'chat-msg user';
-      userMsg.innerText = text;
-      messagesContainer.appendChild(userMsg);
-      input.value = '';
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
+      const userMsg = document.createElement('div'); userMsg.className = 'chat-msg user'; userMsg.innerText = text; messagesContainer.appendChild(userMsg);
+      input.value = ''; messagesContainer.scrollTop = messagesContainer.scrollHeight;
       setTimeout(() => {
-        const botMsg = document.createElement('div');
-        botMsg.className = 'chat-msg bot';
-        const lowerText = text.toLowerCase();
+        const botMsg = document.createElement('div'); botMsg.className = 'chat-msg bot'; const lowerText = text.toLowerCase();
         if (currentLang === 'ar') {
-          if (lowerText.includes('إجازة') || lowerText.includes('اجازات')) {
-            botMsg.innerText = "يمكنك تقديم طلب إجازة جديد (سنوية، وفاة، ولادة، حج، عمرة) مباشرة من خدماتي.";
-          } else if (lowerText.includes('مرتب') || lowerText.includes('مفردات')) {
-            botMsg.innerText = "يمكنك تقديم طلب مفردات المرتب بالأجر الشامل أو الصافي واختيار طريقة الاستلام من قسم خدماتي.";
-          } else {
-            botMsg.innerText = "شكراً لتواصلك! تم تسجيل استفسارك وسيتم الرد عليك قريباً من قبل ممثل الموارد البشرية.";
-          }
-        } else {
-          botMsg.innerText = "Thank you for your message! HR will follow up with you.";
-        }
-        messagesContainer.appendChild(botMsg);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+          if (lowerText.includes('إجازة') || lowerText.includes('اجازات')) botMsg.innerText = "يمكنك تقديم طلب إجازة جديد مباشرة من خدماتي.";
+          else if (lowerText.includes('مرتب') || lowerText.includes('مفردات')) botMsg.innerText = "يمكنك تقديم طلب مفردات المرتب بالأجر الشامل أو الصافي من قسم خدماتي.";
+          else botMsg.innerText = "شكراً لتواصلك! تم تسجيل استفسارك وسيتم الرد عليك قريباً من قبل ممثل الموارد البشرية.";
+        } else { botMsg.innerText = "Thank you for your message! HR will follow up with you."; }
+        messagesContainer.appendChild(botMsg); messagesContainer.scrollTop = messagesContainer.scrollHeight;
       }, 600);
     }
 
-    let currentSlideIndex = 0;
-    const totalSlides = 6;
-    let slideInterval;
-
+    let currentSlideIndex = 0; const totalSlides = 6; let slideInterval;
     function showSlide(index) {
       currentSlideIndex = (index + totalSlides) % totalSlides;
-      const slides = document.querySelectorAll('.slide-item');
-      slides.forEach((slide, i) => { slide.classList.toggle('active', i === currentSlideIndex); });
-      const dots = document.querySelectorAll('.dot');
-      dots.forEach((dot, i) => { dot.classList.toggle('active', i === currentSlideIndex); });
+      const slides = document.querySelectorAll('.slide-item'); slides.forEach((slide, i) => { slide.classList.toggle('active', i === currentSlideIndex); });
+      const dots = document.querySelectorAll('.dot'); dots.forEach((dot, i) => { dot.classList.toggle('active', i === currentSlideIndex); });
     }
     function currentSlide(index) { showSlide(index); resetSlideTimer(); }
     function nextSlide() { showSlide(currentSlideIndex + 1); }
     function resetSlideTimer() { clearInterval(slideInterval); slideInterval = setInterval(nextSlide, 5500); }
     
-    let touchStartX = 0;
-    const cardEl = document.getElementById('announcementCard');
+    let touchStartX = 0; const cardEl = document.getElementById('announcementCard');
     cardEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; clearInterval(slideInterval); });
     cardEl.addEventListener('touchend', e => {
       let touchEndX = e.changedTouches[0].clientX;
-      if (touchStartX - touchEndX > 40) nextSlide();
-      else if (touchEndX - touchStartX > 40) showSlide(currentSlideIndex - 1);
-      resetSlideTimer();
+      if (touchStartX - touchEndX > 40) nextSlide(); else if (touchEndX - touchStartX > 40) showSlide(currentSlideIndex - 1); resetSlideTimer();
     });
 
-    const COMPANY_LAT = 30.235154;
-    const COMPANY_LNG = 31.743997;
-    const ALLOWED_RADIUS_METERS = 75;
-
+    const COMPANY_LAT = 30.235154; const COMPANY_LNG = 31.743997; const ALLOWED_RADIUS_METERS = 75;
     function calculateDistance(lat1, lon1, lat2, lon2) {
-      const R = 6371e3;
-      const dLat = (lat2 - lat1) * Math.PI / 180;
-      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const R = 6371e3; const dLat = (lat2 - lat1) * Math.PI / 180; const dLon = (lon2 - lon1) * Math.PI / 180;
       const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
       return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
     }
 
     function verifyLocationAndCheckIn() {
-      const statusText = document.getElementById('t-checkinStatusText');
-      const valIn = document.getElementById('valInTime');
-      const valOut = document.getElementById('valOutTime');
-      const valWorking = document.getElementById('valWorkingHours');
-      const ledGreen = document.getElementById('ledGreen');
-      const ledRed = document.getElementById('ledRed');
-
+      const statusText = document.getElementById('t-checkinStatusText'); const valIn = document.getElementById('valInTime');
+      const valOut = document.getElementById('valOutTime'); const valWorking = document.getElementById('valWorkingHours');
+      const ledGreen = document.getElementById('ledGreen'); const ledRed = document.getElementById('ledRed');
       statusText.innerText = currentLang === 'ar' ? "جاري تحديد الموقع والتحقق من المأموريات..." : "Checking location & approved missions...";
       if (!navigator.geolocation) { statusText.innerText = currentLang === 'ar' ? "متصفحك لا يدعم الـ GPS." : "Geolocation not supported."; return; }
-      
-      const now = new Date();
-      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const todayStr = now.toISOString().split('T')[0];
-
+      const now = new Date(); const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); const todayStr = now.toISOString().split('T')[0];
       if (!currentEmpCode) return;
-
       db.ref('mission_requests/' + currentEmpCode).once('value').then(snap => {
         let hasApprovedMission = false;
-
         if (snap.exists()) {
           const missions = snap.val();
-          for (let k in missions) {
-            if (missions[k].date === todayStr && (missions[k].status === 'Approved' || missions[k].hrApproved === true)) {
-              hasApprovedMission = true;
-              break;
-            }
-          }
+          for (let k in missions) { if (missions[k].date === todayStr && (missions[k].status === 'Approved' || missions[k].hrApproved === true)) { hasApprovedMission = true; break; } }
         }
-
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            const userLat = position.coords.latitude;
-            const userLng = position.coords.longitude;
-            const distance = calculateDistance(userLat, userLng, COMPANY_LAT, COMPANY_LNG);
-            const googleMapsUrl = `https://maps.google.com/?q=${userLat},${userLng}`;
-
+            const userLat = position.coords.latitude; const userLng = position.coords.longitude;
+            const distance = calculateDistance(userLat, userLng, COMPANY_LAT, COMPANY_LNG); const googleMapsUrl = `https://maps.google.com/?q=${userLat},${userLng}`;
             if (hasApprovedMission || distance <= ALLOWED_RADIUS_METERS) {
               const refPath = db.ref('attendance/' + currentEmpCode + '/' + todayStr);
               refPath.once('value').then(snapshot => {
-                let attData = snapshot.val() || {};
-                let currentTimeMs = now.getTime();
-
+                let attData = snapshot.val() || {}; let currentTimeMs = now.getTime();
                 if (!attData.inTime) {
-                  attData.inTime = timeStr; 
-                  attData.inTimestamp = currentTimeMs;
-                  attData.inLocation = { lat: userLat, lng: userLng, mapUrl: googleMapsUrl, isMission: hasApprovedMission };
-                  
-                  statusText.innerText = hasApprovedMission 
-                    ? (currentLang === 'ar' ? `📍 تم تسجيل حضور المأمورية الساعة ${timeStr}` : `📍 Mission Check-In at ${timeStr}`)
-                    : (currentLang === 'ar' ? `✅ تم تسجيل الحضور الساعة ${timeStr}` : `✅ Check-In saved at ${timeStr}`);
-                  
+                  attData.inTime = timeStr; attData.inTimestamp = currentTimeMs; attData.inLocation = { lat: userLat, lng: userLng, mapUrl: googleMapsUrl, isMission: hasApprovedMission };
+                  statusText.innerText = hasApprovedMission ? (currentLang === 'ar' ? `📍 تم تسجيل حضور المأمورية الساعة ${timeStr}` : `📍 Mission Check-In at ${timeStr}`) : (currentLang === 'ar' ? `✅ تم تسجيل الحضور الساعة ${timeStr}` : `✅ Check-In saved at ${timeStr}`);
                   ledGreen.classList.add('active'); ledRed.classList.remove('active');
                 } else {
-                  attData.outTime = timeStr; 
-                  attData.outTimestamp = currentTimeMs;
-                  attData.outLocation = { lat: userLat, lng: userLng, mapUrl: googleMapsUrl, isMission: hasApprovedMission };
-
-                  const diffMs = attData.outTimestamp - attData.inTimestamp;
-                  const totalMins = Math.floor(diffMs / 60000);
+                  attData.outTime = timeStr; attData.outTimestamp = currentTimeMs; attData.outLocation = { lat: userLat, lng: userLng, mapUrl: googleMapsUrl, isMission: hasApprovedMission };
+                  const diffMs = attData.outTimestamp - attData.inTimestamp; const totalMins = Math.floor(diffMs / 60000);
                   attData.workingHours = `${String(Math.floor(totalMins / 60)).padStart(2, '0')}:${String(totalMins % 60).padStart(2, '0')}`;
-                  
-                  statusText.innerText = hasApprovedMission 
-                    ? (currentLang === 'ar' ? `📍 تم تسجيل انصراف المأمورية الساعة ${timeStr}` : `📍 Mission Check-Out at ${timeStr}`)
-                    : (currentLang === 'ar' ? `✅ تم تسجيل الانصراف الساعة ${timeStr}` : `✅ Check-Out recorded at ${timeStr}`);
-                  
+                  statusText.innerText = hasApprovedMission ? (currentLang === 'ar' ? `📍 تم تسجيل انصراف المأمورية الساعة ${timeStr}` : `📍 Mission Check-Out at ${timeStr}`) : (currentLang === 'ar' ? `✅ تم تسجيل الانصراف الساعة ${timeStr}` : `✅ Check-Out recorded at ${timeStr}`);
                   ledRed.classList.add('active'); ledGreen.classList.remove('active');
                 }
-
                 refPath.set(attData);
-                if (attData.inTime) valIn.innerText = attData.inTime;
-                if (attData.outTime) valOut.innerText = attData.outTime;
-                if (attData.workingHours) valWorking.innerText = attData.workingHours;
+                if (attData.inTime) valIn.innerText = attData.inTime; if (attData.outTime) valOut.innerText = attData.outTime; if (attData.workingHours) valWorking.innerText = attData.workingHours;
               });
-            } else {
-              statusText.innerText = currentLang === 'ar' 
-                ? `❌ خارج نطاق الشركة (${Math.round(distance)} متر) وليس لديك مأمورية معتمدة اليوم!` 
-                : `❌ Outside company radius (${Math.round(distance)}m) with no approved mission!`;
-            }
+            } else { statusText.innerText = currentLang === 'ar' ? `❌ خارج نطاق الشركة (${Math.round(distance)} متر) وليس لديك مأمورية معتمدة اليوم!` : `❌ Outside company radius (${Math.round(distance)}m) with no approved mission!`; }
           },
           () => { statusText.innerText = currentLang === 'ar' ? "تعذر الحصول على موقعك. تأكد من تفعيل الـ GPS." : "Unable to retrieve location."; },
           { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
@@ -2288,278 +1907,104 @@
     }
 
     function handleLeaveTypeChange() {
-      const leaveType = document.getElementById('leaveType').value;
-      const noticeBox = document.getElementById('unpaidInsuranceNotice');
-      const attachBox = document.getElementById('medicalReportSection');
-      const titleText = document.getElementById('attachmentTitleText');
-
-      if (leaveType === 'unpaid') noticeBox.classList.remove('hidden');
-      else noticeBox.classList.add('hidden');
-
+      const leaveType = document.getElementById('leaveType').value; const noticeBox = document.getElementById('unpaidInsuranceNotice');
+      const attachBox = document.getElementById('medicalReportSection'); const titleText = document.getElementById('attachmentTitleText');
+      if (leaveType === 'unpaid') noticeBox.classList.remove('hidden'); else noticeBox.classList.add('hidden');
       const requiredAttachmentTypes = ['sick', 'bereavement', 'paternity', 'hajj', 'umrah'];
-      
       if (requiredAttachmentTypes.includes(leaveType)) {
         attachBox.classList.remove('hidden');
-        if (leaveType === 'sick') {
-          titleText.setAttribute('data-ar', '🏥 رفع أو تصوير التقرير الطبي (صورة أو PDF):');
-          titleText.setAttribute('data-en', '🏥 Upload or capture medical report (Image or PDF):');
-        } else if (leaveType === 'bereavement') {
-          titleText.setAttribute('data-ar', '📜 رفع أو تصوير شهادة الوفاة (صورة أو PDF):');
-          titleText.setAttribute('data-en', '📜 Upload or capture death certificate (Image or PDF):');
-        } else if (leaveType === 'paternity') {
-          titleText.setAttribute('data-ar', '👶 رفع أو تصوير شهادة الميلاد (صورة أو PDF):');
-          titleText.setAttribute('data-en', '👶 Upload or capture birth certificate (Image or PDF):');
-        } else if (leaveType === 'hajj' || leaveType === 'umrah') {
-          titleText.setAttribute('data-ar', '✈️ رفع أو تصوير التأشيرة وتذكرة الطيران (صورة أو PDF):');
-          titleText.setAttribute('data-en', '✈️ Upload or capture visa and flight ticket (Image or PDF):');
-        }
+        if (leaveType === 'sick') { titleText.setAttribute('data-ar', '🏥 رفع أو تصوير التقرير الطبي:'); titleText.setAttribute('data-en', '🏥 Upload medical report:'); } 
+        else if (leaveType === 'bereavement') { titleText.setAttribute('data-ar', '📜 رفع أو تصوير شهادة الوفاة:'); titleText.setAttribute('data-en', '📜 Upload death certificate:'); } 
+        else if (leaveType === 'paternity') { titleText.setAttribute('data-ar', '👶 رفع أو تصوير شهادة الميلاد:'); titleText.setAttribute('data-en', '👶 Upload birth certificate:'); } 
+        else if (leaveType === 'hajj' || leaveType === 'umrah') { titleText.setAttribute('data-ar', '✈️ رفع أو تصوير التأشيرة وتذكرة الطيران:'); titleText.setAttribute('data-en', '✈️ Upload visa and flight ticket:'); }
         titleText.innerText = titleText.getAttribute(`data-${currentLang}`);
-      } else {
-        attachBox.classList.add('hidden');
-      }
+      } else { attachBox.classList.add('hidden'); }
     }
 
     function calculateLeaveDays() {
-      const start = document.getElementById('leaveStartDate').value;
-      const end = document.getElementById('leaveEndDate').value;
-      const daysText = document.getElementById('leaveTotalDaysText');
-      const leaveType = document.getElementById('leaveType').value;
-      
+      const start = document.getElementById('leaveStartDate').value; const end = document.getElementById('leaveEndDate').value;
+      const daysText = document.getElementById('leaveTotalDaysText'); const leaveType = document.getElementById('leaveType').value;
       if (start && end) {
-        const startDate = new Date(start);
-        const endDate = new Date(end);
-        const diffTime = endDate - startDate;
+        const startDate = new Date(start); const endDate = new Date(end); const diffTime = endDate - startDate;
         let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-        
-        if (leaveType === 'unpaid' && diffDays > 30) {
-          daysText.innerText = currentLang === 'ar' ? "⚠️ تنبيه: الإجازة بدون مرتب بحد أقصى شهر (30 يوم)!" : "⚠️ Max limit for unpaid leave is 30 days!";
-          return;
-        }
-
-        if (diffDays > 0) {
-          daysText.innerText = currentLang === 'ar' ? `إجمالي الأيام المطلوبة: ${diffDays} يوم` : `Total requested days: ${diffDays} days`;
-        } else {
-          daysText.innerText = currentLang === 'ar' ? "❌ تاريخ النهاية يجب أن يكون بعد تاريخ البداية!" : "❌ End date must be after start date!";
-        }
+        if (leaveType === 'unpaid' && diffDays > 30) { daysText.innerText = currentLang === 'ar' ? "⚠️ تنبيه: الإجازة بدون مرتب بحد أقصى شهر (30 يوم)!" : "⚠️ Max limit for unpaid leave is 30 days!"; return; }
+        if (diffDays > 0) { daysText.innerText = currentLang === 'ar' ? `إجمالي الأيام المطلوبة: ${diffDays} يوم` : `Total requested days: ${diffDays} days`; } 
+        else { daysText.innerText = currentLang === 'ar' ? "❌ تاريخ النهاية يجب أن يكون بعد تاريخ البداية!" : "❌ End date must be after start date!"; }
       }
     }
 
     function submitLeaveRequest() {
-      const leaveType = document.getElementById('leaveType').value;
-      const startDate = document.getElementById('leaveStartDate').value;
-      const endDate = document.getElementById('leaveEndDate').value;
-      const notes = document.getElementById('leaveNotes').value.trim();
-      const msg = document.getElementById('leaveMsg');
-
-      if (!startDate || !endDate) {
-        msg.style.color = '#ef4444';
-        msg.innerText = currentLang === 'ar' ? "يرجى تحديد تاريخ البداية والنهاية!" : "Please select start and end dates!";
-        return;
-      }
-
+      const leaveType = document.getElementById('leaveType').value; const startDate = document.getElementById('leaveStartDate').value;
+      const endDate = document.getElementById('leaveEndDate').value; const notes = document.getElementById('leaveNotes').value.trim(); const msg = document.getElementById('leaveMsg');
+      if (!startDate || !endDate) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? "يرجى تحديد تاريخ البداية والنهاية!" : "Please select start and end dates!"; return; }
       const requiredAttachmentTypes = ['sick', 'bereavement', 'paternity', 'hajj', 'umrah'];
-      
       if (requiredAttachmentTypes.includes(leaveType)) {
         const fileInput = document.getElementById('medicalReportFile');
         if (!fileInput.files || !fileInput.files[0]) {
-          msg.style.color = '#ef4444';
-          if (leaveType === 'sick') msg.innerText = currentLang === 'ar' ? "⚠️ يرجى رفع أو تصوير التقرير الطبي!" : "⚠️ Please attach medical report!";
-          else if (leaveType === 'bereavement') msg.innerText = currentLang === 'ar' ? "⚠️ يرجى رفع أو تصوير شهادة الوفاة لاعتماد الإجازة!" : "⚠️ Please attach death certificate!";
-          else if (leaveType === 'paternity') msg.innerText = currentLang === 'ar' ? "⚠️ يرجى رفع أو تصوير شهادة الميلاد لاعتماد الإجازة!" : "⚠️ Please attach birth certificate!";
-          else if (leaveType === 'hajj' || leaveType === 'umrah') msg.innerText = currentLang === 'ar' ? "⚠️ يرجى رفع أو تصوير التأشيرة وتذكرة الطيران!" : "⚠️ Please attach visa and flight ticket!";
-          return;
+          msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? "⚠️ يرجى رفع المستندات المطلوبة لاعتماد الإجازة!" : "⚠️ Please attach required documents!"; return;
         }
       }
-
-      const leaveData = {
-        code: currentEmpCode,
-        name: currentUserData.name || 'Unknown',
-        type: leaveType,
-        startDate: startDate,
-        endDate: endDate,
-        notes: notes,
-        status: 'Pending',
-        timestamp: Date.now()
-      };
-
+      const leaveData = { code: currentEmpCode, name: currentUserData.name || 'Unknown', type: leaveType, startDate: startDate, endDate: endDate, notes: notes, status: 'Pending', timestamp: Date.now() };
       db.ref('leave_requests/' + currentEmpCode).push(leaveData).then(() => {
-        msg.style.color = '#38bdf8';
-        msg.innerText = currentLang === 'ar' ? "✅ تم تقديم طلب الإجازة والمستندات بنجاح!" : "✅ Leave request & documents submitted successfully!";
-        setTimeout(() => { showPage('view-dashboard'); }, 2000);
-      }).catch(() => {
-        msg.style.color = '#ef4444';
-        msg.innerText = currentLang === 'ar' ? "❌ حدث خطأ، حاول مرة أخرى." : "❌ Error occurred, try again.";
-      });
+        msg.style.color = '#38bdf8'; msg.innerText = currentLang === 'ar' ? "✅ تم تقديم طلب الإجازة بنجاح!" : "✅ Leave request submitted successfully!"; setTimeout(() => { showPage('view-dashboard'); }, 2000);
+      }).catch(() => { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? "❌ حدث خطأ، حاول مرة أخرى." : "❌ Error occurred, try again."; });
     }
 
     function showComingSoon(fromView = 'view-dashboard') { returnToView = fromView; showPage('view-coming-soon'); }
     function goBackFromComingSoon() { showPage(returnToView); }
-    function switchTab(pageId, btnElement) {
-      document.querySelectorAll('.bottom-nav-item').forEach(btn => btn.classList.remove('active'));
-      if (btnElement) btnElement.classList.add('active');
-      showPage(pageId);
-    }
+    function switchTab(pageId, btnElement) { document.querySelectorAll('.bottom-nav-item').forEach(btn => btn.classList.remove('active')); if (btnElement) btnElement.classList.add('active'); showPage(pageId); }
 
     function showPage(pageId) {
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-      document.body.scrollTop = 0; document.documentElement.scrollTop = 0;
-
-      const chatbotFab = document.getElementById('chatbot-fab');
-      const bottomNavBar = document.getElementById('bottomNavBar');
-
-      if (pageId === 'view-login') {
-        if (chatbotFab) chatbotFab.style.display = 'none';
-        if (bottomNavBar) bottomNavBar.classList.remove('show');
-      } else {
-        if (chatbotFab) chatbotFab.style.display = 'flex';
-        if (bottomNavBar) bottomNavBar.classList.add('show');
-      }
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); document.body.scrollTop = 0; document.documentElement.scrollTop = 0;
+      const chatbotFab = document.getElementById('chatbot-fab'); const bottomNavBar = document.getElementById('bottomNavBar');
+      if (pageId === 'view-login') { if (chatbotFab) chatbotFab.style.display = 'none'; if (bottomNavBar) bottomNavBar.classList.remove('show'); } 
+      else { if (chatbotFab) chatbotFab.style.display = 'flex'; if (bottomNavBar) bottomNavBar.classList.add('show'); }
       
       ['view-login', 'view-dashboard', 'view-id-card', 'view-services', 'view-leave-request', 'view-permission-request', 'view-mission-request', 'view-payslip-request', 'view-loan-request', 'view-settings', 'view-profile', 'view-coming-soon', 'view-suggestion-page'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add('hidden');
+        const el = document.getElementById(id); if (el) el.classList.add('hidden');
       });
       
-      const headerCard = document.getElementById('dashboard-header-container');
-      const contentCard = document.getElementById('dashboard-content-container');
-      
+      const headerCard = document.getElementById('dashboard-header-container'); const contentCard = document.getElementById('dashboard-content-container');
       if (pageId === 'view-dashboard') {
-        document.getElementById('view-dashboard').classList.remove('hidden');
-        if (headerCard) headerCard.classList.remove('hidden');
-        if (contentCard) contentCard.classList.remove('hidden');
-        updateDynamicGreeting();
-        updateDigitalClockDisplay(totalPermBalanceSeconds);
+        document.getElementById('view-dashboard').classList.remove('hidden'); if (headerCard) headerCard.classList.remove('hidden'); if (contentCard) contentCard.classList.remove('hidden');
+        updateDynamicGreeting(); updateDigitalClockDisplay(totalPermBalanceSeconds);
       } else {
-        document.getElementById('view-dashboard').classList.add('hidden');
-        if (headerCard) headerCard.classList.add('hidden');
-        if (contentCard) contentCard.classList.add('hidden');
+        document.getElementById('view-dashboard').classList.add('hidden'); if (headerCard) headerCard.classList.add('hidden'); if (contentCard) contentCard.classList.add('hidden');
         document.getElementById(pageId).classList.remove('hidden');
-        
-        if (pageId === 'view-leave-request') {
-          document.getElementById('leaveStartDate').value = '';
-          document.getElementById('leaveEndDate').value = '';
-          document.getElementById('leaveNotes').value = '';
-          document.getElementById('leaveTotalDaysText').innerText = currentLang === 'ar' ? 'إجمالي الأيام المطلوبة: 0 يوم' : 'Total requested days: 0 days';
-          document.getElementById('leaveMsg').innerText = '';
-          document.getElementById('medicalReportFile').value = '';
-          const medFileEl = document.getElementById('medicalFileName');
-          medFileEl.innerText = medFileEl.getAttribute(`data-${currentLang}`);
-          document.getElementById('leaveType').value = 'annual';
-          const annualOption = document.querySelector('.dropdown-option[onclick*="annual"]');
-          if (annualOption) document.getElementById('selectedLeaveText').innerText = annualOption.getAttribute(`data-${currentLang}`);
-          handleLeaveTypeChange();
-        }
-
-        if (pageId === 'view-permission-request') {
-          document.getElementById('permissionDate').value = '';
-          document.getElementById('permissionNotes').value = '';
-          document.getElementById('permMsg').innerText = '';
-          updateDigitalClockDisplay(totalPermBalanceSeconds);
-          calculateRequestedDuration();
-          setTimeout(centerTimeWheels, 50); // سنترة العدادات
-        }
-
-        if (pageId === 'view-mission-request') {
-          document.getElementById('missionDate').value = '';
-          document.getElementById('chkFullDayMission').checked = false;
-          toggleFullDayMission(false);
-          document.getElementById('missionDestination').value = '';
-          document.getElementById('missionPurpose').value = '';
-          document.getElementById('missionMsg').innerText = '';
-          document.getElementById('missionSlipModal').classList.add('hidden');
-          setTimeout(centerTimeWheels, 50); // سنترة العدادات
-        }
-
-        if (pageId === 'view-payslip-request') {
-          document.getElementById('payslipDestination').value = '';
-          document.getElementById('chkPrintout').checked = false;
-          document.getElementById('chkDigitalEmail').checked = false;
-          document.getElementById('chkBothDelivery').checked = false;
-          document.getElementById('payslipMsg').innerText = '';
-          document.getElementById('payslipDetailsBreakdown').classList.add('hidden');
-          document.getElementById('btnPayslipToggleText').innerText = currentLang === 'ar' ? 'الاطلاع على تفاصيل مفردات مرتبي' : 'View Payslip Breakdown';
-        }
-
-        if (pageId === 'view-loan-request') {
-          document.getElementById('loanAmount').value = '';
-          document.getElementById('loanReason').value = '';
-          document.getElementById('loanMsg').innerText = '';
-          selectLoanMonth(3);
-        }
-
-        if (pageId === 'view-suggestion-page' && currentUserData) {
-          document.getElementById('sugCode').value = currentEmpCode;
-          document.getElementById('sugName').value = currentUserData.name || '';
-          document.getElementById('sugText').value = '';
-          document.getElementById('sugMsg').innerText = '';
+        if (pageId === 'view-permission-request' || pageId === 'view-mission-request') {
+          setTimeout(centerTimeWheels, 50); // توسيط العجلات بدون حفلة الكليك
         }
       }
     }
 
     function submitSuggestion() {
-      const text = document.getElementById('sugText').value.trim();
-      const msg = document.getElementById('sugMsg');
-      if (!text) {
-        msg.style.color = '#ef4444';
-        msg.innerText = currentLang === 'ar' ? "يرجى كتابة مقترحك أولاً!" : "Please write your suggestion first!";
-        return;
-      }
-      
-      db.ref('suggestions/' + currentEmpCode).push({
-        code: currentEmpCode, name: currentUserData.name || 'Unknown', suggestion: text, timestamp: Date.now()
-      }).then(() => {
-        msg.style.color = '#38bdf8';
-        msg.innerText = currentLang === 'ar' ? "✅ تم إرسال مقترحك بنجاح!" : "✅ Suggestion submitted successfully!";
-        setTimeout(() => { showPage('view-dashboard'); }, 2000);
-      }).catch(() => {
-        msg.style.color = '#ef4444';
-        msg.innerText = currentLang === 'ar' ? "❌ حدث خطأ، حاول مرة أخرى." : "❌ Error occurred, try again.";
-      });
+      const text = document.getElementById('sugText').value.trim(); const msg = document.getElementById('sugMsg');
+      if (!text) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? "يرجى كتابة مقترحك أولاً!" : "Please write your suggestion first!"; return; }
+      db.ref('suggestions/' + currentEmpCode).push({ code: currentEmpCode, name: currentUserData.name || 'Unknown', suggestion: text, timestamp: Date.now() }).then(() => {
+        msg.style.color = '#38bdf8'; msg.innerText = currentLang === 'ar' ? "✅ تم إرسال مقترحك بنجاح!" : "✅ Suggestion submitted successfully!"; setTimeout(() => { showPage('view-dashboard'); }, 2000);
+      }).catch(() => { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? "❌ حدث خطأ، حاول مرة أخرى." : "❌ Error occurred, try again."; });
     }
 
     function login() {
-      const code = document.getElementById('empCode').value.trim();
-      const pass = document.getElementById('empPass').value.trim();
-      const rememberMe = document.getElementById('rememberMe').checked;
-      const errorEl = document.getElementById('error');
+      const code = document.getElementById('empCode').value.trim(); const pass = document.getElementById('empPass').value.trim();
+      const rememberMe = document.getElementById('rememberMe').checked; const errorEl = document.getElementById('error');
       if (!code) { errorEl.innerText = currentLang === 'ar' ? "يرجى إدخال كود الموظف" : "Please enter employee code"; return; }
-      
       db.ref('users/' + code).once('value').then((snapshot) => {
         if (snapshot.exists()) {
           const user = snapshot.val();
-          if (user.password !== pass) {
-            errorEl.innerText = currentLang === 'ar' ? "كلمة السر غير صحيحة!" : "Incorrect password!";
-            return;
-          }
-          currentUserData = user;
-          currentEmpCode = code;
-          errorEl.innerText = "";
-          
-          if (rememberMe) {
-            localStorage.setItem('lacto_saved_code', code);
-            localStorage.setItem('lacto_saved_pass', pass);
-          } else {
-            localStorage.removeItem('lacto_saved_code');
-            localStorage.removeItem('lacto_saved_pass');
-          }
-          document.getElementById('dash-name').innerText = user.name || "--";
-          document.getElementById('dash-code-val').innerText = code;
-          
+          if (user.password !== pass) { errorEl.innerText = currentLang === 'ar' ? "كلمة السر غير صحيحة!" : "Incorrect password!"; return; }
+          currentUserData = user; currentEmpCode = code; errorEl.innerText = "";
+          if (rememberMe) { localStorage.setItem('lacto_saved_code', code); localStorage.setItem('lacto_saved_pass', pass); } 
+          else { localStorage.removeItem('lacto_saved_code'); localStorage.removeItem('lacto_saved_pass'); }
+          document.getElementById('dash-name').innerText = user.name || "--"; document.getElementById('dash-code-val').innerText = code;
           const userPhotoUrl = user.photo || (code === 'amgad' || (user.name && user.name.includes('أمجد')) ? 'amgad.jpg' : 'https://i.pravatar.cc/150?img=12');
-          
-          document.getElementById('dash-avatar').src = userPhotoUrl;
-          document.getElementById('userName').innerText = user.name || "--";
-          document.getElementById('userJob').innerText = user.job || "--";
-          document.getElementById('userDept').innerText = user.dept || "--";
-          document.getElementById('userCodeVal').innerText = code;
-          document.getElementById('userNID').innerText = user.nationalId || "--";
+          document.getElementById('dash-avatar').src = userPhotoUrl; document.getElementById('userName').innerText = user.name || "--";
+          document.getElementById('userJob').innerText = user.job || "--"; document.getElementById('userDept').innerText = user.dept || "--";
+          document.getElementById('userCodeVal').innerText = code; document.getElementById('userNID').innerText = user.nationalId || "--";
           document.getElementById('userPhoto').src = userPhotoUrl;
-
           document.getElementById('qrcode').innerHTML = "";
           new QRCode(document.getElementById("qrcode"), { text: window.location.origin + window.location.pathname + "?emp=" + code, width: 85, height: 85 });
-          
           showPage('view-dashboard');
-
           db.ref('attendance/' + code + '/' + new Date().toISOString().split('T')[0]).once('value').then(attSnap => {
             if (attSnap.exists()) {
               const d = attSnap.val();
@@ -2568,51 +2013,32 @@
               if (d.workingHours) document.getElementById('valWorkingHours').innerText = d.workingHours;
             }
           });
-        } else {
-          errorEl.innerText = currentLang === 'ar' ? "كود الموظف غير مسجل!" : "Employee code not found!";
-        }
+        } else { errorEl.innerText = currentLang === 'ar' ? "كود الموظف غير مسجل!" : "Employee code not found!"; }
       });
     }
 
     function downloadCard() {
       html2canvas(document.getElementById('myCardToDownload'), { useCORS: true, scale: 2 }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'Lacto_ID_' + currentEmpCode + '.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
+        const link = document.createElement('a'); link.download = 'Lacto_ID_' + currentEmpCode + '.png'; link.href = canvas.toDataURL('image/png'); link.click();
       });
     }
 
-    function logout() { 
-      localStorage.removeItem('lacto_saved_code');
-      localStorage.removeItem('lacto_saved_pass');
-      window.location.reload(); 
-    }
+    function logout() { localStorage.removeItem('lacto_saved_code'); localStorage.removeItem('lacto_saved_pass'); window.location.reload(); }
     
     window.addEventListener('DOMContentLoaded', () => {
-      populate24HourWheels();
-      selectLanguage(currentLang);
-      resetSlideTimer();
-      const savedCode = localStorage.getItem('lacto_saved_code');
-      const savedPass = localStorage.getItem('lacto_saved_pass');
-      if (savedCode && savedPass) {
-        document.getElementById('empCode').value = savedCode;
-        document.getElementById('empPass').value = savedPass;
-        document.getElementById('rememberMe').checked = true;
-      }
+      populate24HourWheels(); selectLanguage(currentLang); resetSlideTimer();
+      const savedCode = localStorage.getItem('lacto_saved_code'); const savedPass = localStorage.getItem('lacto_saved_pass');
+      if (savedCode && savedPass) { document.getElementById('empCode').value = savedCode; document.getElementById('empPass').value = savedPass; document.getElementById('rememberMe').checked = true; }
     });
 
     function toggleLangMenu() { document.getElementById('langMenu').classList.toggle('show'); }
     
     function selectLanguage(lang) {
       if (document.getElementById('langMenu').classList.contains('show')) toggleLangMenu();
-      currentLang = lang;
-      localStorage.setItem('lacto_lang', lang);
-      document.documentElement.lang = lang;
-      document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+      currentLang = lang; localStorage.setItem('lacto_lang', lang);
+      document.documentElement.lang = lang; document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
       document.getElementById('current-lang-text').innerText = (lang === 'ar') ? "العربية" : "English";
-      updateContentTranslations();
-      showSlide(currentSlideIndex);
+      updateContentTranslations(); showSlide(currentSlideIndex);
     }
   </script>
 </body>
