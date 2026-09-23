@@ -662,7 +662,8 @@
 
       <!-- Language -->
       <div class="lang-dropdown-container">
-        <button class="lang-dropdown-btn" onclick="toggleLangMenu()">
+        <!-- عدلنا تمرير الحدث للوظيفة -->
+        <button class="lang-dropdown-btn" onclick="toggleLangMenu(event)">
           🌐 <span id="current-lang-short">AR</span> ▼
         </button>
         <div class="lang-dropdown-menu" id="langMenu">
@@ -1201,9 +1202,10 @@
     </div>
     
     <!-- 4.5. LOAN REQUEST VIEW -->
+    <!-- تم تعديل مسار زر الرجوع ليعود إلى view-services -->
     <div id="view-loan-request" class="card hidden">
       <div class="nav-bar">
-        <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+        <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
         <span style="font-weight: 700; color: #38bdf8;" data-ar="طلب سلفة مالية" data-en="Loan Request">طلب سلفة مالية</span>
       </div>
 
@@ -1649,6 +1651,32 @@
       document.addEventListener('click', silentResume); document.addEventListener('touchstart', silentResume);
     });
     
+    // دوال زر تغيير اللغة المضافة حديثاً
+    function toggleLangMenu(event) {
+      if (event) event.stopPropagation();
+      const langMenu = document.getElementById('langMenu');
+      if (langMenu) langMenu.classList.toggle('show');
+    }
+
+    function selectLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lacto_lang', lang);
+      
+      const langShort = document.getElementById('current-lang-short');
+      if (langShort) {
+        langShort.innerText = lang.toUpperCase();
+      }
+      
+      const langMenu = document.getElementById('langMenu');
+      if (langMenu) {
+        langMenu.classList.remove('show');
+      }
+      
+      if (typeof updateContentTranslations === 'function') {
+        updateContentTranslations();
+      }
+    }
+
     function togglePasswordVisibility() {
       const pass = document.getElementById('empPass');
       const eyeIconEl = document.getElementById('eyeIcon');
@@ -2159,7 +2187,6 @@
       handleLeaveTypeChange();
     }
 
-    // --- New Reset Functions ---
     function resetDocForm() {
       document.getElementById('docTypeSelect').value = 'qualification';
       document.getElementById('selectedDocText').innerText = currentLang === 'ar' ? 'شهادة المؤهل الدراسي' : 'Qualification Certificate';
@@ -2190,7 +2217,6 @@
       document.getElementById('clinicTicketModal').classList.add('hidden');
       const msg = document.getElementById('clinicMsg'); if(msg) msg.innerText = '';
     }
-    // ----------------------------
 
     function handleLeaveTypeChange() {
       const leaveType = document.getElementById('leaveType').value; 
@@ -2268,7 +2294,6 @@
       
       const headerCard = document.getElementById('dashboard-header-container'); const contentCard = document.getElementById('dashboard-content-container');
       
-      // تفريغ الطلبات قبل ما تفتح
       if (pageId === 'view-leave-request') { resetLeaveForm(); }
       if (pageId === 'view-doc-request') { resetDocForm(); }
       if (pageId === 'view-tech-support') { resetTechForm(); }
@@ -2330,12 +2355,31 @@
       });
     }
 
-    function logout() { localStorage.removeItem('lacto_saved_code'); localStorage.removeItem('lacto_saved_pass'); window.location.reload(); }
+    // دالة تسجيل الخروج المعدلة لتفريغ الخانات إذا لم يتم اختيار "تذكرني"
+    function logout() { 
+      const rememberMe = document.getElementById('rememberMe').checked;
+      if (!rememberMe) {
+        localStorage.removeItem('lacto_saved_code'); 
+        localStorage.removeItem('lacto_saved_pass');
+        document.getElementById('empCode').value = '';
+        document.getElementById('empPass').value = '';
+      }
+      window.location.reload(); 
+    }
     
+    // دالة التحميل المعدلة للتعامل مع الخانات بشكل سليم
     window.addEventListener('DOMContentLoaded', () => {
       populate24HourWheels(); selectLanguage(currentLang); resetSlideTimer();
       const savedCode = localStorage.getItem('lacto_saved_code'); const savedPass = localStorage.getItem('lacto_saved_pass');
-      if (savedCode && savedPass) { document.getElementById('empCode').value = savedCode; document.getElementById('empPass').value = savedPass; document.getElementById('rememberMe').checked = true; }
+      if (savedCode && savedPass) { 
+        document.getElementById('empCode').value = savedCode; 
+        document.getElementById('empPass').value = savedPass; 
+        document.getElementById('rememberMe').checked = true; 
+      } else {
+        document.getElementById('empCode').value = '';
+        document.getElementById('empPass').value = '';
+        document.getElementById('rememberMe').checked = false;
+      }
     });
 
     /* =========================================
