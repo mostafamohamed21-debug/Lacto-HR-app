@@ -1260,12 +1260,19 @@
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;">
         
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="نوع المستند المطلوب:" data-en="Requested Document:">نوع المستند المطلوب:</label>
-        <select id="docTypeSelect" onchange="toggleDocOther()" style="appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=\"%2338bdf8\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\"/></svg>'); background-repeat: no-repeat; background-position: left 1rem center; background-size: 20px;">
-          <option value="qualification" data-ar="شهادة المؤهل الدراسي" data-en="Qualification Certificate">شهادة المؤهل الدراسي</option>
-          <option value="military" data-ar="شهادة الخدمة العسكرية" data-en="Military Service Certificate">شهادة الخدمة العسكرية</option>
-          <option value="birth" data-ar="شهادة الميلاد" data-en="Birth Certificate">شهادة الميلاد</option>
-          <option value="other" data-ar="أخرى (تحديد مستند آخر)" data-en="Other (Specify)">أخرى (تحديد مستند آخر)</option>
-        </select>
+        <div class="custom-dropdown" id="docTypeDropdown">
+          <div class="dropdown-selected" onclick="toggleDocDropdown(event)">
+            <span id="selectedDocText" data-ar="شهادة المؤهل الدراسي" data-en="Qualification Certificate">شهادة المؤهل الدراسي</span>
+            <span style="font-size: 0.8rem;">▼</span>
+          </div>
+          <div class="dropdown-options" id="docOptions">
+            <div class="dropdown-option" onclick="selectDocOption('qualification', 'شهادة المؤهل الدراسي')" data-ar="شهادة المؤهل الدراسي" data-en="Qualification Certificate">شهادة المؤهل الدراسي</div>
+            <div class="dropdown-option" onclick="selectDocOption('military', 'شهادة الخدمة العسكرية')" data-ar="شهادة الخدمة العسكرية" data-en="Military Service Certificate">شهادة الخدمة العسكرية</div>
+            <div class="dropdown-option" onclick="selectDocOption('birth', 'شهادة الميلاد')" data-ar="شهادة الميلاد" data-en="Birth Certificate">شهادة الميلاد</div>
+            <div class="dropdown-option" onclick="selectDocOption('other', 'أخرى (تحديد مستند آخر)')" data-ar="أخرى (تحديد مستند آخر)" data-en="Other (Specify)">أخرى (تحديد مستند آخر)</div>
+          </div>
+        </div>
+        <input type="hidden" id="docTypeSelect" value="qualification">
 
         <div id="otherDocWrapper" class="hidden" style="animation: fadeDown 0.3s ease;">
           <label style="font-size: 0.75rem; color: #38bdf8;" data-ar="يرجى تحديد المستند بدقة:" data-en="Please specify the document:">يرجى تحديد المستند بدقة:</label>
@@ -1297,12 +1304,19 @@
 
         <div id="hwSubCategoryWrapper" class="hidden" style="animation: fadeDown 0.3s ease;">
           <label style="font-size: 0.75rem; color: var(--muted);" data-ar="نوع العطل (لأجهزة المكتب):" data-en="Hardware/Network Issue Type:">نوع العطل (لأجهزة المكتب):</label>
-          <select id="hwSubCategory" style="appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=\"%2338bdf8\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\"/></svg>'); background-repeat: no-repeat; background-position: left 1rem center; background-size: 20px;">
-            <option value="hardware" data-ar="عطل في الجهاز (Hardware)" data-en="Hardware Error">عطل في الجهاز (Hardware)</option>
-            <option value="network" data-ar="مشكلة بالإنترنت / الشبكة" data-en="Network / Internet Issue">مشكلة بالإنترنت / الشبكة</option>
-            <option value="software_install" data-ar="طلب تثبيت برنامج جديد" data-en="New Software Installation">طلب تثبيت برنامج جديد</option>
-            <option value="software_error" data-ar="خطأ في برنامج موجود" data-en="Existing Software Error">خطأ في برنامج موجود</option>
-          </select>
+          <div class="custom-dropdown" id="techDropdown">
+            <div class="dropdown-selected" onclick="toggleTechDropdown(event)">
+              <span id="selectedTechText" data-ar="عطل في الجهاز (Hardware)" data-en="Hardware Error">عطل في الجهاز (Hardware)</span>
+              <span style="font-size: 0.8rem;">▼</span>
+            </div>
+            <div class="dropdown-options" id="techOptions">
+              <div class="dropdown-option" onclick="selectTechOption('hardware', 'عطل في الجهاز (Hardware)')" data-ar="عطل في الجهاز (Hardware)" data-en="Hardware Error">عطل في الجهاز (Hardware)</div>
+              <div class="dropdown-option" onclick="selectTechOption('network', 'مشكلة بالإنترنت / الشبكة')" data-ar="مشكلة بالإنترنت / الشبكة" data-en="Network / Internet Issue">مشكلة بالإنترنت / الشبكة</div>
+              <div class="dropdown-option" onclick="selectTechOption('software_install', 'طلب تثبيت برنامج جديد')" data-ar="طلب تثبيت برنامج جديد" data-en="New Software Installation">طلب تثبيت برنامج جديد</div>
+              <div class="dropdown-option" onclick="selectTechOption('software_error', 'خطأ في برنامج موجود')" data-ar="خطأ في برنامج موجود" data-en="Existing Software Error">خطأ في برنامج موجود</div>
+            </div>
+          </div>
+          <input type="hidden" id="hwSubCategory" value="hardware">
         </div>
 
         <label style="font-size: 0.75rem; color: var(--muted); margin-top:0.4rem;" data-ar="درجة الأهمية:" data-en="Priority Level:">درجة الأهمية:</label>
@@ -1341,12 +1355,24 @@
       <div id="clinicFormArea" style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;">
         
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="التخصص الطبي المطلوب:" data-en="Medical Specialty:">التخصص الطبي المطلوب:</label>
-        <select id="clinicSpecialty" style="appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=\"%2310b981\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\"/></svg>'); background-repeat: no-repeat; background-position: left 1rem center; background-size: 20px; border-color: rgba(16, 185, 129, 0.4);">
-          <option value="باطنة" data-ar="🩺 باطنة عامة" data-en="🩺 Internal Medicine">🩺 باطنة عامة</option>
-          <option value="عظام" data-ar="🦴 عظام ومفاصل" data-en="🦴 Orthopedics">🦴 عظام ومفاصل</option>
-          <option value="أسنان" data-ar="🦷 طب أسنان" data-en="🦷 Dentistry">🦷 طب أسنان</option>
-          <option value="رمد" data-ar="👁️ رمد (عيون)" data-en="👁️ Ophthalmology">👁️ رمد (عيون)</option>
-        </select>
+        <div class="custom-dropdown" id="clinicDropdown">
+          <div class="dropdown-selected" onclick="toggleClinicDropdown(event)">
+            <span id="selectedClinicText" data-ar="🩺 باطنة عامة" data-en="🩺 Internal Medicine">🩺 باطنة عامة</span>
+            <span style="font-size: 0.8rem;">▼</span>
+          </div>
+          <div class="dropdown-options" id="clinicOptions" style="max-height: 200px; overflow-y: auto;">
+            <div class="dropdown-option" onclick="selectClinicOption('باطنة', '🩺 باطنة عامة')" data-ar="🩺 باطنة عامة" data-en="🩺 Internal Medicine">🩺 باطنة عامة</div>
+            <div class="dropdown-option" onclick="selectClinicOption('عظام', '🦴 عظام ومفاصل')" data-ar="🦴 عظام ومفاصل" data-en="🦴 Orthopedics">🦴 عظام ومفاصل</div>
+            <div class="dropdown-option" onclick="selectClinicOption('أسنان', '🦷 طب أسنان')" data-ar="🦷 طب أسنان" data-en="🦷 Dentistry">🦷 طب أسنان</div>
+            <div class="dropdown-option" onclick="selectClinicOption('رمد', '👁️ رمد (عيون)')" data-ar="👁️ رمد (عيون)" data-en="👁️ Ophthalmology">👁️ رمد (عيون)</div>
+            <div class="dropdown-option" onclick="selectClinicOption('جلدية', '🧴 جلدية وتناسلية')" data-ar="🧴 جلدية وتناسلية" data-en="🧴 Dermatology & Venereology">🧴 جلدية وتناسلية</div>
+            <div class="dropdown-option" onclick="selectClinicOption('مخ_واعصاب', '🧠 مخ وأعصاب')" data-ar="🧠 مخ وأعصاب" data-en="🧠 Neurology">🧠 مخ وأعصاب</div>
+            <div class="dropdown-option" onclick="selectClinicOption('مسالك', '💧 مسالك بولية')" data-ar="💧 مسالك بولية" data-en="💧 Urology">💧 مسالك بولية</div>
+            <div class="dropdown-option" onclick="selectClinicOption('صدر', '🫁 صدرية')" data-ar="🫁 صدرية" data-en="🫁 Pulmonology">🫁 صدرية</div>
+            <div class="dropdown-option" onclick="selectClinicOption('انف_واذن', '👂 أنف وأذن وحنجرة')" data-ar="👂 أنف وأذن وحنجرة" data-en="👂 ENT">👂 أنف وأذن وحنجرة</div>
+          </div>
+        </div>
+        <input type="hidden" id="clinicSpecialty" value="🩺 باطنة عامة">
 
         <label style="font-size: 0.75rem; color: var(--muted); margin-top:0.4rem;" data-ar="تاريخ الحجز:" data-en="Reservation Date:">تاريخ الحجز:</label>
         <input type="text" id="clinicDate" class="custom-date-input" style="color: #34d399 !important; border-color: rgba(16, 185, 129, 0.5) !important; background: rgba(16, 185, 129, 0.08) !important;" readonly data-ar-placeholder="اختر تاريخ الكشف..." data-en-placeholder="Select reservation date..." placeholder="اختر تاريخ الكشف..." onclick="openCustomCalendar('clinicDate')">
@@ -1738,6 +1764,18 @@
       const selectedLoanOptionEl = document.querySelector(`#loanMonthsOptions .dropdown-option[onclick*="selectLoanMonth(${currentLoanVal})"]`);
       if (selectedLoanOptionEl && document.getElementById('selectedLoanMonthText')) document.getElementById('selectedLoanMonthText').innerText = selectedLoanOptionEl.getAttribute(`data-${lang}`);
 
+      const docVal = document.getElementById('docTypeSelect') ? document.getElementById('docTypeSelect').value : 'qualification';
+      const selectedDocOption = document.querySelector(`#docOptions .dropdown-option[onclick*="'${docVal}'"]`);
+      if (selectedDocOption && document.getElementById('selectedDocText')) document.getElementById('selectedDocText').innerText = selectedDocOption.getAttribute(`data-${lang}`);
+
+      const techVal = document.getElementById('hwSubCategory') ? document.getElementById('hwSubCategory').value : 'hardware';
+      const selectedTechOption = document.querySelector(`#techOptions .dropdown-option[onclick*="'${techVal}'"]`);
+      if (selectedTechOption && document.getElementById('selectedTechText')) document.getElementById('selectedTechText').innerText = selectedTechOption.getAttribute(`data-${lang}`);
+
+      const clinicValText = document.getElementById('clinicSpecialty') ? document.getElementById('clinicSpecialty').value : '🩺 باطنة عامة';
+      const selectedClinicOption = document.querySelector(`#clinicOptions .dropdown-option[data-ar="${clinicValText}"]`);
+      if (selectedClinicOption && document.getElementById('selectedClinicText')) document.getElementById('selectedClinicText').innerText = selectedClinicOption.getAttribute(`data-${lang}`);
+
       const noticeText = document.getElementById('leaveNoticeText');
       if (noticeText && noticeText.hasAttribute('data-ar')) {
         noticeText.innerText = noticeText.getAttribute(`data-${lang}`);
@@ -1758,6 +1796,10 @@
       const popup = document.getElementById('notificationPopup'); if (popup && popup.classList.contains('show')) popup.classList.remove('show');
       const dropdownOptions = document.getElementById('dropdownOptions'); if (dropdownOptions && dropdownOptions.classList.contains('show')) dropdownOptions.classList.remove('show');
       const loanOpts = document.getElementById('loanMonthsOptions'); if (loanOpts && loanOpts.classList.contains('show')) loanOpts.classList.remove('show');
+      
+      const docOpts = document.getElementById('docOptions'); if (docOpts && docOpts.classList.contains('show')) docOpts.classList.remove('show');
+      const techOpts = document.getElementById('techOptions'); if (techOpts && techOpts.classList.contains('show')) techOpts.classList.remove('show');
+      const clinicOpts = document.getElementById('clinicOptions'); if (clinicOpts && clinicOpts.classList.contains('show')) clinicOpts.classList.remove('show');
     });
 
     function toggleCustomDropdown(event) { if (event) event.stopPropagation(); document.getElementById('dropdownOptions').classList.toggle('show'); }
@@ -2117,6 +2159,39 @@
       handleLeaveTypeChange();
     }
 
+    // --- New Reset Functions ---
+    function resetDocForm() {
+      document.getElementById('docTypeSelect').value = 'qualification';
+      document.getElementById('selectedDocText').innerText = currentLang === 'ar' ? 'شهادة المؤهل الدراسي' : 'Qualification Certificate';
+      document.getElementById('otherDocWrapper').classList.add('hidden');
+      document.getElementById('otherDocText').value = '';
+      document.getElementById('docReason').value = '';
+      const msg = document.getElementById('docMsg'); if(msg) msg.innerText = '';
+    }
+
+    function resetTechForm() {
+      setTechCategory('app');
+      document.getElementById('hwSubCategory').value = 'hardware';
+      document.getElementById('selectedTechText').innerText = currentLang === 'ar' ? 'عطل في الجهاز (Hardware)' : 'Hardware Error';
+      setTechPriority('normal');
+      document.getElementById('techDesc').value = '';
+      const fileInput = document.getElementById('techScreenshot'); if(fileInput) fileInput.value = '';
+      const fileNameEl = document.getElementById('techFileName');
+      if(fileNameEl) { fileNameEl.innerText = fileNameEl.getAttribute(`data-${currentLang}`); fileNameEl.style.color = "var(--muted)"; }
+      const msg = document.getElementById('techMsg'); if(msg) msg.innerText = '';
+    }
+
+    function resetClinicForm() {
+      document.getElementById('clinicSpecialty').value = '🩺 باطنة عامة';
+      document.getElementById('selectedClinicText').innerText = currentLang === 'ar' ? '🩺 باطنة عامة' : '🩺 Internal Medicine';
+      document.getElementById('clinicDate').value = '';
+      document.getElementById('clinicSymptoms').value = '';
+      document.getElementById('clinicFormArea').classList.remove('hidden');
+      document.getElementById('clinicTicketModal').classList.add('hidden');
+      const msg = document.getElementById('clinicMsg'); if(msg) msg.innerText = '';
+    }
+    // ----------------------------
+
     function handleLeaveTypeChange() {
       const leaveType = document.getElementById('leaveType').value; 
       const noticeBox = document.getElementById('dynamicLeaveNotice');
@@ -2192,7 +2267,12 @@
       allPages.forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); });
       
       const headerCard = document.getElementById('dashboard-header-container'); const contentCard = document.getElementById('dashboard-content-container');
+      
+      // تفريغ الطلبات قبل ما تفتح
       if (pageId === 'view-leave-request') { resetLeaveForm(); }
+      if (pageId === 'view-doc-request') { resetDocForm(); }
+      if (pageId === 'view-tech-support') { resetTechForm(); }
+      if (pageId === 'view-clinic-request') { resetClinicForm(); }
 
       if (pageId === 'view-dashboard') {
         document.getElementById('view-dashboard').classList.remove('hidden'); if (headerCard) headerCard.classList.remove('hidden'); if (contentCard) contentCard.classList.remove('hidden');
@@ -2258,20 +2338,19 @@
       if (savedCode && savedPass) { document.getElementById('empCode').value = savedCode; document.getElementById('empPass').value = savedPass; document.getElementById('rememberMe').checked = true; }
     });
 
-    function toggleLangMenu() { document.getElementById('langMenu').classList.toggle('show'); }
-    
-    function selectLanguage(lang) {
-      if (document.getElementById('langMenu').classList.contains('show')) toggleLangMenu();
-      currentLang = lang; localStorage.setItem('lacto_lang', lang);
-      document.documentElement.lang = lang; document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
-      const shortEl = document.getElementById('current-lang-short');
-      if(shortEl) shortEl.innerText = (lang === 'ar') ? "AR" : "EN";
-      updateContentTranslations(); showSlide(currentSlideIndex);
-    }
-
     /* =========================================
        DOC REQUEST LOGIC
     ========================================= */
+    function toggleDocDropdown(event) { if (event) event.stopPropagation(); document.getElementById('docOptions').classList.toggle('show'); }
+    
+    function selectDocOption(val, arText) {
+      document.getElementById('docTypeSelect').value = val;
+      const optionEl = document.querySelector(`#docOptions .dropdown-option[onclick*="'${val}'"]`);
+      document.getElementById('selectedDocText').innerText = optionEl ? optionEl.getAttribute(`data-${currentLang}`) : arText;
+      document.getElementById('docOptions').classList.remove('show');
+      toggleDocOther();
+    }
+
     function toggleDocOther() {
       const selectVal = document.getElementById('docTypeSelect').value;
       const otherWrapper = document.getElementById('otherDocWrapper');
@@ -2296,6 +2375,15 @@
     /* =========================================
        TECH SUPPORT LOGIC
     ========================================= */
+    function toggleTechDropdown(event) { if (event) event.stopPropagation(); document.getElementById('techOptions').classList.toggle('show'); }
+
+    function selectTechOption(val, arText) {
+      document.getElementById('hwSubCategory').value = val;
+      const optionEl = document.querySelector(`#techOptions .dropdown-option[onclick*="'${val}'"]`);
+      document.getElementById('selectedTechText').innerText = optionEl ? optionEl.getAttribute(`data-${currentLang}`) : arText;
+      document.getElementById('techOptions').classList.remove('show');
+    }
+
     function setTechCategory(cat) {
       document.getElementById('techCategoryVal').value = cat;
       const hwWrapper = document.getElementById('hwSubCategoryWrapper');
@@ -2330,9 +2418,18 @@
     /* =========================================
        CLINIC RESERVATION LOGIC
     ========================================= */
+    function toggleClinicDropdown(event) { if (event) event.stopPropagation(); document.getElementById('clinicOptions').classList.toggle('show'); }
+
+    function selectClinicOption(val, arText) {
+      document.getElementById('clinicSpecialty').value = arText; 
+      const optionEl = document.querySelector(`#clinicOptions .dropdown-option[onclick*="'${val}'"]`);
+      document.getElementById('selectedClinicText').innerText = optionEl ? optionEl.getAttribute(`data-${currentLang}`) : arText;
+      document.getElementById('clinicOptions').classList.remove('show');
+    }
+
     function submitClinicRequest() {
       const dateVal = document.getElementById('clinicDate').value;
-      const specialtyVal = document.getElementById('clinicSpecialty').options[document.getElementById('clinicSpecialty').selectedIndex].text;
+      const specialtyVal = document.getElementById('clinicSpecialty').value;
       const msg = document.getElementById('clinicMsg');
       if (!dateVal) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? "⚠️ يرجى تحديد تاريخ الكشف!" : "⚠️ Please select a reservation date!"; return; }
       const selectedDateObj = new Date(dateVal); const dayOfWeek = selectedDateObj.getDay();
