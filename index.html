@@ -59,6 +59,36 @@
       overflow-x: hidden;
     }
     
+  /* قواعد المحاذاة التلقائية حسب اتجاه اللغة بأمان تام */
+    [dir="ltr"] body {
+      direction: ltr;
+      text-align: left;
+    }
+    [dir="rtl"] body {
+      direction: rtl;
+      text-align: right;
+    }
+
+    [dir="ltr"] input, 
+    [dir="ltr"] select,
+    [dir="ltr"] textarea,
+    [dir="ltr"] .readonly-text, 
+    [dir="ltr"] .accordion-header {
+      text-align: left !important;
+    }
+
+    [dir="rtl"] input, 
+    [dir="rtl"] select,
+    [dir="rtl"] textarea,
+    [dir="rtl"] .readonly-text, 
+    [dir="rtl"] .accordion-header {
+      text-align: right !important;
+    }
+
+    [dir="ltr"] .accordion-header span:last-child {
+      transform: scaleX(-1);
+    }
+
     [dir="ltr"] [style*="text-align: right"],
     [dir="ltr"] [style*="text-align:right"] {
       text-align: left !important;
@@ -1426,271 +1456,20 @@
       </div>
     </div>
     
-    <!-- 6. Profile View (النسخة الصافية بدون خلفية مزعجة - اللمسة الأخيرة 🎯) -->
-    <style>
-      .accordion-item { border: 1px solid var(--border-color); border-radius: 1rem; background: rgba(15, 23, 42, 0.6); overflow: hidden; margin-bottom: 0.5rem; }
-      .accordion-header { width: 100%; padding: 1rem; background: rgba(30, 41, 59, 0.8); border: none; color: #38bdf8; font-size: 0.9rem; font-weight: 700; cursor: pointer; text-align: right; transition: all 0.3s ease; display: flex; justify-content: space-between; align-items: center; margin: 0; border-radius: 0; box-shadow: none !important; }
-      [dir="ltr"] .accordion-header { text-align: left; }
-      .accordion-header:hover { background: rgba(56, 189, 248, 0.15); }
-      .accordion-content { max-height: 0; padding: 0 1rem; opacity: 0; transition: all 0.3s ease-in-out; overflow: hidden; }
-      .accordion-content.active { max-height: 1200px; padding: 1rem; opacity: 1; }
-      .edu-row, .course-row { display: flex; flex-direction: column; gap: 0.4rem; background: rgba(11, 15, 25, 0.5); padding: 0.75rem; border-radius: 0.8rem; border: 1px solid var(--border-color); margin-top: 0.5rem; }
-      .row-inputs { display: flex; gap: 0.4rem; align-items: center; width: 100%; }
-      .row-inputs input { margin: 0; padding: 0.6rem; font-size: 0.8rem; width: 100%; }
-      .remove-btn { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.5); border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; margin: 0 !important; padding: 0 !important; box-shadow: none !important; min-width: 32px; }
-      .readonly-text { background: rgba(255,255,255,0.05); padding: 0.8rem; border-radius: 0.5rem; color: #f8fafc; font-size: 0.95rem; margin-top: 0.3rem; border: 1px dashed var(--border-color); font-weight: 800;}
-      
-      .avatar-wrapper { position: relative; width: 90px; height: 90px; margin: 0 auto 1rem auto; display: flex; justify-content: center; align-items: center; }
-      .avatar-img { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); background: rgba(255,255,255,0.05); }
-      .avatar-edit-btn { position: absolute; bottom: 0; right: 0; background: linear-gradient(135deg, #38bdf8, #0284c7); width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 2px solid #0f172a; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.5); color: #fff; font-size: 1rem; transition: all 0.2s ease; z-index: 5; }
-      .avatar-edit-btn:hover { transform: scale(1.1); }
-
-      /* البوب-أب بقى رايق وواضح لوحده في نص الشاشة من غير خلفية سوداء ضخمة */
-      .custom-action-sheet { position: fixed; top: 32%; left: 50%; transform: translate(-50%, -50%) scale(0.9); width: 85%; max-width: 310px; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(12px); border: 2px solid #38bdf8; border-radius: 1.2rem; padding: 1.2rem; opacity: 0; visibility: hidden; transition: all 0.2s ease-in-out; z-index: 9999; display: flex; flex-direction: column; gap: 0.6rem; box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
-      .custom-action-sheet.show { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
-      .sheet-option { width: 100%; padding: 0.75rem 0.9rem; background: rgba(30, 41, 59, 0.9); border: 1px solid var(--border-color); border-radius: 0.8rem; color: var(--text); font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer; transition: background 0.2s; }
-      .sheet-option:hover { background: rgba(56, 189, 248, 0.25); border-color: #38bdf8; color: #38bdf8; }
-      .sheet-cancel { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.4); color: #ef4444; }
-      
-      /* لغينا ظهور الخلفية السوداء نهائياً بناءً على طلبك */
-      .sheet-backdrop { display: none !important; }
-    </style>
-
+    <!-- 6. Profile View -->
     <div id="view-profile" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
-        <span style="font-weight: 700; color: #38bdf8;" data-ar="الملف الشخصي" data-en="Profile">الملف الشخصي</span>
+        <span style="font-weight: 700; color: #38bdf8;" data-ar="تحديث الملف الشخصي" data-en="Update Profile">تحديث الملف الشخصي</span>
       </div>
-
-      <div class="avatar-wrapper">
-        <img id="profileEditableAvatar" class="avatar-img" src="" alt="صورة الموظف">
-        <div class="avatar-edit-btn" onclick="openAvatarOptions()" title="تغيير الصورة">📷</div>
-      </div>
-
-      <!-- القائمة الصافية في الوش مباشرة -->
-      <div class="sheet-backdrop" id="avatarSheetBackdrop" onclick="closeAvatarOptions()"></div>
-      <div class="custom-action-sheet" id="avatarActionSheet">
-        <div style="text-align: center; font-weight: bold; color: #38bdf8; margin-bottom: 0.1rem; font-size: 0.85rem;" data-ar="اختر طريقة تحديث الصورة" data-en="Choose Image Source">اختر طريقة تحديث الصورة</div>
-        
-        <button class="sheet-option" onclick="triggerAvatarInput('camera')">
-          <span>📷</span> <span data-ar="التقاط صورة بالكاميرا" data-en="Take a Photo">التقاط صورة بالكاميرا</span>
-        </button>
-        
-        <button class="sheet-option" onclick="triggerAvatarInput('file')">
-          <span>📁</span> <span data-ar="اختيار من ملفات الهاتف" data-en="Choose from Files">اختيار من ملفات الهاتف</span>
-        </button>
-        
-        <button class="sheet-option sheet-cancel" onclick="closeAvatarOptions()">
-          <span data-ar="إلغاء" data-en="Cancel">إلغاء</span>
-        </button>
-      </div>
-
-      <input type="file" id="hiddenCameraInput" accept="image/*" capture="user" class="hidden" onchange="handleAvatarChange(this)">
-      <input type="file" id="hiddenFilesInput" accept="image/*" class="hidden" onchange="handleAvatarChange(this)">
-
-      <div id="profile-module" style="display: flex; flex-direction: column; gap: 0.8rem; text-align: right;">
-        
-        <!-- القسم الأول: البيانات الأساسية -->
-        <div class="accordion-item">
-          <button class="accordion-header" onclick="toggleProfileAccordion(this)">
-            <span data-ar="البيانات الأساسية" data-en="Personal Information">البيانات الأساسية</span> <span>▼</span>
-          </button>
-          <div class="accordion-content active">
-            
-            <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-top: 0.5rem;" data-ar="الاسم الرباعي:" data-en="Full Name:">الاسم الرباعي:</label>
-            <div class="readonly-text" id="profileDynamicName">--</div>
-            
-            <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-top: 0.6rem;" data-ar="رقم البطاقة القومي:" data-en="National ID:">رقم البطاقة القومي:</label>
-            <input type="text" id="profileNationalID" placeholder="أدخل رقم البطاقة (14 رقم)" data-ar-placeholder="أدخل رقم البطاقة (14 رقم)" data-en-placeholder="Enter 14-digit National ID" maxlength="14">
-
-            <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-top: 0.4rem;" data-ar="الحالة الاجتماعية:" data-en="Marital Status:">الحالة الاجتماعية:</label>
-            <div class="custom-dropdown" id="maritalStatusDropdown">
-              <div class="dropdown-selected" onclick="toggleMaritalDropdown(event)">
-                <span id="selectedMaritalText" data-ar="اختر الحالة الاجتماعية..." data-en="Select Marital Status...">اختر الحالة الاجتماعية...</span>
-                <span style="font-size: 0.8rem;">▼</span>
-              </div>
-              <div class="dropdown-options" id="maritalOptions">
-                <div class="dropdown-option" onclick="selectMaritalOption('single', 'أعزب', 'Single')" data-ar="أعزب" data-en="Single">أعزب</div>
-                <div class="dropdown-option" onclick="selectMaritalOption('married', 'متزوج', 'Married')" data-ar="متزوج" data-en="Married">متزوج</div>
-                <div class="dropdown-option" onclick="selectMaritalOption('divorced', 'مطلق', 'Divorced')" data-ar="مطلق" data-en="Divorced">مطلق</div>
-                <div class="dropdown-option" onclick="selectMaritalOption('widowed', 'أرمل', 'Widowed')" data-ar="أرمل" data-en="Widowed">أرمل</div>
-              </div>
-            </div>
-            <input type="hidden" id="profileMaritalStatusVal" value="">
-
-            <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-top: 0.4rem;" data-ar="العنوان:" data-en="Address:">العنوان:</label>
-            <input type="text" id="profileAddress" placeholder="أدخل العنوان بالتفصيل..." data-ar-placeholder="أدخل العنوان بالتفصيل..." data-en-placeholder="Enter full address...">
-
-            <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-top: 0.4rem;" data-ar="البريد الإلكتروني:" data-en="Email:">البريد الإلكتروني:</label>
-            <input type="email" id="profileEmail" placeholder="example@lactomisr.com">
-            
-            <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-top: 0.4rem;" data-ar="رقم الهاتف:" data-en="Phone Number:">رقم الهاتف:</label>
-            <input type="text" id="profilePhone" placeholder="010xxxxxxxx">
-
-            <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-top: 0.4rem;" data-ar="رقم هاتف الطوارئ:" data-en="Emergency Phone:">رقم هاتف الطوارئ:</label>
-            <input type="text" id="profileEmergencyPhone" placeholder="01xxxxxxxxx (للطوارئ)" data-ar-placeholder="01xxxxxxxxx (للطوارئ)" data-en-placeholder="01xxxxxxxxx (Emergency)">
-          </div>
-        </div>
-
-        <!-- القسم الثاني: المؤهلات العلمية -->
-        <div class="accordion-item">
-          <button class="accordion-header" onclick="toggleProfileAccordion(this)">
-            <span data-ar="المؤهلات العلمية" data-en="Education">المؤهلات العلمية</span> <span>▼</span>
-          </button>
-          <div class="accordion-content">
-            <div id="education-list" style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
-              <div class="edu-row" style="background: rgba(56, 189, 248, 0.08); border-color: rgba(56, 189, 248, 0.4);">
-                <div class="row-inputs">
-                  <div style="flex: 1; display: flex; flex-direction: column; gap: 0.2rem;">
-                    <input type="text" style="color: #38bdf8; font-weight: 800; background: transparent; border: none; padding: 0.2rem; font-size: 0.95rem; box-shadow: none;" value="بكالريوس تجارة" readonly>
-                    <span style="font-size: 0.75rem; color: var(--muted); padding-right: 0.2rem;">دفعة 1992</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <button class="back-btn" style="width: 100% !important; margin-top: 0.5rem !important; border: 1px dashed #38bdf8; color: #38bdf8;" onclick="addEducationRow()">
-              <span data-ar="+ إضافة مؤهل جديد" data-en="+ Add Education">+ إضافة مؤهل جديد</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- القسم الثالث: الدورات التدريبية -->
-        <div class="accordion-item">
-          <button class="accordion-header" onclick="toggleProfileAccordion(this)">
-            <span data-ar="الدورات التدريبية" data-en="Training Courses">الدورات التدريبية</span> <span>▼</span>
-          </button>
-          <div class="accordion-content">
-            <div id="courses-list" style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
-            </div>
-            <button class="back-btn" style="width: 100% !important; margin-top: 0.5rem !important; border: 1px dashed #38bdf8; color: #38bdf8;" onclick="addCourseRow()">
-              <span data-ar="+ إضافة دورة جديدة" data-en="+ Add Course">+ إضافة دورة جديدة</span>
-            </button>
-          </div>
-        </div>
-
-        <button onclick="submitProfileUpdate()" class="btn-success" style="margin-top: 1rem;">
-          <span data-ar="حفظ التعديلات" data-en="Save Changes">حفظ التعديلات</span>
-        </button>
-        <p id="profileMsg" style="font-size: 0.85rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
+      <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;">
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="البريد الإلكتروني:" data-en="Email:">البريد الإلكتروني:</label>
+        <input type="email" placeholder="example@lactomisr.com">
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="رقم الهاتف:" data-en="Phone Number:">رقم الهاتف:</label>
+        <input type="text" placeholder="010xxxxxxxx">
+        <button onclick="showComingSoon('view-profile')" class="btn-success" data-ar="حفظ التعديلات" data-en="Save Changes" style="margin-top: 0.5rem;">حفظ التعديلات</button>
       </div>
     </div>
-
-    <script>
-      function openAvatarOptions() {
-        document.getElementById('avatarActionSheet').classList.add('show');
-        if(window.playClickSound) window.playClickSound();
-      }
-
-      function closeAvatarOptions() {
-        document.getElementById('avatarActionSheet').classList.remove('show');
-      }
-
-      function triggerAvatarInput(type) {
-        closeAvatarOptions();
-        if (type === 'camera') {
-          document.getElementById('hiddenCameraInput').click();
-        } else {
-          document.getElementById('hiddenFilesInput').click();
-        }
-      }
-
-      setInterval(() => {
-        const profileName = document.getElementById('profileDynamicName');
-        const profileAvatar = document.getElementById('profileEditableAvatar');
-        const dashName = document.getElementById('dash-name');
-        const dashAvatar = document.getElementById('dash-avatar');
-
-        if (profileName && dashName && dashName.innerText !== '--' && dashName.innerText !== '') {
-            if (profileName.innerText !== dashName.innerText) {
-                profileName.innerText = dashName.innerText;
-            }
-        }
-
-        if (profileAvatar && dashAvatar && dashAvatar.src && dashAvatar.src !== '' && !dashAvatar.src.includes('undefined')) {
-            if (profileAvatar.src !== dashAvatar.src && !profileAvatar.src.includes('data:image')) {
-                profileAvatar.src = dashAvatar.src;
-            }
-        }
-      }, 300);
-
-      function toggleMaritalDropdown(event) {
-        if (event) event.stopPropagation();
-        document.getElementById('maritalOptions').classList.toggle('show');
-        if(window.playClickSound) window.playClickSound();
-      }
-
-      function selectMaritalOption(val, arText, enText) {
-        document.getElementById('profileMaritalStatusVal').value = val;
-        const textToDisplay = (window.currentLang === 'ar') ? arText : enText;
-        document.getElementById('selectedMaritalText').innerText = textToDisplay;
-        document.getElementById('maritalOptions').classList.remove('show');
-        if(window.playClickSound) window.playClickSound();
-      }
-
-      window.addEventListener('click', (e) => {
-        const maritalOpts = document.getElementById('maritalOptions');
-        if (maritalOpts && maritalOpts.classList.contains('show') && !e.target.closest('#maritalStatusDropdown')) {
-          maritalOpts.classList.remove('show');
-        }
-        
-        // إغلاق القائمة لو تم الضغط خارجها
-        const actionSheet = document.getElementById('avatarActionSheet');
-        const editBtn = document.querySelector('.avatar-edit-btn');
-        if (actionSheet && actionSheet.classList.contains('show') && !actionSheet.contains(e.target) && !editBtn.contains(e.target)) {
-          closeAvatarOptions();
-        }
-      });
-
-      function handleAvatarChange(input) {
-        if (input.files && input.files[0]) {
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            document.getElementById('profileEditableAvatar').src = e.target.result;
-            if(document.getElementById('dash-avatar')) document.getElementById('dash-avatar').src = e.target.result;
-            if(document.getElementById('userPhoto')) document.getElementById('userPhoto').src = e.target.result;
-          }
-          reader.readAsDataURL(input.files[0]);
-          if(window.playClickSound) window.playClickSound();
-        }
-      }
-
-      function toggleProfileAccordion(button) {
-        if(window.playClickSound) window.playClickSound();
-        const content = button.nextElementSibling;
-        content.classList.toggle('active');
-      }
-
-      function addEducationRow() {
-        const container = document.getElementById('education-list');
-        const lang = window.currentLang || 'ar';
-        const degPlaceholder = lang === 'ar' ? 'الدرجة العلمية...' : 'Degree...';
-        const yearPlaceholder = lang === 'ar' ? 'السنة' : 'Year';
-        const row = document.createElement('div');
-        row.className = 'edu-row';
-        row.innerHTML = '<div class="row-inputs"><input type="text" style="flex: 2;" placeholder="'+degPlaceholder+'" data-ar-placeholder="الدرجة العلمية..." data-en-placeholder="Degree..."><input type="number" style="flex: 1;" placeholder="'+yearPlaceholder+'" data-ar-placeholder="السنة" data-en-placeholder="Year"><button class="remove-btn" onclick="this.parentElement.parentElement.remove(); if(window.playClickSound) window.playClickSound();">✕</button></div><div style="width: 100%; margin-top: 0.4rem;"><label class="upload-btn-label" style="font-size: 0.75rem; padding: 0.4rem 0.8rem; width: 100%; justify-content: center; background: rgba(56, 189, 248, 0.1); color: #38bdf8; border: 1px dashed #38bdf8; cursor: pointer;" onclick="this.nextElementSibling.click()">📁 أرفق صورة المؤهل</label><input type="file" accept="image/*,application/pdf" class="hidden" onchange="if(this.files[0]) { this.previousElementSibling.innerText = \'✅ تم الرفع\'; this.previousElementSibling.style.background = \'rgba(16, 185, 129, 0.1)\'; this.previousElementSibling.style.color = \'#10b981\'; this.previousElementSibling.style.borderColor = \'#10b981\'; }"></div>';
-        container.appendChild(row);
-        if(typeof updateContentTranslations === 'function') updateContentTranslations();
-      }
-
-      function addCourseRow() {
-        const container = document.getElementById('courses-list');
-        const lang = window.currentLang || 'ar';
-        const coursePlaceholder = lang === 'ar' ? 'الدورة...' : 'Course...';
-        const centerPlaceholder = lang === 'ar' ? 'الجهة...' : 'Center...';
-        const row = document.createElement('div');
-        row.className = 'course-row';
-        row.innerHTML = '<div class="row-inputs"><input type="text" style="flex: 2;" placeholder="'+coursePlaceholder+'" data-ar-placeholder="الدورة..." data-en-placeholder="Course..."><input type="text" style="flex: 1;" placeholder="'+centerPlaceholder+'" data-ar-placeholder="الجهة..." data-en-placeholder="Center..."><button class="remove-btn" onclick="this.parentElement.parentElement.remove(); if(window.playClickSound) window.playClickSound();">✕</button></div><div style="width: 100%; margin-top: 0.4rem;"><label class="upload-btn-label" style="font-size: 0.75rem; padding: 0.4rem 0.8rem; width: 100%; justify-content: center; background: rgba(56, 189, 248, 0.1); color: #38bdf8; border: 1px dashed #38bdf8; cursor: pointer;" onclick="this.nextElementSibling.click()">📁 أرفق الشهادة</label><input type="file" accept="image/*,application/pdf" class="hidden" onchange="if(this.files[0]) { this.previousElementSibling.innerText = \'✅ تم الرفع\'; this.previousElementSibling.style.background = \'rgba(16, 185, 129, 0.1)\'; this.previousElementSibling.style.color = \'#10b981\'; this.previousElementSibling.style.borderColor = \'#10b981\'; }"></div>';
-        container.appendChild(row);
-        if(typeof updateContentTranslations === 'function') updateContentTranslations();
-      }
-
-      function submitProfileUpdate() {
-        const msg = document.getElementById('profileMsg');
-        msg.style.color = '#38bdf8';
-        msg.innerText = (window.currentLang === 'ar') ? '✅ تم الحفظ!' : '✅ Saved!';
-        setTimeout(() => { if(typeof showPage === 'function') showPage('view-dashboard'); msg.innerText = ''; }, 1500);
-      }
-    </script>
 
     <!-- Coming Soon View -->
     <div id="view-coming-soon" class="card hidden">
@@ -1909,9 +1688,13 @@
       if (langMenu) langMenu.classList.toggle('show');
     }
 
-    function selectLanguage(lang) {
+  function selectLanguage(lang) {
       currentLang = lang;
       localStorage.setItem('lacto_lang', lang);
+      
+      // السطرين دول هما سر السعادة اللي بيقلبوا اتجاه الشاشة (RTL / LTR)
+      document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+      document.documentElement.setAttribute('lang', lang);
       
       const langShort = document.getElementById('current-lang-short');
       if (langShort) {
@@ -1926,6 +1709,7 @@
       if (typeof updateContentTranslations === 'function') {
         updateContentTranslations();
       }
+    }
     }
 
     function togglePasswordVisibility() {
