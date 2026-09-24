@@ -20,7 +20,8 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
   
-  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&family=Share+Tech+Mono&display=swap');
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&family=Share+Tech+Mono&display=swap');
     :root {
       --bg: #0b0f19;
       --card-bg: rgba(15, 23, 42, 0.82);
@@ -58,63 +59,10 @@
       overflow-x: hidden;
     }
     
-    /* قواعد المحاذاة التلقائية حسب اتجاه اللغة */
-    [dir="ltr"] body {
-      direction: ltr;
-      text-align: left;
-    }
-    [dir="rtl"] body {
-      direction: rtl;
-      text-align: right;
-    }
-
-    [dir="ltr"] input, 
-    [dir="ltr"] select,
-    [dir="ltr"] textarea,
-    [dir="ltr"] .readonly-text, 
-    [dir="ltr"] .accordion-header {
-      text-align: left !important;
-    }
-
-    [dir="rtl"] input, 
-    [dir="rtl"] select,
-    [dir="rtl"] textarea,
-    [dir="rtl"] .readonly-text, 
-    [dir="rtl"] .accordion-header {
-      text-align: right !important;
-    }
-
-    [dir="ltr"] .accordion-header span:last-child {
-      transform: scaleX(-1);
-    }
-
     [dir="ltr"] [style*="text-align: right"],
     [dir="ltr"] [style*="text-align:right"] {
       text-align: left !important;
     }
-
-    /* تنسيق قائمة ودبروفايل تغيير اللغة */
-    .lang-dropdown-container {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-    .lang-dropdown-btn {
-      background: rgba(30, 41, 59, 0.85); border: 1px solid var(--border-color); color: var(--text);
-      padding: 0.4rem 0.6rem; border-radius: 1rem; font-size: 0.85rem; font-weight: 700; cursor: pointer;
-      display: flex; align-items: center; gap: 0.4rem; backdrop-filter: blur(12px); outline: none; margin: 0; width: auto;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-    .lang-dropdown-menu {
-      position: absolute; top: calc(100% + 12px); background: rgba(15, 23, 42, 0.98);
-      border: 1px solid var(--border-color); border-radius: 1rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-      display: none; z-index: 300; min-width: 100px; backdrop-filter: blur(16px); overflow: hidden;
-    }
-    [dir="rtl"] .lang-dropdown-menu { left: 0; right: auto; }
-    [dir="ltr"] .lang-dropdown-menu { right: 0; left: auto; }
-    .lang-dropdown-menu.show { display: block; }
-    .lang-option { padding: 0.7rem 1rem; font-size: 0.85rem; color: var(--text); cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: background 0.2s; }
-    .lang-option:hover { background: rgba(56, 189, 248, 0.3); color: #38bdf8; }
 
     #intro-screen {
       position: fixed;
@@ -1954,7 +1902,7 @@
       document.addEventListener('click', silentResume); document.addEventListener('touchstart', silentResume);
     });
     
-   // دوال زر تغيير اللغة المضافة حديثاً
+    // دوال زر تغيير اللغة المضافة حديثاً
     function toggleLangMenu(event) {
       if (event) event.stopPropagation();
       const langMenu = document.getElementById('langMenu');
@@ -1964,10 +1912,6 @@
     function selectLanguage(lang) {
       currentLang = lang;
       localStorage.setItem('lacto_lang', lang);
-      
-      // 🌟🌟 زودنا السطرين دول بس هنا عشان يقلبوا اتجاه الشاشة بالكامل (RTL / LTR) 🌟🌟
-      document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-      document.documentElement.setAttribute('lang', lang);
       
       const langShort = document.getElementById('current-lang-short');
       if (langShort) {
