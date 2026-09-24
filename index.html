@@ -59,7 +59,41 @@
       overflow-x: hidden;
     }
     
- /* قواعد المحاذاة التلقائية حسب اتجاه اللغة بأمان تام */
+    /* قواعد الوضع الفاتح (Light Mode) الأنيق */
+    [data-theme="light"] body {
+      background: linear-gradient(rgba(240, 244, 248, 0.9), rgba(245, 247, 250, 0.95)), url('background.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #0f172a;
+    }
+
+    [data-theme="light"] .card,
+    [data-theme="light"] .user-profile-card,
+    [data-theme="light"] .summary-card,
+    [data-theme="light"] .announcement-card,
+    [data-theme="light"] .id-card {
+      background: rgba(255, 255, 255, 0.9) !important;
+      border-color: rgba(0, 0, 0, 0.12) !important;
+      color: #0f172a !important;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.8) !important;
+    }
+
+    [data-theme="light"] input, 
+    [data-theme="light"] textarea, 
+    [data-theme="light"] select {
+      background: rgba(240, 244, 248, 0.9) !important;
+      color: #0f172a !important;
+      border-color: rgba(0, 0, 0, 0.15) !important;
+    }
+
+    [data-theme="light"] .summary-title,
+    [data-theme="light"] .info-label,
+    [data-theme="light"] .payslip-item-label,
+    [data-theme="light"] .announcement-desc {
+      color: #475569 !important;
+    }
+
+    /* قواعد المحاذاة التلقائية حسب اتجاه اللغة بأمان تام */
     [dir="ltr"] body {
       direction: ltr;
       text-align: left;
@@ -83,15 +117,6 @@
     [dir="rtl"] .readonly-text, 
     [dir="rtl"] .accordion-header {
       text-align: right !important;
-    }
-
-    [dir="ltr"] .accordion-header span:last-child {
-      transform: scaleX(-1);
-    }
-
-    [dir="ltr"] [style*="text-align: right"],
-    [dir="ltr"] [style*="text-align:right"] {
-      text-align: left !important;
     }
 
     [dir="ltr"] .accordion-header span:last-child {
@@ -701,7 +726,6 @@
 
       <!-- Language -->
       <div class="lang-dropdown-container">
-        <!-- عدلنا تمرير الحدث للوظيفة -->
         <button class="lang-dropdown-btn" onclick="toggleLangMenu(event)">
           🌐 <span id="current-lang-short">AR</span> ▼
         </button>
@@ -992,7 +1016,7 @@
         <input type="text" id="leaveStartDate" class="custom-date-input" readonly data-ar-placeholder="اختر تاريخ البداية..." data-en-placeholder="Select start date..." placeholder="اختر تاريخ البداية..." onclick="openCustomCalendar('leaveStartDate')">
 
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="تاريخ نهاية الأجازة:" data-en="End Date:">تاريخ نهاية الأجازة:</label>
-        <input type="text" id="leaveEndDate" class="custom-date-input" class="custom-date-input" readonly data-ar-placeholder="اختر تاريخ النهاية..." data-en-placeholder="Select end date..." placeholder="اختر تاريخ النهاية..." onclick="openCustomCalendar('leaveEndDate')">
+        <input type="text" id="leaveEndDate" class="custom-date-input" readonly data-ar-placeholder="اختر تاريخ النهاية..." data-en-placeholder="Select end date..." placeholder="اختر تاريخ النهاية..." onclick="openCustomCalendar('leaveEndDate')">
 
         <div class="glowing-result-badge" id="leaveTotalDaysText" data-ar="إجمالي الأيام المطلوبة: 0 يوم" data-en="Total requested days: 0 days">
           إجمالي الأيام المطلوبة: 0 يوم
@@ -1241,7 +1265,6 @@
     </div>
     
     <!-- 4.5. LOAN REQUEST VIEW -->
-    <!-- تم تعديل مسار زر الرجوع ليعود إلى view-services -->
     <div id="view-loan-request" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
@@ -1457,11 +1480,33 @@
         <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
         <span style="font-weight: 700; color: #38bdf8;" data-ar="الضبط والإعدادات" data-en="Settings">الضبط والإعدادات</span>
       </div>
-      <div style="text-align: right; display: flex; flex-direction: column; gap: 1rem; padding: 1rem 0;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <span style="font-size: 0.9rem;" data-ar="لغة التطبيق / Language" data-en="App Language / اللغة">لغة التطبيق / Language</span>
-          <button onclick="selectLanguage(currentLang === 'ar' ? 'en' : 'ar')" class="btn-success" style="width: auto; padding: 0.4rem 1rem; font-size: 0.8rem; margin:0;" data-ar="تغيير اللغة" data-en="Change Language">تغيير اللغة</button>
+      
+      <div style="text-align: right; display: flex; flex-direction: column; gap: 1rem; padding: 0.5rem 0;">
+        
+        <!-- خيار اللغة -->
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 1rem; padding: 0.9rem 1rem; display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; flex-direction: column; text-align: right;">
+            <span style="font-size: 0.9rem; font-weight: 700; color: var(--text);" data-ar="لغة التطبيق" data-en="App Language">لغة التطبيق</span>
+            <span style="font-size: 0.72rem; color: var(--muted);" data-ar="تغيير واجهة السيستم (عربي / إنجليزي)" data-en="Switch interface language">تغيير واجهة السيستم (عربي / إنجليزي)</span>
+          </div>
+          <button onclick="selectLanguage(currentLang === 'ar' ? 'en' : 'ar')" class="btn-success" style="width: auto; padding: 0.5rem 1rem; font-size: 0.8rem; margin:0;" data-ar="تغيير اللغة" data-en="Change">تغيير اللغة</button>
         </div>
+
+        <!-- خيار الوضع الفاتح والغامق (Dark / Light Mode) -->
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 1rem; padding: 0.9rem 1rem; display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; flex-direction: column; text-align: right;">
+            <span style="font-size: 0.9rem; font-weight: 700; color: var(--text);" data-ar="مظهر التطبيق (الثيم)" data-en="App Theme">مظهر التطبيق (الثيم)</span>
+            <span style="font-size: 0.72rem; color: var(--muted);" data-ar="التبديل بين الوضع الفاتح والغامق" data-en="Toggle Dark/Light Mode">التبديل بين الوضع الفاتح والغامق</span>
+          </div>
+          <button onclick="toggleTheme()" class="btn-success" style="width: auto; padding: 0.5rem 1rem; font-size: 0.8rem; margin:0; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-color: #f59e0b;" data-ar="تغيير الثيم" data-en="Toggle Theme">تغيير الثيم</button>
+        </div>
+
+        <!-- معلومات النسخة والبرمجة -->
+        <div style="background: rgba(56, 189, 248, 0.05); border: 1px dashed rgba(56, 189, 248, 0.3); border-radius: 1rem; padding: 1rem; text-align: center; margin-top: 0.5rem;">
+          <div style="font-size: 0.8rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.2rem;">LM HR Hub - v2.6</div>
+          <div style="font-size: 0.7rem; color: var(--muted);" data-ar="جميع الحقوق محفوظة © 2026" data-en="All rights reserved © 2026">جميع الحقوق محفوظة © 2026[cite: 3]</div>
+        </div>
+
       </div>
     </div>
     
@@ -1690,14 +1735,13 @@
       document.addEventListener('click', silentResume); document.addEventListener('touchstart', silentResume);
     });
     
-    // دوال زر تغيير اللغة المضافة حديثاً
     function toggleLangMenu(event) {
       if (event) event.stopPropagation();
       const langMenu = document.getElementById('langMenu');
       if (langMenu) langMenu.classList.toggle('show');
     }
 
-  function selectLanguage(lang) {
+    function selectLanguage(lang) {
       currentLang = lang;
       localStorage.setItem('lacto_lang', lang);
       
@@ -1718,6 +1762,27 @@
         updateContentTranslations();
       }
     }
+
+    /* دوال تبديل الثيم (Dark / Light Mode) المضافة حديثاً */
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      if (newTheme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('lacto_theme', 'light');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('lacto_theme', 'dark');
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('lacto_theme');
+      if (savedTheme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    });
 
     function togglePasswordVisibility() {
       const pass = document.getElementById('empPass');
@@ -1891,7 +1956,6 @@
       }
     }
 
-    /* Custom Calendar Modal */
     let activeDateInputId = null; let tempSelectedDate = ""; let calYear = new Date().getFullYear(); let calMonth = new Date().getMonth();
     const monthNamesAr = ["يناير", "فبراير", "مارس", "إبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
     const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -2397,7 +2461,6 @@
       });
     }
 
-    // دالة تسجيل الخروج المعدلة لتفريغ الخانات إذا لم يتم اختيار "تذكرني"
     function logout() { 
       const rememberMe = document.getElementById('rememberMe').checked;
       if (!rememberMe) {
@@ -2409,7 +2472,6 @@
       window.location.reload(); 
     }
     
-    // دالة التحميل المعدلة للتعامل مع الخانات بشكل سليم
     window.addEventListener('DOMContentLoaded', () => {
       populate24HourWheels(); selectLanguage(currentLang); resetSlideTimer();
       const savedCode = localStorage.getItem('lacto_saved_code'); const savedPass = localStorage.getItem('lacto_saved_pass');
