@@ -1501,6 +1501,20 @@
           <button onclick="toggleTheme()" class="btn-success" style="width: auto; padding: 0.5rem 1rem; font-size: 0.8rem; margin:0; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-color: #f59e0b;" data-ar="تغيير الثيم" data-en="Toggle Theme">تغيير الثيم</button>
         </div>
 
+        <!-- خيار تغيير كلمة المرور -->
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 1rem; padding: 0.9rem 1rem; display: flex; flex-direction: column; gap: 0.6rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; flex-direction: column; text-align: right;">
+              <span style="font-size: 0.9rem; font-weight: 700; color: var(--text);" data-ar="تغيير كلمة المرور" data-en="Change Password">تغيير كلمة المرور</span>
+              <span style="font-size: 0.72rem; color: var(--muted);" data-ar="تحديث كلمة سر الحساب الشخصي" data-en="Update account password">تحديث كلمة سر الحساب الشخصي</span>
+            </div>
+          </div>
+          <input type="password" id="oldPasswordInput" data-ar-placeholder="كلمة المرور الحالية" data-en-placeholder="Current Password" placeholder="كلمة المرور الحالية" style="margin: 0; font-size: 0.85rem; padding: 0.6rem 0.8rem;">
+          <input type="password" id="newPasswordInput" data-ar-placeholder="كلمة المرور الجديدة" data-en-placeholder="New Password" placeholder="كلمة المرور الجديدة" style="margin: 0; font-size: 0.85rem; padding: 0.6rem 0.8rem;">
+          <button onclick="updatePassword()" class="btn-success" style="width: 100%; padding: 0.5rem; font-size: 0.8rem; margin: 0;" data-ar="حفظ كلمة المرور الجديدة" data-en="Save New Password">حفظ كلمة المرور الجديدة</button>
+          <p id="passwordChangeMsg" style="font-size: 0.75rem; text-align: center; font-weight: bold; margin: 0;"></p>
+        </div>
+
         <!-- معلومات النسخة والبرمجة -->
         <div style="background: rgba(56, 189, 248, 0.05); border: 1px dashed rgba(56, 189, 248, 0.3); border-radius: 1rem; padding: 1rem; text-align: center; margin-top: 0.5rem;">
           <div style="font-size: 0.8rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.2rem;">LM HR Hub - v2.6</div>
@@ -1763,7 +1777,7 @@
       }
     }
 
-    /* دوال تبديل الثيم (Dark / Light Mode) المضافة حديثاً */
+    /* دوال تبديل الثيم (Dark / Light Mode) */
     function toggleTheme() {
       const currentTheme = document.documentElement.getAttribute('data-theme');
       const newTheme = currentTheme === 'light' ? 'dark' : 'light';
@@ -1783,6 +1797,44 @@
         document.documentElement.setAttribute('data-theme', 'light');
       }
     });
+
+    /* دالة تغيير كلمة المرور المضافة حديثاً */
+    function updatePassword() {
+      const oldPass = document.getElementById('oldPasswordInput').value.trim();
+      const newPass = document.getElementById('newPasswordInput').value.trim();
+      const msgEl = document.getElementById('passwordChangeMsg');
+
+      if (!oldPass || !newPass) {
+        msgEl.style.color = '#ef4444';
+        msgEl.innerText = currentLang === 'ar' ? '⚠️ يرجى إدخال كلمة المرور الحالية والجديدة!' : '⚠️ Please enter current and new passwords!';
+        return;
+      }
+
+      db.ref('users/' + currentEmpCode).once('value').then(snapshot => {
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+          if (userData.password !== oldPass) {
+            msgEl.style.color = '#ef4444';
+            msgEl.innerText = currentLang === 'ar' ? '❌ كلمة المرور الحالية غير صحيحة!' : '❌ Current password is incorrect!';
+            return;
+          }
+
+          db.ref('users/' + currentEmpCode).update({ password: newPass }).then(() => {
+            msgEl.style.color = '#38bdf8';
+            msgEl.innerText = currentLang === 'ar' ? '✅ تم تغيير كلمة المرور بنجاح!' : '✅ Password updated successfully!';
+            document.getElementById('oldPasswordInput').value = '';
+            document.getElementById('newPasswordInput').value = '';
+            
+            if (localStorage.getItem('lacto_saved_code')) {
+              localStorage.setItem('lacto_saved_pass', newPass);
+            }
+          });
+        }
+      }).catch(err => {
+        msgEl.style.color = '#ef4444';
+        msgEl.innerText = currentLang === 'ar' ? '❌ حدث خطأ، حاول مرة أخرى.' : '❌ Error occurred, try again.';
+      });
+    }
 
     function togglePasswordVisibility() {
       const pass = document.getElementById('empPass');
