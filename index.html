@@ -1426,7 +1426,7 @@
       </div>
     </div>
     
-    <!-- 6. Profile View (نسخة زرع الشعر وتعديل الصورة 😂) -->
+    <!-- 6. Profile View (النسخة المتحبشة والشياكة المطلقة) -->
     <style>
       .accordion-item { border: 1px solid var(--border-color); border-radius: 1rem; background: rgba(15, 23, 42, 0.6); overflow: hidden; margin-bottom: 0.5rem; }
       .accordion-header { width: 100%; padding: 1rem; background: rgba(30, 41, 59, 0.8); border: none; color: #38bdf8; font-size: 0.9rem; font-weight: 700; cursor: pointer; text-align: right; transition: all 0.3s ease; display: flex; justify-content: space-between; align-items: center; margin: 0; border-radius: 0; box-shadow: none !important; }
@@ -1438,12 +1438,11 @@
       .row-inputs { display: flex; gap: 0.4rem; align-items: center; width: 100%; }
       .row-inputs input { margin: 0; padding: 0.6rem; font-size: 0.8rem; width: 100%; }
       .remove-btn { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.5); border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; margin: 0 !important; padding: 0 !important; box-shadow: none !important; min-width: 32px; }
-      .readonly-text { background: rgba(255,255,255,0.05); padding: 0.8rem; border-radius: 0.5rem; color: #94a3b8; font-size: 0.9rem; margin-top: 0.3rem; border: 1px dashed var(--border-color); font-weight: 700;}
+      .readonly-text { background: rgba(255,255,255,0.05); padding: 0.8rem; border-radius: 0.5rem; color: #f8fafc; font-size: 0.95rem; margin-top: 0.3rem; border: 1px dashed var(--border-color); font-weight: 800;}
       
-      /* تنسيقات الصورة الشخصية وزرار التعديل */
       .avatar-wrapper { position: relative; width: 90px; height: 90px; margin: 0 auto 1rem auto; display: flex; justify-content: center; align-items: center; }
       .avatar-img { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); background: rgba(255,255,255,0.05); }
-      .avatar-edit-btn { position: absolute; bottom: 0; right: 0; background: linear-gradient(135deg, #38bdf8, #0284c7); width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 2px solid #0f172a; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.5); color: #fff; font-size: 1rem; transition: all 0.2s ease; }
+      .avatar-edit-btn { position: absolute; bottom: 0; right: 0; background: linear-gradient(135deg, #38bdf8, #0284c7); width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 2px solid #0f172a; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.5); color: #fff; font-size: 1rem; transition: all 0.2s ease; z-index: 5; }
       .avatar-edit-btn:hover { transform: scale(1.1); }
     </style>
 
@@ -1453,9 +1452,8 @@
         <span style="font-weight: 700; color: #38bdf8;" data-ar="الملف الشخصي" data-en="Profile">الملف الشخصي</span>
       </div>
 
-      <!-- الصورة الشخصية مع زرار التعديل عشان لو زرع شعر 😂 -->
       <div class="avatar-wrapper">
-        <img id="profileEditableAvatar" class="avatar-img" src="" alt="صورة الموظف">
+        <img id="profileEditableAvatar" class="avatar-img" src="https://i.pravatar.cc/150?img=12" alt="صورة الموظف">
         <label for="avatarUploadInput" class="avatar-edit-btn" title="تغيير الصورة">📷</label>
         <input type="file" id="avatarUploadInput" accept="image/*" class="hidden" onchange="handleAvatarChange(this)">
       </div>
@@ -1468,20 +1466,28 @@
             <span data-ar="البيانات الأساسية" data-en="Personal Information">البيانات الأساسية</span> <span>▼</span>
           </button>
           <div class="accordion-content active">
+            
             <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-top: 0.5rem;" data-ar="الاسم الرباعي:" data-en="Full Name:">الاسم الرباعي:</label>
             <div class="readonly-text" id="profileDynamicName">جاري تحميل الاسم...</div>
             
             <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-top: 0.6rem;" data-ar="رقم البطاقة القومي:" data-en="National ID:">رقم البطاقة القومي:</label>
             <input type="text" id="profileNationalID" placeholder="أدخل رقم البطاقة (14 رقم)" data-ar-placeholder="أدخل رقم البطاقة (14 رقم)" data-en-placeholder="Enter 14-digit National ID" maxlength="14">
 
+            <!-- الحالة الاجتماعية (بالتصميم الاحترافي الجديد) -->
             <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-top: 0.4rem;" data-ar="الحالة الاجتماعية:" data-en="Marital Status:">الحالة الاجتماعية:</label>
-            <select id="profileMaritalStatus" style="width: 100%; padding: 0.9rem 1rem; margin: 0.5rem 0; border-radius: 1rem; border: 1px solid var(--border-color); background: rgba(15, 23, 42, 0.85); color: var(--text); font-size: 0.95rem; text-align: right; outline: none; appearance: none;">
-              <option value="" disabled selected data-ar="اختر الحالة الاجتماعية..." data-en="Select Marital Status...">اختر الحالة الاجتماعية...</option>
-              <option value="single" data-ar="أعزب" data-en="Single">أعزب</option>
-              <option value="married" data-ar="متزوج" data-en="Married">متزوج</option>
-              <option value="divorced" data-ar="مطلق" data-en="Divorced">مطلق</option>
-              <option value="widowed" data-ar="أرمل" data-en="Widowed">أرمل</option>
-            </select>
+            <div class="custom-dropdown" id="maritalStatusDropdown">
+              <div class="dropdown-selected" onclick="toggleMaritalDropdown(event)">
+                <span id="selectedMaritalText" data-ar="اختر الحالة الاجتماعية..." data-en="Select Marital Status...">اختر الحالة الاجتماعية...</span>
+                <span style="font-size: 0.8rem;">▼</span>
+              </div>
+              <div class="dropdown-options" id="maritalOptions">
+                <div class="dropdown-option" onclick="selectMaritalOption('single', 'أعزب', 'Single')" data-ar="أعزب" data-en="Single">أعزب</div>
+                <div class="dropdown-option" onclick="selectMaritalOption('married', 'متزوج', 'Married')" data-ar="متزوج" data-en="Married">متزوج</div>
+                <div class="dropdown-option" onclick="selectMaritalOption('divorced', 'مطلق', 'Divorced')" data-ar="مطلق" data-en="Divorced">مطلق</div>
+                <div class="dropdown-option" onclick="selectMaritalOption('widowed', 'أرمل', 'Widowed')" data-ar="أرمل" data-en="Widowed">أرمل</div>
+              </div>
+            </div>
+            <input type="hidden" id="profileMaritalStatusVal" value="">
 
             <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-top: 0.4rem;" data-ar="العنوان:" data-en="Address:">العنوان:</label>
             <input type="text" id="profileAddress" placeholder="أدخل العنوان بالتفصيل..." data-ar-placeholder="أدخل العنوان بالتفصيل..." data-en-placeholder="Enter full address...">
@@ -1541,16 +1547,35 @@
     </div>
 
     <script>
-      // دالة تغيير الصورة الشخصية وتسميعها في الداشبورد وكارت الهوية
+      // دوال القائمة المنسدلة الجديدة للحالة الاجتماعية
+      function toggleMaritalDropdown(event) {
+        if (event) event.stopPropagation();
+        document.getElementById('maritalOptions').classList.toggle('show');
+        if(window.playClickSound) window.playClickSound();
+      }
+
+      function selectMaritalOption(val, arText, enText) {
+        document.getElementById('profileMaritalStatusVal').value = val;
+        const textToDisplay = (window.currentLang === 'ar') ? arText : enText;
+        document.getElementById('selectedMaritalText').innerText = textToDisplay;
+        document.getElementById('maritalOptions').classList.remove('show');
+        if(window.playClickSound) window.playClickSound();
+      }
+
+      // إغلاق القائمة عند الضغط في أي مكان بره
+      window.addEventListener('click', (e) => {
+        const maritalOpts = document.getElementById('maritalOptions');
+        if (maritalOpts && maritalOpts.classList.contains('show') && !e.target.closest('#maritalStatusDropdown')) {
+          maritalOpts.classList.remove('show');
+        }
+      });
+
       function handleAvatarChange(input) {
         if (input.files && input.files[0]) {
           const reader = new FileReader();
           reader.onload = function(e) {
-            // تحديث الصورة في البروفايل
             document.getElementById('profileEditableAvatar').src = e.target.result;
-            // تحديث الصورة في الداشبورد برة
             if(document.getElementById('dash-avatar')) document.getElementById('dash-avatar').src = e.target.result;
-            // تحديث الصورة في الكارت (ID Card)
             if(document.getElementById('userPhoto')) document.getElementById('userPhoto').src = e.target.result;
           }
           reader.readAsDataURL(input.files[0]);
@@ -1625,21 +1650,35 @@
         }, 1500);
       }
       
+      // التعديل السحري عشان الاسم والصورة يجوا من الدولاب مباشرة 
       const originalShowPageProfileHook = typeof showPage === 'function' ? showPage : null;
       window.showPage = function(pageId) {
         if(originalShowPageProfileHook) {
             originalShowPageProfileHook(pageId);
         }
         if(pageId === 'view-profile') {
-            const dashName = document.getElementById('dash-name');
+            // تظبيط الاسم
             const profileName = document.getElementById('profileDynamicName');
-            if(dashName && profileName) {
-                profileName.innerText = dashName.innerText;
+            if(profileName) {
+                if (typeof currentUserData !== 'undefined' && currentUserData && currentUserData.name) {
+                    profileName.innerText = currentUserData.name;
+                } else {
+                    const dashName = document.getElementById('dash-name');
+                    profileName.innerText = (dashName && dashName.innerText !== '--') ? dashName.innerText : (window.currentLang === 'ar' ? "لم يتم العثور على الاسم" : "Name not found");
+                }
             }
-            const dashAvatar = document.getElementById('dash-avatar');
+            
+            // تظبيط الصورة
             const profileAvatar = document.getElementById('profileEditableAvatar');
-            if(dashAvatar && profileAvatar && !profileAvatar.src.startsWith('data:')) {
-                profileAvatar.src = dashAvatar.src;
+            if(profileAvatar && !profileAvatar.src.startsWith('data:')) {
+                if (typeof currentUserData !== 'undefined' && currentUserData && currentUserData.photo) {
+                    profileAvatar.src = currentUserData.photo;
+                } else {
+                    const dashAvatar = document.getElementById('dash-avatar');
+                    if(dashAvatar && dashAvatar.src && !dashAvatar.src.endsWith('undefined')) {
+                        profileAvatar.src = dashAvatar.src;
+                    }
+                }
             }
         }
       };
