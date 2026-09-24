@@ -59,7 +59,7 @@
       overflow-x: hidden;
     }
     
-  /* قواعد المحاذاة التلقائية حسب اتجاه اللغة بأمان تام */
+ /* قواعد المحاذاة التلقائية حسب اتجاه اللغة بأمان تام */
     [dir="ltr"] body {
       direction: ltr;
       text-align: left;
@@ -83,6 +83,15 @@
     [dir="rtl"] .readonly-text, 
     [dir="rtl"] .accordion-header {
       text-align: right !important;
+    }
+
+    [dir="ltr"] .accordion-header span:last-child {
+      transform: scaleX(-1);
+    }
+
+    [dir="ltr"] [style*="text-align: right"],
+    [dir="ltr"] [style*="text-align:right"] {
+      text-align: left !important;
     }
 
     [dir="ltr"] .accordion-header span:last-child {
@@ -1692,6 +1701,9 @@
       currentLang = lang;
       localStorage.setItem('lacto_lang', lang);
       
+      document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+      document.documentElement.setAttribute('lang', lang);
+
       const langShort = document.getElementById('current-lang-short');
       if (langShort) {
         langShort.innerText = lang.toUpperCase();
