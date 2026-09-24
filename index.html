@@ -1426,7 +1426,7 @@
       </div>
     </div>
     
-    <!-- 6. Profile View (نسخة فتح المعرض والذاكرة ومحاربة السيلفي الإجباري 🇨🇳) -->
+    <!-- 6. Profile View (نسخة القائمة السفلية المزدوجة - كاميرا وملفات زي الإجازات 🎯) -->
     <style>
       .accordion-item { border: 1px solid var(--border-color); border-radius: 1rem; background: rgba(15, 23, 42, 0.6); overflow: hidden; margin-bottom: 0.5rem; }
       .accordion-header { width: 100%; padding: 1rem; background: rgba(30, 41, 59, 0.8); border: none; color: #38bdf8; font-size: 0.9rem; font-weight: 700; cursor: pointer; text-align: right; transition: all 0.3s ease; display: flex; justify-content: space-between; align-items: center; margin: 0; border-radius: 0; box-shadow: none !important; }
@@ -1444,6 +1444,16 @@
       .avatar-img { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); background: rgba(255,255,255,0.05); }
       .avatar-edit-btn { position: absolute; bottom: 0; right: 0; background: linear-gradient(135deg, #38bdf8, #0284c7); width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 2px solid #0f172a; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.5); color: #fff; font-size: 1rem; transition: all 0.2s ease; z-index: 5; }
       .avatar-edit-btn:hover { transform: scale(1.1); }
+
+      /* تنسيق نافذة الخيارات السفلية (Bottom Sheet) زي الإجازات المرضية */
+      .custom-action-sheet { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border-color); border-radius: 1.5rem 1.5rem 0 0; padding: 1.5rem; transform: translateY(100%); transition: transform 0.3s ease-in-out; z-index: 9999; display: flex; flex-direction: column; gap: 0.8rem; box-shadow: 0 -10px 25px rgba(0,0,0,0.5); }
+      .custom-action-sheet.show { transform: translateY(0); }
+      .sheet-option { width: 100%; padding: 1rem; background: rgba(30, 41, 59, 0.8); border: 1px solid var(--border-color); border-radius: 1rem; color: var(--text); font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer; transition: background 0.2s; }
+      .sheet-option:hover { background: rgba(56, 189, 248, 0.2); border-color: #38bdf8; color: #38bdf8; }
+      .sheet-cancel { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); color: #ef4444; }
+      .sheet-cancel:hover { background: rgba(239, 68, 68, 0.2); color: #ef4444; border-color: #ef4444; }
+      .sheet-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 998; display: none; }
+      .sheet-backdrop.show { display: block; }
     </style>
 
     <div id="view-profile" class="card hidden">
@@ -1452,12 +1462,36 @@
         <span style="font-weight: 700; color: #38bdf8;" data-ar="الملف الشخصي" data-en="Profile">الملف الشخصي</span>
       </div>
 
-      <!-- تم شيل الـ capture عشان الموبايل يفتح المعرض والذاكرة براحته -->
+      <!-- الصورة الشخصية مع زرار بيفتح قائمة الاختيار السفلية -->
       <div class="avatar-wrapper">
         <img id="profileEditableAvatar" class="avatar-img" src="" alt="صورة الموظف">
-        <label for="avatarUploadInput" class="avatar-edit-btn" title="اختيار صورة من المعرض">📷</label>
-        <input type="file" id="avatarUploadInput" accept="image/*" class="hidden" onchange="handleAvatarChange(this)">
+        <div class="avatar-edit-btn" onclick="openAvatarOptions()" title="تغيير الصورة">📷</div>
       </div>
+
+      <!-- نافذة الاختيارات السفلية (Bottom Sheet) -->
+      <div class="sheet-backdrop" id="avatarSheetBackdrop" onclick="closeAvatarOptions()"></div>
+      <div class="custom-action-sheet" id="avatarActionSheet">
+        <div style="text-align: center; font-weight: bold; color: #38bdf8; margin-bottom: 0.2rem; font-size: 0.9rem;" data-ar="اختر طريقة تحديث الصورة" data-en="Choose Image Source">اختر طريقة تحديث الصورة</div>
+        
+        <!-- خيار الكاميرا (سيلفي) -->
+        <button class="sheet-option" onclick="triggerAvatarInput('camera')">
+          <span>📷</span> <span data-ar="التقاط صورة بالكاميرا" data-en="Take a Photo">التقاط صورة بالكاميرا</span>
+        </button>
+        
+        <!-- خيار ملفات التليفون (المعرض / الصين) -->
+        <button class="sheet-option" onclick="triggerAvatarInput('file')">
+          <span>📁</span> <span data-ar="اختيار من ملفات الهاتف" data-en="Choose from Files">اختيار من ملفات الهاتف</span>
+        </button>
+        
+        <!-- خيار الإلغاء -->
+        <button class="sheet-option sheet-cancel" onclick="closeAvatarOptions()">
+          <span data-ar="إلغاء" data-en="Cancel">إلغاء</span>
+        </button>
+      </div>
+
+      <!-- الإبوتات المخفية للرفع الفعلي -->
+      <input type="file" id="hiddenCameraInput" accept="image/*" capture="user" class="hidden" onchange="handleAvatarChange(this)">
+      <input type="file" id="hiddenFilesInput" accept="image/*" class="hidden" onchange="handleAvatarChange(this)">
 
       <div id="profile-module" style="display: flex; flex-direction: column; gap: 0.8rem; text-align: right;">
         
@@ -1547,6 +1581,27 @@
     </div>
 
     <script>
+      // دوال التحكم في ظهور وقفل قائمة الخيارات السفلية (Bottom Sheet)
+      function openAvatarOptions() {
+        document.getElementById('avatarActionSheet').classList.add('show');
+        document.getElementById('avatarSheetBackdrop').classList.add('show');
+        if(window.playClickSound) window.playClickSound();
+      }
+
+      function closeAvatarOptions() {
+        document.getElementById('avatarActionSheet').classList.remove('show');
+        document.getElementById('avatarSheetBackdrop').classList.remove('show');
+      }
+
+      function triggerAvatarInput(type) {
+        closeAvatarOptions();
+        if (type === 'camera') {
+          document.getElementById('hiddenCameraInput').click();
+        } else {
+          document.getElementById('hiddenFilesInput').click();
+        }
+      }
+
       setInterval(() => {
         const profileName = document.getElementById('profileDynamicName');
         const profileAvatar = document.getElementById('profileEditableAvatar');
