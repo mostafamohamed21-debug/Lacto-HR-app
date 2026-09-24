@@ -1692,10 +1692,6 @@
       currentLang = lang;
       localStorage.setItem('lacto_lang', lang);
       
-      // السطرين دول هما سر السعادة اللي بيقلبوا اتجاه الشاشة (RTL / LTR)
-      document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-      document.documentElement.setAttribute('lang', lang);
-      
       const langShort = document.getElementById('current-lang-short');
       if (langShort) {
         langShort.innerText = lang.toUpperCase();
@@ -1709,7 +1705,6 @@
       if (typeof updateContentTranslations === 'function') {
         updateContentTranslations();
       }
-    }
     }
 
     function togglePasswordVisibility() {
