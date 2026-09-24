@@ -59,7 +59,7 @@
       overflow-x: hidden;
     }
     
-    /* قواعد الوضع الفاتح (Light Mode) الأنيق */
+    /* قواعد الوضع الفاتح (Light Mode) المحسنة بدقة لعلاج مشكلة النصوص والعناوين الرئيسية */
     [data-theme="light"] body {
       background: linear-gradient(rgba(240, 244, 248, 0.9), rgba(245, 247, 250, 0.95)), url('background.jpg');
       background-size: cover;
@@ -72,25 +72,44 @@
     [data-theme="light"] .summary-card,
     [data-theme="light"] .announcement-card,
     [data-theme="light"] .id-card {
-      background: rgba(255, 255, 255, 0.9) !important;
-      border-color: rgba(0, 0, 0, 0.12) !important;
+      background: rgba(255, 255, 255, 0.95) !important;
+      border-color: rgba(2, 132, 199, 0.2) !important;
       color: #0f172a !important;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.8) !important;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
+    }
+
+    /* إصلاح ألوان العناوين والنصوص داخل السلايدز وبطاقات الملخصات في الوضع الفاتح */
+    [data-theme="light"] .announcement-title,
+    [data-theme="light"] .summary-title,
+    [data-theme="light"] .info-label,
+    [data-theme="light"] .payslip-item-label,
+    [data-theme="light"] .announcement-desc,
+    [data-theme="light"] #dash-greeting,
+    [data-theme="light"] h2, [data-theme="light"] h3, [data-theme="light"] span {
+      color: #0f172a !important;
+    }
+
+    [data-theme="light"] .announcement-desc {
+      color: #334155 !important;
     }
 
     [data-theme="light"] input, 
     [data-theme="light"] textarea, 
     [data-theme="light"] select {
-      background: rgba(240, 244, 248, 0.9) !important;
+      background: rgba(240, 244, 248, 0.95) !important;
       color: #0f172a !important;
-      border-color: rgba(0, 0, 0, 0.15) !important;
+      border-color: rgba(2, 132, 199, 0.3) !important;
     }
 
-    [data-theme="light"] .summary-title,
-    [data-theme="light"] .info-label,
-    [data-theme="light"] .payslip-item-label,
-    [data-theme="light"] .announcement-desc {
-      color: #475569 !important;
+    [data-theme="light"] .checkin-card {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(255, 255, 255, 0.95));
+      color: #0f172a !important;
+      border-color: rgba(56, 189, 248, 0.5);
+    }
+
+    [data-theme="light"] .checkin-status-text,
+    [data-theme="light"] .glowing-action-text {
+      color: #0369a1 !important;
     }
 
     /* قواعد المحاذاة التلقائية حسب اتجاه اللغة بأمان تام */
@@ -1498,21 +1517,25 @@
             <span style="font-size: 0.9rem; font-weight: 700; color: var(--text);" data-ar="مظهر التطبيق (الثيم)" data-en="App Theme">مظهر التطبيق (الثيم)</span>
             <span style="font-size: 0.72rem; color: var(--muted);" data-ar="التبديل بين الوضع الفاتح والغامق" data-en="Toggle Dark/Light Mode">التبديل بين الوضع الفاتح والغامق</span>
           </div>
-          <button onclick="toggleTheme()" class="btn-success" style="width: auto; padding: 0.5rem 1rem; font-size: 0.8rem; margin:0; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-color: #f59e0b;" data-ar="تغيير الثيم" data-en="Toggle Theme">تغيير الثيم</button>
+          <button onclick="toggleTheme()" class="btn-success" style="width: auto; padding: 0.5rem 1rem; font-size: 0.8rem; margin:0;" data-ar="تغيير الثيم" data-en="Toggle Theme">تغيير الثيم</button>
         </div>
 
-        <!-- خيار تغيير كلمة المرور -->
+        <!-- خيار تغيير كلمة المرور (مغلق ويفتح بضغطة زر) -->
         <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 1rem; padding: 0.9rem 1rem; display: flex; flex-direction: column; gap: 0.6rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="togglePasswordSection()">
             <div style="display: flex; flex-direction: column; text-align: right;">
               <span style="font-size: 0.9rem; font-weight: 700; color: var(--text);" data-ar="تغيير كلمة المرور" data-en="Change Password">تغيير كلمة المرور</span>
               <span style="font-size: 0.72rem; color: var(--muted);" data-ar="تحديث كلمة سر الحساب الشخصي" data-en="Update account password">تحديث كلمة سر الحساب الشخصي</span>
             </div>
+            <span id="passToggleArrow" style="font-size: 1rem; color: var(--accent); font-weight: bold;">▼</span>
           </div>
-          <input type="password" id="oldPasswordInput" data-ar-placeholder="كلمة المرور الحالية" data-en-placeholder="Current Password" placeholder="كلمة المرور الحالية" style="margin: 0; font-size: 0.85rem; padding: 0.6rem 0.8rem;">
-          <input type="password" id="newPasswordInput" data-ar-placeholder="كلمة المرور الجديدة" data-en-placeholder="New Password" placeholder="كلمة المرور الجديدة" style="margin: 0; font-size: 0.85rem; padding: 0.6rem 0.8rem;">
-          <button onclick="updatePassword()" class="btn-success" style="width: 100%; padding: 0.5rem; font-size: 0.8rem; margin: 0;" data-ar="حفظ كلمة المرور الجديدة" data-en="Save New Password">حفظ كلمة المرور الجديدة</button>
-          <p id="passwordChangeMsg" style="font-size: 0.75rem; text-align: center; font-weight: bold; margin: 0;"></p>
+          
+          <div id="passwordCollapseBox" class="hidden" style="display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <input type="password" id="oldPasswordInput" data-ar-placeholder="كلمة المرور الحالية" data-en-placeholder="Current Password" placeholder="كلمة المرور الحالية" style="margin: 0; font-size: 0.85rem; padding: 0.6rem 0.8rem;">
+            <input type="password" id="newPasswordInput" data-ar-placeholder="كلمة المرور الجديدة" data-en-placeholder="New Password" placeholder="كلمة المرور الجديدة" style="margin: 0; font-size: 0.85rem; padding: 0.6rem 0.8rem;">
+            <button onclick="updatePassword()" class="btn-success" style="width: 100%; padding: 0.5rem; font-size: 0.8rem; margin: 0;" data-ar="حفظ كلمة المرور الجديدة" data-en="Save New Password">حفظ كلمة المرور الجديدة</button>
+            <p id="passwordChangeMsg" style="font-size: 0.75rem; text-align: center; font-weight: bold; margin: 0;"></p>
+          </div>
         </div>
 
         <!-- معلومات النسخة والبرمجة -->
@@ -1532,10 +1555,11 @@
       </div>
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;">
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="البريد الإلكتروني:" data-en="Email:">البريد الإلكتروني:</label>
-        <input type="email" placeholder="example@lactomisr.com">
+        <input type="email" id="profileEmailInput" placeholder="example@lactomisr.com">
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="رقم الهاتف:" data-en="Phone Number:">رقم الهاتف:</label>
-        <input type="text" placeholder="010xxxxxxxx">
-        <button onclick="showComingSoon('view-profile')" class="btn-success" data-ar="حفظ التعديلات" data-en="Save Changes" style="margin-top: 0.5rem;">حفظ التعديلات</button>
+        <input type="text" id="profilePhoneInput" placeholder="010xxxxxxxx">
+        <button onclick="saveProfileChanges()" class="btn-success" data-ar="حفظ التعديلات" data-en="Save Changes" style="margin-top: 0.5rem;">حفظ التعديلات</button>
+        <p id="profileMsg" style="font-size: 0.8rem; text-align: center; font-weight: bold; margin-top: 0.3rem;"></p>
       </div>
     </div>
 
@@ -1777,7 +1801,7 @@
       }
     }
 
-    /* دوال تبديل الثيم (Dark / Light Mode) */
+    /* دوال تبديل الثيم (Dark / Light Mode) وتحديث زرار الثيم ليكون متناسقاً مع السيستم */
     function toggleTheme() {
       const currentTheme = document.documentElement.getAttribute('data-theme');
       const newTheme = currentTheme === 'light' ? 'dark' : 'light';
@@ -1798,7 +1822,19 @@
       }
     });
 
-    /* دالة تغيير كلمة المرور المضافة حديثاً */
+    /* دالة فتح/قفل قسم تغيير كلمة المرور */
+    function togglePasswordSection() {
+      const box = document.getElementById('passwordCollapseBox');
+      const arrow = document.getElementById('passToggleArrow');
+      if (box.classList.contains('hidden')) {
+        box.classList.remove('hidden');
+        arrow.innerText = '▲';
+      } else {
+        box.classList.add('hidden');
+        arrow.innerText = '▼';
+      }
+    }
+
     function updatePassword() {
       const oldPass = document.getElementById('oldPasswordInput').value.trim();
       const newPass = document.getElementById('newPasswordInput').value.trim();
@@ -1833,6 +1869,31 @@
       }).catch(err => {
         msgEl.style.color = '#ef4444';
         msgEl.innerText = currentLang === 'ar' ? '❌ حدث خطأ، حاول مرة أخرى.' : '❌ Error occurred, try again.';
+      });
+    }
+
+    /* دالة حفظ وتحديث الملف الشخصي */
+    function saveProfileChanges() {
+      const email = document.getElementById('profileEmailInput').value.trim();
+      const phone = document.getElementById('profilePhoneInput').value.trim();
+      const msgEl = document.getElementById('profileMsg');
+
+      if (!currentEmpCode) {
+        msgEl.style.color = '#ef4444';
+        msgEl.innerText = currentLang === 'ar' ? '⚠️ يرجى تسجيل الدخول أولاً!' : '⚠️ Please sign in first!';
+        return;
+      }
+
+      db.ref('users/' + currentEmpCode).update({ email: email, phone: phone }).then(() => {
+        msgEl.style.color = '#38bdf8';
+        msgEl.innerText = currentLang === 'ar' ? '✅ تم تحديث الملف الشخصي بنجاح!' : '✅ Profile updated successfully!';
+        if (currentUserData) {
+          currentUserData.email = email;
+          currentUserData.phone = phone;
+        }
+      }).catch(() => {
+        msgEl.style.color = '#ef4444';
+        msgEl.innerText = currentLang === 'ar' ? '❌ حدث خطأ أثناء التحديث.' : '❌ Error updating profile.';
       });
     }
 
@@ -2492,6 +2553,10 @@
           document.getElementById('userJob').innerText = user.job || "--"; document.getElementById('userDept').innerText = user.dept || "--";
           document.getElementById('userCodeVal').innerText = code; document.getElementById('userNID').innerText = user.nationalId || "--";
           document.getElementById('userPhoto').src = userPhotoUrl;
+          
+          if (document.getElementById('profileEmailInput')) document.getElementById('profileEmailInput').value = user.email || '';
+          if (document.getElementById('profilePhoneInput')) document.getElementById('profilePhoneInput').value = user.phone || '';
+
           document.getElementById('qrcode').innerHTML = "";
           new QRCode(document.getElementById("qrcode"), { text: window.location.origin + window.location.pathname + "?emp=" + code, width: 85, height: 85 });
           showPage('view-dashboard');
