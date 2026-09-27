@@ -112,10 +112,26 @@
       color: #0369a1 !important;
     }
 
+    /* إصلاح شريط التنقل السفلي في الوضع الفاتح لضمان رؤية الأيقونات والنصوص بوضوح */
+    [data-theme="light"] #bottomNavBar {
+      background: rgba(255, 255, 255, 0.98) !important;
+      border-top: 1px solid rgba(2, 132, 199, 0.3) !important;
+    }
+    [data-theme="light"] .bottom-nav-item {
+      color: #0284c7 !important;
+    }
+    [data-theme="light"] .bottom-nav-item.active {
+      color: #0369a1 !important;
+    }
+
     /* قواعد المحاذاة التلقائية حسب اتجاه اللغة بأمان تام */
     [dir="ltr"] body {
       direction: ltr;
       text-align: left;
+    }
+    [dir="rtl"] body {
+      direction: rtl;
+      text-align: right;
     }
     [dir="rtl"] body {
       direction: rtl;
