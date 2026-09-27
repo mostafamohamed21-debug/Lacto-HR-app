@@ -1547,21 +1547,91 @@
       </div>
     </div>
     
-    <!-- 6. Profile View -->
-    <div id="view-profile" class="card hidden">
-      <div class="nav-bar">
-        <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
-        <span style="font-weight: 700; color: #38bdf8;" data-ar="تحديث الملف الشخصي" data-en="Update Profile">تحديث الملف الشخصي</span>
-      </div>
-      <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;">
-        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="البريد الإلكتروني:" data-en="Email:">البريد الإلكتروني:</label>
-        <input type="email" id="profileEmailInput" placeholder="example@lactomisr.com">
-        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="رقم الهاتف:" data-en="Phone Number:">رقم الهاتف:</label>
-        <input type="text" id="profilePhoneInput" placeholder="010xxxxxxxx">
-        <button onclick="saveProfileChanges()" class="btn-success" data-ar="حفظ التعديلات" data-en="Save Changes" style="margin-top: 0.5rem;">حفظ التعديلات</button>
-        <p id="profileMsg" style="font-size: 0.8rem; text-align: center; font-weight: bold; margin-top: 0.3rem;"></p>
+   <!-- 6. Profile View -->
+<div id="view-profile" class="card hidden">
+  <div class="nav-bar">
+    <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+    <span style="font-weight: 700; color: #38bdf8;" data-ar="الملف الشخصي" data-en="My Profile">الملف الشخصي</span>
+  </div>
+  
+  <!-- قسم البيانات الأساسية (للعرض فقط) -->
+  <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 1rem; padding: 1.25rem; margin-bottom: 1.25rem; text-align: right; box-shadow: inset 0 0 15px rgba(0,0,0,0.3);">
+    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+      <img id="profile-page-avatar" src="amgad.jpg" alt="Avatar" style="width: 65px; height: 65px; border-radius: 50%; border: 2px solid #38bdf8; object-fit: cover; box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);">
+      <div style="text-align: right;">
+        <h3 id="profile-page-name" style="margin: 0 0 0.2rem 0; font-size: 1.05rem; color: var(--text);">Moustafa Mohamed Ali El Sayed</h3>
+        <p id="profile-page-job" style="margin: 0; font-size: 0.85rem; color: #38bdf8; font-weight: 700;">Personnel Section Head</p>
       </div>
     </div>
+    
+    <div class="info-grid" style="background: transparent; border: none; padding: 0; margin: 0; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.75rem;">
+      <div>
+        <div class="info-label" data-ar="كود الموظف" data-en="Emp Code">كود الموظف</div>
+        <div id="profile-page-code" class="info-val">--</div>
+      </div>
+      <div>
+        <div class="info-label" data-ar="الإدارة" data-en="Department">الإدارة</div>
+        <div id="profile-page-dept" class="info-val">HR</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- قسم تحديث بيانات الاتصال -->
+  <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;">
+    <h4 style="color: var(--muted); font-size: 0.85rem; margin-bottom: 0.2rem;" data-ar="تحديث بيانات الاتصال" data-en="Update Contact Info">تحديث بيانات الاتصال</h4>
+    
+    <label style="font-size: 0.75rem; color: var(--muted);" data-ar="البريد الإلكتروني:" data-en="Email:">البريد الإلكتروني:</label>
+    <input type="email" id="profileEmailInput" placeholder="example@lactomisr.com" style="margin-top: 0;">
+    
+    <label style="font-size: 0.75rem; color: var(--muted);" data-ar="رقم الهاتف:" data-en="Phone Number:">رقم الهاتف:</label>
+    <input type="text" id="profilePhoneInput" placeholder="010xxxxxxxx" style="margin-top: 0;">
+    
+    <button onclick="saveProfileChanges()" class="btn-success" data-ar="حفظ التعديلات" data-en="Save Changes" style="margin-top: 0.75rem;">حفظ التعديلات</button>
+    <p id="profileMsg" style="font-size: 0.8rem; text-align: center; font-weight: bold; margin-top: 0.3rem;"></p>
+  </div>
+</div><!-- 6. Profile View -->
+<div id="view-profile" class="card hidden">
+  <div class="nav-bar">
+    <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+    <span style="font-weight: 700; color: #38bdf8;" data-ar="الملف الشخصي" data-en="My Profile">الملف الشخصي</span>
+  </div>
+  
+  <!-- قسم البيانات الأساسية (للعرض فقط) -->
+  <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 1rem; padding: 1.25rem; margin-bottom: 1.25rem; text-align: right; box-shadow: inset 0 0 15px rgba(0,0,0,0.3);">
+    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+      <img id="profile-page-avatar" src="amgad.jpg" alt="Avatar" style="width: 65px; height: 65px; border-radius: 50%; border: 2px solid #38bdf8; object-fit: cover; box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);">
+      <div style="text-align: right;">
+        <h3 id="profile-page-name" style="margin: 0 0 0.2rem 0; font-size: 1.05rem; color: var(--text);">Moustafa Mohamed Ali El Sayed</h3>
+        <p id="profile-page-job" style="margin: 0; font-size: 0.85rem; color: #38bdf8; font-weight: 700;">Personnel Section Head</p>
+      </div>
+    </div>
+    
+    <div class="info-grid" style="background: transparent; border: none; padding: 0; margin: 0; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.75rem;">
+      <div>
+        <div class="info-label" data-ar="كود الموظف" data-en="Emp Code">كود الموظف</div>
+        <div id="profile-page-code" class="info-val">--</div>
+      </div>
+      <div>
+        <div class="info-label" data-ar="الإدارة" data-en="Department">الإدارة</div>
+        <div id="profile-page-dept" class="info-val">HR</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- قسم تحديث بيانات الاتصال -->
+  <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;">
+    <h4 style="color: var(--muted); font-size: 0.85rem; margin-bottom: 0.2rem;" data-ar="تحديث بيانات الاتصال" data-en="Update Contact Info">تحديث بيانات الاتصال</h4>
+    
+    <label style="font-size: 0.75rem; color: var(--muted);" data-ar="البريد الإلكتروني:" data-en="Email:">البريد الإلكتروني:</label>
+    <input type="email" id="profileEmailInput" placeholder="example@lactomisr.com" style="margin-top: 0;">
+    
+    <label style="font-size: 0.75rem; color: var(--muted);" data-ar="رقم الهاتف:" data-en="Phone Number:">رقم الهاتف:</label>
+    <input type="text" id="profilePhoneInput" placeholder="010xxxxxxxx" style="margin-top: 0;">
+    
+    <button onclick="saveProfileChanges()" class="btn-success" data-ar="حفظ التعديلات" data-en="Save Changes" style="margin-top: 0.75rem;">حفظ التعديلات</button>
+    <p id="profileMsg" style="font-size: 0.8rem; text-align: center; font-weight: bold; margin-top: 0.3rem;"></p>
+  </div>
+</div>
 
     <!-- Coming Soon View -->
     <div id="view-coming-soon" class="card hidden">
@@ -2535,8 +2605,7 @@
         msg.style.color = '#38bdf8'; msg.innerText = currentLang === 'ar' ? "✅ تم إرسال مقترحك بنجاح!" : "✅ Suggestion submitted successfully!"; setTimeout(() => { showPage('view-dashboard'); }, 2000);
       }).catch(() => { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? "❌ حدث خطأ، حاول مرة أخرى." : "❌ Error occurred, try again."; });
     }
-
-    function login() {
+function login() {
       const code = document.getElementById('empCode').value.trim(); const pass = document.getElementById('empPass').value.trim();
       const rememberMe = document.getElementById('rememberMe').checked; const errorEl = document.getElementById('error');
       if (!code) { errorEl.innerText = currentLang === 'ar' ? "يرجى إدخال كود الموظف" : "Please enter employee code"; return; }
@@ -2556,6 +2625,13 @@
           
           if (document.getElementById('profileEmailInput')) document.getElementById('profileEmailInput').value = user.email || '';
           if (document.getElementById('profilePhoneInput')) document.getElementById('profilePhoneInput').value = user.phone || '';
+
+          // تحديث بيانات صفحة البروفايل الجديدة
+          document.getElementById('profile-page-name').innerText = user.name || "--";
+          document.getElementById('profile-page-job').innerText = user.job || "--";
+          document.getElementById('profile-page-dept').innerText = user.dept || "--";
+          document.getElementById('profile-page-code').innerText = code;
+          document.getElementById('profile-page-avatar').src = userPhotoUrl;
 
           document.getElementById('qrcode').innerHTML = "";
           new QRCode(document.getElementById("qrcode"), { text: window.location.origin + window.location.pathname + "?emp=" + code, width: 85, height: 85 });
