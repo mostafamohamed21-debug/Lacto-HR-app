@@ -1554,18 +1554,19 @@
         <span style="font-weight: 700; color: #38bdf8;" data-ar="الملف الشخصي" data-en="My Profile">الملف الشخصي</span>
       </div>
       
-      <!-- 1. قسم الصورة والبيانات الأساسية (بنفس فكرة زرار الإجازات الأنيق) -->
+      <!-- 1. قسم الصورة والبيانات الأساسية (نفس فكرة زرار الإجازات العبقري) -->
       <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 1.25rem; padding: 1.25rem; margin-bottom: 1.25rem; text-align: center; box-shadow: inset 0 0 15px rgba(0,0,0,0.3);">
         
         <div style="position: relative; width: 85px; height: 85px; margin: 0 auto 0.75rem auto;">
           <img id="profile-page-avatar" src="" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);">
         </div>
 
-        <!-- زرار موحد شيك جداً (بنفس فكرة upload-btn-label بتاعت الإجازات) يفتح الكاميرا أو الاستوديو براحتك -->
+        <!-- زرار موحد شيك جداً يفتح قائمة النظام (كاميرا أو ملفات/استوديو) بالضغطة المباشرة -->
         <div style="margin-bottom: 0.75rem;">
           <label for="avatarUploadInput" style="display: inline-block; background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; padding: 0.4rem 1rem; border-radius: 0.8rem; font-size: 0.75rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
-            📷 تغيير الصورة الشخصية
+            📷 تغيير الصورة (كاميرا أو ملفات)
           </label>
+          <!-- هنا تم إزالة capture تماماً لكي يتيح الموبايل الخيارين معاً (استوديو وملفات وكاميرا) -->
           <input type="file" id="avatarUploadInput" accept="image/*" style="display: none;" onchange="handleAvatarChange(event)">
         </div>
 
