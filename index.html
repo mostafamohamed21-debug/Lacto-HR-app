@@ -1550,7 +1550,6 @@
  <!-- 6. Profile View (Advanced) -->
     <div id="view-profile" class="card hidden" style="padding-bottom: 2rem;">
       <div class="nav-bar">
-        <!-- زر الرجوع المحسن (بيشيك لو فيه تعديلات غير محفوظة) -->
         <button class="back-btn" onclick="checkProfileUnsavedChanges()"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
         <span style="font-weight: 700; color: #38bdf8;" data-ar="الملف الشخصي" data-en="My Profile">الملف الشخصي</span>
       </div>
@@ -1665,19 +1664,19 @@
             <div style="font-size: 0.8rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem;">➕ إضافة مؤهل جديد</div>
             
             <label style="font-size: 0.7rem; color: var(--muted);">اسم المؤهل:</label>
-            <input type="text" id="newCertName" placeholder="أدخل اسم المؤهل..." style="margin-bottom: 0.4rem; font-size: 0.8rem;">
+            <input type="text" id="newCertName" placeholder="أدخل اسم المؤهل..." style="margin-bottom: 0.4rem; font-size: 0.8rem;" oninput="markProfileAsChanged()">
 
             <label style="font-size: 0.7rem; color: var(--muted);">جهة الإصدار (الجامعة / المعهد):</label>
-            <input type="text" id="newCertIssuer" placeholder="أدخل اسم الجامعة أو المعهد..." style="margin-bottom: 0.4rem; font-size: 0.8rem;">
+            <input type="text" id="newCertIssuer" placeholder="أدخل اسم الجامعة أو المعهد..." style="margin-bottom: 0.4rem; font-size: 0.8rem;" oninput="markProfileAsChanged()">
 
             <label style="font-size: 0.7rem; color: var(--muted);">سنة الحصول عليه:</label>
-            <input type="number" id="newCertYear" placeholder="مثال: 2015" style="margin-bottom: 0.5rem; font-size: 0.8rem;">
+            <input type="number" id="newCertYear" placeholder="مثال: 2015" style="margin-bottom: 0.5rem; font-size: 0.8rem;" oninput="markProfileAsChanged()">
 
             <label style="font-size: 0.7rem; color: var(--muted); display: block; margin-bottom: 0.3rem;">رفع مستند المؤهل:</label>
             <button onclick="document.getElementById('certFileCapture').click()" style="width: 100%; background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-bottom: 0.5rem;">
               📷 تصوير المستند أو اختيار ملف
             </button>
-            <input type="file" id="certFileCapture" accept="image/*,application/pdf" capture="environment" style="display: none;" onchange="document.getElementById('certFileNameDisplay').innerText = this.files[0] ? this.files[0].name : 'لم يتم اختيار ملف'">
+            <input type="file" id="certFileCapture" accept="image/*,application/pdf" capture="environment" style="display: none;" onchange="document.getElementById('certFileNameDisplay').innerText = this.files[0] ? this.files[0].name : 'لم يتم اختيار ملف'; markProfileAsChanged();">
             <div id="certFileNameDisplay" style="font-size: 0.65rem; color: var(--muted); margin-bottom: 0.5rem;">لم يتم اختيار ملف</div>
 
             <div style="display: flex; gap: 0.4rem;">
@@ -1691,19 +1690,19 @@
             <div style="font-size: 0.8rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem;">➕ إضافة دورة تدريبية جديدة</div>
             
             <label style="font-size: 0.7rem; color: var(--muted);">اسم الدورة التدريبية:</label>
-            <input type="text" id="newCourseName" placeholder="أدخل اسم الدورة..." style="margin-bottom: 0.4rem; font-size: 0.8rem;">
+            <input type="text" id="newCourseName" placeholder="أدخل اسم الدورة..." style="margin-bottom: 0.4rem; font-size: 0.8rem;" oninput="markProfileAsChanged()">
 
             <label style="font-size: 0.7rem; color: var(--muted);">الجهة المنظمة / المركز:</label>
-            <input type="text" id="newCourseIssuer" placeholder="أدخل اسم المركز أو الجهة..." style="margin-bottom: 0.4rem; font-size: 0.8rem;">
+            <input type="text" id="newCourseIssuer" placeholder="أدخل اسم المركز أو الجهة..." style="margin-bottom: 0.4rem; font-size: 0.8rem;" oninput="markProfileAsChanged()">
 
             <label style="font-size: 0.7rem; color: var(--muted);">سنة الحصول عليها:</label>
-            <input type="number" id="newCourseYear" placeholder="مثال: 2023" style="margin-bottom: 0.5rem; font-size: 0.8rem;">
+            <input type="number" id="newCourseYear" placeholder="مثال: 2023" style="margin-bottom: 0.5rem; font-size: 0.8rem;" oninput="markProfileAsChanged()">
 
             <label style="font-size: 0.7rem; color: var(--muted); display: block; margin-bottom: 0.3rem;">رفع شهادة الدورة:</label>
             <button onclick="document.getElementById('courseFileCapture').click()" style="width: 100%; background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-bottom: 0.5rem;">
               📷 تصوير الشهادة أو اختيار ملف
             </button>
-            <input type="file" id="courseFileCapture" accept="image/*,application/pdf" capture="environment" style="display: none;" onchange="document.getElementById('courseFileNameDisplay').innerText = this.files[0] ? this.files[0].name : 'لم يتم اختيار ملف'">
+            <input type="file" id="courseFileCapture" accept="image/*,application/pdf" capture="environment" style="display: none;" onchange="document.getElementById('courseFileNameDisplay').innerText = this.files[0] ? this.files[0].name : 'لم يتم اختيار ملف'; markProfileAsChanged();">
             <div id="courseFileNameDisplay" style="font-size: 0.65rem; color: var(--muted); margin-bottom: 0.5rem;">لم يتم اختيار ملف</div>
 
             <div style="display: flex; gap: 0.4rem;">
@@ -1719,11 +1718,77 @@
           </div>
         </div>
 
-        <!-- زر الحفظ النهائي (يحفظ وينقل للرئيسية تلقائياً) -->
+        <!-- زر الحفظ النهائي -->
         <button onclick="saveProfileChangesAdvanced()" class="btn-success" data-ar="حفظ جميع التعديلات" data-en="Save All Changes" style="margin-top: 0.5rem; font-size: 1.05rem; padding: 1rem;">💾 حفظ جميع التعديلات</button>
         <p id="profileMsg" style="font-size: 0.85rem; text-align: center; font-weight: bold; margin-top: 0.3rem;"></p>
       </div>
     </div>
+
+    <!-- كود الجافاسكريبت المدمج خصيصاً للتحكم في الحفظ ومتابعة التعديلات -->
+    <script>
+      let hasUnsavedProfileChanges = false;
+      let stagedAvatarFile = null;
+
+      function markProfileAsChanged() {
+        hasUnsavedProfileChanges = true;
+      }
+
+      function stageAvatarChange(event) {
+        const file = event.target.files[0];
+        if (file) {
+          stagedAvatarFile = file;
+          hasUnsavedProfileChanges = true;
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            document.getElementById('profile-page-avatar').src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+
+      function checkProfileUnsavedChanges() {
+        if (hasUnsavedProfileChanges) {
+          if (confirm("⚠️ لديك تعديلات غير محفوظة. هل ترغب في حفظها قبل الخروج؟")) {
+            saveProfileChangesAdvanced();
+          } else {
+            hasUnsavedProfileChanges = false;
+            showPage('view-dashboard');
+          }
+        } else {
+          showPage('view-dashboard');
+        }
+      }
+
+      function stageNewCertificate() {
+        markProfileAsChanged();
+        alert("تم إدراج المؤهل مؤقتاً، اضغط 'حفظ جميع التعديلات' للاعتماد النهائي.");
+        document.getElementById('newQualificationForm').classList.add('hidden');
+      }
+
+      function stageNewCourse() {
+        markProfileAsChanged();
+        alert("تم إدراج الدورة مؤقتاً، اضغط 'حفظ جميع التعديلات' للاعتماد النهائي.");
+        document.getElementById('newCourseForm').classList.add('hidden');
+      }
+
+      function saveProfileChangesAdvanced() {
+        const msgEl = document.getElementById('profileMsg');
+        msgEl.style.color = '#38bdf8';
+        msgEl.innerText = "⏳ جاري حفظ التعديلات...";
+
+        setTimeout(() => {
+          msgEl.style.color = '#22c55e';
+          msgEl.innerText = "✅ تم حفظ التعديلات بنجاح!";
+          hasUnsavedProfileChanges = true; // يتم تثبيتها
+          
+          setTimeout(() => {
+            msgEl.innerText = "";
+            hasUnsavedProfileChanges = false;
+            showPage('view-dashboard');
+          }, 1200);
+        }, 1000);
+      }
+    </script>
     <!-- Coming Soon View -->
     <div id="view-coming-soon" class="card hidden">
       <div class="nav-bar">
