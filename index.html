@@ -20,7 +20,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
   
-  <style>
+ <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&family=Share+Tech+Mono&display=swap');
     :root {
       --bg: #0b0f19;
@@ -111,6 +111,14 @@
     [data-theme="light"] .glowing-action-text {
       color: #0369a1 !important;
     }
+
+    /* إضافات آمنة لضمان ظهور النصوص المخفية والساعات في الثيم الفاتح دون أي تأثير جانبي */
+    [data-theme="light"] .checkin-card *, 
+    [data-theme="light"] .working-hours-box *,
+    [data-theme="light"] p {
+      color: #0f172a !important;
+    }
+  </style>
 
     /* قواعد المحاذاة التلقائية حسب اتجاه اللغة بأمان تام */
     [dir="ltr"] body {
