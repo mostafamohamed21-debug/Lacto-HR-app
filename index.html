@@ -1560,14 +1560,37 @@
         <div style="position: relative; display: inline-block; margin-bottom: 0.75rem;">
           <img id="profile-page-avatar" src="" alt="Avatar" style="width: 85px; height: 85px; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);">
           
-          <!-- الزرار الأصلي الشيك والمدمج على شكل كاميرا تحت الصورة مباشرة -->
-          <button onclick="document.getElementById('avatarUploadInput').click()" style="position: absolute; bottom: 0; right: -5px; width: 32px; height: 32px; border-radius: 50%; background: #0284c7; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; margin: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.5); z-index: 5;" title="تغيير الصورة">
+          <!-- الزرار المدمج على شكل كاميرا الذي يفتح قائمة الخيارات الذكية -->
+          <button onclick="document.getElementById('avatarChoiceModal').style.display='flex'" style="position: absolute; bottom: 0; right: -5px; width: 32px; height: 32px; border-radius: 50%; background: #0284c7; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; margin: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.5); z-index: 5;" title="تغيير الصورة">
             <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: #fff;"><path d="M4 4h3l2-2h6l2 2h3c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm8 3c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/></svg>
           </button>
-          
-          <!-- الـ Input المخفي لرفع الصورة -->
-          <input type="file" id="avatarUploadInput" accept="image/*" style="display: none;" onchange="handleAvatarChange(event)">
         </div>
+
+        <!-- قائمة الخيارات الذكية المنبثقة (Action Sheet) -->
+        <div id="avatarChoiceModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 9999; align-items: center; justify-content: center; padding: 1rem;">
+          <div style="background: #0f172a; border: 1px solid #38bdf8; border-radius: 1rem; width: 100%; max-width: 320px; padding: 1.25rem; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+            <h4 style="color: #38bdf8; margin-bottom: 1rem; font-size: 1rem;">اختر طريقة تغيير الصورة</h4>
+            
+            <!-- زر الكاميرا الفورية -->
+            <button onclick="document.getElementById('avatarChoiceModal').style.display='none'; document.getElementById('cameraInput').click();" style="width: 100%; background: #0284c7; color: white; border: none; padding: 0.75rem; border-radius: 0.75rem; font-weight: 700; margin-bottom: 0.75rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+              📷 التقاط صورة بالكاميرا
+            </button>
+            
+            <!-- زر ملفات الهاتف واستوديو الصور -->
+            <button onclick="document.getElementById('avatarChoiceModal').style.display='none'; document.getElementById('galleryInput').click();" style="width: 100%; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid #38bdf8; padding: 0.75rem; border-radius: 0.75rem; font-weight: 700; margin-bottom: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+              📁 اختيار من ملفات الهاتف
+            </button>
+            
+            <!-- زر الإلغاء -->
+            <button onclick="document.getElementById('avatarChoiceModal').style.display='none'" style="background: transparent; color: var(--muted); border: none; font-size: 0.85rem; cursor: pointer;">
+              إلغاء
+            </button>
+          </div>
+        </div>
+
+        <!-- ملفات الإدخال المخفية -->
+        <input type="file" id="cameraInput" accept="image/*" capture="user" style="display: none;" onchange="handleAvatarChange(event)">
+        <input type="file" id="galleryInput" accept="image/*" style="display: none;" onchange="handleAvatarChange(event)">
 
         <h3 id="profile-page-name" style="margin: 0 0 0.2rem 0; font-size: 1.1rem; color: var(--text);">--</h3>
         <p id="profile-page-job" style="margin: 0 0 0.75rem 0; font-size: 0.85rem; color: #38bdf8; font-weight: 700;">--</p>
