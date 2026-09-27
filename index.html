@@ -1554,19 +1554,18 @@
         <span style="font-weight: 700; color: #38bdf8;" data-ar="الملف الشخصي" data-en="My Profile">الملف الشخصي</span>
       </div>
       
-      <!-- 1. قسم الصورة والبيانات الأساسية (نفس فكرة زرار الإجازات العبقري) -->
+      <!-- 1. قسم الصورة والبيانات الأساسية (بالزرار الأصلي المدمج والمثالي) -->
       <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 1.25rem; padding: 1.25rem; margin-bottom: 1.25rem; text-align: center; box-shadow: inset 0 0 15px rgba(0,0,0,0.3);">
         
-        <div style="position: relative; width: 85px; height: 85px; margin: 0 auto 0.75rem auto;">
-          <img id="profile-page-avatar" src="" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);">
-        </div>
-
-        <!-- زرار موحد شيك جداً يفتح قائمة النظام (كاميرا أو ملفات/استوديو) بالضغطة المباشرة -->
-        <div style="margin-bottom: 0.75rem;">
-          <label for="avatarUploadInput" style="display: inline-block; background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; padding: 0.4rem 1rem; border-radius: 0.8rem; font-size: 0.75rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
-            📷 تغيير الصورة (كاميرا أو ملفات)
-          </label>
-          <!-- هنا تم إزالة capture تماماً لكي يتيح الموبايل الخيارين معاً (استوديو وملفات وكاميرا) -->
+        <div style="position: relative; display: inline-block; margin-bottom: 0.75rem;">
+          <img id="profile-page-avatar" src="" alt="Avatar" style="width: 85px; height: 85px; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);">
+          
+          <!-- الزرار الأصلي الشيك والمدمج على شكل كاميرا تحت الصورة مباشرة -->
+          <button onclick="document.getElementById('avatarUploadInput').click()" style="position: absolute; bottom: 0; right: -5px; width: 32px; height: 32px; border-radius: 50%; background: #0284c7; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; margin: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.5); z-index: 5;" title="تغيير الصورة">
+            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: #fff;"><path d="M4 4h3l2-2h6l2 2h3c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm8 3c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/></svg>
+          </button>
+          
+          <!-- الـ Input المخفي لرفع الصورة -->
           <input type="file" id="avatarUploadInput" accept="image/*" style="display: none;" onchange="handleAvatarChange(event)">
         </div>
 
