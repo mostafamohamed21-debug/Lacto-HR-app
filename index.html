@@ -20,7 +20,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
   
-<style>
+  <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&family=Share+Tech+Mono&display=swap');
     :root {
       --bg: #0b0f19;
@@ -59,7 +59,7 @@
       overflow-x: hidden;
     }
     
-    /* قواعد الوضع الفاتح (Light Mode) الشاملة والمنضبطة */
+    /* قواعد الوضع الفاتح (Light Mode) المحسنة بدقة لعلاج مشكلة النصوص والعناوين الرئيسية */
     [data-theme="light"] body {
       background: linear-gradient(rgba(240, 244, 248, 0.9), rgba(245, 247, 250, 0.95)), url('background.jpg');
       background-size: cover;
@@ -78,7 +78,7 @@
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
     }
 
-    /* إصلاح ألوان العناوين والنصوص والبطاقات في الوضع الفاتح */
+    /* إصلاح ألوان العناوين والنصوص داخل السلايدز وبطاقات الملخصات في الوضع الفاتح */
     [data-theme="light"] .announcement-title,
     [data-theme="light"] .summary-title,
     [data-theme="light"] .info-label,
@@ -93,34 +93,6 @@
       color: #334155 !important;
     }
 
-    /* إصلاح بطاقة الحضور والانصراف وساعات العمل في الثيم الفاتح (عشان تبان بوضوح) */
-    [data-theme="light"] .checkin-card,
-    [data-theme="light"] [id*="checkin"], 
-    [data-theme="light"] .working-hours-box {
-      background: rgba(255, 255, 255, 0.98) !important;
-      color: #0f172a !important;
-      border: 1px solid rgba(2, 132, 199, 0.3) !important;
-    }
-    [data-theme="light"] .checkin-card *, 
-    [data-theme="light"] .checkin-card span, 
-    [data-theme="light"] .checkin-card div {
-      color: #0f172a !important;
-    }
-
-    /* إصلاح شريط التنقل السفلي (Bottom Nav Bar) في الثيم الفاتح عشان الأيقونات والكلام يظهروا بوضوح */
-    [data-theme="light"] .bottom-nav, 
-    [data-theme="light"] nav[style*="position: fixed"] {
-      background: rgba(255, 255, 255, 0.95) !important;
-      border-top: 1px solid rgba(2, 132, 199, 0.2) !important;
-      box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.08) !important;
-    }
-    [data-theme="light"] .bottom-nav button,
-    [data-theme="light"] .bottom-nav span,
-    [data-theme="light"] .bottom-nav svg {
-      color: #0f172a !important;
-      fill: #0f172a !important;
-    }
-
     [data-theme="light"] input, 
     [data-theme="light"] textarea, 
     [data-theme="light"] select {
@@ -129,11 +101,16 @@
       border-color: rgba(2, 132, 199, 0.3) !important;
     }
 
+    [data-theme="light"] .checkin-card {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(255, 255, 255, 0.95));
+      color: #0f172a !important;
+      border-color: rgba(56, 189, 248, 0.5);
+    }
+
     [data-theme="light"] .checkin-status-text,
     [data-theme="light"] .glowing-action-text {
       color: #0369a1 !important;
     }
-  </style>
 
     /* قواعد المحاذاة التلقائية حسب اتجاه اللغة بأمان تام */
     [dir="ltr"] body {
