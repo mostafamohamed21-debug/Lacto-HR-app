@@ -1547,92 +1547,133 @@
       </div>
     </div>
     
-   <!-- 6. Profile View -->
-<div id="view-profile" class="card hidden">
+   <!-- 6. Profile View (Advanced) -->
+<div id="view-profile" class="card hidden" style="padding-bottom: 2rem;">
   <div class="nav-bar">
     <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
     <span style="font-weight: 700; color: #38bdf8;" data-ar="الملف الشخصي" data-en="My Profile">الملف الشخصي</span>
   </div>
   
-  <!-- قسم البيانات الأساسية (للعرض فقط) -->
-  <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 1rem; padding: 1.25rem; margin-bottom: 1.25rem; text-align: right; box-shadow: inset 0 0 15px rgba(0,0,0,0.3);">
-    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-      <img id="profile-page-avatar" src="amgad.jpg" alt="Avatar" style="width: 65px; height: 65px; border-radius: 50%; border: 2px solid #38bdf8; object-fit: cover; box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);">
-      <div style="text-align: right;">
-        <h3 id="profile-page-name" style="margin: 0 0 0.2rem 0; font-size: 1.05rem; color: var(--text);">Moustafa Mohamed Ali El Sayed</h3>
-        <p id="profile-page-job" style="margin: 0; font-size: 0.85rem; color: #38bdf8; font-weight: 700;">Personnel Section Head</p>
-      </div>
-    </div>
+  <!-- 1. قسم الصورة والبيانات الأساسية (غير قابلة للتعديل) -->
+  <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 1.25rem; padding: 1.25rem; margin-bottom: 1.25rem; text-align: center; box-shadow: inset 0 0 15px rgba(0,0,0,0.3); position: relative;">
     
-    <div class="info-grid" style="background: transparent; border: none; padding: 0; margin: 0; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.75rem;">
-      <div>
-        <div class="info-label" data-ar="كود الموظف" data-en="Emp Code">كود الموظف</div>
-        <div id="profile-page-code" class="info-val">--</div>
-      </div>
-      <div>
-        <div class="info-label" data-ar="الإدارة" data-en="Department">الإدارة</div>
-        <div id="profile-page-dept" class="info-val">HR</div>
-      </div>
+    <div style="position: relative; display: inline-block; margin-bottom: 0.75rem;">
+      <img id="profile-page-avatar" src="" alt="Avatar" style="width: 85px; height: 85px; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);">
+      
+      <!-- زرار تغيير الصورة -->
+      <button onclick="document.getElementById('avatarUploadInput').click()" style="position: absolute; bottom: 0; right: -5px; width: 32px; height: 32px; border-radius: 50%; background: #0284c7; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; margin: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.5); z-index: 2;" title="تغيير الصورة">
+        <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: #fff;"><path d="M4 4h3l2-2h6l2 2h3c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm8 3c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/></svg>
+      </button>
+      <!-- Input مخفي لرفع الصورة أو فتح الكاميرا -->
+      <input type="file" id="avatarUploadInput" accept="image/*" capture="user" style="display: none;" onchange="handleAvatarChange(event)">
+    </div>
+
+    <h3 id="profile-page-name" style="margin: 0 0 0.2rem 0; font-size: 1.1rem; color: var(--text);">--</h3>
+    <p id="profile-page-job" style="margin: 0 0 0.75rem 0; font-size: 0.85rem; color: #38bdf8; font-weight: 700;">--</p>
+    
+    <div class="info-grid" style="background: rgba(11, 15, 25, 0.5); border: 1px solid rgba(255,255,255,0.08); padding: 0.6rem; margin: 0;">
+      <div><div class="info-label" data-ar="كود الموظف" data-en="Emp Code">كود الموظف</div><div id="profile-page-code" class="info-val">--</div></div>
+      <div><div class="info-label" data-ar="الإدارة" data-en="Department">الإدارة</div><div id="profile-page-dept" class="info-val">--</div></div>
     </div>
   </div>
 
-  <!-- قسم تحديث بيانات الاتصال -->
-  <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;">
-    <h4 style="color: var(--muted); font-size: 0.85rem; margin-bottom: 0.2rem;" data-ar="تحديث بيانات الاتصال" data-en="Update Contact Info">تحديث بيانات الاتصال</h4>
+  <div style="text-align: right; display: flex; flex-direction: column; gap: 1.25rem;">
     
-    <label style="font-size: 0.75rem; color: var(--muted);" data-ar="البريد الإلكتروني:" data-en="Email:">البريد الإلكتروني:</label>
-    <input type="email" id="profileEmailInput" placeholder="example@lactomisr.com" style="margin-top: 0;">
-    
-    <label style="font-size: 0.75rem; color: var(--muted);" data-ar="رقم الهاتف:" data-en="Phone Number:">رقم الهاتف:</label>
-    <input type="text" id="profilePhoneInput" placeholder="010xxxxxxxx" style="margin-top: 0;">
-    
-    <button onclick="saveProfileChanges()" class="btn-success" data-ar="حفظ التعديلات" data-en="Save Changes" style="margin-top: 0.75rem;">حفظ التعديلات</button>
-    <p id="profileMsg" style="font-size: 0.8rem; text-align: center; font-weight: bold; margin-top: 0.3rem;"></p>
-  </div>
-</div><!-- 6. Profile View -->
-<div id="view-profile" class="card hidden">
-  <div class="nav-bar">
-    <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
-    <span style="font-weight: 700; color: #38bdf8;" data-ar="الملف الشخصي" data-en="My Profile">الملف الشخصي</span>
-  </div>
-  
-  <!-- قسم البيانات الأساسية (للعرض فقط) -->
-  <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 1rem; padding: 1.25rem; margin-bottom: 1.25rem; text-align: right; box-shadow: inset 0 0 15px rgba(0,0,0,0.3);">
-    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-      <img id="profile-page-avatar" src="amgad.jpg" alt="Avatar" style="width: 65px; height: 65px; border-radius: 50%; border: 2px solid #38bdf8; object-fit: cover; box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);">
-      <div style="text-align: right;">
-        <h3 id="profile-page-name" style="margin: 0 0 0.2rem 0; font-size: 1.05rem; color: var(--text);">Moustafa Mohamed Ali El Sayed</h3>
-        <p id="profile-page-job" style="margin: 0; font-size: 0.85rem; color: #38bdf8; font-weight: 700;">Personnel Section Head</p>
+    <!-- 2. قسم البيانات الشخصية والوطنية -->
+    <div style="background: rgba(15, 23, 42, 0.4); border-radius: 1rem; padding: 1rem; border: 1px solid rgba(56, 189, 248, 0.2);">
+      <h4 style="color: #38bdf8; font-size: 0.9rem; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 0.4rem;">🛡️ البيانات الشخصية والقانونية</h4>
+      
+      <label style="font-size: 0.75rem; color: var(--muted);">الرقم القومي (14 رقم):</label>
+      <input type="text" id="profileNIDInput" placeholder="أدخل الرقم القومي..." maxlength="14">
+      <p id="nidWarningText" style="font-size: 0.65rem; color: #f59e0b; margin-top: -0.3rem; margin-bottom: 0.5rem; display: none;">⚠️ ملحوظة: بمجرد الحفظ لا يمكن تعديل الرقم القومي.</p>
+      
+      <label style="font-size: 0.75rem; color: var(--muted);">تاريخ إصدار البطاقة:</label>
+      <input type="text" id="profileNIDDateInput" class="custom-date-input" readonly placeholder="اختر تاريخ الإصدار..." onclick="openCustomCalendar('profileNIDDateInput')">
+      
+      <label style="font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem;">الموقف من التجنيد:</label>
+      <div class="custom-dropdown" id="militaryDropdown">
+        <div class="dropdown-selected" onclick="document.getElementById('militaryOptions').classList.toggle('show'); event.stopPropagation();">
+          <span id="selectedMilitaryText">اختر الموقف...</span>
+          <span style="font-size: 0.8rem;">▼</span>
+        </div>
+        <div class="dropdown-options" id="militaryOptions">
+          <div class="dropdown-option" onclick="selectProfileOption('military', 'أدى الخدمة')">أدى الخدمة</div>
+          <div class="dropdown-option" onclick="selectProfileOption('military', 'معافى نهائي')">معافى نهائي</div>
+          <div class="dropdown-option" onclick="selectProfileOption('military', 'مؤجل')">مؤجل</div>
+          <div class="dropdown-option" onclick="selectProfileOption('military', 'غير لائق طبياً')">غير لائق طبياً</div>
+          <div class="dropdown-option" onclick="selectProfileOption('military', 'عائل أسرة / كبير عيلة')">عائل أسرة / كبير عيلة</div>
+        </div>
       </div>
-    </div>
-    
-    <div class="info-grid" style="background: transparent; border: none; padding: 0; margin: 0; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.75rem;">
-      <div>
-        <div class="info-label" data-ar="كود الموظف" data-en="Emp Code">كود الموظف</div>
-        <div id="profile-page-code" class="info-val">--</div>
-      </div>
-      <div>
-        <div class="info-label" data-ar="الإدارة" data-en="Department">الإدارة</div>
-        <div id="profile-page-dept" class="info-val">HR</div>
-      </div>
-    </div>
-  </div>
+      <input type="hidden" id="profileMilitaryVal" value="">
 
-  <!-- قسم تحديث بيانات الاتصال -->
-  <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;">
-    <h4 style="color: var(--muted); font-size: 0.85rem; margin-bottom: 0.2rem;" data-ar="تحديث بيانات الاتصال" data-en="Update Contact Info">تحديث بيانات الاتصال</h4>
-    
-    <label style="font-size: 0.75rem; color: var(--muted);" data-ar="البريد الإلكتروني:" data-en="Email:">البريد الإلكتروني:</label>
-    <input type="email" id="profileEmailInput" placeholder="example@lactomisr.com" style="margin-top: 0;">
-    
-    <label style="font-size: 0.75rem; color: var(--muted);" data-ar="رقم الهاتف:" data-en="Phone Number:">رقم الهاتف:</label>
-    <input type="text" id="profilePhoneInput" placeholder="010xxxxxxxx" style="margin-top: 0;">
-    
-    <button onclick="saveProfileChanges()" class="btn-success" data-ar="حفظ التعديلات" data-en="Save Changes" style="margin-top: 0.75rem;">حفظ التعديلات</button>
-    <p id="profileMsg" style="font-size: 0.8rem; text-align: center; font-weight: bold; margin-top: 0.3rem;"></p>
+      <label style="font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem;">الحالة الاجتماعية:</label>
+      <div class="custom-dropdown" id="maritalDropdown">
+        <div class="dropdown-selected" onclick="document.getElementById('maritalOptions').classList.toggle('show'); event.stopPropagation();">
+          <span id="selectedMaritalText">اختر الحالة...</span>
+          <span style="font-size: 0.8rem;">▼</span>
+        </div>
+        <div class="dropdown-options" id="maritalOptions">
+          <div class="dropdown-option" onclick="selectProfileOption('marital', 'أعزب')">أعزب</div>
+          <div class="dropdown-option" onclick="selectProfileOption('marital', 'متزوج')">متزوج</div>
+          <div class="dropdown-option" onclick="selectProfileOption('marital', 'مطلق')">مطلق</div>
+          <div class="dropdown-option" onclick="selectProfileOption('marital', 'أرمل')">أرمل</div>
+        </div>
+      </div>
+      <input type="hidden" id="profileMaritalVal" value="">
+
+      <label style="font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem;">عدد المعالين (الزوجة والأبناء):</label>
+      <input type="number" id="profileDependentsInput" placeholder="مثال: 3" min="0">
+    </div>
+
+    <!-- 3. قسم بيانات الاتصال والطوارئ -->
+    <div style="background: rgba(15, 23, 42, 0.4); border-radius: 1rem; padding: 1rem; border: 1px solid rgba(56, 189, 248, 0.2);">
+      <h4 style="color: #38bdf8; font-size: 0.9rem; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 0.4rem;">📞 بيانات الاتصال والطوارئ</h4>
+      
+      <label style="font-size: 0.75rem; color: var(--muted);">العنوان بالتفصيل:</label>
+      <textarea id="profileAddressInput" rows="2" placeholder="محافظة - مدينة - شارع - رقم العمارة..." style="resize: none; margin-top: 0;"></textarea>
+
+      <label style="font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem;">رقم الهاتف الأساسي:</label>
+      <input type="tel" id="profilePhoneInput" placeholder="010xxxxxxxx" style="margin-top: 0;">
+
+      <label style="font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem;">رقم هاتف الطوارئ:</label>
+      <input type="tel" id="profileEmergencyPhoneInput" placeholder="رقم شخص للرجوع إليه وقت الطوارئ..." style="margin-top: 0;">
+    </div>
+
+    <!-- 4. المؤهلات والدورات (للبوص) -->
+    <div style="background: rgba(15, 23, 42, 0.4); border-radius: 1rem; padding: 1rem; border: 1px solid rgba(56, 189, 248, 0.2);">
+      <h4 style="color: #38bdf8; font-size: 0.9rem; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 0.4rem;">🎓 المؤهلات والدورات التدريبية</h4>
+      
+      <!-- مؤهل البوص الثابت -->
+      <div style="background: rgba(56, 189, 248, 0.08); padding: 0.6rem; border-radius: 0.6rem; border: 1px dashed rgba(56, 189, 248, 0.3); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-size: 1.2rem;">🎓</span>
+        <div>
+          <div style="font-size: 0.8rem; font-weight: 700; color: var(--text);">بكالوريوس تجارة</div>
+          <div style="font-size: 0.65rem; color: var(--muted);">سنة التخرج: 1992 (موثق)</div>
+        </div>
+      </div>
+
+      <!-- دورة البوص الثابتة -->
+      <div style="background: rgba(56, 189, 248, 0.08); padding: 0.6rem; border-radius: 0.6rem; border: 1px dashed rgba(56, 189, 248, 0.3); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-size: 1.2rem;">📜</span>
+        <div>
+          <div style="font-size: 0.8rem; font-weight: 700; color: var(--text);">دورة Peachtree Accounting</div>
+          <div style="font-size: 0.65rem; color: var(--muted);">دورة متقدمة (موثق)</div>
+        </div>
+      </div>
+
+      <!-- أزرار الإضافة السريعة -->
+      <div style="display: flex; gap: 0.5rem;">
+        <button onclick="document.getElementById('newCertUpload').click()" style="flex: 1; background: rgba(15, 23, 42, 0.8); border: 1px dashed #38bdf8; color: #38bdf8; padding: 0.5rem; font-size: 0.75rem; margin: 0; box-shadow: none;">+ إضافة مؤهل</button>
+        <button onclick="document.getElementById('newCertUpload').click()" style="flex: 1; background: rgba(15, 23, 42, 0.8); border: 1px dashed #38bdf8; color: #38bdf8; padding: 0.5rem; font-size: 0.75rem; margin: 0; box-shadow: none;">+ إضافة دورة</button>
+        <input type="file" id="newCertUpload" accept="image/*,application/pdf" capture="environment" style="display: none;" onchange="alert('تم استلام المرفق وسيتم مراجعته من الـ HR')">
+      </div>
+    </div>
+
+    <!-- زر الحفظ النهائي -->
+    <button onclick="saveProfileChangesAdvanced()" class="btn-success" data-ar="حفظ جميع التعديلات" data-en="Save All Changes" style="margin-top: 0.5rem; font-size: 1.05rem; padding: 1rem;">💾 حفظ جميع التعديلات</button>
+    <p id="profileMsg" style="font-size: 0.85rem; text-align: center; font-weight: bold; margin-top: 0.3rem;"></p>
   </div>
 </div>
-
     <!-- Coming Soon View -->
     <div id="view-coming-soon" class="card hidden">
       <div class="nav-bar">
@@ -1943,30 +1984,42 @@
     }
 
     /* دالة حفظ وتحديث الملف الشخصي */
-    function saveProfileChanges() {
-      const email = document.getElementById('profileEmailInput').value.trim();
-      const phone = document.getElementById('profilePhoneInput').value.trim();
-      const msgEl = document.getElementById('profileMsg');
+    function saveProfileChangesAdvanced() {
+  const msgEl = document.getElementById('profileMsg');
+  if (!currentEmpCode) { msgEl.style.color = '#ef4444'; msgEl.innerText = '⚠️ يرجى تسجيل الدخول أولاً!'; return; }
 
-      if (!currentEmpCode) {
-        msgEl.style.color = '#ef4444';
-        msgEl.innerText = currentLang === 'ar' ? '⚠️ يرجى تسجيل الدخول أولاً!' : '⚠️ Please sign in first!';
-        return;
-      }
+  const updatedData = {
+    phone: document.getElementById('profilePhoneInput').value.trim(),
+    emergencyPhone: document.getElementById('profileEmergencyPhoneInput').value.trim(),
+    address: document.getElementById('profileAddressInput').value.trim(),
+    dependents: document.getElementById('profileDependentsInput').value.trim(),
+    military: document.getElementById('profileMilitaryVal').value,
+    marital: document.getElementById('profileMaritalVal').value
+  };
 
-      db.ref('users/' + currentEmpCode).update({ email: email, phone: phone }).then(() => {
-        msgEl.style.color = '#38bdf8';
-        msgEl.innerText = currentLang === 'ar' ? '✅ تم تحديث الملف الشخصي بنجاح!' : '✅ Profile updated successfully!';
-        if (currentUserData) {
-          currentUserData.email = email;
-          currentUserData.phone = phone;
-        }
-      }).catch(() => {
-        msgEl.style.color = '#ef4444';
-        msgEl.innerText = currentLang === 'ar' ? '❌ حدث خطأ أثناء التحديث.' : '❌ Error updating profile.';
-      });
+  const nidInput = document.getElementById('profileNIDInput');
+  if (!nidInput.readOnly && nidInput.value.trim() !== "") {
+    if (nidInput.value.trim().length !== 14) { msgEl.style.color = '#ef4444'; msgEl.innerText = '⚠️ الرقم القومي يجب أن يكون 14 رقم!'; return; }
+    updatedData.nationalId = nidInput.value.trim();
+  }
+
+  const nidDateInput = document.getElementById('profileNIDDateInput');
+  if (nidDateInput.onclick !== null && nidDateInput.value.trim() !== "") { updatedData.nationalIdDate = nidDateInput.value.trim(); }
+  if (currentUserData && currentUserData.photo) { updatedData.photo = currentUserData.photo; }
+
+  db.ref('users/' + currentEmpCode).update(updatedData).then(() => {
+    msgEl.style.color = '#38bdf8'; msgEl.innerText = '✅ تم تحديث ملفك الشخصي بنجاح!';
+    Object.assign(currentUserData, updatedData);
+    
+    if (updatedData.nationalId) {
+      nidInput.readOnly = true; nidInput.style.backgroundColor = "rgba(30, 41, 59, 0.5)"; nidInput.style.cursor = "not-allowed";
+      document.getElementById('nidWarningText').style.display = "none";
     }
-
+    if (updatedData.nationalIdDate) {
+      nidDateInput.onclick = null; nidDateInput.style.backgroundColor = "rgba(30, 41, 59, 0.5)"; nidDateInput.style.cursor = "not-allowed";
+    }
+  }).catch(() => { msgEl.style.color = '#ef4444'; msgEl.innerText = '❌ حدث خطأ أثناء التحديث. حاول مرة أخرى.'; });
+}
     function togglePasswordVisibility() {
       const pass = document.getElementById('empPass');
       const eyeIconEl = document.getElementById('eyeIcon');
@@ -2114,6 +2167,9 @@
       const popup = document.getElementById('notificationPopup'); if (popup && popup.classList.contains('show')) popup.classList.remove('show');
       const dropdownOptions = document.getElementById('dropdownOptions'); if (dropdownOptions && dropdownOptions.classList.contains('show')) dropdownOptions.classList.remove('show');
       const loanOpts = document.getElementById('loanMonthsOptions'); if (loanOpts && loanOpts.classList.contains('show')) loanOpts.classList.remove('show');
+
+      const militaryOpts = document.getElementById('militaryOptions'); if (militaryOpts && militaryOpts.classList.contains('show')) militaryOpts.classList.remove('show');
+      const maritalOpts = document.getElementById('maritalOptions'); if (maritalOpts && maritalOpts.classList.contains('show')) maritalOpts.classList.remove('show');
       
       const docOpts = document.getElementById('docOptions'); if (docOpts && docOpts.classList.contains('show')) docOpts.classList.remove('show');
       const techOpts = document.getElementById('techOptions'); if (techOpts && techOpts.classList.contains('show')) techOpts.classList.remove('show');
@@ -2616,6 +2672,7 @@ function login() {
           currentUserData = user; currentEmpCode = code; errorEl.innerText = "";
           if (rememberMe) { localStorage.setItem('lacto_saved_code', code); localStorage.setItem('lacto_saved_pass', pass); } 
           else { localStorage.removeItem('lacto_saved_code'); localStorage.removeItem('lacto_saved_pass'); }
+          
           document.getElementById('dash-name').innerText = user.name || "--"; document.getElementById('dash-code-val').innerText = code;
           const userPhotoUrl = user.photo || (code === 'amgad' || (user.name && user.name.includes('أمجد')) ? 'amgad.jpg' : 'https://i.pravatar.cc/150?img=12');
           document.getElementById('dash-avatar').src = userPhotoUrl; document.getElementById('userName').innerText = user.name || "--";
@@ -2623,19 +2680,46 @@ function login() {
           document.getElementById('userCodeVal').innerText = code; document.getElementById('userNID').innerText = user.nationalId || "--";
           document.getElementById('userPhoto').src = userPhotoUrl;
           
-          if (document.getElementById('profileEmailInput')) document.getElementById('profileEmailInput').value = user.email || '';
-          if (document.getElementById('profilePhoneInput')) document.getElementById('profilePhoneInput').value = user.phone || '';
-
-          // تحديث بيانات صفحة البروفايل الجديدة
+          // تعبئة بيانات البروفايل المتقدمة
           document.getElementById('profile-page-name').innerText = user.name || "--";
           document.getElementById('profile-page-job').innerText = user.job || "--";
           document.getElementById('profile-page-dept').innerText = user.dept || "--";
           document.getElementById('profile-page-code').innerText = code;
           document.getElementById('profile-page-avatar').src = userPhotoUrl;
+          
+          const nidInput = document.getElementById('profileNIDInput');
+          const nidDateInput = document.getElementById('profileNIDDateInput');
+          const nidWarning = document.getElementById('nidWarningText');
+          
+          if (user.nationalId && user.nationalId.trim() !== "") {
+            nidInput.value = user.nationalId; nidInput.readOnly = true;
+            nidInput.style.backgroundColor = "rgba(30, 41, 59, 0.5)"; nidInput.style.cursor = "not-allowed";
+            nidWarning.style.display = "none";
+          } else {
+            nidInput.value = ""; nidInput.readOnly = false;
+            nidInput.style.backgroundColor = "rgba(15, 23, 42, 0.85)"; nidInput.style.cursor = "text";
+            nidWarning.style.display = "block";
+          }
+
+          if (user.nationalIdDate && user.nationalIdDate.trim() !== "") {
+            nidDateInput.value = user.nationalIdDate; nidDateInput.onclick = null;
+            nidDateInput.style.backgroundColor = "rgba(30, 41, 59, 0.5)"; nidDateInput.style.cursor = "not-allowed";
+          } else {
+            nidDateInput.value = ""; nidDateInput.onclick = () => openCustomCalendar('profileNIDDateInput');
+            nidDateInput.style.cursor = "pointer";
+          }
+
+          if (user.military) selectProfileOption('military', user.military);
+          if (user.marital) selectProfileOption('marital', user.marital);
+          document.getElementById('profileDependentsInput').value = user.dependents || "";
+          document.getElementById('profileAddressInput').value = user.address || "";
+          document.getElementById('profilePhoneInput').value = user.phone || "";
+          document.getElementById('profileEmergencyPhoneInput').value = user.emergencyPhone || "";
 
           document.getElementById('qrcode').innerHTML = "";
           new QRCode(document.getElementById("qrcode"), { text: window.location.origin + window.location.pathname + "?emp=" + code, width: 85, height: 85 });
           showPage('view-dashboard');
+          
           db.ref('attendance/' + code + '/' + new Date().toISOString().split('T')[0]).once('value').then(attSnap => {
             if (attSnap.exists()) {
               const d = attSnap.val();
@@ -2647,13 +2731,6 @@ function login() {
         } else { errorEl.innerText = currentLang === 'ar' ? "كود الموظف غير مسجل!" : "Employee code not found!"; }
       });
     }
-
-    function downloadCard() {
-      html2canvas(document.getElementById('myCardToDownload'), { useCORS: true, scale: 2 }).then(canvas => {
-        const link = document.createElement('a'); link.download = 'Lacto_ID_' + currentEmpCode + '.png'; link.href = canvas.toDataURL('image/png'); link.click();
-      });
-    }
-
     function logout() { 
       const rememberMe = document.getElementById('rememberMe').checked;
       if (!rememberMe) {
@@ -2796,6 +2873,31 @@ function login() {
         }, 1500);
       });
     }
+function handleAvatarChange(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const newImageUrl = e.target.result;
+      document.getElementById('profile-page-avatar').src = newImageUrl;
+      document.getElementById('dash-avatar').src = newImageUrl;
+      document.getElementById('userPhoto').src = newImageUrl;
+      if (currentUserData) currentUserData.photo = newImageUrl;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function selectProfileOption(type, value) {
+  if (type === 'military') {
+    document.getElementById('profileMilitaryVal').value = value;
+    document.getElementById('selectedMilitaryText').innerText = value;
+    document.getElementById('militaryOptions').classList.remove('show');
+  } else if (type === 'marital') {
+    document.getElementById('profileMaritalVal').value = value;
+    document.getElementById('selectedMaritalText').innerText = value;
+    document.getElementById('maritalOptions').classList.remove('show');
+  }
   </script>
 </body>
 </html>
