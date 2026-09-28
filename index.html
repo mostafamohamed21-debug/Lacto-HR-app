@@ -1547,7 +1547,7 @@
       </div>
     </div>
     
- <!-- 6. Profile View (Advanced - Final Dynamic Placeholders) -->
+ <!-- 6. Profile View (Advanced - Final Stable Version) -->
     <div id="view-profile" class="card hidden" style="padding-bottom: 2rem;">
       <div class="nav-bar">
         <button type="button" class="back-btn" onclick="checkProfileUnsavedChanges()"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
@@ -1557,11 +1557,11 @@
       <!-- 1. قسم الصورة والبيانات الأساسية -->
       <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 1.25rem; padding: 1.25rem; margin-bottom: 1.25rem; text-align: center; box-shadow: inset 0 0 15px rgba(0,0,0,0.3);">
         
-        <div style="position: relative; width: 85px; height: 85px; margin: 0 auto 0.75rem auto;">
-          <img id="profile-page-avatar" src="" alt="Avatar" style="width: 85px; height: 85px; min-width: 85px; min-height: 85px; max-width: 85px; max-height: 85px; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); display: block;">
+        <div style="position: relative; width: 85px; height: 85px; margin: 0 auto 0.75rem auto; display: inline-block;">
+          <img id="profile-page-avatar" src="" alt="Avatar" style="width: 85px; height: 85px; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); display: block;">
           
-          <button type="button" onclick="document.getElementById('avatarUploadInput').click()" style="position: absolute; bottom: 0; right: -5px; width: 32px; height: 32px; border-radius: 50%; background: #0284c7; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; margin: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.5); z-index: 5;" title="تغيير الصورة">
-            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: #fff;"><path d="M4 4h3l2-2h6l2 2h3c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm8 3c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/></svg>
+          <button type="button" onclick="document.getElementById('avatarUploadInput').click()" style="position: absolute; bottom: 0; right: 0; width: 28px; height: 28px; border-radius: 50%; background: #0284c7; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.5); z-index: 5;" title="تغيير الصورة">
+            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: #fff;"><path d="M4 4h3l2-2h6l2 2h3c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm8 3c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/></svg>
           </button>
           
           <input type="file" id="avatarUploadInput" accept="image/*,application/pdf" capture="environment" style="display: none;" onchange="stageAvatarChange(event)">
@@ -1589,13 +1589,14 @@
           <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-bottom: 0.3rem;" data-ar="تاريخ إصدار البطاقة:" data-en="ID Issue Date:">تاريخ إصدار البطاقة:</label>
           <input type="text" id="profileNIDDateInput" class="custom-date-input" readonly data-ar-placeholder="اختر تاريخ الإصدار..." data-en-placeholder="Select issue date..." onclick="openCustomCalendar('profileNIDDateInput'); markProfileAsChanged();">
           
+          <!-- الموقف من التجنيد -->
           <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-top: 0.5rem; margin-bottom: 0.3rem;" data-ar="الموقف من التجنيد:" data-en="Military Status:">الموقف من التجنيد:</label>
-          <div class="custom-dropdown" id="militaryDropdown" style="position: relative;">
-            <div class="dropdown-selected" onclick="toggleProfileDropdown('military'); event.stopPropagation();" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+          <div class="custom-dropdown" id="militaryDropdown" style="position: relative; margin-bottom: 0.5rem;">
+            <div class="dropdown-selected" onclick="toggleProfileDropdown('military'); event.stopPropagation();" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: rgba(11, 15, 25, 0.7); border: 1px solid var(--border-color); padding: 0.75rem; border-radius: 0.75rem; color: var(--text);">
               <span id="selectedMilitaryText" data-ar="اختر الموقف..." data-en="Select Status...">اختر الموقف...</span>
               <span style="font-size: 0.8rem;">▼</span>
             </div>
-            <div class="dropdown-options" id="militaryOptions" style="display: none; background: #0f172a; border: 1px solid #38bdf8; border-radius: 0.5rem; max-height: 160px; overflow-y: auto;">
+            <div class="dropdown-options" id="militaryOptions" style="display: none; position: relative; margin-top: 4px; background: #0f172a; border: 1px solid #38bdf8; border-radius: 0.75rem; max-height: 160px; overflow-y: auto; z-index: 10;">
               <div class="dropdown-option" onclick="selectProfileOption('military', 'completed', this); event.stopPropagation();" style="padding: 10px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);" data-ar="أدى الخدمة" data-en="Completed">أدى الخدمة</div>
               <div class="dropdown-option" onclick="selectProfileOption('military', 'exempted', this); event.stopPropagation();" style="padding: 10px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);" data-ar="معافى نهائي" data-en="Exempted">معافى نهائي</div>
               <div class="dropdown-option" onclick="selectProfileOption('military', 'postponed', this); event.stopPropagation();" style="padding: 10px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);" data-ar="مؤجل" data-en="Postponed">مؤجل</div>
@@ -1605,13 +1606,14 @@
           </div>
           <input type="hidden" id="profileMilitaryVal" value="">
 
+          <!-- الحالة الاجتماعية -->
           <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-top: 0.5rem; margin-bottom: 0.3rem;" data-ar="الحالة الاجتماعية:" data-en="Marital Status:">الحالة الاجتماعية:</label>
-          <div class="custom-dropdown" id="maritalDropdown" style="position: relative;">
-            <div class="dropdown-selected" onclick="toggleProfileDropdown('marital'); event.stopPropagation();" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+          <div class="custom-dropdown" id="maritalDropdown" style="position: relative; margin-bottom: 0.5rem;">
+            <div class="dropdown-selected" onclick="toggleProfileDropdown('marital'); event.stopPropagation();" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: rgba(11, 15, 25, 0.7); border: 1px solid var(--border-color); padding: 0.75rem; border-radius: 0.75rem; color: var(--text);">
               <span id="selectedMaritalText" data-ar="اختر الحالة..." data-en="Select Marital Status...">اختر الحالة...</span>
               <span style="font-size: 0.8rem;">▼</span>
             </div>
-            <div class="dropdown-options" id="maritalOptions" style="display: none; background: #0f172a; border: 1px solid #38bdf8; border-radius: 0.5rem; max-height: 160px; overflow-y: auto;">
+            <div class="dropdown-options" id="maritalOptions" style="display: none; position: relative; margin-top: 4px; background: #0f172a; border: 1px solid #38bdf8; border-radius: 0.75rem; max-height: 160px; overflow-y: auto; z-index: 10;">
               <div class="dropdown-option" onclick="selectProfileOption('marital', 'single', this); event.stopPropagation();" style="padding: 10px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);" data-ar="أعزب" data-en="Single">أعزب</div>
               <div class="dropdown-option" onclick="selectProfileOption('marital', 'married', this); event.stopPropagation();" style="padding: 10px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);" data-ar="متزوج" data-en="Married">متزوج</div>
               <div class="dropdown-option" onclick="selectProfileOption('marital', 'divorced', this); event.stopPropagation();" style="padding: 10px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);" data-ar="مطلق" data-en="Divorced">مطلق</div>
@@ -1723,7 +1725,7 @@
       </div>
     </div>
 
-    <!-- 🎨 تصميم المودال التحذيري الشيك (Glassmorphism Warning Modal) -->
+    <!-- 🎨 تصميم المودال التحذيري الشيك -->
     <div id="profileWarningModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); z-index: 99999; align-items: center; justify-content: center; padding: 1rem; backdrop-filter: blur(5px);">
       <div style="background: rgba(15, 23, 42, 0.95); border: 1px solid #38bdf8; border-radius: 1.25rem; width: 100%; max-width: 340px; padding: 1.5rem; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.6);">
         <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">⚠️</div>
@@ -1744,7 +1746,7 @@
       </div>
     </div>
 
-    <!-- كود الجافاسكريبت النهائي (تحديث تلقائي للـ Placeholders مع لغة التطبيق) -->
+    <!-- كود الجافاسكريبت النهائي (مع دالة تحميل واستعادة البيانات النظيفة عند الفتح أو التجاهل) -->
     <script>
       let hasUnsavedProfileChanges = false;
       let stagedAvatarFile = null;
@@ -1797,23 +1799,14 @@
           const militaryOpts = document.getElementById('militaryOptions');
           const maritalOpts = document.getElementById('maritalOptions');
 
-          militaryOpts.style.display = 'none';
-          maritalOpts.style.display = 'none';
-
-          const targetOpts = type === 'military' ? militaryOpts : maritalOpts;
-          const container = type === 'military' ? document.getElementById('militaryDropdown') : document.getElementById('maritalDropdown');
-          const selectedBox = container.querySelector('.dropdown-selected');
-
-          if (targetOpts.style.display === 'block') {
-              targetOpts.style.display = 'none';
-          } else {
-              const rect = selectedBox.getBoundingClientRect();
-              targetOpts.style.position = 'fixed';
-              targetOpts.style.top = (rect.bottom + 4) + 'px';
-              targetOpts.style.left = rect.left + 'px';
-              targetOpts.style.width = rect.width + 'px';
-              targetOpts.style.zIndex = '999999';
-              targetOpts.style.display = 'block';
+          if (type === 'military') {
+              const isOpen = militaryOpts.style.display === 'block';
+              militaryOpts.style.display = isOpen ? 'none' : 'block';
+              maritalOpts.style.display = 'none';
+          } else if (type === 'marital') {
+              const isOpen = maritalOpts.style.display === 'block';
+              maritalOpts.style.display = isOpen ? 'none' : 'block';
+              militaryOpts.style.display = 'none';
           }
       }
 
@@ -1836,8 +1829,7 @@
       }
 
       window.addEventListener('click', function(e) {
-          if (!e.target.closest('#militaryDropdown') && !e.target.closest('#maritalDropdown') && 
-              !e.target.closest('#militaryOptions') && !e.target.closest('#maritalOptions')) {
+          if (!e.target.closest('#militaryDropdown') && !e.target.closest('#maritalDropdown')) {
               const militaryOpts = document.getElementById('militaryOptions');
               const maritalOpts = document.getElementById('maritalOptions');
               if (militaryOpts) militaryOpts.style.display = 'none';
@@ -1876,7 +1868,8 @@
         }
         stagedAvatarFile = null;
         
-        resetProfileFields();
+        // إعادة تحميل البيانات الأصلية بدل مسحها بشكل قبيح
+        loadProfileOriginalData();
         showPage('view-dashboard');
       }
 
@@ -1888,28 +1881,23 @@
             document.getElementById('profile-page-avatar').src = defaultUserAvatar;
         }
         stagedAvatarFile = null;
-        resetProfileFields();
+        loadProfileOriginalData();
         showPage('view-dashboard');
       }
 
-      function resetProfileFields() {
+      // دالة استعادة البيانات الأصلية النظيفة لمنع صفحة الزبادي الخلاط
+      function loadProfileOriginalData() {
         const isEn = typeof currentLanguage !== 'undefined' && currentLanguage === 'en';
         
-        document.getElementById('profileNIDInput').value = '';
-        document.getElementById('profileNIDDateInput').value = '';
-        document.getElementById('profileDependentsInput').value = '';
-        document.getElementById('profileAddressInput').value = '';
-        document.getElementById('profilePhoneInput').value = '';
-        document.getElementById('profileEmergencyPhoneInput').value = '';
-        
-        document.getElementById('profileMilitaryVal').value = '';
+        // هنا يتم إعادة تعيين النصوص الافتراضية السليمة حسب اللغات
         document.getElementById('selectedMilitaryText').innerText = isEn ? "Select Status..." : "اختر الموقف...";
-        
-        document.getElementById('profileMaritalVal').value = '';
         document.getElementById('selectedMaritalText').innerText = isEn ? "Select Marital Status..." : "اختر الحالة...";
+        document.getElementById('profileMilitaryVal').value = '';
+        document.getElementById('profileMaritalVal').value = '';
         
         document.getElementById('newQualificationForm').classList.add('hidden');
         document.getElementById('newCourseForm').classList.add('hidden');
+        updateProfilePlaceholdersLang();
       }
 
       function stageNewCertificate() {
