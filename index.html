@@ -1547,7 +1547,7 @@
       </div>
     </div>
     
- <!-- 6. Profile View (Advanced - Final Stable Version) -->
+ <!-- 6. Profile View (Advanced - Ultimate Balanced Buttons) -->
     <div id="view-profile" class="card hidden" style="padding-bottom: 2rem;">
       <div class="nav-bar">
         <button type="button" class="back-btn" onclick="checkProfileUnsavedChanges()"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
@@ -1557,11 +1557,11 @@
       <!-- 1. قسم الصورة والبيانات الأساسية -->
       <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 1.25rem; padding: 1.25rem; margin-bottom: 1.25rem; text-align: center; box-shadow: inset 0 0 15px rgba(0,0,0,0.3);">
         
-        <div style="position: relative; width: 85px; height: 85px; margin: 0 auto 0.75rem auto; display: inline-block;">
-          <img id="profile-page-avatar" src="" alt="Avatar" style="width: 85px; height: 85px; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); display: block;">
+        <div style="position: relative; width: 90px; height: 90px; margin: 0 auto 0.75rem auto; display: inline-block;">
+          <img id="profile-page-avatar" src="" alt="Avatar" style="width: 90px; height: 90px; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); display: block;">
           
-          <button type="button" onclick="document.getElementById('avatarUploadInput').click()" style="position: absolute; bottom: 0; right: 0; width: 28px; height: 28px; border-radius: 50%; background: #0284c7; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.5); z-index: 5;" title="تغيير الصورة">
-            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: #fff;"><path d="M4 4h3l2-2h6l2 2h3c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm8 3c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/></svg>
+          <button type="button" onclick="document.getElementById('avatarUploadInput').click()" style="position: absolute; bottom: 2px; right: 2px; width: 30px; height: 30px; border-radius: 50%; background: #0284c7; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.6); z-index: 5;" title="تغيير الصورة">
+            <svg viewBox="0 0 24 24" style="width: 15px; height: 15px; fill: #fff;"><path d="M4 4h3l2-2h6l2 2h3c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm8 3c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/></svg>
           </button>
           
           <input type="file" id="avatarUploadInput" accept="image/*,application/pdf" capture="environment" style="display: none;" onchange="stageAvatarChange(event)">
@@ -1660,7 +1660,7 @@
             </div>
           </div>
 
-          <!-- نموذج إدخال مؤهل جديد -->
+          <!-- نموذج إدخال مؤهل جديد (بأزرار متساوية ومظبوطة تماماً) -->
           <div id="newQualificationForm" class="hidden" style="background: rgba(11, 15, 25, 0.7); border: 1px solid #38bdf8; border-radius: 0.8rem; padding: 0.75rem; margin-bottom: 0.75rem;">
             <div style="font-size: 0.8rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem;" data-ar="➕ إضافة مؤهل جديد" data-en="➕ Add New Qualification">➕ إضافة مؤهل جديد</div>
             
@@ -1680,13 +1680,14 @@
             <input type="file" id="certFileCapture" accept="image/*,application/pdf" capture="environment" style="display: none;" onchange="document.getElementById('certFileNameDisplay').innerText = this.files[0] ? this.files[0].name : 'لم يتم اختيار ملف'; markProfileAsChanged();">
             <div id="certFileNameDisplay" style="font-size: 0.65rem; color: var(--muted); margin-bottom: 0.5rem;" data-ar="لم يتم اختيار ملف" data-en="No file chosen">لم يتم اختيار ملف</div>
 
-            <div style="display: flex; gap: 0.4rem;">
-              <button type="button" onclick="stageNewCertificate()" style="flex: 1; background: #0284c7; color: white; border: none; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; cursor: pointer;" data-ar="إضافة للقائمة" data-en="Add to List">إضافة للقائمة</button>
-              <button type="button" onclick="document.getElementById('newQualificationForm').classList.add('hidden')" style="background: transparent; color: var(--muted); border: 1px solid rgba(255,255,255,0.2); padding: 0.4rem 0.6rem; border-radius: 0.5rem; font-size: 0.75rem; cursor: pointer;" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
+            <!-- أزرار متساوية تماماً (Flex: 1) لإنهاء مشكلة فقر الدم وتضخم الكانسل -->
+            <div style="display: flex; gap: 0.5rem;">
+              <button type="button" onclick="stageNewCertificate()" style="flex: 1; background: #0284c7; color: white; border: none; padding: 0.6rem; border-radius: 0.5rem; font-size: 0.8rem; font-weight: 700; cursor: pointer; text-align: center;" data-ar="إضافة للقائمة" data-en="Add to List">إضافة للقائمة</button>
+              <button type="button" onclick="document.getElementById('newQualificationForm').classList.add('hidden')" style="flex: 1; background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid rgba(255,255,255,0.2); padding: 0.6rem; border-radius: 0.5rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; text-align: center;" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
             </div>
           </div>
 
-          <!-- نموذج إدخال دورة تدريبية جديدة -->
+          <!-- نموذج إدخال دورة تدريبية جديدة (بأزرار متساوية ومظبوطة تماماً) -->
           <div id="newCourseForm" class="hidden" style="background: rgba(11, 15, 25, 0.7); border: 1px solid #38bdf8; border-radius: 0.8rem; padding: 0.75rem; margin-bottom: 0.75rem;">
             <div style="font-size: 0.8rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem;" data-ar="➕ إضافة دورة تدريبية جديدة" data-en="➕ Add New Course">➕ إضافة دورة تدريبية جديدة</div>
             
@@ -1706,9 +1707,10 @@
             <input type="file" id="courseFileCapture" accept="image/*,application/pdf" capture="environment" style="display: none;" onchange="document.getElementById('courseFileNameDisplay').innerText = this.files[0] ? this.files[0].name : 'لم يتم اختيار ملف'; markProfileAsChanged();">
             <div id="courseFileNameDisplay" style="font-size: 0.65rem; color: var(--muted); margin-bottom: 0.5rem;" data-ar="لم يتم اختيار ملف" data-en="No file chosen">لم يتم اختيار ملف</div>
 
-            <div style="display: flex; gap: 0.4rem;">
-              <button type="button" onclick="stageNewCourse()" style="flex: 1; background: #0284c7; color: white; border: none; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; cursor: pointer;" data-ar="إضافة للقائمة" data-en="Add to List">إضافة للقائمة</button>
-              <button type="button" onclick="document.getElementById('newCourseForm').classList.add('hidden')" style="background: transparent; color: var(--muted); border: 1px solid rgba(255,255,255,0.2); padding: 0.4rem 0.6rem; border-radius: 0.5rem; font-size: 0.75rem; cursor: pointer;" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
+            <!-- أزرار متساوية تماماً (Flex: 1) لإنهاء مشكلة فقر الدم وتضخم الكانسل -->
+            <div style="display: flex; gap: 0.5rem;">
+              <button type="button" onclick="stageNewCourse()" style="flex: 1; background: #0284c7; color: white; border: none; padding: 0.6rem; border-radius: 0.5rem; font-size: 0.8rem; font-weight: 700; cursor: pointer; text-align: center;" data-ar="إضافة للقائمة" data-en="Add to List">إضافة للقائمة</button>
+              <button type="button" onclick="document.getElementById('newCourseForm').classList.add('hidden')" style="flex: 1; background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid rgba(255,255,255,0.2); padding: 0.6rem; border-radius: 0.5rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; text-align: center;" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
             </div>
           </div>
 
@@ -1746,7 +1748,7 @@
       </div>
     </div>
 
-    <!-- كود الجافاسكريبت النهائي (مع دالة تحميل واستعادة البيانات النظيفة عند الفتح أو التجاهل) -->
+    <!-- كود الجافاسكريبت النهائي والمصحح (إغلاق أوتوماتيكي للقوائم وإصلاح تداخل الأحداث) -->
     <script>
       let hasUnsavedProfileChanges = false;
       let stagedAvatarFile = null;
@@ -1765,7 +1767,6 @@
           updateProfilePlaceholdersLang();
       });
 
-      // دالة لتحديث الـ Placeholders ديناميكياً حسب لغة التطبيق
       function updateProfilePlaceholdersLang() {
           const isEn = typeof currentLanguage !== 'undefined' && currentLanguage === 'en';
           const inputs = document.querySelectorAll('#view-profile input[data-ar-placeholder], #view-profile textarea[data-ar-placeholder]');
@@ -1794,6 +1795,7 @@
         }
       }
 
+      // تحقّق من الفتح والغلق بذكاء لمنع التعليق
       function toggleProfileDropdown(type) {
           if (typeof event !== 'undefined' && event) event.stopPropagation();
           const militaryOpts = document.getElementById('militaryOptions');
@@ -1810,6 +1812,7 @@
           }
       }
 
+      // اختيار العنصر مع ضمان الإغلاق الفوري والأكيد
       function selectProfileOption(type, valueKey, element) {
           if (typeof event !== 'undefined' && event) event.stopPropagation();
           const isEn = typeof currentLanguage !== 'undefined' && currentLanguage === 'en';
@@ -1868,7 +1871,6 @@
         }
         stagedAvatarFile = null;
         
-        // إعادة تحميل البيانات الأصلية بدل مسحها بشكل قبيح
         loadProfileOriginalData();
         showPage('view-dashboard');
       }
@@ -1885,11 +1887,9 @@
         showPage('view-dashboard');
       }
 
-      // دالة استعادة البيانات الأصلية النظيفة لمنع صفحة الزبادي الخلاط
       function loadProfileOriginalData() {
         const isEn = typeof currentLanguage !== 'undefined' && currentLanguage === 'en';
         
-        // هنا يتم إعادة تعيين النصوص الافتراضية السليمة حسب اللغات
         document.getElementById('selectedMilitaryText').innerText = isEn ? "Select Status..." : "اختر الموقف...";
         document.getElementById('selectedMaritalText').innerText = isEn ? "Select Marital Status..." : "اختر الحالة...";
         document.getElementById('profileMilitaryVal').value = '';
