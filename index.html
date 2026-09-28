@@ -85,7 +85,7 @@
     [data-theme="light"] .payslip-item-label,
     [data-theme="light"] .announcement-desc,
     [data-theme="light"] #dash-greeting,
-    [data-theme="light"] h2, [data-theme="light"] h3, [data-theme="light"] span {
+    [data-theme="light"] h2, [data-theme="light"] h3 {
       color: #0f172a !important;
     }
 
@@ -111,6 +111,159 @@
     [data-theme="light"] .glowing-action-text {
       color: #0369a1 !important;
     }
+
+    /* ===== LIGHT THEME - COMPLETE OVERRIDES ===== */
+    [data-theme="light"] {
+      --bg: #f1f5f9;
+      --card-bg: rgba(255, 255, 255, 0.96);
+      --border-color: rgba(15, 23, 42, 0.12);
+      --text: #0f172a;
+      --muted: #475569;
+      --accent: #0284c7;
+      --accent-glow: rgba(2, 132, 199, 0.22);
+    }
+
+    [data-theme="light"] html,
+    [data-theme="light"] body {
+      background-color: #f1f5f9;
+    }
+
+    /* Common dark surfaces used throughout the application */
+    [data-theme="light"] .page-container,
+    [data-theme="light"] .content-card,
+    [data-theme="light"] .service-card,
+    [data-theme="light"] .action-card,
+    [data-theme="light"] .settings-card,
+    [data-theme="light"] .profile-card,
+    [data-theme="light"] .notification-popup,
+    [data-theme="light"] .lang-menu,
+    [data-theme="light"] .dropdown-menu,
+    [data-theme="light"] .dropdown-options,
+    [data-theme="light"] .chatbot,
+    [data-theme="light"] .modal-content,
+    [data-theme="light"] .modal-card,
+    [data-theme="light"] .qr-card,
+    [data-theme="light"] .calendar-card,
+    [data-theme="light"] .duration-card,
+    [data-theme="light"] .permission-card,
+    [data-theme="light"] .leave-card {
+      background-color: #ffffff !important;
+      color: var(--text) !important;
+      border-color: var(--border-color) !important;
+    }
+
+    /* Inline dark backgrounds: convert them in Light Mode without touching Dark Mode */
+    [data-theme="light"] [style*="rgba(15, 23, 42"],
+    [data-theme="light"] [style*="rgba(11, 15, 25"],
+    [data-theme="light"] [style*="rgba(30, 41, 59"],
+    [data-theme="light"] [style*="rgba(51, 65, 85"] {
+      background: rgba(255, 255, 255, 0.96) !important;
+      color: var(--text) !important;
+      border-color: var(--border-color) !important;
+    }
+
+    /* Dark CSS surfaces that are not based on theme variables */
+    [data-theme="light"] .announcement-card,
+    [data-theme="light"] .summary-card,
+    [data-theme="light"] .checkin-card,
+    [data-theme="light"] .chatbot-header,
+    [data-theme="light"] .chat-msg.bot,
+    [data-theme="light"] .chatbot-input-area,
+    [data-theme="light"] .notification-popup,
+    [data-theme="light"] .lang-menu,
+    [data-theme="light"] .dropdown-menu {
+      background-color: #ffffff !important;
+      color: var(--text) !important;
+    }
+
+    [data-theme="light"] .notification-popup-desc,
+    [data-theme="light"] .chat-msg.bot,
+    [data-theme="light"] .announcement-title,
+    [data-theme="light"] .summary-title,
+    [data-theme="light"] .info-label,
+    [data-theme="light"] .payslip-item-label,
+    [data-theme="light"] .announcement-desc,
+    [data-theme="light"] .checkin-status-text,
+    [data-theme="light"] .info-val,
+    [data-theme="light"] .payslip-item-val,
+    [data-theme="light"] .lang-option,
+    [data-theme="light"] .dropdown-option,
+    [data-theme="light"] .type-btn,
+    [data-theme="light"] .wheel-item,
+    [data-theme="light"] .digit-sub-text,
+    [data-theme="light"] .checkbox-container,
+    [data-theme="light"] label,
+    [data-theme="light"] .nav-title,
+    [data-theme="light"] .section-title {
+      color: var(--text) !important;
+    }
+
+    [data-theme="light"] .muted,
+    [data-theme="light"] .announcement-desc,
+    [data-theme="light"] .info-label,
+    [data-theme="light"] .payslip-item-label,
+    [data-theme="light"] .digit-sub-text,
+    [data-theme="light"] .checkbox-container {
+      color: var(--muted) !important;
+    }
+
+    /* Keep accent elements blue instead of being overwritten by generic text rules */
+    [data-theme="light"] .summary-value,
+    [data-theme="light"] .salary-masked,
+    [data-theme="light"] .wheel-item.selected,
+    [data-theme="light"] .ampm-badge,
+    [data-theme="light"] .duration-result-box,
+    [data-theme="light"] .toggle-password,
+    [data-theme="light"] .toggle-salary-btn,
+    [data-theme="light"] .glowing-action-text,
+    [data-theme="light"] .accent,
+    [data-theme="light"] [style*="color: #38bdf8"],
+    [data-theme="light"] [style*="color:#38bdf8"] {
+      color: #0284c7 !important;
+    }
+
+    [data-theme="light"] .dropdown-option:hover,
+    [data-theme="light"] .lang-option:hover,
+    [data-theme="light"] .type-btn:hover {
+      background: rgba(2, 132, 199, 0.08) !important;
+      color: #0369a1 !important;
+    }
+
+    [data-theme="light"] input,
+    [data-theme="light"] textarea,
+    [data-theme="light"] select,
+    [data-theme="light"] .custom-date-input,
+    [data-theme="light"] .dropdown-selected {
+      background: #ffffff !important;
+      color: #0f172a !important;
+      border-color: rgba(2, 132, 199, 0.28) !important;
+      caret-color: #0284c7;
+    }
+
+    [data-theme="light"] input::placeholder,
+    [data-theme="light"] textarea::placeholder {
+      color: #64748b !important;
+      opacity: 1;
+    }
+
+    [data-theme="light"] .back-btn {
+      background: #ffffff !important;
+      color: #0f172a !important;
+    }
+
+    [data-theme="light"] .progress-bar-container {
+      background: rgba(15, 23, 42, 0.08) !important;
+      border-color: rgba(2, 132, 199, 0.18) !important;
+    }
+
+    [data-theme="light"] .chatbot-close,
+    [data-theme="light"] .notification-btn,
+    [data-theme="light"] .header-icon,
+    [data-theme="light"] .bottom-nav-item {
+      color: var(--text) !important;
+    }
+
+    /* Do not globally recolor every span: preserve badges, icons and accent labels. */
 
     /* قواعد المحاذاة التلقائية حسب اتجاه اللغة بأمان تام */
     [dir="ltr"] body {
