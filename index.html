@@ -20,7 +20,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
   
-  <style>
+ <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&family=Share+Tech+Mono&display=swap');
     :root {
       --bg: #0b0f19;
@@ -263,7 +263,51 @@
       color: var(--text) !important;
     }
 
-    /* Do not globally recolor every span: preserve badges, icons and accent labels. */
+    /* ===== تعديلات خاصة لحل مشاكل الـ Light Mode المحددة (Navigation Bar, ID Card, Lang Button) ===== */
+    
+    /* 1. ضبط شريط التنقل السفلي في الوضع الفاتح ليكون واضحاً وغير مختفٍ */
+    [data-theme="light"] #bottomNavBar {
+      background: rgba(255, 255, 255, 0.98) !important;
+      border-top: 1px solid rgba(2, 132, 199, 0.2) !important;
+      box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.08) !important;
+    }
+    [data-theme="light"] .bottom-nav-item {
+      color: #64748b !important;
+    }
+    [data-theme="light"] .bottom-nav-item.active {
+      color: #0284c7 !important;
+    }
+
+    /* 2. ضبط زرار اللغة العلوي في الوضع الفاتح ليكون باهراً وواضحاً */
+    [data-theme="light"] .lang-dropdown-btn {
+      background: rgba(255, 255, 255, 0.95) !important;
+      border: 1px solid rgba(2, 132, 199, 0.3) !important;
+      color: #0f172a !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+    }
+    [data-theme="light"] .lang-dropdown-menu {
+      background: #ffffff !important;
+      border-color: rgba(2, 132, 199, 0.2) !important;
+    }
+
+    /* 3. ضبط كارت الهوية (ID Card) لضمان وضوح كافة النصوص والخانات داخله في الوضع الفاتح */
+    [data-theme="light"] .id-card {
+      background: linear-gradient(145deg, #ffffff, #f8fafc) !important;
+      border: 1px solid rgba(2, 132, 199, 0.25) !important;
+      color: #0f172a !important;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08) !important;
+    }
+    [data-theme="light"] .id-card .info-grid {
+      background: rgba(240, 244, 248, 0.9) !important;
+      border: 1px solid rgba(2, 132, 199, 0.15) !important;
+    }
+    [data-theme="light"] .id-card .info-val, 
+    [data-theme="light"] .id-card h3 {
+      color: #0f172a !important;
+    }
+    [data-theme="light"] .id-card .info-label {
+      color: #475569 !important;
+    }
 
     /* قواعد المحاذاة التلقائية حسب اتجاه اللغة بأمان تام */
     [dir="ltr"] body {
@@ -299,7 +343,7 @@
     [dir="ltr"] [style*="text-align:right"] {
       text-align: left !important;
     }
-
+</style>
     #intro-screen {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
