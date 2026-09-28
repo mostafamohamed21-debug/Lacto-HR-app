@@ -2628,46 +2628,50 @@
       }
     }
 
-    function updateContentTranslations() {
-      const lang = currentLang;
-      document.querySelectorAll('[data-ar][data-en]').forEach(el => { el.innerText = el.getAttribute(`data-${lang}`); });
-      document.querySelectorAll('[data-ar-placeholder][data-en-placeholder]').forEach(el => { el.placeholder = el.getAttribute(`data-${lang}-placeholder`); });
-      
-      const currentLeaveVal = document.getElementById('leaveType') ? document.getElementById('leaveType').value : 'annual';
-      const selectedOptionEl = document.querySelector(`.dropdown-option[onclick*="${currentLeaveVal}"]`);
-      if (selectedOptionEl && document.getElementById('selectedLeaveText')) document.getElementById('selectedLeaveText').innerText = selectedOptionEl.getAttribute(`data-${lang}`);
-      
-      const currentLoanVal = document.getElementById('loanMonthsVal') ? document.getElementById('loanMonthsVal').value : '3';
-      const selectedLoanOptionEl = document.querySelector(`#loanMonthsOptions .dropdown-option[onclick*="selectLoanMonth(${currentLoanVal})"]`);
-      if (selectedLoanOptionEl && document.getElementById('selectedLoanMonthText')) document.getElementById('selectedLoanMonthText').innerText = selectedLoanOptionEl.getAttribute(`data-${lang}`);
+   function updateContentTranslations() {
+  const lang = currentLang;
+  document.querySelectorAll('[data-ar][data-en]').forEach(el => { el.innerText = el.getAttribute(`data-${lang}`); });
+  document.querySelectorAll('[data-ar-placeholder][data-en-placeholder]').forEach(el => { el.placeholder = el.getAttribute(`data-${lang}-placeholder`); });
+  
+  // الحقنة السحرية لضبط بليس هولدرز البروفايل فوراً مع تغيير اللغة
+  if (typeof syncProfileLanguageAndPlaceholders === 'function') {
+    syncProfileLanguageAndPlaceholders();
+  }
+  
+  const currentLeaveVal = document.getElementById('leaveType') ? document.getElementById('leaveType').value : 'annual';
+  const selectedOptionEl = document.querySelector(`.dropdown-option[onclick*="${currentLeaveVal}"]`);
+  if (selectedOptionEl && document.getElementById('selectedLeaveText')) document.getElementById('selectedLeaveText').innerText = selectedOptionEl.getAttribute(`data-${lang}`);
+  
+  const currentLoanVal = document.getElementById('loanMonthsVal') ? document.getElementById('loanMonthsVal').value : '3';
+  const selectedLoanOptionEl = document.querySelector(`#loanMonthsOptions .dropdown-option[onclick*="selectLoanMonth(${currentLoanVal})"]`);
+  if (selectedLoanOptionEl && document.getElementById('selectedLoanMonthText')) document.getElementById('selectedLoanMonthText').innerText = selectedLoanOptionEl.getAttribute(`data-${lang}`);
 
-      const docVal = document.getElementById('docTypeSelect') ? document.getElementById('docTypeSelect').value : 'qualification';
-      const selectedDocOption = document.querySelector(`#docOptions .dropdown-option[onclick*="'${docVal}'"]`);
-      if (selectedDocOption && document.getElementById('selectedDocText')) document.getElementById('selectedDocText').innerText = selectedDocOption.getAttribute(`data-${lang}`);
+  const docVal = document.getElementById('docTypeSelect') ? document.getElementById('docTypeSelect').value : 'qualification';
+  const selectedDocOption = document.querySelector(`#docOptions .dropdown-option[onclick*="'${docVal}'"]`);
+  if (selectedDocOption && document.getElementById('selectedDocText')) document.getElementById('selectedDocText').innerText = selectedDocOption.getAttribute(`data-${lang}`);
 
-      const techVal = document.getElementById('hwSubCategory') ? document.getElementById('hwSubCategory').value : 'hardware';
-      const selectedTechOption = document.querySelector(`#techOptions .dropdown-option[onclick*="'${techVal}'"]`);
-      if (selectedTechOption && document.getElementById('selectedTechText')) document.getElementById('selectedTechText').innerText = selectedTechOption.getAttribute(`data-${lang}`);
+  const techVal = document.getElementById('hwSubCategory') ? document.getElementById('hwSubCategory').value : 'hardware';
+  const selectedTechOption = document.querySelector(`#techOptions .dropdown-option[onclick*="'${techVal}'"]`);
+  if (selectedTechOption && document.getElementById('selectedTechText')) document.getElementById('selectedTechText').innerText = selectedTechOption.getAttribute(`data-${lang}`);
 
-      const clinicValText = document.getElementById('clinicSpecialty') ? document.getElementById('clinicSpecialty').value : '🩺 باطنة عامة';
-      const selectedClinicOption = document.querySelector(`#clinicOptions .dropdown-option[data-ar="${clinicValText}"]`);
-      if (selectedClinicOption && document.getElementById('selectedClinicText')) document.getElementById('selectedClinicText').innerText = selectedClinicOption.getAttribute(`data-${lang}`);
+  const clinicValText = document.getElementById('clinicSpecialty') ? document.getElementById('clinicSpecialty').value : '🩺 باطنة عامة';
+  const selectedClinicOption = document.querySelector(`#clinicOptions .dropdown-option[data-ar="${clinicValText}"]`);
+  if (selectedClinicOption && document.getElementById('selectedClinicText')) document.getElementById('selectedClinicText').innerText = selectedClinicOption.getAttribute(`data-${lang}`);
 
-      const militaryVal = document.getElementById('profileMilitaryVal') ? document.getElementById('profileMilitaryVal').value : '';
-      const maritalVal = document.getElementById('profileMaritalVal') ? document.getElementById('profileMaritalVal').value : '';
-      if (militaryVal) selectProfileOption('military', militaryVal, null, false);
-      if (maritalVal) selectProfileOption('marital', maritalVal, null, false);
+  const militaryVal = document.getElementById('profileMilitaryVal') ? document.getElementById('profileMilitaryVal').value : '';
+  const maritalVal = document.getElementById('profileMaritalVal') ? document.getElementById('profileMaritalVal').value : '';
+  if (militaryVal) selectProfileOption('military', militaryVal, null, false);
+  if (maritalVal) selectProfileOption('marital', maritalVal, null, false);
 
-      const noticeText = document.getElementById('leaveNoticeText');
-      if (noticeText && noticeText.hasAttribute('data-ar')) {
-        noticeText.innerText = noticeText.getAttribute(`data-${lang}`);
-      }
+  const noticeText = document.getElementById('leaveNoticeText');
+  if (noticeText && noticeText.hasAttribute('data-ar')) {
+    noticeText.innerText = noticeText.getAttribute(`data-${lang}`);
+  }
 
-      handleLeaveTypeChange(); calculateLeaveDays();
-      if (typeof calculateRequestedDuration === 'function') calculateRequestedDuration();
-      calculateInstallment(); updateDigitalClockDisplay(totalPermBalanceSeconds); updateDynamicGreeting(); updateAmPmBadges();
-    }
-
+  handleLeaveTypeChange(); calculateLeaveDays();
+  if (typeof calculateRequestedDuration === 'function') calculateRequestedDuration();
+  calculateInstallment(); updateDigitalClockDisplay(totalPermBalanceSeconds); updateDynamicGreeting(); updateAmPmBadges();
+}
     function toggleNotificationPopup(event) { 
       window.playClickSound(); 
       event.stopPropagation(); 
