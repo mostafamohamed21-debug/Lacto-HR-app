@@ -1564,7 +1564,7 @@
             <svg viewBox="0 0 24 24" style="width: 15px; height: 15px; fill: #fff;"><path d="M4 4h3l2-2h6l2 2h3c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm8 3c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/></svg>
           </button>
           
-          <input type="file" id="avatarUploadInput" accept="image/*,application/pdf" capture="environment" style="display: none;" onchange="stageAvatarChange(event)">
+          <input type="file" id="avatarUploadInput" accept="image/*" capture="environment" style="display: none;" onchange="stageAvatarChange(event)">
         </div>
 
         <h3 id="profile-page-name" style="margin: 0.5rem 0 0.2rem 0; font-size: 1.1rem; color: var(--text);">--</h3>
@@ -1647,7 +1647,7 @@
           <div style="background: rgba(56, 189, 248, 0.08); padding: 0.6rem; border-radius: 0.6rem; border: 1px dashed rgba(56, 189, 248, 0.3); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
             <span style="font-size: 1.2rem;">🎓</span>
             <div>
-              <div style="font-size: 0.8rem; font-weight: 700; color: var(--text);">بكالوريوس تجارة</div>
+              <div style="font-size: 0.8rem; font-weight: 700; color: var(--text);" data-ar="بكالوريوس تجارة" data-en="Bachelor of Commerce">بكالوريوس تجارة</div>
               <div style="font-size: 0.65rem; color: var(--muted);" data-ar="سنة التخرج: 1992 (موثق)" data-en="Graduation Year: 1992 (Verified)">سنة التخرج: 1992 (موثق)</div>
             </div>
           </div>
@@ -1655,7 +1655,7 @@
           <div style="background: rgba(56, 189, 248, 0.08); padding: 0.6rem; border-radius: 0.6rem; border: 1px dashed rgba(56, 189, 248, 0.3); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
             <span style="font-size: 1.2rem;">📜</span>
             <div>
-              <div style="font-size: 0.8rem; font-weight: 700; color: var(--text);">دورة Peachtree Accounting</div>
+              <div style="font-size: 0.8rem; font-weight: 700; color: var(--text);" data-ar="دورة Peachtree Accounting" data-en="Peachtree Accounting Course">دورة Peachtree Accounting</div>
               <div style="font-size: 0.65rem; color: var(--muted);" data-ar="دورة متقدمة (موثق)" data-en="Advanced Course (Verified)">دورة متقدمة (موثق)</div>
             </div>
           </div>
@@ -1677,7 +1677,7 @@
             <button type="button" onclick="document.getElementById('certFileCapture').click()" style="width: 100%; background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-bottom: 0.5rem;" data-ar="📷 تصوير المستند أو اختيار ملف" data-en="📷 Capture Document or Choose File">
               📷 تصوير المستند أو اختيار ملف
             </button>
-            <input type="file" id="certFileCapture" accept="image/*,application/pdf" capture="environment" style="display: none;" onchange="document.getElementById('certFileNameDisplay').innerText = this.files[0] ? this.files[0].name : (typeof currentLanguage !== 'undefined' && currentLanguage === 'en' ? 'No file chosen' : 'لم يتم اختيار ملف'); markProfileAsChanged();">
+            <input type="file" id="certFileCapture" accept="image/*,application/pdf" capture="environment" style="display: none;" onchange="document.getElementById('certFileNameDisplay').innerText = this.files[0] ? this.files[0].name : (currentLang === 'en' ? 'No file chosen' : 'لم يتم اختيار ملف'); markProfileAsChanged();">
             <div id="certFileNameDisplay" style="font-size: 0.65rem; color: var(--muted); margin-bottom: 0.5rem;" data-ar="لم يتم اختيار ملف" data-en="No file chosen">لم يتم اختيار ملف</div>
 
             <div style="display: flex; gap: 0.5rem;">
@@ -1703,7 +1703,7 @@
             <button type="button" onclick="document.getElementById('courseFileCapture').click()" style="width: 100%; background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; padding: 0.4rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-bottom: 0.5rem;" data-ar="📷 تصوير الشهادة أو اختيار ملف" data-en="📷 Capture Certificate or Choose File">
               📷 تصوير الشهادة أو اختيار ملف
             </button>
-            <input type="file" id="courseFileCapture" accept="image/*,application/pdf" capture="environment" style="display: none;" onchange="document.getElementById('courseFileNameDisplay').innerText = this.files[0] ? this.files[0].name : (typeof currentLanguage !== 'undefined' && currentLanguage === 'en' ? 'No file chosen' : 'لم يتم اختيار ملف'); markProfileAsChanged();">
+            <input type="file" id="courseFileCapture" accept="image/*,application/pdf" capture="environment" style="display: none;" onchange="document.getElementById('courseFileNameDisplay').innerText = this.files[0] ? this.files[0].name : (currentLang === 'en' ? 'No file chosen' : 'لم يتم اختيار ملف'); markProfileAsChanged();">
             <div id="courseFileNameDisplay" style="font-size: 0.65rem; color: var(--muted); margin-bottom: 0.5rem;" data-ar="لم يتم اختيار ملف" data-en="No file chosen">لم يتم اختيار ملف</div>
 
             <div style="display: flex; gap: 0.5rem;">
@@ -1750,23 +1750,21 @@
     <script>
       let hasUnsavedProfileChanges = false;
       let stagedAvatarFile = null;
+      let stagedAvatarDataUrl = null;
       let permanentDefaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2338bdf8'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/></svg>";
       let baseUserAvatarSrc = ""; // لحفظ الأفاتار الأساسي للمستخدم وعدم فقدانه نهائياً
 
       window.addEventListener('DOMContentLoaded', () => {
           const avatarEl = document.getElementById('profile-page-avatar');
-          if (avatarEl) {
-              if (!avatarEl.src || avatarEl.src === window.location.href || avatarEl.src.endsWith('/')) {
-                  avatarEl.src = permanentDefaultAvatar;
-              }
-              baseUserAvatarSrc = avatarEl.src;
+          if (avatarEl && (!avatarEl.src || avatarEl.src === window.location.href || avatarEl.src.endsWith('/'))) {
+              avatarEl.src = permanentDefaultAvatar;
           }
           syncProfileLanguageAndPlaceholders();
       });
 
       // مزامنة Placeholders والنصوص مع لغة التطبيق العامة بكل دقة
       function syncProfileLanguageAndPlaceholders() {
-          const isEn = typeof currentLanguage !== 'undefined' && currentLanguage === 'en';
+          const isEn = currentLang === 'en';
           
           // تحديث الـ placeholders لجميع الحقول بناءً على سمات ar/en
           const inputs = document.querySelectorAll('#view-profile input[data-ar], #view-profile textarea[data-ar]');
@@ -1785,16 +1783,26 @@
       }
 
       function stageAvatarChange(event) {
-        const file = event.target.files[0];
-        if (file) {
-          stagedAvatarFile = file;
-          hasUnsavedProfileChanges = true;
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            document.getElementById('profile-page-avatar').src = e.target.result;
-          };
-          reader.readAsDataURL(file);
+        const file = event && event.target && event.target.files ? event.target.files[0] : null;
+        if (!file) return;
+
+        if (!file.type || !file.type.startsWith('image/')) {
+          const msgEl = document.getElementById('profileMsg');
+          msgEl.style.color = '#ef4444';
+          msgEl.innerText = currentLang === 'ar' ? '❌ يرجى اختيار صورة فقط.' : '❌ Please choose an image file only.';
+          event.target.value = '';
+          return;
         }
+
+        stagedAvatarFile = file;
+        hasUnsavedProfileChanges = true;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          stagedAvatarDataUrl = e.target.result;
+          const avatarEl = document.getElementById('profile-page-avatar');
+          if (avatarEl) avatarEl.src = stagedAvatarDataUrl;
+        };
+        reader.readAsDataURL(file);
       }
 
       // تحكم سليم في القوائم المنسدلة مع إغلاق فوري وقاطع
@@ -1815,22 +1823,27 @@
       }
 
       // اختيار العنصر وإغلاق القائمة فوراً دون الحاجة لإعادة النقر
-      function selectProfileOption(type, valueKey, element) {
+      function selectProfileOption(type, valueKey, element, markChanged = true) {
           if (typeof event !== 'undefined' && event) event.stopPropagation();
-          const isEn = typeof currentLanguage !== 'undefined' && currentLanguage === 'en';
-          
-          const displayText = isEn ? (element.getAttribute('data-en') || element.innerText) : (element.getAttribute('data-ar') || element.innerText);
-
-          if (type === 'military') {
-              document.getElementById('selectedMilitaryText').innerText = displayText;
-              document.getElementById('profileMilitaryVal').value = valueKey;
-              document.getElementById('militaryOptions').style.display = 'none';
-          } else if (type === 'marital') {
-              document.getElementById('selectedMaritalText').innerText = displayText;
-              document.getElementById('profileMaritalVal').value = valueKey;
-              document.getElementById('maritalOptions').style.display = 'none';
-          }
-          markProfileAsChanged();
+          const isEn = currentLang === 'en';
+          const valueMap = {
+            military: {
+              completed: ['أدى الخدمة','Completed'], exempted: ['معافى نهائي','Exempted'], postponed: ['مؤجل','Postponed'],
+              unfit: ['غير لائق طبياً','Medically Unfit'], sole: ['عائل أسرة / كبير عيلة','Sole Provider']
+            },
+            marital: {
+              single: ['أعزب','Single'], married: ['متزوج','Married'], divorced: ['مطلق','Divorced'], widowed: ['أرمل','Widowed']
+            }
+          };
+          const labels = valueMap[type] && valueMap[type][valueKey];
+          const displayText = element ? (isEn ? element.getAttribute('data-en') : element.getAttribute('data-ar')) : (labels ? labels[isEn ? 1 : 0] : (isEn ? 'Select...' : 'اختر...'));
+          const textId = type === 'military' ? 'selectedMilitaryText' : 'selectedMaritalText';
+          const valueId = type === 'military' ? 'profileMilitaryVal' : 'profileMaritalVal';
+          const optionsId = type === 'military' ? 'militaryOptions' : 'maritalOptions';
+          document.getElementById(textId).innerText = displayText || (isEn ? 'Select...' : 'اختر...');
+          document.getElementById(valueId).value = valueKey || '';
+          document.getElementById(optionsId).style.display = 'none';
+          if (markChanged) markProfileAsChanged();
       }
 
       window.addEventListener('click', function(e) {
@@ -1865,47 +1878,102 @@
       function discardAndExit() {
         closeWarningModal();
         hasUnsavedProfileChanges = false;
-        
-        // استعادة الصورة الأصلية تماماً وعدم فقدانها
-        const avatarEl = document.getElementById('profile-page-avatar');
-        if (avatarEl) {
-            avatarEl.src = baseUserAvatarSrc || permanentDefaultAvatar;
-        }
         stagedAvatarFile = null;
-        
+        stagedAvatarDataUrl = null;
+        const avatarInput = document.getElementById('avatarUploadInput');
+        if (avatarInput) avatarInput.value = '';
         resetProfileFields();
         showPage('view-dashboard');
       }
 
       function resetAndExitProfile() {
         hasUnsavedProfileChanges = false;
-        const avatarEl = document.getElementById('profile-page-avatar');
-        if (avatarEl) {
-            avatarEl.src = baseUserAvatarSrc || permanentDefaultAvatar;
-        }
         stagedAvatarFile = null;
+        stagedAvatarDataUrl = null;
+        const avatarInput = document.getElementById('avatarUploadInput');
+        if (avatarInput) avatarInput.value = '';
         resetProfileFields();
         showPage('view-dashboard');
       }
 
       function resetProfileFields() {
-        const isEn = typeof currentLanguage !== 'undefined' && currentLanguage === 'en';
-        
-        document.getElementById('profileNIDInput').value = '';
-        document.getElementById('profileNIDDateInput').value = '';
-        document.getElementById('profileDependentsInput').value = '';
-        document.getElementById('profileAddressInput').value = '';
-        document.getElementById('profilePhoneInput').value = '';
-        document.getElementById('profileEmergencyPhoneInput').value = '';
-        
-        document.getElementById('profileMilitaryVal').value = '';
-        document.getElementById('selectedMilitaryText').innerText = isEn ? "Select Status..." : "اختر الموقف...";
-        
-        document.getElementById('profileMaritalVal').value = '';
-        document.getElementById('selectedMaritalText').innerText = isEn ? "Select Marital Status..." : "اختر الحالة...";
-        
-        document.getElementById('newQualificationForm').classList.add('hidden');
-        document.getElementById('newCourseForm').classList.add('hidden');
+        const isEn = currentLang === 'en';
+        const ids = ['profileNIDInput','profileNIDDateInput','profileDependentsInput','profileAddressInput','profilePhoneInput','profileEmergencyPhoneInput'];
+        ids.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+
+        const militaryVal = document.getElementById('profileMilitaryVal');
+        const maritalVal = document.getElementById('profileMaritalVal');
+        if (militaryVal) militaryVal.value = '';
+        if (maritalVal) maritalVal.value = '';
+        const militaryText = document.getElementById('selectedMilitaryText');
+        const maritalText = document.getElementById('selectedMaritalText');
+        if (militaryText) militaryText.innerText = isEn ? 'Select Status...' : 'اختر الموقف...';
+        if (maritalText) maritalText.innerText = isEn ? 'Select Marital Status...' : 'اختر الحالة...';
+
+        ['militaryOptions','maritalOptions'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
+        ['newQualificationForm','newCourseForm'].forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); });
+        const msgEl = document.getElementById('profileMsg');
+        if (msgEl) msgEl.innerText = '';
+        syncProfileLanguageAndPlaceholders();
+      }
+
+      function loadProfileData() {
+        if (!currentUserData || !currentEmpCode) return;
+        const user = currentUserData;
+        const setValue = (id, value) => { const el = document.getElementById(id); if (el) el.value = value ?? ''; };
+        const setText = (id, value) => { const el = document.getElementById(id); if (el) el.innerText = value ?? '--'; };
+
+        setText('profile-page-name', user.name || '--');
+        setText('profile-page-job', user.job || '--');
+        setText('profile-page-dept', user.dept || '--');
+        setText('profile-page-code', currentEmpCode);
+
+        const userPhotoUrl = user.photo || (currentEmpCode === 'amgad' || (user.name && user.name.includes('أمجد')) ? 'amgad.jpg' : 'https://i.pravatar.cc/150?img=12');
+        baseUserAvatarSrc = userPhotoUrl;
+        const avatarEl = document.getElementById('profile-page-avatar');
+        if (avatarEl) avatarEl.src = userPhotoUrl;
+
+        setValue('profileDependentsInput', user.dependents || '');
+        setValue('profileAddressInput', user.address || '');
+        setValue('profilePhoneInput', user.phone || '');
+        setValue('profileEmergencyPhoneInput', user.emergencyPhone || '');
+        setValue('profileNIDInput', user.nationalId || '');
+        setValue('profileNIDDateInput', user.nationalIdDate || '');
+
+        const nidInput = document.getElementById('profileNIDInput');
+        const nidWarning = document.getElementById('nidWarningText');
+        if (user.nationalId) {
+          nidInput.readOnly = true;
+          nidInput.style.backgroundColor = 'rgba(30, 41, 59, 0.5)';
+          nidInput.style.cursor = 'not-allowed';
+          if (nidWarning) nidWarning.style.display = 'none';
+        } else {
+          nidInput.readOnly = false;
+          nidInput.style.backgroundColor = 'rgba(15, 23, 42, 0.85)';
+          nidInput.style.cursor = 'text';
+          if (nidWarning) nidWarning.style.display = 'block';
+        }
+
+        const nidDateInput = document.getElementById('profileNIDDateInput');
+        if (user.nationalIdDate) {
+          nidDateInput.onclick = null;
+          nidDateInput.style.backgroundColor = 'rgba(30, 41, 59, 0.5)';
+          nidDateInput.style.cursor = 'not-allowed';
+        } else {
+          nidDateInput.onclick = () => { openCustomCalendar('profileNIDDateInput'); markProfileAsChanged(); };
+          nidDateInput.style.backgroundColor = '';
+          nidDateInput.style.cursor = 'pointer';
+        }
+
+        selectProfileOption('military', user.military || '', null, false);
+        selectProfileOption('marital', user.marital || '', null, false);
+        hasUnsavedProfileChanges = false;
+        stagedAvatarFile = null;
+        stagedAvatarDataUrl = null;
+        const avatarInput = document.getElementById('avatarUploadInput');
+        if (avatarInput) avatarInput.value = '';
+        const msgEl = document.getElementById('profileMsg');
+        if (msgEl) msgEl.innerText = '';
         syncProfileLanguageAndPlaceholders();
       }
 
@@ -1921,30 +1989,80 @@
 
       function saveProfileChangesAdvanced(exitAfterSave = false) {
         const msgEl = document.getElementById('profileMsg');
-        const isEn = typeof currentLanguage !== 'undefined' && currentLanguage === 'en';
-        
+        const isEn = currentLang === 'en';
+        if (!currentEmpCode || !currentUserData) {
+          msgEl.style.color = '#ef4444';
+          msgEl.innerText = isEn ? '⚠️ Please log in first.' : '⚠️ يرجى تسجيل الدخول أولاً!';
+          return;
+        }
+
+        const nidInput = document.getElementById('profileNIDInput');
+        if (!nidInput.readOnly && nidInput.value.trim() !== '' && nidInput.value.trim().length !== 14) {
+          msgEl.style.color = '#ef4444';
+          msgEl.innerText = isEn ? '⚠️ National ID must be 14 digits.' : '⚠️ الرقم القومي يجب أن يكون 14 رقم!';
+          return;
+        }
+
+        const updatedData = {
+          phone: document.getElementById('profilePhoneInput').value.trim(),
+          emergencyPhone: document.getElementById('profileEmergencyPhoneInput').value.trim(),
+          address: document.getElementById('profileAddressInput').value.trim(),
+          dependents: document.getElementById('profileDependentsInput').value.trim(),
+          military: document.getElementById('profileMilitaryVal').value,
+          marital: document.getElementById('profileMaritalVal').value
+        };
+        if (!nidInput.readOnly && nidInput.value.trim() !== '') updatedData.nationalId = nidInput.value.trim();
+        const nidDateInput = document.getElementById('profileNIDDateInput');
+        if (!currentUserData.nationalIdDate && nidDateInput.value.trim() !== '') updatedData.nationalIdDate = nidDateInput.value.trim();
+        if (stagedAvatarDataUrl) updatedData.photo = stagedAvatarDataUrl;
+
         msgEl.style.color = '#38bdf8';
-        msgEl.innerText = isEn ? "⏳ Saving changes..." : "⏳ جاري حفظ التعديلات...";
+        msgEl.innerText = isEn ? '⏳ Saving changes...' : '⏳ جاري حفظ التعديلات...';
 
-        setTimeout(() => {
-          msgEl.style.color = '#22c55e';
-          msgEl.innerText = isEn ? "✅ Changes saved successfully!" : "✅ تم حفظ التعديلات بنجاح!";
-          hasUnsavedProfileChanges = false;
-          
-          const currentAvatar = document.getElementById('profile-page-avatar').src;
-          if (currentAvatar && !currentAvatar.includes('data:image/svg+xml')) {
-              baseUserAvatarSrc = currentAvatar;
-          }
+        db.ref('users/' + currentEmpCode).update(updatedData).then(() => {
+          Object.assign(currentUserData, updatedData);
+          const savedPhoto = currentUserData.photo || baseUserAvatarSrc || permanentDefaultAvatar;
+          baseUserAvatarSrc = savedPhoto;
           stagedAvatarFile = null;
+          stagedAvatarDataUrl = null;
+          const avatarInput = document.getElementById('avatarUploadInput');
+          if (avatarInput) avatarInput.value = '';
 
-          setTimeout(() => {
-            msgEl.innerText = "";
-            showPage('view-dashboard');
-          }, 1200);
-        }, 1000);
+          ['profile-page-avatar','dash-avatar','userPhoto'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.src = savedPhoto;
+          });
+
+          const nid = document.getElementById('profileNIDInput');
+          if (updatedData.nationalId) {
+            nid.readOnly = true;
+            nid.style.backgroundColor = 'rgba(30, 41, 59, 0.5)';
+            nid.style.cursor = 'not-allowed';
+            document.getElementById('nidWarningText').style.display = 'none';
+          }
+          if (updatedData.nationalIdDate) {
+            nidDateInput.readOnly = true;
+            nidDateInput.onclick = null;
+            nidDateInput.style.backgroundColor = 'rgba(30, 41, 59, 0.5)';
+            nidDateInput.style.cursor = 'not-allowed';
+          }
+
+          hasUnsavedProfileChanges = false;
+          msgEl.style.color = '#22c55e';
+          msgEl.innerText = isEn ? '✅ Changes saved successfully!' : '✅ تم حفظ التعديلات بنجاح!';
+
+          if (exitAfterSave) {
+            setTimeout(() => { msgEl.innerText = ''; showPage('view-dashboard'); }, 700);
+          } else {
+            setTimeout(() => { msgEl.innerText = ''; }, 2200);
+          }
+        }).catch(err => {
+          console.error('Profile save failed:', err);
+          msgEl.style.color = '#ef4444';
+          msgEl.innerText = isEn ? '❌ Failed to save changes. Please try again.' : '❌ حدث خطأ أثناء حفظ التعديلات. حاول مرة أخرى.';
+        });
       }
-    </script>
-    </script>
+
     </script>
     <!-- Coming Soon View -->
     <div id="view-coming-soon" class="card hidden">
@@ -1954,7 +2072,7 @@
       </div>
       <div style="padding: 2.5rem 1rem; text-align: center; display: flex; flex-direction: column; gap: 1rem; align-items: center;">
         <div style="font-size: 3rem;">⏳</div>
-        <h3 style="color: #38bdf8; font-size: 1.2rem;">Coming Soon</h3>
+        <h3 style="color: #38bdf8; font-size: 1.2rem;" data-ar="قريباً" data-en="Coming Soon">قريباً</h3>
         <p style="color: var(--muted); font-size: 0.9rem;" data-ar="هذا القسم تحت التأسيس والتصميم وسيتم إطلاقه قريباً جداً!" data-en="This section is under development and will be launched very soon!">هذا القسم تحت التأسيس والتصميم وسيتم إطلاقه قريباً جداً!</p>
       </div>
     </div>
@@ -2255,43 +2373,6 @@
       });
     }
 
-    /* دالة حفظ وتحديث الملف الشخصي */
-    function saveProfileChangesAdvanced() {
-  const msgEl = document.getElementById('profileMsg');
-  if (!currentEmpCode) { msgEl.style.color = '#ef4444'; msgEl.innerText = '⚠️ يرجى تسجيل الدخول أولاً!'; return; }
-
-  const updatedData = {
-    phone: document.getElementById('profilePhoneInput').value.trim(),
-    emergencyPhone: document.getElementById('profileEmergencyPhoneInput').value.trim(),
-    address: document.getElementById('profileAddressInput').value.trim(),
-    dependents: document.getElementById('profileDependentsInput').value.trim(),
-    military: document.getElementById('profileMilitaryVal').value,
-    marital: document.getElementById('profileMaritalVal').value
-  };
-
-  const nidInput = document.getElementById('profileNIDInput');
-  if (!nidInput.readOnly && nidInput.value.trim() !== "") {
-    if (nidInput.value.trim().length !== 14) { msgEl.style.color = '#ef4444'; msgEl.innerText = '⚠️ الرقم القومي يجب أن يكون 14 رقم!'; return; }
-    updatedData.nationalId = nidInput.value.trim();
-  }
-
-  const nidDateInput = document.getElementById('profileNIDDateInput');
-  if (nidDateInput.onclick !== null && nidDateInput.value.trim() !== "") { updatedData.nationalIdDate = nidDateInput.value.trim(); }
-  if (currentUserData && currentUserData.photo) { updatedData.photo = currentUserData.photo; }
-
-  db.ref('users/' + currentEmpCode).update(updatedData).then(() => {
-    msgEl.style.color = '#38bdf8'; msgEl.innerText = '✅ تم تحديث ملفك الشخصي بنجاح!';
-    Object.assign(currentUserData, updatedData);
-    
-    if (updatedData.nationalId) {
-      nidInput.readOnly = true; nidInput.style.backgroundColor = "rgba(30, 41, 59, 0.5)"; nidInput.style.cursor = "not-allowed";
-      document.getElementById('nidWarningText').style.display = "none";
-    }
-    if (updatedData.nationalIdDate) {
-      nidDateInput.onclick = null; nidDateInput.style.backgroundColor = "rgba(30, 41, 59, 0.5)"; nidDateInput.style.cursor = "not-allowed";
-    }
-  }).catch(() => { msgEl.style.color = '#ef4444'; msgEl.innerText = '❌ حدث خطأ أثناء التحديث. حاول مرة أخرى.'; });
-}
     function togglePasswordVisibility() {
       const pass = document.getElementById('empPass');
       const eyeIconEl = document.getElementById('eyeIcon');
@@ -2418,6 +2499,11 @@
       const clinicValText = document.getElementById('clinicSpecialty') ? document.getElementById('clinicSpecialty').value : '🩺 باطنة عامة';
       const selectedClinicOption = document.querySelector(`#clinicOptions .dropdown-option[data-ar="${clinicValText}"]`);
       if (selectedClinicOption && document.getElementById('selectedClinicText')) document.getElementById('selectedClinicText').innerText = selectedClinicOption.getAttribute(`data-${lang}`);
+
+      const militaryVal = document.getElementById('profileMilitaryVal') ? document.getElementById('profileMilitaryVal').value : '';
+      const maritalVal = document.getElementById('profileMaritalVal') ? document.getElementById('profileMaritalVal').value : '';
+      if (militaryVal) selectProfileOption('military', militaryVal, null, false);
+      if (maritalVal) selectProfileOption('marital', maritalVal, null, false);
 
       const noticeText = document.getElementById('leaveNoticeText');
       if (noticeText && noticeText.hasAttribute('data-ar')) {
@@ -2911,6 +2997,7 @@
       
       const headerCard = document.getElementById('dashboard-header-container'); const contentCard = document.getElementById('dashboard-content-container');
       
+      if (pageId === 'view-profile') { loadProfileData(); }
       if (pageId === 'view-leave-request') { resetLeaveForm(); }
       if (pageId === 'view-doc-request') { resetDocForm(); }
       if (pageId === 'view-tech-support') { resetTechForm(); }
@@ -3145,32 +3232,6 @@ function login() {
         }, 1500);
       });
     }
-function handleAvatarChange(event) {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const newImageUrl = e.target.result;
-      document.getElementById('profile-page-avatar').src = newImageUrl;
-      document.getElementById('dash-avatar').src = newImageUrl;
-      document.getElementById('userPhoto').src = newImageUrl;
-      if (currentUserData) currentUserData.photo = newImageUrl;
-    };
-    reader.readAsDataURL(file);
-  }
-}
-
-function selectProfileOption(type, value) {
-  if (type === 'military') {
-    document.getElementById('profileMilitaryVal').value = value;
-    document.getElementById('selectedMilitaryText').innerText = value;
-    document.getElementById('militaryOptions').classList.remove('show');
-  } else if (type === 'marital') {
-    document.getElementById('profileMaritalVal').value = value;
-    document.getElementById('selectedMaritalText').innerText = value;
-    document.getElementById('maritalOptions').classList.remove('show');
-  }
-} // <-- القوس ده اللي كان ناقص وموقف الدنيا
-  </script>
+</script>
 </body>
 </html>
