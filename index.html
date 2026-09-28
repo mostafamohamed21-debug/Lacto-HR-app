@@ -22,6 +22,12 @@
   
  <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&family=Share+Tech+Mono&display=swap');
+    
+    /* ضمان صارم وقاطع لعدم ظهور أي صفحة مخفية تحت أي ظرف */
+    .hidden {
+      display: none !important;
+    }
+
     :root {
       --bg: #0b0f19;
       --card-bg: rgba(15, 23, 42, 0.82);
@@ -128,41 +134,6 @@
       background-color: #f1f5f9;
     }
 
-    /* Common dark surfaces used throughout the application */
-    [data-theme="light"] .page-container,
-    [data-theme="light"] .content-card,
-    [data-theme="light"] .service-card,
-    [data-theme="light"] .action-card,
-    [data-theme="light"] .settings-card,
-    [data-theme="light"] .profile-card,
-    [data-theme="light"] .notification-popup,
-    [data-theme="light"] .lang-menu,
-    [data-theme="light"] .dropdown-menu,
-    [data-theme="light"] .dropdown-options,
-    [data-theme="light"] .chatbot,
-    [data-theme="light"] .modal-content,
-    [data-theme="light"] .modal-card,
-    [data-theme="light"] .qr-card,
-    [data-theme="light"] .calendar-card,
-    [data-theme="light"] .duration-card,
-    [data-theme="light"] .permission-card,
-    [data-theme="light"] .leave-card {
-      background-color: #ffffff !important;
-      color: var(--text) !important;
-      border-color: var(--border-color) !important;
-    }
-
-    /* Inline dark backgrounds: convert them in Light Mode without touching Dark Mode */
-    [data-theme="light"] [style*="rgba(15, 23, 42"],
-    [data-theme="light"] [style*="rgba(11, 15, 25"],
-    [data-theme="light"] [style*="rgba(30, 41, 59"],
-    [data-theme="light"] [style*="rgba(51, 65, 85"] {
-      background: rgba(255, 255, 255, 0.96) !important;
-      color: var(--text) !important;
-      border-color: var(--border-color) !important;
-    }
-
-    /* Dark CSS surfaces that are not based on theme variables */
     [data-theme="light"] .announcement-card,
     [data-theme="light"] .summary-card,
     [data-theme="light"] .checkin-card,
@@ -207,7 +178,6 @@
       color: var(--muted) !important;
     }
 
-    /* Keep accent elements blue instead of being overwritten by generic text rules */
     [data-theme="light"] .summary-value,
     [data-theme="light"] .salary-masked,
     [data-theme="light"] .wheel-item.selected,
@@ -263,9 +233,7 @@
       color: var(--text) !important;
     }
 
-    /* ===== تعديلات خاصة لحل مشاكل الـ Light Mode المحددة (Navigation Bar, ID Card, Lang Button) ===== */
-    
-    /* 1. ضبط شريط التنقل السفلي في الوضع الفاتح ليكون واضحاً وغير مختفٍ */
+    /* تعديلات الـ Light Mode المخصصة للشريط السفلي وزرار اللغة وكارت الهوية */
     [data-theme="light"] #bottomNavBar {
       background: rgba(255, 255, 255, 0.98) !important;
       border-top: 1px solid rgba(2, 132, 199, 0.2) !important;
@@ -278,7 +246,6 @@
       color: #0284c7 !important;
     }
 
-    /* 2. ضبط زرار اللغة العلوي في الوضع الفاتح ليكون باهراً وواضحاً */
     [data-theme="light"] .lang-dropdown-btn {
       background: rgba(255, 255, 255, 0.95) !important;
       border: 1px solid rgba(2, 132, 199, 0.3) !important;
@@ -290,7 +257,6 @@
       border-color: rgba(2, 132, 199, 0.2) !important;
     }
 
-    /* 3. ضبط كارت الهوية (ID Card) لضمان وضوح كافة النصوص والخانات داخله في الوضع الفاتح */
     [data-theme="light"] .id-card {
       background: linear-gradient(145deg, #ffffff, #f8fafc) !important;
       border: 1px solid rgba(2, 132, 199, 0.25) !important;
@@ -338,12 +304,6 @@
     [dir="ltr"] .accordion-header span:last-child {
       transform: scaleX(-1);
     }
-
-    [dir="ltr"] [style*="text-align: right"],
-    [dir="ltr"] [style*="text-align:right"] {
-      text-align: left !important;
-    }
-</style>
     #intro-screen {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
