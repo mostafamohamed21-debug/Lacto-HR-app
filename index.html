@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LM HR - Lacto HR Hub</title>
-  
+
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,22 +12,17 @@
   <meta name="apple-mobile-web-app-title" content="LM HR">
   <link rel="apple-touch-icon" href="logo.png">
   <link rel="icon" type="image/png" href="logo.png">
-  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-  
+
+  <style>
  <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&family=Share+Tech+Mono&display=swap');
-    
-    /* ضمان صارم وقاطع لعدم ظهور أي صفحة مخفية تحت أي ظرف */
-    .hidden {
-      display: none !important;
-    }
-
     :root {
       --bg: #0b0f19;
       --card-bg: rgba(15, 23, 42, 0.82);
@@ -64,7 +59,7 @@
       padding: 4.5rem 1rem 6rem 1rem;
       overflow-x: hidden;
     }
-    
+
     /* قواعد الوضع الفاتح (Light Mode) المحسنة بدقة لعلاج مشكلة النصوص والعناوين الرئيسية */
     [data-theme="light"] body {
       background: linear-gradient(rgba(240, 244, 248, 0.9), rgba(245, 247, 250, 0.95)), url('background.jpg');
@@ -134,6 +129,41 @@
       background-color: #f1f5f9;
     }
 
+    /* Common dark surfaces used throughout the application */
+    [data-theme="light"] .page-container,
+    [data-theme="light"] .content-card,
+    [data-theme="light"] .service-card,
+    [data-theme="light"] .action-card,
+    [data-theme="light"] .settings-card,
+    [data-theme="light"] .profile-card,
+    [data-theme="light"] .notification-popup,
+    [data-theme="light"] .lang-menu,
+    [data-theme="light"] .dropdown-menu,
+    [data-theme="light"] .dropdown-options,
+    [data-theme="light"] .chatbot,
+    [data-theme="light"] .modal-content,
+    [data-theme="light"] .modal-card,
+    [data-theme="light"] .qr-card,
+    [data-theme="light"] .calendar-card,
+    [data-theme="light"] .duration-card,
+    [data-theme="light"] .permission-card,
+    [data-theme="light"] .leave-card {
+      background-color: #ffffff !important;
+      color: var(--text) !important;
+      border-color: var(--border-color) !important;
+    }
+
+    /* Inline dark backgrounds: convert them in Light Mode without touching Dark Mode */
+    [data-theme="light"] [style*="rgba(15, 23, 42"],
+    [data-theme="light"] [style*="rgba(11, 15, 25"],
+    [data-theme="light"] [style*="rgba(30, 41, 59"],
+    [data-theme="light"] [style*="rgba(51, 65, 85"] {
+      background: rgba(255, 255, 255, 0.96) !important;
+      color: var(--text) !important;
+      border-color: var(--border-color) !important;
+    }
+
+    /* Dark CSS surfaces that are not based on theme variables */
     [data-theme="light"] .announcement-card,
     [data-theme="light"] .summary-card,
     [data-theme="light"] .checkin-card,
@@ -178,6 +208,7 @@
       color: var(--muted) !important;
     }
 
+    /* Keep accent elements blue instead of being overwritten by generic text rules */
     [data-theme="light"] .summary-value,
     [data-theme="light"] .salary-masked,
     [data-theme="light"] .wheel-item.selected,
@@ -233,7 +264,10 @@
       color: var(--text) !important;
     }
 
-    /* تعديلات الـ Light Mode المخصصة للشريط السفلي وزرار اللغة وكارت الهوية */
+    /* Do not globally recolor every span: preserve badges, icons and accent labels. */
+    /* ===== تعديلات خاصة لحل مشاكل الـ Light Mode المحددة (Navigation Bar, ID Card, Lang Button) ===== */
+    
+    /* 1. ضبط شريط التنقل السفلي في الوضع الفاتح ليكون واضحاً وغير مختفٍ */
     [data-theme="light"] #bottomNavBar {
       background: rgba(255, 255, 255, 0.98) !important;
       border-top: 1px solid rgba(2, 132, 199, 0.2) !important;
@@ -246,6 +280,7 @@
       color: #0284c7 !important;
     }
 
+    /* 2. ضبط زرار اللغة العلوي في الوضع الفاتح ليكون باهراً وواضحاً */
     [data-theme="light"] .lang-dropdown-btn {
       background: rgba(255, 255, 255, 0.95) !important;
       border: 1px solid rgba(2, 132, 199, 0.3) !important;
@@ -257,6 +292,7 @@
       border-color: rgba(2, 132, 199, 0.2) !important;
     }
 
+    /* 3. ضبط كارت الهوية (ID Card) لضمان وضوح كافة النصوص والخانات داخله في الوضع الفاتح */
     [data-theme="light"] .id-card {
       background: linear-gradient(145deg, #ffffff, #f8fafc) !important;
       border: 1px solid rgba(2, 132, 199, 0.25) !important;
@@ -304,6 +340,13 @@
     [dir="ltr"] .accordion-header span:last-child {
       transform: scaleX(-1);
     }
+
+    [dir="ltr"] [style*="text-align: right"],
+    [dir="ltr"] [style*="text-align:right"] {
+      text-align: left !important;
+    }
+
+</style>
     #intro-screen {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
@@ -328,7 +371,7 @@
       font-family: 'Great Vibes', cursive; font-size: clamp(1.5rem, 5vw, 2.5rem);
       color: #38bdf8; text-shadow: 0 0 20px rgba(56, 189, 248, 0.6); opacity: 0; line-height: 1.4; width: 100%; text-align: center; white-space: nowrap;
     }
-    
+
     #introFooter {
       position: absolute; bottom: -20vh; width: 100%; text-align: center; opacity: 0; display: flex; flex-direction: column; gap: 0.5rem; z-index: 10;
     }
@@ -358,7 +401,7 @@
     }
 
     .header-tools { display: flex; align-items: center; gap: 0.8rem; }
-    
+
     .notification-wrapper { position: relative; display: flex; align-items: center; }
     .notification-btn {
       width: 38px; height: 38px; background: rgba(30, 41, 59, 0.85); border: 1px solid var(--border-color);
@@ -368,7 +411,7 @@
     .notification-btn:hover { transform: scale(1.05); border-color: #38bdf8; }
     .notification-btn svg { width: 18px; height: 18px; fill: currentColor; }
     .notification-badge { position: absolute; top: 0px; right: 2px; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; border: 2px solid #0d1527; }
-    
+
     .notification-popup {
       position: absolute; top: calc(100% + 12px); left: 0; 
       background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(56, 189, 248, 0.6);
@@ -400,7 +443,7 @@
     .lang-dropdown-menu.show { display: block; }
     .lang-option { padding: 0.7rem 1rem; font-size: 0.85rem; color: var(--text); cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: background 0.2s; }
     .lang-option:hover { background: rgba(56, 189, 248, 0.3); color: #38bdf8; }
-    
+
     .container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 1rem; }
     .card {
       background: var(--card-bg); border: 1px solid var(--border-color);
@@ -416,7 +459,7 @@
     }
     [dir="ltr"] input, [dir="ltr"] textarea, [dir="ltr"] select { text-align: left; }
     input:focus, textarea:focus, select:focus { border-color: #38bdf8; box-shadow: 0 0 15px var(--accent-glow); }
-    
+
     .custom-date-input {
       background: rgba(56, 189, 248, 0.08) !important;
       border: 1px solid rgba(56, 189, 248, 0.5) !important;
@@ -457,7 +500,7 @@
 
     .custom-dropdown { position: relative; width: 100%; margin: 0.5rem 0; text-align: right; }
     [dir="ltr"] .custom-dropdown { text-align: left; }
-    
+
     .dropdown-selected {
       width: 100%; padding: 0.9rem 1rem; border-radius: 1rem;
       background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.6);
@@ -466,7 +509,7 @@
       box-shadow: 0 0 15px rgba(56, 189, 248, 0.25); transition: all 0.2s ease;
     }
     .dropdown-selected:hover { border-color: #38bdf8; box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); }
-    
+
     .dropdown-options {
       position: absolute; top: calc(100% + 6px); left: 0; width: 100%;
       background: rgba(15, 23, 42, 0.98); border: 1px solid rgba(56, 189, 248, 0.6);
@@ -505,13 +548,13 @@
       font-size: 0.85rem; font-weight: 700; border-radius: 50%; cursor: pointer; color: var(--text); transition: all 0.2s ease;
     }
     .calendar-day:hover { background: rgba(56, 189, 248, 0.25); color: #38bdf8; }
-    
+
     .calendar-day.today {
       border: 1px dashed rgba(56, 189, 248, 0.8);
       color: #38bdf8;
       box-shadow: inset 0 0 8px rgba(56, 189, 248, 0.2);
     }
-    
+
     .calendar-day.selected {
       background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%); color: #0b0f19;
       box-shadow: 0 0 22px #38bdf8, inset 0 0 8px rgba(255, 255, 255, 0.8); border: 2px solid #ffffff; transform: scale(1.08); z-index: 2;
@@ -604,7 +647,7 @@
       color: #38bdf8; font-size: 1.15rem; font-weight: 800; 
       text-shadow: 0 0 12px #38bdf8; opacity: 1; transform: scale(1.1) rotateX(0deg); 
     }
-    
+
     .ampm-badge {
       background: rgba(56, 189, 248, 0.22); border: 1px solid rgba(56, 189, 248, 0.6);
       color: #38bdf8; font-weight: 800; font-size: 0.75rem; padding: 0.4rem 0.65rem;
@@ -624,7 +667,7 @@
     .password-container input { margin: 0; width: 100%; }
     [dir="rtl"] .password-container input { padding-left: 3.5rem; padding-right: 1rem; text-align: right; }
     [dir="ltr"] .password-container input { padding-right: 3.5rem; padding-left: 1rem; text-align: left; }
-    
+
     .toggle-password {
       position: absolute; top: 50%; transform: translateY(-50%);
       background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4);
@@ -636,10 +679,10 @@
     [dir="ltr"] .toggle-password { right: 8px; left: auto; }
     .toggle-password:hover { background: rgba(56, 189, 248, 0.3); transform: translateY(-50%) scale(1.05); }
     .toggle-password svg { width: 20px; height: 20px; fill: currentColor; }
-    
+
     .checkbox-container { display: flex; align-items: center; justify-content: flex-start; gap: 0.5rem; margin: 0.75rem 0; font-size: 0.85rem; color: var(--muted); cursor: pointer; }
     .checkbox-container input[type="checkbox"] { width: 18px; height: 18px; accent-color: #38bdf8; margin: 0; }
-    
+
     button {
       width: 100%; padding: 0.95rem; border-radius: 1.25rem; border: 1px solid rgba(56, 189, 248, 0.5);
       background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #0f172a 100%);
@@ -665,7 +708,7 @@
     }
 
     .hidden { display: none !important; }
-    
+
     .service-row-btn {
       background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(15, 23, 42, 0.95));
       border: 1px solid rgba(56, 189, 248, 0.45); border-radius: 1.25rem;
@@ -674,7 +717,7 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.3); transition: all 0.2s ease; width: 100%; margin: 0;
     }
     .service-row-btn:hover { border-color: #38bdf8; transform: translateY(-2px); box-shadow: 0 12px 30px rgba(56, 189, 248, 0.25); }
-    
+
     .user-profile-card {
       width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw;
       background: rgba(15, 23, 42, 0.95); border-left: 1px solid rgba(56, 189, 248, 0.35); border-right: 1px solid rgba(56, 189, 248, 0.35);
@@ -687,12 +730,12 @@
     .profile-text-content { display: flex; flex-direction: column; text-align: right; }
     [dir="ltr"] .profile-text-content { text-align: left; }
     .code-badge-pill { color: #38bdf8; font-size: 0.8rem; font-weight: 700; margin-top: 0.15rem; display: inline-block; }
-    
+
     .official-doc-card { background: #ffffff; color: #0f172a; border-radius: 1rem; padding: 1.25rem; text-align: right; margin: 0.75rem 0; box-shadow: 0 10px 30px rgba(0,0,0,0.5); font-family: 'Cairo', sans-serif; }
     .doc-header-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0284c7; padding-bottom: 0.5rem; margin-bottom: 0.75rem; }
     .doc-company-title { font-weight: 800; font-size: 0.95rem; color: #0284c7; }
     .doc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; font-size: 0.75rem; margin-bottom: 0.75rem; }
-    
+
     .checkin-card {
       background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(15, 23, 42, 0.98));
       border: 1px solid rgba(56, 189, 248, 0.5); border-radius: 1.5rem; padding: 0.85rem 1.25rem;
@@ -719,7 +762,7 @@
     }
     .fingerprint-icon-wrap svg { width: 24px; height: 24px; fill: currentColor; }
     .checkin-status-text { font-size: 0.8rem; font-weight: 700; color: var(--text); }
-    
+
     .announcement-card {
       background: rgba(15, 23, 42, 0.85); border: 1px solid var(--border-color); border-radius: 1.5rem;
       padding: 1.25rem; text-align: right; position: relative; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.3); margin-top: 0.5rem; min-height: 110px;
@@ -734,7 +777,7 @@
     .slider-dots { display: flex; justify-content: center; gap: 0.35rem; align-items: center; margin-top: 0.5rem; }
     .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s; }
     .dot.active { width: 18px; border-radius: 4px; background: #38bdf8; }
-    
+
     .summaries-grid { display: flex; flex-direction: column; gap: 0.85rem; width: 100%; }
     .summary-card {
       background: rgba(15, 23, 42, 0.85); border: 1px solid var(--border-color); border-radius: 1.25rem;
@@ -746,7 +789,7 @@
     [dir="ltr"] .summary-card { text-align: left; }
     .summary-title { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.4rem; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
     .summary-value { font-size: 1.15rem; font-weight: 800; color: #38bdf8; }
-    
+
     .progress-bar-container {
       width: 100%; height: 9px; background: rgba(255, 255, 255, 0.08); border-radius: 6px;
       margin-top: 0.75rem; overflow: hidden; position: relative; border: 1px solid rgba(56, 189, 248, 0.15); direction: ltr !important;
@@ -772,7 +815,7 @@
     }
     .toggle-salary-btn:hover { background: rgba(56, 189, 248, 0.3); transform: scale(1.05); }
     .toggle-salary-btn svg { width: 20px; height: 20px; fill: currentColor; }
-    
+
     .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; width: 100%; }
     .back-btn { 
       background: rgba(51, 65, 85, 0.9); border: 1px solid var(--border-color); width: auto !important; 
@@ -780,7 +823,7 @@
       margin: 0 !important; border-radius: 0.8rem; cursor: pointer; color: var(--text); box-shadow: none !important;
     }
     .back-btn:hover { background: rgba(56, 189, 248, 0.2); border-color: #38bdf8; }
-    
+
     .id-card {
       background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(11, 15, 25, 0.98));
       border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 1.5rem; padding: 1.5rem; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.6);
@@ -794,7 +837,7 @@
     .info-label { color: var(--muted); font-size: 0.75rem; margin-bottom: 0.1rem; }
     .info-val { font-weight: 700; color: var(--text); }
     .qr-container { background: #fff; padding: 0.65rem; border-radius: 1rem; display: inline-block; }
-    
+
     #bottomNavBar {
       position: fixed; bottom: 0; left: 0; width: 100vw; background: rgba(15, 23, 42, 0.98);
       border-top: 1px solid rgba(56, 189, 248, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
@@ -820,7 +863,7 @@
     [dir="ltr"] #chatbot-fab { right: 25px; left: auto; }
     #chatbot-fab:hover { transform: scale(1.1); }
     #chatbot-fab svg { width: 28px; height: 28px; fill: currentColor; }
-    
+
     #chatbot-window {
       position: fixed; bottom: 90px; right: 20px; width: 330px; max-width: calc(100vw - 40px); height: 380px;
       background: rgba(15, 23, 42, 0.96); border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 1.25rem;
@@ -851,7 +894,7 @@
         } catch (err) { console.log('Wake Lock error:', err); }
       }
     }
-    
+
     window.addEventListener('DOMContentLoaded', () => { 
       requestWakeLock(); 
       let storedLang = localStorage.getItem('lacto_lang') || 'ar';
@@ -862,7 +905,7 @@
           : '© 2026 All Creation & Copyrights Reserved';
       }
     });
-    
+
     document.addEventListener('visibilitychange', async () => { if (document.visibilityState === 'visible') { await requestWakeLock(); } });
   </script>
 </head>
@@ -873,20 +916,20 @@
       <div class="intro-title-container" id="introTitle"></div>
       <div class="intro-subtitle" id="introSubtitle" data-ar="شركاء في رحلة نمو طفلك." data-en="Partners in your child's growth journey.">Partners in your child's growth journey.</div>
     </div>
-    
+
     <div id="introFooter">
       <div id="copyrightText" data-ar="© 2026 جميع حقوق الإنشاء والطبع محفوظة" data-en="© 2026 All Creation & Copyrights Reserved">© 2026 جميع حقوق الإنشاء والطبع محفوظة</div>
       <div style="font-family: 'Great Vibes', cursive; font-size: 1rem; color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);">Powered by Mostafa Elsayed - HR Section Head</div>
     </div>
   </div>
-  
+
   <!-- App Header & Tools -->
   <div class="app-header">
     <div class="brand-container">
       <img src="logo.png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
       <div class="brand-title">LM HR</div>
     </div>
-    
+
     <div class="header-tools">
       <!-- Notification -->
       <div class="notification-wrapper">
@@ -918,9 +961,9 @@
     <div id="view-login" class="card">
       <h2 style="font-size: 1.5rem; margin-bottom: 0.2rem;">LM HR Hub</h2>
       <p id="t-subtitle" data-ar="بوابة الموظفين الرقمية" data-en="Digital Employee Portal" style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem;">بوابة الموظفين الرقمية</p>
-      
+
       <input type="text" id="empCode" data-ar-placeholder="كود الموظف" data-en-placeholder="Employee Code" placeholder="كود الموظف">
-      
+
       <div class="password-container">
         <input type="password" id="empPass" data-ar-placeholder="كلمة السر" data-en-placeholder="Password" placeholder="كلمة السر">
         <button type="button" class="toggle-password" onclick="togglePasswordVisibility()" title="إظهار / إخفاء كلمة السر">
@@ -933,11 +976,11 @@
         <input type="checkbox" id="rememberMe">
         <span id="t-remember" data-ar="تذكرني" data-en="Remember Me">تذكرني</span>
       </label>
-      
+
       <button id="t-loginBtn" class="btn-success" data-ar="دخول الحساب" data-en="Sign In" onclick="login()">دخول الحساب</button>
       <p id="error" style="color: var(--danger); margin-top: 1rem; font-size: 0.85rem; font-weight: bold;"></p>
     </div>
-    
+
     <!-- 2. Dashboard View -->
     <div id="view-dashboard" class="hidden"></div>
   </div>
@@ -987,7 +1030,7 @@
           <div id="ledGreen" class="indicator-dot dot-green"></div>
         </div>
       </div>
-      
+
       <div class="announcement-card" id="announcementCard">
         <div class="slides-container" id="slidesContainer">
           <div class="slide-item active" onclick="showComingSoon('view-dashboard')">
@@ -1024,7 +1067,7 @@
           <div class="dot" onclick="currentSlide(5)"></div>
         </div>
       </div>
-      
+
       <div class="summaries-grid">
         <div class="summary-card clickable-card" onclick="showPage('view-leave-request')">
           <div class="summary-title"><span data-ar="رصيد الإجازات" data-en="Leave Balance">رصيد الإجازات</span><span style="font-size:0.75rem; color: #38bdf8;" data-ar="46% مستهلك" data-en="46% Consumed">46% مستهلك</span></div>
@@ -1034,7 +1077,7 @@
 
         <div class="summary-card clickable-card" onclick="showPage('view-permission-request')">
           <div class="summary-title"><span data-ar="الأذونات المتاحة" data-en="Available Permissions">الأذونات المتاحة</span><span style="font-size:0.75rem; color: #38bdf8;" id="permRatioText" data-ar="100% متاح" data-en="100% Available">100% متاح</span></div>
-          
+
           <div class="flip-clock-display compact" style="margin: 0.6rem 0 0.3rem 0;">
             <div class="flip-unit-box">
               <div class="flip-card-digit">
@@ -1074,7 +1117,7 @@
 
       <button id="t-logoutBtn" data-ar="تسجيل الخروج" data-en="Sign Out" onclick="logout()" class="btn-danger">تسجيل الخروج</button>
     </div>
-    
+
     <!-- 3. ID Card View -->
     <div id="view-id-card" class="card hidden">
       <div class="nav-bar">
@@ -1089,7 +1132,7 @@
         <img id="userPhoto" class="profile-img" crossorigin="anonymous" src="" alt="User">
         <h3 id="userName" style="margin:0 0 0.2rem 0; font-size: 1.1rem;">--</h3>
         <p id="userJob" style="color: #38bdf8; font-size: 0.85rem; margin:0 0 0.85rem 0;">--</p>
-        
+
         <div class="info-grid">
           <div><div class="info-label" data-ar="الإدارة" data-en="Department">الإدارة</div><div id="userDept" class="info-val">--</div></div>
           <div><div class="info-label" data-ar="كود الموظف" data-en="Employee Code">كود الموظف</div><div id="userCodeVal" class="info-val">--</div></div>
@@ -1099,7 +1142,7 @@
       </div>
       <button data-ar="حفظ الكارت كصورة" data-en="Save ID Card as Image" onclick="downloadCard()" class="btn-success" style="margin-top:1rem;">حفظ الكارت كصورة</button>
     </div>
-    
+
     <!-- 4. Services View -->
     <div id="view-services" class="card hidden">
       <div class="nav-bar">
@@ -1148,7 +1191,7 @@
         <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
         <span style="font-weight: 700; color: #38bdf8;" data-ar="طلب إجازة جديد" data-en="New Leave Request">طلب إجازة جديد</span>
       </div>
-      
+
       <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 1rem; padding: 0.75rem 1rem; margin-bottom: 1rem;">
         <span style="font-size: 0.8rem; color: var(--muted);" data-ar="رصيد الإجازات المتاح:" data-en="Available Leave Balance:">رصيد الإجازات المتاح:</span>
         <span style="font-size: 0.95rem; font-weight: 800; color: #38bdf8;" id="leaveBalanceVal" data-ar="21 يوم" data-en="21 Days">21 يوم</span>
@@ -1156,7 +1199,7 @@
 
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;" id="leaveFormWrapper">
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="نوع الإجازة:" data-en="Leave Type:">نوع الإجازة:</label>
-        
+
         <div class="custom-dropdown" id="customLeaveDropdown">
           <div class="dropdown-selected" onclick="toggleCustomDropdown(event)">
             <span id="selectedLeaveText" data-ar="إجازة سنوية" data-en="Annual Leave">إجازة سنوية</span>
@@ -1290,7 +1333,7 @@
       </div>
 
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;">
-        
+
         <div style="background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 1rem; padding: 0.8rem; font-size: 0.78rem; color: #38bdf8; line-height: 1.5; text-align: right;">
           📍 <strong data-ar="تنبيه نظام بصمة المأموريات (GPS):" data-en="GPS Mission Notice:">تنبيه نظام بصمة المأموريات (GPS):</strong><br>
           <span data-ar="بمجرد موافقة مدير الإدارة وكذلك الـ HR على المأمورية، سيتم منحك كامل الصلاحية لتسجيل الحضور والانصراف من أي مكان، وسيتم إرسال الموقع الإلكتروني للـ HR." data-en="Upon approval from your Department Manager & HR, full authority will be granted to check in/out from any location, and location data will be submitted directly to HR.">بمجرد موافقة مدير الإدارة وكذلك الـ HR على المأمورية، سيتم منحك كامل الصلاحية لتسجيل الحضور والانصراف من أي مكان، وسيتم إرسال الموقع الإلكتروني للـ HR.</span>
@@ -1419,12 +1462,12 @@
         </div>
 
         <label style="font-size: 0.75rem; color: var(--muted); margin-top:0.4rem;" data-ar="طريقة الاستلام المطلوبة:" data-en="Delivery Method:">طريقة الاستلام المطلوبة:</label>
-        
+
         <label class="checkbox-container">
           <input type="checkbox" id="chkPrintout" onchange="handleSingleDeliveryCheckbox('printout')">
           <span data-ar="نسخة مطبوعة ومختومة (استلام من الـ HR)" data-en="Hardcopy Stamped (Pick up from HR)">نسخة مطبوعة ومختومة (استلام من الـ HR)</span>
         </label>
-        
+
         <label class="checkbox-container" style="margin-top:0.2rem;">
           <input type="checkbox" id="chkDigitalEmail" onchange="handleSingleDeliveryCheckbox('digital')">
           <span data-ar="نسخة رقمية PDF على البريد الإلكتروني المسجل" data-en="Digital PDF via Registered Email">نسخة رقمية PDF على البريد الإلكتروني المسجل</span>
@@ -1439,7 +1482,7 @@
         <p id="payslipMsg" style="font-size: 0.85rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
       </div>
     </div>
-    
+
     <!-- 4.5. LOAN REQUEST VIEW -->
     <div id="view-loan-request" class="card hidden">
       <div class="nav-bar">
@@ -1498,7 +1541,7 @@
         <span style="font-weight: 700; color: #38bdf8;" data-ar="طلب أصول مستندات" data-en="Original Docs Request">طلب أصول مستندات</span>
       </div>
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;">
-        
+
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="نوع المستند المطلوب:" data-en="Requested Document:">نوع المستند المطلوب:</label>
         <div class="custom-dropdown" id="docTypeDropdown">
           <div class="dropdown-selected" onclick="toggleDocDropdown(event)">
@@ -1534,7 +1577,7 @@
         <span style="font-weight: 700; color: #38bdf8;" data-ar="الدعم الفني (IT)" data-en="IT Support">الدعم الفني (IT)</span>
       </div>
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;">
-        
+
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="تصنيف المشكلة:" data-en="Issue Category:">تصنيف المشكلة:</label>
         <div class="radio-group-container">
           <div class="radio-option-btn active" id="optTechApp" onclick="setTechCategory('app')" data-ar="📱 مشكلة بالتطبيق" data-en="📱 App Issue">📱 مشكلة بالتطبيق</div>
@@ -1587,13 +1630,13 @@
         <button class="back-btn" onclick="showPage('view-services')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
         <span style="font-weight: 700; color: #10b981;" data-ar="حجز عيادة الشركة" data-en="Clinic Reservation">حجز عيادة الشركة</span>
       </div>
-      
+
       <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 1rem; padding: 0.75rem 1rem; margin-bottom: 1rem; text-align: center; color:#34d399; font-size:0.8rem; font-weight:700;">
         ℹ️ <span data-ar="مواعيد عمل العيادة: (الأحد - الثلاثاء - الخميس)" data-en="Clinic Days: (Sun - Tue - Thu)">مواعيد عمل العيادة: (الأحد - الثلاثاء - الخميس)</span>
       </div>
 
       <div id="clinicFormArea" style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;">
-        
+
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="التخصص الطبي المطلوب:" data-en="Medical Specialty:">التخصص الطبي المطلوب:</label>
         <div class="custom-dropdown" id="clinicDropdown">
           <div class="dropdown-selected" onclick="toggleClinicDropdown(event)">
@@ -1634,7 +1677,7 @@
             </div>
             <div style="font-size: 2rem;">🏥</div>
           </div>
-          
+
           <div style="text-align: center; margin-bottom: 1rem;">
             <div style="font-size: 0.75rem; color: #64748b; font-weight: 700;" data-ar="رقم الحجز (الطابور)" data-en="Queue Number">رقم الحجز (الطابور)</div>
             <div id="ticketQueueNum" style="font-size: 2.5rem; font-weight: 900; color: #10b981; letter-spacing: 2px;">#00</div>
@@ -1656,9 +1699,9 @@
         <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
         <span style="font-weight: 700; color: #38bdf8;" data-ar="الضبط والإعدادات" data-en="Settings">الضبط والإعدادات</span>
       </div>
-      
+
       <div style="text-align: right; display: flex; flex-direction: column; gap: 1rem; padding: 0.5rem 0;">
-        
+
         <!-- خيار اللغة -->
         <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 1rem; padding: 0.9rem 1rem; display: flex; justify-content: space-between; align-items: center;">
           <div style="display: flex; flex-direction: column; text-align: right;">
@@ -1686,7 +1729,7 @@
             </div>
             <span id="passToggleArrow" style="font-size: 1rem; color: var(--accent); font-weight: bold;">▼</span>
           </div>
-          
+
           <div id="passwordCollapseBox" class="hidden" style="display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
             <input type="password" id="oldPasswordInput" data-ar-placeholder="كلمة المرور الحالية" data-en-placeholder="Current Password" placeholder="كلمة المرور الحالية" style="margin: 0; font-size: 0.85rem; padding: 0.6rem 0.8rem;">
             <input type="password" id="newPasswordInput" data-ar-placeholder="كلمة المرور الجديدة" data-en-placeholder="New Password" placeholder="كلمة المرور الجديدة" style="margin: 0; font-size: 0.85rem; padding: 0.6rem 0.8rem;">
@@ -1703,29 +1746,30 @@
 
       </div>
     </div>
-    
+
  <!-- 6. Profile View (Advanced - Ultimate Production Ready) -->
     <div id="view-profile" class="card hidden" style="padding-bottom: 2rem;">
       <div class="nav-bar">
         <button type="button" class="back-btn" onclick="checkProfileUnsavedChanges()"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
         <span style="font-weight: 700; color: #38bdf8;" data-ar="الملف الشخصي" data-en="My Profile">الملف الشخصي</span>
       </div>
-      
+
       <!-- 1. قسم الصورة والبيانات الأساسية -->
       <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 1.25rem; padding: 1.25rem; margin-bottom: 1.25rem; text-align: center; box-shadow: inset 0 0 15px rgba(0,0,0,0.3);">
-        
+
         <div style="position: relative; width: 90px; height: 90px; margin: 0 auto 0.75rem auto; display: inline-block;">
           <img id="profile-page-avatar" src="" alt="Avatar" style="width: 90px; height: 90px; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); display: block;">
-          
+
           <button type="button" onclick="document.getElementById('avatarUploadInput').click()" style="position: absolute; bottom: 2px; right: 2px; width: 30px; height: 30px; border-radius: 50%; background: #0284c7; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.6); z-index: 5;" title="تغيير الصورة">
             <svg viewBox="0 0 24 24" style="width: 15px; height: 15px; fill: #fff;"><path d="M4 4h3l2-2h6l2 2h3c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm8 3c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/></svg>
           </button>
-          
-          <input type="file" id="avatarUploadInput" accept="image/*" style="display: none;" onchange="stageAvatarChange(event)">
+
+          <input type="file" id="avatarUploadInput" accept="image/*" capture="environment" style="display: none;" onchange="stageAvatarChange(event)">
+        </div>
 
         <h3 id="profile-page-name" style="margin: 0.5rem 0 0.2rem 0; font-size: 1.1rem; color: var(--text);">--</h3>
         <p id="profile-page-job" style="margin: 0 0 0.75rem 0; font-size: 0.85rem; color: #38bdf8; font-weight: 700;">--</p>
-        
+
         <div class="info-grid" style="background: rgba(11, 15, 25, 0.5); border: 1px solid rgba(255,255,255,0.08); padding: 0.6rem; margin: 0;">
           <div><div class="info-label" data-ar="كود الموظف" data-en="Emp Code">كود الموظف</div><div id="profile-page-code" class="info-val">--</div></div>
           <div><div class="info-label" data-ar="الإدارة" data-en="Department">الإدارة</div><div id="profile-page-dept" class="info-val">--</div></div>
@@ -1733,18 +1777,18 @@
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-        
+
         <!-- 2. قسم البيانات الشخصية والوطنية -->
         <div style="background: rgba(15, 23, 42, 0.4); border-radius: 1rem; padding: 1rem; border: 1px solid rgba(56, 189, 248, 0.2);">
           <h4 style="color: #38bdf8; font-size: 0.9rem; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 0.4rem;" data-ar="🛡️ البيانات الشخصية والقانونية" data-en="🛡️ Personal & Legal Data">🛡️ البيانات الشخصية والقانونية</h4>
-          
+
           <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-bottom: 0.3rem;" data-ar="الرقم القومي (14 رقم):" data-en="National ID (14 digits):">الرقم القومي (14 رقم):</label>
           <input type="text" id="profileNIDInput" placeholder="أدخل الرقم القومي..." data-ar="أدخل الرقم القومي..." data-en="Enter National ID..." maxlength="14" oninput="markProfileAsChanged()">
           <p id="nidWarningText" style="font-size: 0.65rem; color: #f59e0b; margin-top: -0.3rem; margin-bottom: 0.5rem; display: none;" data-ar="⚠️ ملحوظة: بمجرد الحفظ لا يمكن تعديل الرقم القومي." data-en="⚠️ Note: Once saved, National ID cannot be edited.">⚠️ ملحوظة: بمجرد الحفظ لا يمكن تعديل الرقم القومي.</p>
-          
+
           <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-bottom: 0.3rem;" data-ar="تاريخ إصدار البطاقة:" data-en="ID Issue Date:">تاريخ إصدار البطاقة:</label>
           <input type="text" id="profileNIDDateInput" class="custom-date-input" readonly placeholder="اختر تاريخ الإصدار..." data-ar="اختر تاريخ الإصدار..." data-en="Select issue date..." onclick="openCustomCalendar('profileNIDDateInput'); markProfileAsChanged();">
-          
+
           <!-- الموقف من التجنيد -->
           <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-top: 0.5rem; margin-bottom: 0.3rem;" data-ar="الموقف من التجنيد:" data-en="Military Status:">الموقف من التجنيد:</label>
           <div class="custom-dropdown" id="militaryDropdown" style="position: relative; margin-bottom: 0.5rem;">
@@ -1785,7 +1829,7 @@
         <!-- 3. قسم بيانات الاتصال والطوارئ -->
         <div style="background: rgba(15, 23, 42, 0.4); border-radius: 1rem; padding: 1rem; border: 1px solid rgba(56, 189, 248, 0.2);">
           <h4 style="color: #38bdf8; font-size: 0.9rem; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 0.4rem;" data-ar="📞 بيانات الاتصال والطوارئ" data-en="📞 Contact & Emergency Data">📞 بيانات الاتصال والطوارئ</h4>
-          
+
           <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-bottom: 0.3rem;" data-ar="العنوان بالتفصيل:" data-en="Detailed Address:">العنوان بالتفصيل:</label>
           <textarea id="profileAddressInput" rows="2" placeholder="محافظة - مدينة - شارع - رقم العمارة..." data-ar="محافظة - مدينة - شارع - رقم العمارة..." data-en="Governorate - City - Street - Bldg No..." style="resize: none; margin-top: 0; width: 100%;" oninput="markProfileAsChanged()"></textarea>
 
@@ -1799,7 +1843,7 @@
         <!-- 4. المؤهلات والدورات -->
         <div style="background: rgba(15, 23, 42, 0.4); border-radius: 1rem; padding: 1rem; border: 1px solid rgba(56, 189, 248, 0.2);">
           <h4 style="color: #38bdf8; font-size: 0.9rem; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 0.4rem;" data-ar="🎓 المؤهلات والدورات التدريبية" data-en="🎓 Qualifications & Training">🎓 المؤهلات والدورات التدريبية</h4>
-          
+
           <div style="background: rgba(56, 189, 248, 0.08); padding: 0.6rem; border-radius: 0.6rem; border: 1px dashed rgba(56, 189, 248, 0.3); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
             <span style="font-size: 1.2rem;">🎓</span>
             <div>
@@ -1819,7 +1863,7 @@
           <!-- نموذج إدخال مؤهل جديد -->
           <div id="newQualificationForm" class="hidden" style="background: rgba(11, 15, 25, 0.7); border: 1px solid #38bdf8; border-radius: 0.8rem; padding: 0.75rem; margin-bottom: 0.75rem;">
             <div style="font-size: 0.8rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem;" data-ar="➕ إضافة مؤهل جديد" data-en="➕ Add New Qualification">➕ إضافة مؤهل جديد</div>
-            
+
             <label style="font-size: 0.7rem; color: var(--muted); display: block; margin-bottom: 0.3rem;" data-ar="اسم المؤهل:" data-en="Qualification Name:">اسم المؤهل:</label>
             <input type="text" id="newCertName" placeholder="أدخل اسم المؤهل..." data-ar="أدخل اسم المؤهل..." data-en="Enter qualification name..." style="margin-bottom: 0.4rem; font-size: 0.8rem;" oninput="markProfileAsChanged()">
 
@@ -1845,7 +1889,7 @@
           <!-- نموذج إدخال دورة تدريبية جديدة -->
           <div id="newCourseForm" class="hidden" style="background: rgba(11, 15, 25, 0.7); border: 1px solid #38bdf8; border-radius: 0.8rem; padding: 0.75rem; margin-bottom: 0.75rem;">
             <div style="font-size: 0.8rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem;" data-ar="➕ إضافة دورة تدريبية جديدة" data-en="➕ Add New Course">➕ إضافة دورة تدريبية جديدة</div>
-            
+
             <label style="font-size: 0.7rem; color: var(--muted); display: block; margin-bottom: 0.3rem;" data-ar="اسم الدورة التدريبية:" data-en="Course Name:">اسم الدورة التدريبية:</label>
             <input type="text" id="newCourseName" placeholder="أدخل اسم الدورة..." data-ar="أدخل اسم الدورة..." data-en="Enter course name..." style="margin-bottom: 0.4rem; font-size: 0.8rem;" oninput="markProfileAsChanged()">
 
@@ -1887,7 +1931,7 @@
         <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">⚠️</div>
         <h3 style="color: #38bdf8; margin-bottom: 0.5rem; font-size: 1.1rem;" data-ar="تنبيه هام" data-en="Important Notice">تنبيه هام</h3>
         <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.25rem; line-height: 1.5;" data-ar="لديك تعديلات غير محفوظة في الملف الشخصي. هل ترغب في حفظ التعديلات قبل الخروج؟" data-en="You have unsaved changes in your profile. Would you like to save them before leaving?">لديك تعديلات غير محفوظة في الملف الشخصي. هل ترغب في حفظ التعديلات قبل الخروج؟</p>
-        
+
         <div style="display: flex; gap: 0.5rem; flex-direction: column;">
           <button type="button" onclick="confirmSaveAndExit()" style="width: 100%; background: #0284c7; color: white; border: none; padding: 0.7rem; border-radius: 0.75rem; font-weight: 700; font-size: 0.85rem; cursor: pointer; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);" data-ar="💾 حفظ والخروج" data-en="💾 Save & Exit">
             💾 حفظ والخروج
@@ -1921,7 +1965,7 @@
       // مزامنة Placeholders والنصوص مع لغة التطبيق العامة بكل دقة
       function syncProfileLanguageAndPlaceholders() {
           const isEn = currentLang === 'en';
-          
+
           // تحديث الـ placeholders لجميع الحقول بناءً على سمات ar/en
           const inputs = document.querySelectorAll('#view-profile input[data-ar], #view-profile textarea[data-ar]');
           inputs.forEach(input => {
@@ -2240,7 +2284,7 @@
         <span style="font-weight:700; color:#38bdf8;" data-ar="مقترحات وشكاوى العاملين" data-en="Suggestions & Complaints">مقترحات وشكاوى العاملين</span>
       </div>
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;" id="sugFormWrapper">
-        
+
         <!-- قائمة منسدلة لاختيار نوع المشاركة (مقترح أو شكوى) -->
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="نوع المشاركة:" data-en="Submission Type:">نوع المشاركة:</label>
         <div class="custom-dropdown" id="sugTypeDropdown">
@@ -2258,13 +2302,13 @@
         <!-- خانات الكود والاسم مقفولة أوتوماتيكياً ومسجلة باسم صاحب الحساب -->
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="كود الموظف (مسجل تلقائياً):" data-en="Employee Code (Auto):">كود الموظف (مسجل تلقائياً):</label>
         <input type="text" id="sugCode" readonly style="background: rgba(30,41,59,0.5); cursor: not-allowed; font-weight: bold; color: #38bdf8;">
-        
+
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="اسم الموظف (مسجل تلقائياً):" data-en="Employee Name (Auto):">اسم الموظف (مسجل تلقائياً):</label>
         <input type="text" id="sugName" readonly style="background: rgba(30,41,59,0.5); cursor: not-allowed; font-weight: bold; color: var(--text);">
-        
+
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="تفاصيل المشاركة (بحد أقصى 500 حرف):" data-en="Details (Max 500 chars):">تفاصيل المشاركة (بحد أقصى 500 حرف):</label>
         <textarea id="sugText" rows="4" maxlength="500" data-ar-placeholder="اكتب مقترحك أو شكواك بوضوح تام هنا..." data-en-placeholder="Type your suggestion or complaint here..." placeholder="اكتب مقترحك أو شكواك بوضوح تام هنا..." style="resize: none;"></textarea>
-        
+
         <button onclick="submitSuggestion()" class="btn-success" data-ar="إرسال الطلب رسمياً" data-en="Submit Request Form" style="margin-top:0.5rem;">إرسال الطلب رسمياً</button>
         <p id="sugMsg" style="font-size: 0.8rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
       </div>
@@ -2357,7 +2401,7 @@
         '.checkin-card', '.action-btn-item', '.dot', '.custom-date-input', 
         'label.checkbox-container', '.upload-btn-label', '#chatbot-fab', '.notification-btn'
       ].join(', ');
-      
+
       if (e.target.closest(clickSelectors)) {
         window.playClickSound();
       }
@@ -2406,7 +2450,7 @@
       const subtitle = document.getElementById('introSubtitle');
       container.innerHTML = "";
       const charElements = [];
-      
+
       for (let char of text) {
         if (char === ' ') {
           const space = document.createElement('span'); space.className = 'intro-space'; container.appendChild(space);
@@ -2447,7 +2491,7 @@
       };
       document.addEventListener('click', silentResume); document.addEventListener('touchstart', silentResume);
     });
-    
+
     function toggleLangMenu(event) {
       if (event) event.stopPropagation();
       const langMenu = document.getElementById('langMenu');
@@ -2457,7 +2501,7 @@
     function selectLanguage(lang) {
       currentLang = lang;
       localStorage.setItem('lacto_lang', lang);
-      
+
       document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
       document.documentElement.setAttribute('lang', lang);
 
@@ -2465,12 +2509,12 @@
       if (langShort) {
         langShort.innerText = lang.toUpperCase();
       }
-      
+
       const langMenu = document.getElementById('langMenu');
       if (langMenu) {
         langMenu.classList.remove('show');
       }
-      
+
       if (typeof updateContentTranslations === 'function') {
         updateContentTranslations();
       }
@@ -2480,7 +2524,7 @@
     function toggleTheme() {
       const currentTheme = document.documentElement.getAttribute('data-theme');
       const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-      
+
       if (newTheme === 'light') {
         document.documentElement.setAttribute('data-theme', 'light');
         localStorage.setItem('lacto_theme', 'light');
@@ -2535,7 +2579,7 @@
             msgEl.innerText = currentLang === 'ar' ? '✅ تم تغيير كلمة المرور بنجاح!' : '✅ Password updated successfully!';
             document.getElementById('oldPasswordInput').value = '';
             document.getElementById('newPasswordInput').value = '';
-            
+
             if (localStorage.getItem('lacto_saved_code')) {
               localStorage.setItem('lacto_saved_pass', newPass);
             }
@@ -2616,7 +2660,7 @@
       msg.style.color = '#38bdf8'; msg.innerText = currentLang === 'ar' ? '✅ تم إرسال طلب مفردات المرتب بنجاح للـ HR!' : '✅ Payslip request submitted to HR!';
       setTimeout(() => showPage('view-dashboard'), 1800);
     }
-    
+
     const firebaseConfig = {
       apiKey: "AIzaSyBObCeo4PM20UNYObThwdY4UaOiIhWdXa0",
       authDomain: "lacto-hr-system.firebaseapp.com",
@@ -2653,16 +2697,16 @@
   const lang = currentLang;
   document.querySelectorAll('[data-ar][data-en]').forEach(el => { el.innerText = el.getAttribute(`data-${lang}`); });
   document.querySelectorAll('[data-ar-placeholder][data-en-placeholder]').forEach(el => { el.placeholder = el.getAttribute(`data-${lang}-placeholder`); });
-  
+
   // الحقنة السحرية لضبط بليس هولدرز البروفايل فوراً مع تغيير اللغة
   if (typeof syncProfileLanguageAndPlaceholders === 'function') {
     syncProfileLanguageAndPlaceholders();
   }
-  
+
   const currentLeaveVal = document.getElementById('leaveType') ? document.getElementById('leaveType').value : 'annual';
   const selectedOptionEl = document.querySelector(`.dropdown-option[onclick*="${currentLeaveVal}"]`);
   if (selectedOptionEl && document.getElementById('selectedLeaveText')) document.getElementById('selectedLeaveText').innerText = selectedOptionEl.getAttribute(`data-${lang}`);
-  
+
   const currentLoanVal = document.getElementById('loanMonthsVal') ? document.getElementById('loanMonthsVal').value : '3';
   const selectedLoanOptionEl = document.querySelector(`#loanMonthsOptions .dropdown-option[onclick*="selectLoanMonth(${currentLoanVal})"]`);
   if (selectedLoanOptionEl && document.getElementById('selectedLoanMonthText')) document.getElementById('selectedLoanMonthText').innerText = selectedLoanOptionEl.getAttribute(`data-${lang}`);
@@ -2698,7 +2742,7 @@
       event.stopPropagation(); 
       document.getElementById('notificationPopup').classList.toggle('show'); 
     }
-    
+
     window.addEventListener('click', () => {
       const popup = document.getElementById('notificationPopup'); if (popup && popup.classList.contains('show')) popup.classList.remove('show');
       const dropdownOptions = document.getElementById('dropdownOptions'); if (dropdownOptions && dropdownOptions.classList.contains('show')) dropdownOptions.classList.remove('show');
@@ -2706,7 +2750,7 @@
 
       const militaryOpts = document.getElementById('militaryOptions'); if (militaryOpts && militaryOpts.classList.contains('show')) militaryOpts.classList.remove('show');
       const maritalOpts = document.getElementById('maritalOptions'); if (maritalOpts && maritalOpts.classList.contains('show')) maritalOpts.classList.remove('show');
-      
+
       const docOpts = document.getElementById('docOptions'); if (docOpts && docOpts.classList.contains('show')) docOpts.classList.remove('show');
       const techOpts = document.getElementById('techOptions'); if (techOpts && techOpts.classList.contains('show')) techOpts.classList.remove('show');
       const clinicOpts = document.getElementById('clinicOptions'); if (clinicOpts && clinicOpts.classList.contains('show')) clinicOpts.classList.remove('show');
@@ -2772,14 +2816,14 @@
       const grid = document.getElementById('calendarDaysGrid'); grid.innerHTML = "";
       const jsDay = new Date(calYear, calMonth, 1).getDay(); const firstDayIndex = (jsDay + 1) % 7; const totalDays = new Date(calYear, calMonth + 1, 0).getDate();
       for (let i = 0; i < firstDayIndex; i++) { const emptyCell = document.createElement('div'); emptyCell.className = 'calendar-day empty'; grid.appendChild(emptyCell); }
-      
+
       const today = new Date();
       const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
       for (let day = 1; day <= totalDays; day++) {
         const dayCell = document.createElement('div'); dayCell.className = 'calendar-day'; dayCell.innerText = day;
         const formattedDate = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        
+
         if (formattedDate === todayStr) {
             dayCell.classList.add('today');
         }
@@ -2938,7 +2982,7 @@
     }
 
     function downloadMissionPDF() { const element = document.getElementById('missionPrintSlip'); html2pdf().set({ margin: 0.5, filename: 'Mission_Permit_' + currentEmpCode + '.pdf', html2canvas: { scale: 2 } }).from(element).save(); }
-    
+
     function toggleLoanDropdown(event) { if (event) event.stopPropagation(); document.getElementById('loanMonthsOptions').classList.toggle('show'); }
 
     function selectLoanMonth(months) {
@@ -2995,7 +3039,7 @@
     function currentSlide(index) { showSlide(index); resetSlideTimer(); }
     function nextSlide() { showSlide(currentSlideIndex + 1); }
     function resetSlideTimer() { clearInterval(slideInterval); slideInterval = setInterval(nextSlide, 5500); }
-    
+
     let touchStartX = 0; const cardEl = document.getElementById('announcementCard');
     cardEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; clearInterval(slideInterval); });
     cardEl.addEventListener('touchend', e => {
@@ -3105,7 +3149,7 @@
       const noticeText = document.getElementById('leaveNoticeText');
       const attachBox = document.getElementById('medicalReportSection'); 
       const titleText = document.getElementById('attachmentTitleText');
-      
+
       if (leaveType === 'unpaid') { 
         noticeBox.classList.remove('hidden'); 
         noticeText.setAttribute('data-ar', 'الإجازة بدون مرتب بحد أقصى شهر، ويلتزم الموظف بسداد حصته من التأمينات الاجتماعية عن هذه الفترة.');
@@ -3169,18 +3213,18 @@
       const chatbotFab = document.getElementById('chatbot-fab'); const bottomNavBar = document.getElementById('bottomNavBar');
       if (pageId === 'view-login') { if (chatbotFab) chatbotFab.style.display = 'none'; if (bottomNavBar) bottomNavBar.classList.remove('show'); } 
       else { if (chatbotFab) chatbotFab.style.display = 'flex'; if (bottomNavBar) bottomNavBar.classList.add('show'); }
-      
+
       const allPages = ['view-login', 'view-dashboard', 'view-id-card', 'view-services', 'view-leave-request', 'view-permission-request', 'view-mission-request', 'view-payslip-request', 'view-loan-request', 'view-settings', 'view-profile', 'view-coming-soon', 'view-suggestion-page', 'view-doc-request', 'view-tech-support', 'view-clinic-request'];
       allPages.forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); });
-      
+
       const headerCard = document.getElementById('dashboard-header-container'); const contentCard = document.getElementById('dashboard-content-container');
-      
+
       if (pageId === 'view-profile') { loadProfileData(); }
       if (pageId === 'view-leave-request') { resetLeaveForm(); }
       if (pageId === 'view-doc-request') { resetDocForm(); }
       if (pageId === 'view-tech-support') { resetTechForm(); }
       if (pageId === 'view-clinic-request') { resetClinicForm(); }
-      
+
       // التعديل الخاص بصفحة المقترحات والشكاوى لملء البيانات أوتوماتيكياً
       if (pageId === 'view-suggestion-page') {
         document.getElementById('sugCode').value = currentEmpCode || '';
@@ -3206,13 +3250,13 @@
       const type = document.getElementById('sugTypeVal') ? document.getElementById('sugTypeVal').value : 'suggestion';
       const text = document.getElementById('sugText').value.trim(); 
       const msg = document.getElementById('sugMsg');
-      
+
       if (!text) { 
         msg.style.color = '#ef4444'; 
         msg.innerText = currentLang === 'ar' ? "⚠️ يرجى كتابة تفاصيل الطلب أولاً!" : "⚠️ Please type details first!"; 
         return; 
       }
-      
+
       const suggestionData = {
         code: currentEmpCode,
         name: (currentUserData && currentUserData.name) ? currentUserData.name : 'Unknown',
@@ -3241,13 +3285,13 @@
     function selectSugTypeOption(val, textAr) {
       const valInput = document.getElementById('sugTypeVal');
       if (valInput) valInput.value = val;
-      
+
       const optionEl = document.querySelector(`#sugTypeOptions .dropdown-option[onclick*="'${val}'"]`);
       const textSpan = document.getElementById('selectedSugTypeText');
       if (textSpan && optionEl) {
         textSpan.innerText = optionEl.getAttribute(`data-${currentLang}`) || textAr;
       }
-      
+
       const options = document.getElementById('sugTypeOptions');
       if (options) options.classList.remove('show');
     }
@@ -3256,13 +3300,13 @@
       const type = document.getElementById('sugTypeVal') ? document.getElementById('sugTypeVal').value : 'suggestion';
       const text = document.getElementById('sugText').value.trim(); 
       const msg = document.getElementById('sugMsg');
-      
+
       if (!text) { 
         msg.style.color = '#ef4444'; 
         msg.innerText = currentLang === 'ar' ? "⚠️ يرجى كتابة تفاصيل الطلب أولاً!" : "⚠️ Please type details first!"; 
         return; 
       }
-      
+
       const suggestionData = {
         code: currentEmpCode,
         name: (currentUserData && currentUserData.name) ? currentUserData.name : 'Unknown',
@@ -3291,25 +3335,25 @@ function login() {
           currentUserData = user; currentEmpCode = code; errorEl.innerText = "";
           if (rememberMe) { localStorage.setItem('lacto_saved_code', code); localStorage.setItem('lacto_saved_pass', pass); } 
           else { localStorage.removeItem('lacto_saved_code'); localStorage.removeItem('lacto_saved_pass'); }
-          
+
           document.getElementById('dash-name').innerText = user.name || "--"; document.getElementById('dash-code-val').innerText = code;
           const userPhotoUrl = user.photo || (code === 'amgad' || (user.name && user.name.includes('أمجد')) ? 'amgad.jpg' : 'https://i.pravatar.cc/150?img=12');
           document.getElementById('dash-avatar').src = userPhotoUrl; document.getElementById('userName').innerText = user.name || "--";
           document.getElementById('userJob').innerText = user.job || "--"; document.getElementById('userDept').innerText = user.dept || "--";
           document.getElementById('userCodeVal').innerText = code; document.getElementById('userNID').innerText = user.nationalId || "--";
           document.getElementById('userPhoto').src = userPhotoUrl;
-          
+
           // تعبئة بيانات البروفايل المتقدمة
           document.getElementById('profile-page-name').innerText = user.name || "--";
           document.getElementById('profile-page-job').innerText = user.job || "--";
           document.getElementById('profile-page-dept').innerText = user.dept || "--";
           document.getElementById('profile-page-code').innerText = code;
           document.getElementById('profile-page-avatar').src = userPhotoUrl;
-          
+
           const nidInput = document.getElementById('profileNIDInput');
           const nidDateInput = document.getElementById('profileNIDDateInput');
           const nidWarning = document.getElementById('nidWarningText');
-          
+
           if (user.nationalId && user.nationalId.trim() !== "") {
             nidInput.value = user.nationalId; nidInput.readOnly = true;
             nidInput.style.backgroundColor = "rgba(30, 41, 59, 0.5)"; nidInput.style.cursor = "not-allowed";
@@ -3338,7 +3382,7 @@ function login() {
           document.getElementById('qrcode').innerHTML = "";
           new QRCode(document.getElementById("qrcode"), { text: window.location.origin + window.location.pathname + "?emp=" + code, width: 85, height: 85 });
           showPage('view-dashboard');
-          
+
           db.ref('attendance/' + code + '/' + new Date().toISOString().split('T')[0]).once('value').then(attSnap => {
             if (attSnap.exists()) {
               const d = attSnap.val();
@@ -3360,7 +3404,7 @@ function login() {
       }
       window.location.reload(); 
     }
-    
+
     window.addEventListener('DOMContentLoaded', () => {
       populate24HourWheels(); selectLanguage(currentLang); resetSlideTimer();
       const savedCode = localStorage.getItem('lacto_saved_code'); const savedPass = localStorage.getItem('lacto_saved_pass');
@@ -3379,7 +3423,7 @@ function login() {
        DOC REQUEST LOGIC
     ========================================= */
     function toggleDocDropdown(event) { if (event) event.stopPropagation(); document.getElementById('docOptions').classList.toggle('show'); }
-    
+
     function selectDocOption(val, arText) {
       document.getElementById('docTypeSelect').value = val;
       const optionEl = document.querySelector(`#docOptions .dropdown-option[onclick*="'${val}'"]`);
