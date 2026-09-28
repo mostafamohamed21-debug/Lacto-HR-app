@@ -1606,11 +1606,11 @@
       </div>
     </div>
     
- <!-- 6. Profile View (Advanced - Final Fix) -->
+ <!-- 6. Profile View (Advanced - Ultimate Independent Fix) -->
 <div id="view-profile" class="card hidden" style="padding-bottom: 2rem;">
   <div class="nav-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-    <button class="back-btn" onclick="checkProfileUnsavedChanges()" style="background: none; border: none; color: #38bdf8; cursor: pointer; font-weight: bold;"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
-    <span style="font-weight: 700; color: #38bdf8;" data-ar="الملف الشخصي" data-en="My Profile">الملف الشخصي</span>
+    <button class="back-btn" onclick="checkProfileUnsavedChanges()" style="background: none; border: none; color: #38bdf8; cursor: pointer; font-weight: bold;"><span class="p-lang" data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
+    <span style="font-weight: 700; color: #38bdf8;" class="p-lang" data-ar="الملف الشخصي" data-en="My Profile">الملف الشخصي</span>
   </div>
   
   <!-- 1. قسم الصورة والبيانات الأساسية -->
@@ -1619,7 +1619,6 @@
     <div style="position: relative; display: inline-block; margin-bottom: 0.75rem;">
       <img id="profile-page-avatar" src="" alt="Avatar" style="width: 85px; height: 85px; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);">
       
-      <!-- زرار تغيير الصورة -->
       <button onclick="document.getElementById('avatarUploadInput').click()" style="position: absolute; bottom: 0; right: -5px; width: 32px; height: 32px; border-radius: 50%; background: #0284c7; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; margin: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.5); z-index: 5;" title="تغيير الصورة">
         <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: #fff;"><path d="M4 4h3l2-2h6l2 2h3c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm8 3c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/></svg>
       </button>
@@ -1631,75 +1630,75 @@
     <p id="profile-page-job" style="margin: 0 0 0.75rem 0; font-size: 0.85rem; color: #38bdf8; font-weight: 700;">--</p>
     
     <div class="info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; background: rgba(11, 15, 25, 0.5); border: 1px solid rgba(255,255,255,0.08); padding: 0.6rem; border-radius: 0.75rem; margin: 0;">
-      <div style="text-align: center;"><div class="info-label" data-ar="كود الموظف" data-en="Emp Code" style="font-size: 0.7rem; color: var(--muted);">كود الموظف</div><div id="profile-page-code" class="info-val" style="font-weight: bold; color: var(--text);">--</div></div>
-      <div style="text-align: center;"><div class="info-label" data-ar="الإدارة" data-en="Department" style="font-size: 0.7rem; color: var(--muted);">الإدارة</div><div id="profile-page-dept" class="info-val" style="font-weight: bold; color: var(--text);">--</div></div>
+      <div style="text-align: center;"><div class="info-label p-lang" data-ar="كود الموظف" data-en="Emp Code" style="font-size: 0.7rem; color: var(--muted);">كود الموظف</div><div id="profile-page-code" class="info-val" style="font-weight: bold; color: var(--text);">--</div></div>
+      <div style="text-align: center;"><div class="info-label p-lang" data-ar="الإدارة" data-en="Department" style="font-size: 0.7rem; color: var(--muted);">الإدارة</div><div id="profile-page-dept" class="info-val" style="font-weight: bold; color: var(--text);">--</div></div>
     </div>
   </div>
 
-  <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+  <div id="profileFormContainer" style="display: flex; flex-direction: column; gap: 1.25rem;">
     
     <!-- 2. قسم البيانات الشخصية والوطنية -->
-    <div style="background: rgba(15, 23, 42, 0.4); border-radius: 1rem; padding: 1rem; border: 1px solid rgba(56, 189, 248, 0.2); text-align: start;">
-      <h4 style="color: #38bdf8; font-size: 0.9rem; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 0.4rem;" data-ar="🛡️ البيانات الشخصية والقانونية" data-en="🛡️ Personal & Legal Data">🛡️ البيانات الشخصية والقانونية</h4>
+    <div style="background: rgba(15, 23, 42, 0.4); border-radius: 1rem; padding: 1rem; border: 1px solid rgba(56, 189, 248, 0.2);">
+      <h4 style="color: #38bdf8; font-size: 0.9rem; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 0.4rem;" class="p-lang" data-ar="🛡️ البيانات الشخصية والقانونية" data-en="🛡️ Personal & Legal Data">🛡️ البيانات الشخصية والقانونية</h4>
       
-      <label style="display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem;" data-ar="الرقم القومي (14 رقم):" data-en="National ID (14 Digits):">الرقم القومي (14 رقم):</label>
-      <input type="text" id="profileNIDInput" data-placeholder-ar="أدخل الرقم القومي..." data-placeholder-en="Enter National ID..." placeholder="أدخل الرقم القومي..." maxlength="14" oninput="markProfileAsChanged()" style="width: 100%; box-sizing: border-box; margin-bottom: 0.5rem; padding: 0.6rem; background: rgba(11, 15, 25, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #fff;">
-      <p id="nidWarningText" style="font-size: 0.65rem; color: #f59e0b; margin-top: 0; margin-bottom: 0.75rem; display: none;" data-ar="⚠️ ملحوظة: بمجرد الحفظ لا يمكن تعديل الرقم القومي." data-en="⚠️ Note: Once saved, National ID cannot be edited.">⚠️ ملحوظة: بمجرد الحفظ لا يمكن تعديل الرقم القومي.</p>
+      <label style="display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem;" class="p-lang" data-ar="الرقم القومي (14 رقم):" data-en="National ID (14 Digits):">الرقم القومي (14 رقم):</label>
+      <input type="text" id="profileNIDInput" data-ar-ph="أدخل الرقم القومي..." data-en-ph="Enter National ID..." placeholder="أدخل الرقم القومي..." maxlength="14" oninput="markProfileAsChanged()" style="width: 100%; box-sizing: border-box; margin-bottom: 0.5rem; padding: 0.6rem; background: rgba(11, 15, 25, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #fff;">
+      <p id="nidWarningText" style="font-size: 0.65rem; color: #f59e0b; margin-top: 0; margin-bottom: 0.75rem; display: none;" class="p-lang" data-ar="⚠️ ملحوظة: بمجرد الحفظ لا يمكن تعديل الرقم القومي." data-en="⚠️ Note: Once saved, National ID cannot be edited.">⚠️ ملحوظة: بمجرد الحفظ لا يمكن تعديل الرقم القومي.</p>
       
-      <label style="display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem;" data-ar="تاريخ إصدار البطاقة:" data-en="ID Issue Date:">تاريخ إصدار البطاقة:</label>
-      <input type="text" id="profileNIDDateInput" class="custom-date-input" readonly data-placeholder-ar="اختر تاريخ الإصدار..." data-placeholder-en="Select issue date..." placeholder="اختر تاريخ الإصدار..." onclick="openCustomCalendar('profileNIDDateInput'); markProfileAsChanged();" style="width: 100%; box-sizing: border-box; margin-bottom: 0.75rem; padding: 0.6rem; background: rgba(11, 15, 25, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #fff;">
+      <label style="display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem;" class="p-lang" data-ar="تاريخ إصدار البطاقة:" data-en="ID Issue Date:">تاريخ إصدار البطاقة:</label>
+      <input type="text" id="profileNIDDateInput" class="custom-date-input" readonly data-ar-ph="اختر تاريخ الإصدار..." data-en-ph="Select issue date..." placeholder="اختر تاريخ الإصدار..." onclick="openCustomCalendar('profileNIDDateInput'); markProfileAsChanged();" style="width: 100%; box-sizing: border-box; margin-bottom: 0.75rem; padding: 0.6rem; background: rgba(11, 15, 25, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #fff;">
       
-      <label style="display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem;" data-ar="الموقف من التجنيد:" data-en="Military Status:">الموقف من التجنيد:</label>
+      <label style="display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem;" class="p-lang" data-ar="الموقف من التجنيد:" data-en="Military Status:">الموقف من التجنيد:</label>
       <div class="custom-dropdown" id="militaryDropdown" style="position: relative; margin-bottom: 0.75rem;">
         <div class="dropdown-selected" onclick="toggleCustomDropdown('militaryOptions'); event.stopPropagation();" style="display: flex; justify-content: space-between; align-items: center; padding: 0.6rem; background: rgba(11, 15, 25, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; cursor: pointer; color: #fff;">
-          <span id="selectedMilitaryText" data-ar="اختر الموقف..." data-en="Select status...">اختر الموقف...</span>
+          <span id="selectedMilitaryText" class="p-lang" data-ar="اختر الموقف..." data-en="Select status...">اختر الموقف...</span>
           <span style="font-size: 0.8rem;">▼</span>
         </div>
         <div class="dropdown-options" id="militaryOptions" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: #0f172a; border: 1px solid #38bdf8; border-radius: 0.5rem; z-index: 100; margin-top: 4px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-          <div class="dropdown-option" onclick="selectProfileOption('military', 'أدى الخدمة', 'Completed Service'); markProfileAsChanged();" data-ar="أدى الخدمة" data-en="Completed Service" style="padding: 0.6rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">أدى الخدمة</div>
-          <div class="dropdown-option" onclick="selectProfileOption('military', 'معافى نهائي', 'Final Exemption'); markProfileAsChanged();" data-ar="معافى نهائي" data-en="Final Exemption" style="padding: 0.6rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">معافى نهائي</div>
-          <div class="dropdown-option" onclick="selectProfileOption('military', 'مؤجل', 'Postponed'); markProfileAsChanged();" data-ar="مؤجل" data-en="Postponed" style="padding: 0.6rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">مؤجل</div>
-          <div class="dropdown-option" onclick="selectProfileOption('military', 'غير لائق طبياً', 'Medically Unfit'); markProfileAsChanged();" data-ar="غير لائق طبياً" data-en="Medically Unfit" style="padding: 0.6rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">غير لائق طبياً</div>
-          <div class="dropdown-option" onclick="selectProfileOption('military', 'عائل أسرة / كبير عيلة', 'Sole Provider'); markProfileAsChanged();" data-ar="عائل أسرة / كبير عيلة" data-en="Sole Provider" style="padding: 0.6rem; cursor: pointer;">عائل أسرة / كبير عيلة</div>
+          <div class="dropdown-option p-lang" onclick="selectProfileOption('military', 'أدى الخدمة', 'Completed Service'); markProfileAsChanged();" data-ar="أدى الخدمة" data-en="Completed Service" style="padding: 0.6rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">أدى الخدمة</div>
+          <div class="dropdown-option p-lang" onclick="selectProfileOption('military', 'معافى نهائي', 'Final Exemption'); markProfileAsChanged();" data-ar="معافى نهائي" data-en="Final Exemption" style="padding: 0.6rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">معافى نهائي</div>
+          <div class="dropdown-option p-lang" onclick="selectProfileOption('military', 'مؤجل', 'Postponed'); markProfileAsChanged();" data-ar="مؤجل" data-en="Postponed" style="padding: 0.6rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">مؤجل</div>
+          <div class="dropdown-option p-lang" onclick="selectProfileOption('military', 'غير لائق طبياً', 'Medically Unfit'); markProfileAsChanged();" data-ar="غير لائق طبياً" data-en="Medically Unfit" style="padding: 0.6rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">غير لائق طبياً</div>
+          <div class="dropdown-option p-lang" onclick="selectProfileOption('military', 'عائل أسرة / كبير عيلة', 'Sole Provider'); markProfileAsChanged();" data-ar="عائل أسرة / كبير عيلة" data-en="Sole Provider" style="padding: 0.6rem; cursor: pointer;">عائل أسرة / كبير عيلة</div>
         </div>
       </div>
       <input type="hidden" id="profileMilitaryVal" value="">
 
-      <label style="display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem;" data-ar="الحالة الاجتماعية:" data-en="Marital Status:">الحالة الاجتماعية:</label>
+      <label style="display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem;" class="p-lang" data-ar="الحالة الاجتماعية:" data-en="Marital Status:">الحالة الاجتماعية:</label>
       <div class="custom-dropdown" id="maritalDropdown" style="position: relative; margin-bottom: 0.75rem;">
         <div class="dropdown-selected" onclick="toggleCustomDropdown('maritalOptions'); event.stopPropagation();" style="display: flex; justify-content: space-between; align-items: center; padding: 0.6rem; background: rgba(11, 15, 25, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; cursor: pointer; color: #fff;">
-          <span id="selectedMaritalText" data-ar="اختر الحالة..." data-en="Select status...">اختر الحالة...</span>
+          <span id="selectedMaritalText" class="p-lang" data-ar="اختر الحالة..." data-en="Select status...">اختر الحالة...</span>
           <span style="font-size: 0.8rem;">▼</span>
         </div>
         <div class="dropdown-options" id="maritalOptions" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: #0f172a; border: 1px solid #38bdf8; border-radius: 0.5rem; z-index: 100; margin-top: 4px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-          <div class="dropdown-option" onclick="selectProfileOption('marital', 'أعزب', 'Single'); markProfileAsChanged();" data-ar="أعزب" data-en="Single" style="padding: 0.6rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">أعزب</div>
-          <div class="dropdown-option" onclick="selectProfileOption('marital', 'متزوج', 'Married'); markProfileAsChanged();" data-ar="متزوج" data-en="Married" style="padding: 0.6rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">متزوج</div>
-          <div class="dropdown-option" onclick="selectProfileOption('marital', 'مطلق', 'Divorced'); markProfileAsChanged();" data-ar="مطلق" data-en="Divorced" style="padding: 0.6rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">مطلق</div>
-          <div class="dropdown-option" onclick="selectProfileOption('marital', 'أرمل', 'Widowed'); markProfileAsChanged();" data-ar="أرمل" data-en="Widowed" style="padding: 0.6rem; cursor: pointer;">أرمل</div>
+          <div class="dropdown-option p-lang" onclick="selectProfileOption('marital', 'أعزب', 'Single'); markProfileAsChanged();" data-ar="أعزب" data-en="Single" style="padding: 0.6rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">أعزب</div>
+          <div class="dropdown-option p-lang" onclick="selectProfileOption('marital', 'متزوج', 'Married'); markProfileAsChanged();" data-ar="متزوج" data-en="Married" style="padding: 0.6rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">متزوج</div>
+          <div class="dropdown-option p-lang" onclick="selectProfileOption('marital', 'مطلق', 'Divorced'); markProfileAsChanged();" data-ar="مطلق" data-en="Divorced" style="padding: 0.6rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">مطلق</div>
+          <div class="dropdown-option p-lang" onclick="selectProfileOption('marital', 'أرمل', 'Widowed'); markProfileAsChanged();" data-ar="أرمل" data-en="Widowed" style="padding: 0.6rem; cursor: pointer;">أرمل</div>
         </div>
       </div>
       <input type="hidden" id="profileMaritalVal" value="">
 
-      <label style="display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem;" data-ar="عدد المعالين (الزوجة والأبناء):" data-en="Number of Dependents:">عدد المعالين (الزوجة والأبناء):</label>
-      <input type="number" id="profileDependentsInput" data-placeholder-ar="مثال: 3" data-placeholder-en="e.g. 3" placeholder="مثال: 3" min="0" oninput="markProfileAsChanged()" style="width: 100%; box-sizing: border-box; padding: 0.6rem; background: rgba(11, 15, 25, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #fff;">
+      <label style="display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem;" class="p-lang" data-ar="عدد المعالين (الزوجة والأبناء):" data-en="Number of Dependents:">عدد المعالين (الزوجة والأبناء):</label>
+      <input type="number" id="profileDependentsInput" data-ar-ph="مثال: 3" data-en-ph="e.g. 3" placeholder="مثال: 3" min="0" oninput="markProfileAsChanged()" style="width: 100%; box-sizing: border-box; padding: 0.6rem; background: rgba(11, 15, 25, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #fff;">
     </div>
 
     <!-- 3. قسم بيانات الاتصال والطوارئ -->
-    <div style="background: rgba(15, 23, 42, 0.4); border-radius: 1rem; padding: 1rem; border: 1px solid rgba(56, 189, 248, 0.2); text-align: start;">
-      <h4 style="color: #38bdf8; font-size: 0.9rem; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 0.4rem;" data-ar="📞 بيانات الاتصال والطوارئ" data-en="📞 Contact & Emergency Info">📞 بيانات الاتصال والطوارئ</h4>
+    <div style="background: rgba(15, 23, 42, 0.4); border-radius: 1rem; padding: 1rem; border: 1px solid rgba(56, 189, 248, 0.2);">
+      <h4 style="color: #38bdf8; font-size: 0.9rem; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 0.4rem;" class="p-lang" data-ar="📞 بيانات الاتصال والطوارئ" data-en="📞 Contact & Emergency Info">📞 بيانات الاتصال والطوارئ</h4>
       
-      <label style="display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem;" data-ar="العنوان بالتفصيل:" data-en="Detailed Address:">العنوان بالتفصيل:</label>
-      <textarea id="profileAddressInput" rows="2" data-placeholder-ar="محافظة - مدينة - شارع - رقم العمارة..." data-placeholder-en="Governorate - City - Street - Building No..." placeholder="محافظة - مدينة - شارع - رقم العمارة..." style="width: 100%; box-sizing: border-box; resize: none; margin-bottom: 0.75rem; padding: 0.6rem; background: rgba(11, 15, 25, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #fff;" oninput="markProfileAsChanged()"></textarea>
+      <label style="display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem;" class="p-lang" data-ar="العنوان بالتفصيل:" data-en="Detailed Address:">العنوان بالتفصيل:</label>
+      <textarea id="profileAddressInput" rows="2" data-ar-ph="محافظة - مدينة - شارع - رقم العمارة..." data-en-ph="Governorate - City - Street - Building No..." placeholder="محافظة - مدينة - شارع - رقم العمارة..." style="width: 100%; box-sizing: border-box; resize: none; margin-bottom: 0.75rem; padding: 0.6rem; background: rgba(11, 15, 25, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #fff;" oninput="markProfileAsChanged()"></textarea>
 
-      <label style="display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem;" data-ar="رقم الهاتف الأساسي:" data-en="Primary Phone:">رقم الهاتف الأساسي:</label>
-      <input type="tel" id="profilePhoneInput" data-placeholder-ar="010xxxxxxxx" data-placeholder-en="010xxxxxxxx" placeholder="010xxxxxxxx" style="width: 100%; box-sizing: border-box; margin-bottom: 0.75rem; padding: 0.6rem; background: rgba(11, 15, 25, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #fff;" oninput="markProfileAsChanged()">
+      <label style="display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem;" class="p-lang" data-ar="رقم الهاتف الأساسي:" data-en="Primary Phone:">رقم الهاتف الأساسي:</label>
+      <input type="tel" id="profilePhoneInput" data-ar-ph="010xxxxxxxx" data-en-ph="010xxxxxxxx" placeholder="010xxxxxxxx" style="width: 100%; box-sizing: border-box; margin-bottom: 0.75rem; padding: 0.6rem; background: rgba(11, 15, 25, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #fff;" oninput="markProfileAsChanged()">
 
-      <label style="display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem;" data-ar="رقم هاتف الطوارئ:" data-en="Emergency Phone:">رقم هاتف الطوارئ:</label>
-      <input type="tel" id="profileEmergencyPhoneInput" data-placeholder-ar="رقم شخص للرجوع إليه وقت الطوارئ..." data-placeholder-en="Emergency contact number..." placeholder="رقم شخص للرجوع إليه وقت الطوارئ..." style="width: 100%; box-sizing: border-box; padding: 0.6rem; background: rgba(11, 15, 25, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #fff;" oninput="markProfileAsChanged()">
+      <label style="display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem;" class="p-lang" data-ar="رقم هاتف الطوارئ:" data-en="Emergency Phone:">رقم هاتف الطوارئ:</label>
+      <input type="tel" id="profileEmergencyPhoneInput" data-ar-ph="رقم شخص للرجوع إليه وقت الطوارئ..." data-en-ph="Emergency contact number..." placeholder="رقم شخص للرجوع إليه وقت الطوارئ..." style="width: 100%; box-sizing: border-box; padding: 0.6rem; background: rgba(11, 15, 25, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #fff;" oninput="markProfileAsChanged()">
     </div>
 
     <!-- زر الحفظ النهائي -->
-    <button onclick="saveProfileChangesAdvanced()" class="btn-success" data-ar="💾 حفظ جميع التعديلات" data-en="💾 Save All Changes" style="width: 100%; background: #22c55e; color: white; border: none; font-weight: bold; border-radius: 0.75rem; margin-top: 0.5rem; font-size: 1.05rem; padding: 1rem; cursor: pointer;">💾 حفظ جميع التعديلات</button>
+    <button onclick="saveProfileChangesAdvanced()" class="btn-success p-lang" data-ar="💾 حفظ جميع التعديلات" data-en="💾 Save All Changes" style="width: 100%; background: #22c55e; color: white; border: none; font-weight: bold; border-radius: 0.75rem; margin-top: 0.5rem; font-size: 1.05rem; padding: 1rem; cursor: pointer;">💾 حفظ جميع التعديلات</button>
     <p id="profileMsg" style="font-size: 0.85rem; text-align: center; font-weight: bold; margin-top: 0.3rem;"></p>
   </div>
 </div>
@@ -1708,13 +1707,13 @@
 <div id="profileWarningModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); z-index: 99999; align-items: center; justify-content: center; padding: 1rem; backdrop-filter: blur(5px);">
   <div style="background: rgba(15, 23, 42, 0.95); border: 1px solid #38bdf8; border-radius: 1.25rem; width: 100%; max-width: 340px; padding: 1.5rem; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.6);">
     <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">⚠️</div>
-    <h3 style="color: #38bdf8; margin-bottom: 0.5rem; font-size: 1.1rem;" data-ar="تنبيه هام" data-en="Important Notice">تنبيه هام</h3>
-    <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.25rem; line-height: 1.5;" data-ar="لديك تعديلات غير محفوظة في الملف الشخصي. هل ترغب في حفظ التعديلات قبل الخروج؟" data-en="You have unsaved changes in your profile. Do you want to save them before leaving?">لديك تعديلات غير محفوظة في الملف الشخصي. هل ترغب في حفظ التعديلات قبل الخروج؟</p>
+    <h3 style="color: #38bdf8; margin-bottom: 0.5rem; font-size: 1.1rem;" class="p-lang" data-ar="تنبيه هام" data-en="Important Notice">تنبيه هام</h3>
+    <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.25rem; line-height: 1.5;" class="p-lang" data-ar="لديك تعديلات غير محفوظة في الملف الشخصي. هل ترغب في حفظ التعديلات قبل الخروج؟" data-en="You have unsaved changes in your profile. Do you want to save them before leaving?">لديك تعديلات غير محفوظة في الملف الشخصي. هل ترغب في حفظ التعديلات قبل الخروج؟</p>
     
     <div style="display: flex; gap: 0.5rem; flex-direction: column;">
-      <button onclick="confirmSaveAndExit()" style="width: 100%; background: #0284c7; color: white; border: none; padding: 0.7rem; border-radius: 0.75rem; font-weight: 700; font-size: 0.85rem; cursor: pointer;" data-ar="💾 حفظ والخروج" data-en="💾 Save & Exit">💾 حفظ والخروج</button>
-      <button onclick="discardAndExit()" style="width: 100%; background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); padding: 0.7rem; border-radius: 0.75rem; font-weight: 700; font-size: 0.85rem; cursor: pointer;" data-ar="❌ تجاهل والخروج" data-en="❌ Discard & Exit">❌ تجاهل والخروج</button>
-      <button onclick="closeWarningModal()" style="background: transparent; color: var(--muted); border: none; font-size: 0.8rem; cursor: pointer; margin-top: 0.25rem;" data-ar="إلغاء والرجوع للتعديل" data-en="Cancel & Return">إلغاء والرجوع للتعديل</button>
+      <button onclick="confirmSaveAndExit()" style="width: 100%; background: #0284c7; color: white; border: none; padding: 0.7rem; border-radius: 0.75rem; font-weight: 700; font-size: 0.85rem; cursor: pointer;" class="p-lang" data-ar="💾 حفظ والخروج" data-en="💾 Save & Exit">💾 حفظ والخروج</button>
+      <button onclick="discardAndExit()" style="width: 100%; background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); padding: 0.7rem; border-radius: 0.75rem; font-weight: 700; font-size: 0.85rem; cursor: pointer;" class="p-lang" data-ar="❌ تجاهل والخروج" data-en="❌ Discard & Exit">❌ تجاهل والخروج</button>
+      <button onclick="closeWarningModal()" style="background: transparent; color: var(--muted); border: none; font-size: 0.8rem; cursor: pointer; margin-top: 0.25rem;" class="p-lang" data-ar="إلغاء والرجوع للتعديل" data-en="Cancel & Return">إلغاء والرجوع للتعديل</button>
     </div>
   </div>
 </div>
@@ -1723,7 +1722,52 @@
   let hasUnsavedProfileChanges = false;
   let stagedAvatarFile = null;
 
-  // إغلاق وفتح القوائم المنسدلة وتطبيق تفعيل الـ display (block / none) صراحة لمنع أي تداخل
+  // دالة مستقلة تماماً لترجمة وتعديل اتجاه صفحة البروفايل لمنع أي تداخل مع التطبيق العام
+  function applyProfileIndependentLanguage() {
+    const currentLang = localStorage.getItem('appLang') || 'ar';
+    const profileView = document.getElementById('view-profile');
+    if (!profileView) return;
+
+    // ضبط اتجاه الحاوية صراحة حسب اللغة (RTL للعربي و LTR للإنجليزي)
+    profileView.style.direction = currentLang === 'en' ? 'ltr' : 'rtl';
+    const formContainer = document.getElementById('profileFormContainer');
+    if (formContainer) {
+      formContainer.style.textAlign = currentLang === 'en' ? 'left' : 'right';
+    }
+
+    // ترجمة النصوص الثابتة والعناوين
+    document.querySelectorAll('.p-lang').forEach(el => {
+      const arText = el.getAttribute('data-ar');
+      const enText = el.getAttribute('data-en');
+      if (arText && enText) {
+        el.innerText = currentLang === 'en' ? enText : arText;
+      }
+    });
+
+    // ترجمة الـ Placeholders حصرياً لمنع تشابك اللغات
+    document.querySelectorAll('[data-ar-ph]').forEach(input => {
+      const arPh = input.getAttribute('data-ar-ph');
+      const enPh = input.getAttribute('data-en-ph');
+      if (arPh && enPh) {
+        input.placeholder = currentLang === 'en' ? enPh : arPh;
+      }
+    });
+  }
+
+  // ربط الدالة بفتح الصفحة أو بتغيير زر اللغة العام في التطبيق
+  // (ضع استدعاء applyProfileIndependentLanguage() داخل دالة showPage('view-profile') الخاصة بك)
+  
+  // تعديل تلقائي لتنفيذ الترجمة كلما تم عرض الصفحة
+  const originalShowPageRef = window.showPage;
+  if (typeof originalShowPageRef === 'function') {
+    window.showPage = function(pageId) {
+      originalShowPageRef(pageId);
+      if (pageId === 'view-profile') {
+        applyProfileIndependentLanguage();
+      }
+    };
+  }
+
   function toggleCustomDropdown(dropdownId) {
     const target = document.getElementById(dropdownId);
     const isOpen = target.style.display === 'block';
@@ -1740,7 +1784,6 @@
     });
   }
 
-  // إغلاق القوائم عند الضغط في أي مكان في الشاشة
   document.addEventListener('click', function(e) {
     if (!e.target.closest('.custom-dropdown')) {
       closeAllCustomDropdowns();
