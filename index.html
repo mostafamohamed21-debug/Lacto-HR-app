@@ -2230,24 +2230,42 @@
       </div>
     </div>
 
-    <!-- Suggestion Page -->
+    <!-- Suggestion & Complaint Page -->
     <div id="view-suggestion-page" class="card hidden">
       <div class="nav-bar">
         <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
-        <span style="font-weight:700; color:#38bdf8;" data-ar="قدم مقترحك لتطوير الشركة" data-en="Submit Your Proposal">قدم مقترحك لتطوير الشركة</span>
+        <span style="font-weight:700; color:#38bdf8;" data-ar="مقترحات وشكاوى العاملين" data-en="Suggestions & Complaints">مقترحات وشكاوى العاملين</span>
       </div>
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.6rem;" id="sugFormWrapper">
-        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="كود الموظف:" data-en="Employee Code:">كود الموظف:</label>
-        <input type="text" id="sugCode" readonly style="background: rgba(30,41,59,0.5); cursor: not-allowed;">
-        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="اسم الموظف:" data-en="Employee Name:">اسم الموظف:</label>
-        <input type="text" id="sugName" readonly style="background: rgba(30,41,59,0.5); cursor: not-allowed;">
-        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="اكتب مقترحك (بحد أقصى 500 حرف):" data-en="Your Proposal (Max 500 chars):">اكتب مقترحك (بحد أقصى 500 حرف):</label>
-        <textarea id="sugText" rows="4" maxlength="500" data-ar-placeholder="اكتب فكرتك أو مقترحك لتطوير العمل هنا..." data-en-placeholder="Type your idea or suggestion here..." placeholder="اكتب فكرتك أو مقترحك لتطوير العمل هنا..." style="resize: none;"></textarea>
-        <button onclick="submitSuggestion()" class="btn-success" data-ar="إرسال المقترح" data-en="Submit Proposal" style="margin-top:0.5rem;">إرسال المقترح</button>
+        
+        <!-- قائمة منسدلة لاختيار نوع المشاركة (مقترح أو شكوى) -->
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="نوع المشاركة:" data-en="Submission Type:">نوع المشاركة:</label>
+        <div class="custom-dropdown" id="sugTypeDropdown">
+          <div class="dropdown-selected" onclick="toggleSugDropdown(event)">
+            <span id="selectedSugTypeText" data-ar="💡 مقترح تطوير" data-en="💡 Suggestion">💡 مقترح تطوير</span>
+            <span style="font-size: 0.8rem;">▼</span>
+          </div>
+          <div class="dropdown-options" id="sugTypeOptions">
+            <div class="dropdown-option" onclick="selectSugTypeOption('suggestion', '💡 مقترح تطوير')" data-ar="💡 مقترح تطوير" data-en="💡 Suggestion">💡 مقترح تطوير</div>
+            <div class="dropdown-option" onclick="selectSugTypeOption('complaint', '⚠️ شكوى / ملاحظة رسمية')" data-ar="⚠️ شكوى / ملاحظة رسمية" data-en="⚠️ Complaint / Official Note">⚠️ شكوى / ملاحظة رسمية</div>
+          </div>
+        </div>
+        <input type="hidden" id="sugTypeVal" value="suggestion">
+
+        <!-- خانات الكود والاسم مقفولة أوتوماتيكياً ومسجلة باسم صاحب الحساب -->
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="كود الموظف (مسجل تلقائياً):" data-en="Employee Code (Auto):">كود الموظف (مسجل تلقائياً):</label>
+        <input type="text" id="sugCode" readonly style="background: rgba(30,41,59,0.5); cursor: not-allowed; font-weight: bold; color: #38bdf8;">
+        
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="اسم الموظف (مسجل تلقائياً):" data-en="Employee Name (Auto):">اسم الموظف (مسجل تلقائياً):</label>
+        <input type="text" id="sugName" readonly style="background: rgba(30,41,59,0.5); cursor: not-allowed; font-weight: bold; color: var(--text);">
+        
+        <label style="font-size: 0.75rem; color: var(--muted);" data-ar="تفاصيل المشاركة (بحد أقصى 500 حرف):" data-en="Details (Max 500 chars):">تفاصيل المشاركة (بحد أقصى 500 حرف):</label>
+        <textarea id="sugText" rows="4" maxlength="500" data-ar-placeholder="اكتب مقترحك أو شكواك بوضوح تام هنا..." data-en-placeholder="Type your suggestion or complaint here..." placeholder="اكتب مقترحك أو شكواك بوضوح تام هنا..." style="resize: none;"></textarea>
+        
+        <button onclick="submitSuggestion()" class="btn-success" data-ar="إرسال الطلب رسمياً" data-en="Submit Request Form" style="margin-top:0.5rem;">إرسال الطلب رسمياً</button>
         <p id="sugMsg" style="font-size: 0.8rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
       </div>
     </div>
-  </div>
 
   <!-- Custom Glowing Calendar Modal -->
   <div id="customCalendarModal" class="calendar-modal-overlay" onclick="closeCustomCalendar()">
@@ -3143,7 +3161,7 @@
     function goBackFromComingSoon() { showPage(returnToView); }
     function switchTab(pageId, btnElement) { document.querySelectorAll('.bottom-nav-item').forEach(btn => btn.classList.remove('active')); if (btnElement) btnElement.classList.add('active'); showPage(pageId); }
 
-    function showPage(pageId) {
+   function showPage(pageId) {
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); document.body.scrollTop = 0; document.documentElement.scrollTop = 0;
       const chatbotFab = document.getElementById('chatbot-fab'); const bottomNavBar = document.getElementById('bottomNavBar');
       if (pageId === 'view-login') { if (chatbotFab) chatbotFab.style.display = 'none'; if (bottomNavBar) bottomNavBar.classList.remove('show'); } 
@@ -3159,6 +3177,17 @@
       if (pageId === 'view-doc-request') { resetDocForm(); }
       if (pageId === 'view-tech-support') { resetTechForm(); }
       if (pageId === 'view-clinic-request') { resetClinicForm(); }
+      
+      // التعديل الخاص بصفحة المقترحات والشكاوى لملء البيانات أوتوماتيكياً
+      if (pageId === 'view-suggestion-page') {
+        document.getElementById('sugCode').value = currentEmpCode || '';
+        document.getElementById('sugName').value = (currentUserData && currentUserData.name) ? currentUserData.name : '';
+        document.getElementById('sugText').value = '';
+        document.getElementById('sugMsg').innerText = '';
+        if (typeof selectSugTypeOption === 'function') {
+          selectSugTypeOption('suggestion', '💡 مقترح تطوير');
+        }
+      }
 
       if (pageId === 'view-dashboard') {
         document.getElementById('view-dashboard').classList.remove('hidden'); if (headerCard) headerCard.classList.remove('hidden'); if (contentCard) contentCard.classList.remove('hidden');
@@ -3171,11 +3200,82 @@
     }
 
     function submitSuggestion() {
-      const text = document.getElementById('sugText').value.trim(); const msg = document.getElementById('sugMsg');
-      if (!text) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? "يرجى كتابة مقترحك أولاً!" : "Please write your suggestion first!"; return; }
-      db.ref('suggestions/' + currentEmpCode).push({ code: currentEmpCode, name: currentUserData.name || 'Unknown', suggestion: text, timestamp: Date.now() }).then(() => {
-        msg.style.color = '#38bdf8'; msg.innerText = currentLang === 'ar' ? "✅ تم إرسال مقترحك بنجاح!" : "✅ Suggestion submitted successfully!"; setTimeout(() => { showPage('view-dashboard'); }, 2000);
-      }).catch(() => { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? "❌ حدث خطأ، حاول مرة أخرى." : "❌ Error occurred, try again."; });
+      const type = document.getElementById('sugTypeVal') ? document.getElementById('sugTypeVal').value : 'suggestion';
+      const text = document.getElementById('sugText').value.trim(); 
+      const msg = document.getElementById('sugMsg');
+      
+      if (!text) { 
+        msg.style.color = '#ef4444'; 
+        msg.innerText = currentLang === 'ar' ? "⚠️ يرجى كتابة تفاصيل الطلب أولاً!" : "⚠️ Please type details first!"; 
+        return; 
+      }
+      
+      const suggestionData = {
+        code: currentEmpCode,
+        name: (currentUserData && currentUserData.name) ? currentUserData.name : 'Unknown',
+        type: type,
+        text: text,
+        timestamp: Date.now()
+      };
+
+      db.ref('suggestions_and_complaints/' + currentEmpCode).push(suggestionData).then(() => {
+        msg.style.color = '#38bdf8'; 
+        msg.innerText = currentLang === 'ar' ? "✅ تم إرسال طلبك بنجاح وتحت مسؤوليتك الرسمية!" : "✅ Submitted successfully under your account!"; 
+        setTimeout(() => { showPage('view-dashboard'); }, 2000);
+      }).catch(() => { 
+        msg.style.color = '#ef4444'; 
+        msg.innerText = currentLang === 'ar' ? "❌ حدث خطأ في الاتصال، حاول مرة أخرى." : "❌ Error occurred, try again."; 
+      });
+    }
+
+    // دوال القائمة المنسدلة الخاصة بالشكاوى والمقترحات
+    function toggleSugDropdown(event) {
+      if (event) event.stopPropagation();
+      const options = document.getElementById('sugTypeOptions');
+      if (options) options.classList.toggle('show');
+    }
+
+    function selectSugTypeOption(val, textAr) {
+      const valInput = document.getElementById('sugTypeVal');
+      if (valInput) valInput.value = val;
+      
+      const optionEl = document.querySelector(`#sugTypeOptions .dropdown-option[onclick*="'${val}'"]`);
+      const textSpan = document.getElementById('selectedSugTypeText');
+      if (textSpan && optionEl) {
+        textSpan.innerText = optionEl.getAttribute(`data-${currentLang}`) || textAr;
+      }
+      
+      const options = document.getElementById('sugTypeOptions');
+      if (options) options.classList.remove('show');
+    }
+
+    function submitSuggestion() {
+      const type = document.getElementById('sugTypeVal') ? document.getElementById('sugTypeVal').value : 'suggestion';
+      const text = document.getElementById('sugText').value.trim(); 
+      const msg = document.getElementById('sugMsg');
+      
+      if (!text) { 
+        msg.style.color = '#ef4444'; 
+        msg.innerText = currentLang === 'ar' ? "⚠️ يرجى كتابة تفاصيل الطلب أولاً!" : "⚠️ Please type details first!"; 
+        return; 
+      }
+      
+      const suggestionData = {
+        code: currentEmpCode,
+        name: (currentUserData && currentUserData.name) ? currentUserData.name : 'Unknown',
+        type: type,
+        text: text,
+        timestamp: Date.now()
+      };
+
+      db.ref('suggestions_and_complaints/' + currentEmpCode).push(suggestionData).then(() => {
+        msg.style.color = '#38bdf8'; 
+        msg.innerText = currentLang === 'ar' ? "✅ تم إرسال طلبك بنجاح وتحت مسؤوليتك الرسمية!" : "✅ Submitted successfully under your account!"; 
+        setTimeout(() => { showPage('view-dashboard'); }, 2000);
+      }).catch(() => { 
+        msg.style.color = '#ef4444'; 
+        msg.innerText = currentLang === 'ar' ? "❌ حدث خطأ في الاتصال، حاول مرة أخرى." : "❌ Error occurred, try again."; 
+      });
     }
 function login() {
       const code = document.getElementById('empCode').value.trim(); const pass = document.getElementById('empPass').value.trim();
