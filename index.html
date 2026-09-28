@@ -1547,7 +1547,7 @@
       </div>
     </div>
     
- <!-- 6. Profile View (Advanced - Final Fixed) -->
+ <!-- 6. Profile View (Advanced - Final Perfected) -->
     <div id="view-profile" class="card hidden" style="padding-bottom: 2rem;">
       <div class="nav-bar">
         <button type="button" class="back-btn" onclick="checkProfileUnsavedChanges()"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
@@ -1596,11 +1596,11 @@
               <span style="font-size: 0.8rem;">▼</span>
             </div>
             <div class="dropdown-options" id="militaryOptions" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: #0f172a; border: 1px solid #38bdf8; border-radius: 0.5rem; z-index: 100; max-height: 160px; overflow-y: auto;">
-              <div class="dropdown-option" onclick="selectProfileOption('military', 'completed', this)" style="padding: 8px; cursor: pointer;" data-ar="أدى الخدمة" data-en="Completed">أدى الخدمة</div>
-              <div class="dropdown-option" onclick="selectProfileOption('military', 'exempted', this)" style="padding: 8px; cursor: pointer;" data-ar="معافى نهائي" data-en="Exempted">معافى نهائي</div>
-              <div class="dropdown-option" onclick="selectProfileOption('military', 'postponed', this)" style="padding: 8px; cursor: pointer;" data-ar="مؤجل" data-en="Postponed">مؤجل</div>
-              <div class="dropdown-option" onclick="selectProfileOption('military', 'unfit', this)" style="padding: 8px; cursor: pointer;" data-ar="غير لائق طبياً" data-en="Medically Unfit">غير لائق طبياً</div>
-              <div class="dropdown-option" onclick="selectProfileOption('military', 'sole', this)" style="padding: 8px; cursor: pointer;" data-ar="عائل أسرة / كبير عيلة" data-en="Sole Provider">عائل أسرة / كبير عيلة</div>
+              <div class="dropdown-option" onclick="selectProfileOption('military', 'completed', this); event.stopPropagation();" style="padding: 8px; cursor: pointer;" data-ar="أدى الخدمة" data-en="Completed">أدى الخدمة</div>
+              <div class="dropdown-option" onclick="selectProfileOption('military', 'exempted', this); event.stopPropagation();" style="padding: 8px; cursor: pointer;" data-ar="معافى نهائي" data-en="Exempted">معافى نهائي</div>
+              <div class="dropdown-option" onclick="selectProfileOption('military', 'postponed', this); event.stopPropagation();" style="padding: 8px; cursor: pointer;" data-ar="مؤجل" data-en="Postponed">مؤجل</div>
+              <div class="dropdown-option" onclick="selectProfileOption('military', 'unfit', this); event.stopPropagation();" style="padding: 8px; cursor: pointer;" data-ar="غير لائق طبياً" data-en="Medically Unfit">غير لائق طبياً</div>
+              <div class="dropdown-option" onclick="selectProfileOption('military', 'sole', this); event.stopPropagation();" style="padding: 8px; cursor: pointer;" data-ar="عائل أسرة / كبير عيلة" data-en="Sole Provider">عائل أسرة / كبير عيلة</div>
             </div>
           </div>
           <input type="hidden" id="profileMilitaryVal" value="">
@@ -1612,10 +1612,10 @@
               <span style="font-size: 0.8rem;">▼</span>
             </div>
             <div class="dropdown-options" id="maritalOptions" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: #0f172a; border: 1px solid #38bdf8; border-radius: 0.5rem; z-index: 100; max-height: 160px; overflow-y: auto;">
-              <div class="dropdown-option" onclick="selectProfileOption('marital', 'single', this)" style="padding: 8px; cursor: pointer;" data-ar="أعزب" data-en="Single">أعزب</div>
-              <div class="dropdown-option" onclick="selectProfileOption('marital', 'married', this)" style="padding: 8px; cursor: pointer;" data-ar="متزوج" data-en="Married">متزوج</div>
-              <div class="dropdown-option" onclick="selectProfileOption('marital', 'divorced', this)" style="padding: 8px; cursor: pointer;" data-ar="مطلق" data-en="Divorced">مطلق</div>
-              <div class="dropdown-option" onclick="selectProfileOption('marital', 'widowed', this)" style="padding: 8px; cursor: pointer;" data-ar="أرمل" data-en="Widowed">أرمل</div>
+              <div class="dropdown-option" onclick="selectProfileOption('marital', 'single', this); event.stopPropagation();" style="padding: 8px; cursor: pointer;" data-ar="أعزب" data-en="Single">أعزب</div>
+              <div class="dropdown-option" onclick="selectProfileOption('marital', 'married', this); event.stopPropagation();" style="padding: 8px; cursor: pointer;" data-ar="متزوج" data-en="Married">متزوج</div>
+              <div class="dropdown-option" onclick="selectProfileOption('marital', 'divorced', this); event.stopPropagation();" style="padding: 8px; cursor: pointer;" data-ar="مطلق" data-en="Divorced">مطلق</div>
+              <div class="dropdown-option" onclick="selectProfileOption('marital', 'widowed', this); event.stopPropagation();" style="padding: 8px; cursor: pointer;" data-ar="أرمل" data-en="Widowed">أرمل</div>
             </div>
           </div>
           <input type="hidden" id="profileMaritalVal" value="">
@@ -1744,16 +1744,23 @@
       </div>
     </div>
 
-    <!-- كود الجافاسكريبت المدمج بمعالجة اللغات المزدوجة والتفريغ والصورة -->
+    <!-- كود الجافاسكريبت المصلح بالكامل (منع تكسير الصورة وإغلاق القوائم أوتوماتيكياً) -->
     <script>
       let hasUnsavedProfileChanges = false;
       let stagedAvatarFile = null;
       let originalAvatarSrc = "";
 
-      // تسجيل الصورة الأصلية عند تحميل الصفحة أو فتح البروفايل
+      // صورة افتراضية آمنة لمنع تكسير الـ Avatar وإظهار شكل قبيح
+      const defaultUserAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2338bdf8'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/></svg>";
+
       window.addEventListener('DOMContentLoaded', () => {
           const avatarEl = document.getElementById('profile-page-avatar');
-          if (avatarEl) originalAvatarSrc = avatarEl.src;
+          if (avatarEl) {
+              if (!avatarEl.src || avatarEl.src === window.location.href || avatarEl.src.endsWith('/')) {
+                  avatarEl.src = defaultUserAvatar;
+              }
+              originalAvatarSrc = avatarEl.src;
+          }
       });
 
       function markProfileAsChanged() {
@@ -1773,28 +1780,29 @@
         }
       }
 
-      // التحكم في القوائم المنسدلة
+      // التحكم في القوائم المنسدلة مع منع الانتشار الإلزامي
       function toggleProfileDropdown(type) {
+          if (typeof event !== 'undefined' && event) event.stopPropagation();
           const militaryOpts = document.getElementById('militaryOptions');
           const maritalOpts = document.getElementById('maritalOptions');
 
           if (type === 'military') {
               const isOpen = militaryOpts.style.display === 'block';
               militaryOpts.style.display = isOpen ? 'none' : 'block';
-              maritalOpts.style.display = 'none';
+              if (maritalOpts) maritalOpts.style.display = 'none';
           } else if (type === 'marital') {
               const isOpen = maritalOpts.style.display === 'block';
               maritalOpts.style.display = isOpen ? 'none' : 'block';
-              militaryOpts.style.display = 'none';
+              if (militaryOpts) militaryOpts.style.display = 'none';
           }
       }
 
-      // اختيار العنصر مع مطابقة لغة التطبيق الحالية (عربي أو إنجليزي تلقائياً)
+      // اختيار العنصر مع إغلاق القائمة فوراً ومطابقة لغة التطبيق بدقة
       function selectProfileOption(type, valueKey, element) {
+          if (typeof event !== 'undefined' && event) event.stopPropagation();
           const isEn = typeof currentLanguage !== 'undefined' && currentLanguage === 'en';
           
-          // جلب النص حسب لغة التطبيق المفعلة حالياً
-          const displayText = isEn ? element.getAttribute('data-en') : element.getAttribute('data-ar');
+          const displayText = isEn ? (element.getAttribute('data-en') || element.innerText) : (element.getAttribute('data-ar') || element.innerText);
 
           if (type === 'military') {
               document.getElementById('selectedMilitaryText').innerText = displayText;
@@ -1808,7 +1816,7 @@
           markProfileAsChanged();
       }
 
-      // غلق القوائم عند النقر خارجها
+      // غلق القوائم عند النقر في أي مكان خارجها
       window.addEventListener('click', function(e) {
           if (!e.target.closest('#militaryDropdown') && !e.target.closest('#maritalDropdown')) {
               const militaryOpts = document.getElementById('militaryOptions');
@@ -1839,13 +1847,13 @@
         closeWarningModal();
         hasUnsavedProfileChanges = false;
         
-        // استعادة الصورة الأصلية فورا وإلغاء الصورة المؤقتة
         if (originalAvatarSrc) {
             document.getElementById('profile-page-avatar').src = originalAvatarSrc;
+        } else {
+            document.getElementById('profile-page-avatar').src = defaultUserAvatar;
         }
         stagedAvatarFile = null;
         
-        // تفريغ القوائم والحقول وإعادتها للوضع الافتراضي
         resetProfileFields();
         showPage('view-dashboard');
       }
@@ -1854,13 +1862,14 @@
         hasUnsavedProfileChanges = false;
         if (originalAvatarSrc) {
             document.getElementById('profile-page-avatar').src = originalAvatarSrc;
+        } else {
+            document.getElementById('profile-page-avatar').src = defaultUserAvatar;
         }
         stagedAvatarFile = null;
         resetProfileFields();
         showPage('view-dashboard');
       }
 
-      // دالة تفريغ الحقول والقوائم عند الخروج بدون حفظ
       function resetProfileFields() {
         const isEn = typeof currentLanguage !== 'undefined' && currentLanguage === 'en';
         
@@ -1903,9 +1912,10 @@
           msgEl.innerText = isEn ? "✅ Changes saved successfully!" : "✅ تم حفظ التعديلات بنجاح!";
           hasUnsavedProfileChanges = false;
           
-          // تثبيت الصورة الجديدة كصورة أصلية بعد الحفظ الناجح
           const currentAvatar = document.getElementById('profile-page-avatar').src;
-          if (currentAvatar) originalAvatarSrc = currentAvatar;
+          if (currentAvatar && !currentAvatar.includes('data:image/svg+xml')) {
+              originalAvatarSrc = currentAvatar;
+          }
           stagedAvatarFile = null;
 
           setTimeout(() => {
@@ -1914,6 +1924,7 @@
           }, 1200);
         }, 1000);
       }
+    </script>
     </script>
     </script>
     <!-- Coming Soon View -->
