@@ -1985,7 +1985,9 @@
           const gap = 10;
           const margin = 12;
 
-          let left = rect ? rect.left + (rect.width / 2) - (menuRect.width / 2) : (window.innerWidth - menuRect.width) / 2;
+          // تمركز القائمة أفقياً في منتصف الشاشة تماماً، مع الحفاظ على مكانها الرأسي فوق زر الصورة.
+          // لا نعتمد على مكان الزر أفقياً حتى لا تنزلق القائمة ناحية اليمين أو تدخل في حافة الشاشة.
+          let left = (window.innerWidth - menuRect.width) / 2;
           let top = rect ? rect.top - menuRect.height - gap : (window.innerHeight - menuRect.height) / 2;
 
           left = Math.max(margin, Math.min(left, window.innerWidth - menuRect.width - margin));
