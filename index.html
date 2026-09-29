@@ -1722,8 +1722,39 @@
           </button>
         </div>
 
-        <!-- اختيار صورة البروفايل عبر قائمة نظام التشغيل (الكاميرا / المعرض / الملفات حسب الجهاز) -->
+        <!-- اختيار صورة البروفايل: كاميرا أو ملفات الهاتف -->
+        <input type="file" id="avatarCameraInput" accept="image/*" capture="environment" style="display: none;" onchange="stageAvatarChange(event)">
         <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="stageAvatarChange(event)">
+
+        <!-- قائمة اختيار مصدر صورة البروفايل -->
+        <div id="avatarSourceModal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="avatarSourceTitle"
+             style="position: fixed; inset: 0; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 1rem; background: rgba(0,0,0,0.72); backdrop-filter: blur(7px); -webkit-backdrop-filter: blur(7px);">
+          <div onclick="event.stopPropagation()"
+               style="width: min(430px, 100%); background: linear-gradient(145deg, rgba(15,23,42,0.99), rgba(8,15,30,0.99)); border: 1px solid rgba(56,189,248,0.65); border-radius: 1.6rem; padding: 1.35rem; box-shadow: 0 20px 70px rgba(0,0,0,0.75), 0 0 30px rgba(56,189,248,0.12); text-align: center;">
+            <div style="width: 58px; height: 58px; margin: 0 auto 0.7rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(14,165,233,0.13); border: 1px solid rgba(56,189,248,0.35); box-shadow: 0 0 25px rgba(56,189,248,0.12); font-size: 1.8rem;">📷</div>
+            <h3 id="avatarSourceTitle" data-ar="اختيار صورة البروفايل" data-en="Choose Profile Picture" style="margin: 0; color: var(--text); font-size: 1.15rem; font-weight: 800;">اختيار صورة البروفايل</h3>
+            <p data-ar="اختار مصدر الصورة" data-en="Choose the image source" style="margin: 0.45rem 0 1.15rem; color: var(--muted); font-size: 0.9rem;">اختار مصدر الصورة</p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+              <button type="button" onclick="chooseAvatarCamera()"
+                      style="min-height: 112px; border: 1px solid rgba(56,189,248,0.55); border-radius: 1.15rem; background: linear-gradient(145deg, #159bd6, #0878b0); color: #fff; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.45rem; font-family: inherit; font-size: 1rem; font-weight: 800; box-shadow: 0 8px 22px rgba(2,132,199,0.28); transition: transform .15s ease, box-shadow .15s ease;">
+                <span style="font-size: 2rem; line-height: 1;">📷</span>
+                <span data-ar="الكاميرا" data-en="Camera">الكاميرا</span>
+              </button>
+
+              <button type="button" onclick="chooseAvatarFile()"
+                      style="min-height: 112px; border: 1px solid rgba(56,189,248,0.55); border-radius: 1.15rem; background: linear-gradient(145deg, #159bd6, #0878b0); color: #fff; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.45rem; font-family: inherit; font-size: 1rem; font-weight: 800; box-shadow: 0 8px 22px rgba(2,132,199,0.28); transition: transform .15s ease, box-shadow .15s ease;">
+                <span style="font-size: 2rem; line-height: 1;">📁</span>
+                <span data-ar="ملفات الهاتف" data-en="Phone Files">ملفات الهاتف</span>
+              </button>
+            </div>
+
+            <button type="button" onclick="closeAvatarSourceChooser()"
+                    style="width: 100%; min-height: 62px; margin-top: 0.8rem; border: 1px solid rgba(148,163,184,0.28); border-radius: 1.15rem; background: rgba(30,41,59,0.72); color: var(--text); cursor: pointer; font-family: inherit; font-size: 1rem; font-weight: 700;">
+              <span data-ar="إلغاء" data-en="Cancel">إلغاء</span>
+            </button>
+          </div>
+        </div>
 
         <h3 id="profile-page-name" style="margin: 0.5rem 0 0.2rem 0; font-size: 1.1rem; color: var(--text);">--</h3>
         <p id="profile-page-job" style="margin: 0 0 0.75rem 0; font-size: 0.85rem; color: #38bdf8; font-weight: 700;">--</p>
@@ -1937,19 +1968,45 @@
       }
 
       function openAvatarSourceChooser() {
-        // افتح منتقي الصور الأصلي الخاص بنظام التشغيل.
-        // accept=image/* يسمح للنظام بعرض الخيارات المتاحة مثل الكاميرا/المعرض/الملفات.
-        const input = document.getElementById('avatarFileInput');
+        const modal = document.getElementById('avatarSourceModal');
+        if (!modal) return;
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
+      }
+
+      function closeAvatarSourceChooser() {
+        const modal = document.getElementById('avatarSourceModal');
+        if (!modal) return;
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+      }
+
+      function chooseAvatarCamera() {
+        const input = document.getElementById('avatarCameraInput');
+        closeAvatarSourceChooser();
         if (input) {
           input.value = '';
-          input.click();
+          setTimeout(() => input.click(), 80);
         }
       }
 
-      // توافق مع أي استدعاءات قديمة؛ الاختيار أصبح من منتقي النظام مباشرة.
-      function closeAvatarSourceChooser() {}
-      function chooseAvatarCamera() { openAvatarSourceChooser(); }
-      function chooseAvatarFile() { openAvatarSourceChooser(); }
+      function chooseAvatarFile() {
+        const input = document.getElementById('avatarFileInput');
+        closeAvatarSourceChooser();
+        if (input) {
+          input.value = '';
+          setTimeout(() => input.click(), 80);
+        }
+      }
+
+      // إغلاق القائمة عند الضغط على الخلفية أو زر Escape.
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeAvatarSourceChooser();
+      });
+
+      document.getElementById('avatarSourceModal')?.addEventListener('click', function(e) {
+        if (e.target === this) closeAvatarSourceChooser();
+      });
 
       function markProfileAsChanged() {
         hasUnsavedProfileChanges = true;
@@ -2055,6 +2112,8 @@
         stagedAvatarDataUrl = null;
         const avatarFileInput = document.getElementById('avatarFileInput');
         if (avatarFileInput) avatarFileInput.value = '';
+        const avatarCameraInput = document.getElementById('avatarCameraInput');
+        if (avatarCameraInput) avatarCameraInput.value = '';
         resetProfileFields();
         showPage('view-dashboard');
       }
@@ -2065,6 +2124,8 @@
         stagedAvatarDataUrl = null;
         const avatarFileInput = document.getElementById('avatarFileInput');
         if (avatarFileInput) avatarFileInput.value = '';
+        const avatarCameraInput = document.getElementById('avatarCameraInput');
+        if (avatarCameraInput) avatarCameraInput.value = '';
         resetProfileFields();
         showPage('view-dashboard');
       }
@@ -2145,6 +2206,8 @@
         stagedAvatarDataUrl = null;
         const avatarFileInput = document.getElementById('avatarFileInput');
         if (avatarFileInput) avatarFileInput.value = '';
+        const avatarCameraInput = document.getElementById('avatarCameraInput');
+        if (avatarCameraInput) avatarCameraInput.value = '';
         const msgEl = document.getElementById('profileMsg');
         if (msgEl) msgEl.innerText = '';
         syncProfileLanguageAndPlaceholders();
