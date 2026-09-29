@@ -1730,7 +1730,7 @@
         <div id="avatarSourceModal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="avatarSourceTitle"
              style="position: fixed; inset: 0; z-index: 99999; display: none; pointer-events: none; background: transparent;">
           <div id="avatarSourceMenu" onclick="event.stopPropagation()"
-               style="position: fixed; width: min(300px, calc(100vw - 24px)); padding: 0.65rem; background: rgba(15,23,42,0.98); border: 1px solid rgba(56,189,248,0.65); border-radius: 1.05rem; box-shadow: 0 14px 38px rgba(0,0,0,0.65), 0 0 22px rgba(56,189,248,0.18); text-align: center; pointer-events: auto;">
+               style="position: fixed; left: 50%; transform: translateX(-50%); width: min(300px, calc(100vw - 24px)); padding: 0.65rem; background: rgba(15,23,42,0.98); border: 1px solid rgba(56,189,248,0.65); border-radius: 1.05rem; box-shadow: 0 14px 38px rgba(0,0,0,0.65), 0 0 22px rgba(56,189,248,0.18); text-align: center; pointer-events: auto;">
             <div style="display:flex; align-items:center; justify-content:center; gap:0.4rem; margin-bottom:0.55rem;">
               <span style="font-size:1.15rem; line-height:1;">📷</span>
               <span id="avatarSourceTitle" data-ar="اختيار مصدر الصورة" data-en="Choose Image Source" style="color:var(--text); font-size:0.9rem; font-weight:800;">اختيار مصدر الصورة</span>
@@ -1985,16 +1985,16 @@
           const gap = 10;
           const margin = 12;
 
-          // تمركز القائمة أفقياً في منتصف الشاشة تماماً، مع الحفاظ على مكانها الرأسي فوق زر الصورة.
-          // لا نعتمد على مكان الزر أفقياً حتى لا تنزلق القائمة ناحية اليمين أو تدخل في حافة الشاشة.
-          let left = (window.innerWidth - menuRect.width) / 2;
+          // تثبيت القائمة في منتصف الشاشة الحقيقي تماماً.
+          // نستخدم left:50% + translateX(-50%) بدلاً من حساب left يدوياً،
+          // حتى لا تنزلق القائمة ناحية اليمين أو تدخل في حافة الشاشة.
           let top = rect ? rect.top - menuRect.height - gap : (window.innerHeight - menuRect.height) / 2;
 
-          left = Math.max(margin, Math.min(left, window.innerWidth - menuRect.width - margin));
           if (top < margin) top = rect ? rect.bottom + gap : margin;
           top = Math.max(margin, Math.min(top, window.innerHeight - menuRect.height - margin));
 
-          menu.style.left = `${left}px`;
+          menu.style.left = '50%';
+          menu.style.transform = 'translateX(-50%)';
           menu.style.top = `${top}px`;
         });
       }
