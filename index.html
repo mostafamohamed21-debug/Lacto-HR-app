@@ -1726,31 +1726,32 @@
         <input type="file" id="avatarCameraInput" accept="image/*" capture="environment" style="display: none;" onchange="stageAvatarChange(event)">
         <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="stageAvatarChange(event)">
 
-        <!-- قائمة اختيار مصدر صورة البروفايل -->
+        <!-- قائمة اختيار مصدر صورة البروفايل: Popup صغير يفتح فوق زر الصورة -->
         <div id="avatarSourceModal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="avatarSourceTitle"
-             style="position: fixed; inset: 0; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 1rem; background: rgba(0,0,0,0.72); backdrop-filter: blur(7px); -webkit-backdrop-filter: blur(7px);">
-          <div onclick="event.stopPropagation()"
-               style="width: min(430px, 100%); background: linear-gradient(145deg, rgba(15,23,42,0.99), rgba(8,15,30,0.99)); border: 1px solid rgba(56,189,248,0.65); border-radius: 1.6rem; padding: 1.35rem; box-shadow: 0 20px 70px rgba(0,0,0,0.75), 0 0 30px rgba(56,189,248,0.12); text-align: center;">
-            <div style="width: 58px; height: 58px; margin: 0 auto 0.7rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(14,165,233,0.13); border: 1px solid rgba(56,189,248,0.35); box-shadow: 0 0 25px rgba(56,189,248,0.12); font-size: 1.8rem;">📷</div>
-            <h3 id="avatarSourceTitle" data-ar="اختيار صورة البروفايل" data-en="Choose Profile Picture" style="margin: 0; color: var(--text); font-size: 1.15rem; font-weight: 800;">اختيار صورة البروفايل</h3>
-            <p data-ar="اختار مصدر الصورة" data-en="Choose the image source" style="margin: 0.45rem 0 1.15rem; color: var(--muted); font-size: 0.9rem;">اختار مصدر الصورة</p>
+             style="position: fixed; inset: 0; z-index: 99999; display: none; pointer-events: none; background: transparent;">
+          <div id="avatarSourceMenu" onclick="event.stopPropagation()"
+               style="position: fixed; width: min(300px, calc(100vw - 24px)); padding: 0.65rem; background: rgba(15,23,42,0.98); border: 1px solid rgba(56,189,248,0.65); border-radius: 1.05rem; box-shadow: 0 14px 38px rgba(0,0,0,0.65), 0 0 22px rgba(56,189,248,0.18); text-align: center; pointer-events: auto;">
+            <div style="display:flex; align-items:center; justify-content:center; gap:0.4rem; margin-bottom:0.55rem;">
+              <span style="font-size:1.15rem; line-height:1;">📷</span>
+              <span id="avatarSourceTitle" data-ar="اختيار مصدر الصورة" data-en="Choose Image Source" style="color:var(--text); font-size:0.9rem; font-weight:800;">اختيار مصدر الصورة</span>
+            </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
               <button type="button" onclick="chooseAvatarCamera()"
-                      style="min-height: 112px; border: 1px solid rgba(56,189,248,0.55); border-radius: 1.15rem; background: linear-gradient(145deg, #159bd6, #0878b0); color: #fff; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.45rem; font-family: inherit; font-size: 1rem; font-weight: 800; box-shadow: 0 8px 22px rgba(2,132,199,0.28); transition: transform .15s ease, box-shadow .15s ease;">
-                <span style="font-size: 2rem; line-height: 1;">📷</span>
+                      style="min-height:72px; border:1px solid rgba(56,189,248,0.5); border-radius:0.85rem; background:linear-gradient(145deg,#159bd6,#0878b0); color:#fff; cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.25rem; font-family:inherit; font-size:0.88rem; font-weight:800; padding:0.45rem; box-shadow:0 5px 14px rgba(2,132,199,0.22);">
+                <span style="font-size:1.45rem; line-height:1;">📷</span>
                 <span data-ar="الكاميرا" data-en="Camera">الكاميرا</span>
               </button>
 
               <button type="button" onclick="chooseAvatarFile()"
-                      style="min-height: 112px; border: 1px solid rgba(56,189,248,0.55); border-radius: 1.15rem; background: linear-gradient(145deg, #159bd6, #0878b0); color: #fff; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.45rem; font-family: inherit; font-size: 1rem; font-weight: 800; box-shadow: 0 8px 22px rgba(2,132,199,0.28); transition: transform .15s ease, box-shadow .15s ease;">
-                <span style="font-size: 2rem; line-height: 1;">📁</span>
-                <span data-ar="ملفات الهاتف" data-en="Phone Files">ملفات الهاتف</span>
+                      style="min-height:72px; border:1px solid rgba(56,189,248,0.5); border-radius:0.85rem; background:linear-gradient(145deg,#159bd6,#0878b0); color:#fff; cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.25rem; font-family:inherit; font-size:0.88rem; font-weight:800; padding:0.45rem; box-shadow:0 5px 14px rgba(2,132,199,0.22);">
+                <span style="font-size:1.45rem; line-height:1;">📁</span>
+                <span data-ar="ملفات الهاتف" data-en="ملفات الهاتف">ملفات الهاتف</span>
               </button>
             </div>
 
             <button type="button" onclick="closeAvatarSourceChooser()"
-                    style="width: 100%; min-height: 62px; margin-top: 0.8rem; border: 1px solid rgba(148,163,184,0.28); border-radius: 1.15rem; background: rgba(30,41,59,0.72); color: var(--text); cursor: pointer; font-family: inherit; font-size: 1rem; font-weight: 700;">
+                    style="width:100%; min-height:38px; margin-top:0.5rem; border:1px solid rgba(148,163,184,0.22); border-radius:0.75rem; background:rgba(30,41,59,0.7); color:var(--muted); cursor:pointer; font-family:inherit; font-size:0.82rem; font-weight:700;">
               <span data-ar="إلغاء" data-en="Cancel">إلغاء</span>
             </button>
           </div>
@@ -1969,9 +1970,31 @@
 
       function openAvatarSourceChooser() {
         const modal = document.getElementById('avatarSourceModal');
-        if (!modal) return;
+        const menu = document.getElementById('avatarSourceMenu');
+        const trigger = document.querySelector('#view-profile button[onclick="openAvatarSourceChooser()"]');
+        if (!modal || !menu) return;
+
         modal.classList.remove('hidden');
-        modal.style.display = 'flex';
+        modal.style.display = 'block';
+        modal.style.pointerEvents = 'auto';
+
+        // افتح الـ popup فوق زر تغيير الصورة مباشرة، بدون فريم يغطي الشاشة.
+        requestAnimationFrame(() => {
+          const rect = trigger ? trigger.getBoundingClientRect() : null;
+          const menuRect = menu.getBoundingClientRect();
+          const gap = 10;
+          const margin = 12;
+
+          let left = rect ? rect.left + (rect.width / 2) - (menuRect.width / 2) : (window.innerWidth - menuRect.width) / 2;
+          let top = rect ? rect.top - menuRect.height - gap : (window.innerHeight - menuRect.height) / 2;
+
+          left = Math.max(margin, Math.min(left, window.innerWidth - menuRect.width - margin));
+          if (top < margin) top = rect ? rect.bottom + gap : margin;
+          top = Math.max(margin, Math.min(top, window.innerHeight - menuRect.height - margin));
+
+          menu.style.left = `${left}px`;
+          menu.style.top = `${top}px`;
+        });
       }
 
       function closeAvatarSourceChooser() {
@@ -1979,6 +2002,7 @@
         if (!modal) return;
         modal.classList.add('hidden');
         modal.style.display = 'none';
+        modal.style.pointerEvents = 'none';
       }
 
       function chooseAvatarCamera() {
@@ -2006,6 +2030,11 @@
 
       document.getElementById('avatarSourceModal')?.addEventListener('click', function(e) {
         if (e.target === this) closeAvatarSourceChooser();
+      });
+
+      window.addEventListener('resize', function() {
+        const modal = document.getElementById('avatarSourceModal');
+        if (modal && !modal.classList.contains('hidden')) openAvatarSourceChooser();
       });
 
       function markProfileAsChanged() {
