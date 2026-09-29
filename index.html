@@ -1722,27 +1722,8 @@
           </button>
         </div>
 
-        <!-- اختيار مصدر صورة البروفايل: الكاميرا أو ملفات الهاتف -->
-        <input type="file" id="avatarCameraInput" accept="image/*" capture="environment" style="display: none;" onchange="stageAvatarChange(event)">
+        <!-- اختيار صورة البروفايل عبر قائمة نظام التشغيل (الكاميرا / المعرض / الملفات حسب الجهاز) -->
         <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="stageAvatarChange(event)">
-
-        <div id="avatarSourceModal" class="hidden" style="position: fixed; inset: 0; z-index: 50000; background: rgba(0,0,0,0.72); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 1rem;" onclick="if(event.target === this) closeAvatarSourceChooser()">
-          <div style="width: 100%; max-width: 360px; background: var(--card-bg); border: 1px solid rgba(56,189,248,0.5); border-radius: 1.4rem; padding: 1.2rem; box-shadow: 0 20px 50px rgba(0,0,0,0.7); text-align: center;">
-            <div style="font-size: 1rem; font-weight: 800; color: var(--text); margin-bottom: 0.35rem;" data-ar="اختيار صورة البروفايل" data-en="Choose Profile Picture">اختيار صورة البروفايل</div>
-            <div style="font-size: 0.75rem; color: var(--muted); margin-bottom: 1rem;" data-ar="اختر مصدر الصورة" data-en="Choose the image source">اختر مصدر الصورة</div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem;">
-              <button type="button" onclick="chooseAvatarCamera()" style="margin: 0; padding: 0.8rem 0.5rem; border-radius: 1rem;">
-                📷 <span data-ar="الكاميرا" data-en="Camera">الكاميرا</span>
-              </button>
-              <button type="button" onclick="chooseAvatarFile()" style="margin: 0; padding: 0.8rem 0.5rem; border-radius: 1rem;">
-                📁 <span data-ar="ملفات الهاتف" data-en="Phone Files">ملفات الهاتف</span>
-              </button>
-            </div>
-
-            <button type="button" onclick="closeAvatarSourceChooser()" style="margin-top: 0.7rem; background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); color: var(--muted); box-shadow: none;" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
-          </div>
-        </div>
 
         <h3 id="profile-page-name" style="margin: 0.5rem 0 0.2rem 0; font-size: 1.1rem; color: var(--text);">--</h3>
         <p id="profile-page-job" style="margin: 0 0 0.75rem 0; font-size: 0.85rem; color: #38bdf8; font-weight: 700;">--</p>
@@ -1956,32 +1937,19 @@
       }
 
       function openAvatarSourceChooser() {
-        const modal = document.getElementById('avatarSourceModal');
-        if (modal) modal.classList.remove('hidden');
-      }
-
-      function closeAvatarSourceChooser() {
-        const modal = document.getElementById('avatarSourceModal');
-        if (modal) modal.classList.add('hidden');
-      }
-
-      function chooseAvatarCamera() {
-        closeAvatarSourceChooser();
-        const input = document.getElementById('avatarCameraInput');
-        if (input) {
-          input.value = '';
-          input.click();
-        }
-      }
-
-      function chooseAvatarFile() {
-        closeAvatarSourceChooser();
+        // افتح منتقي الصور الأصلي الخاص بنظام التشغيل.
+        // accept=image/* يسمح للنظام بعرض الخيارات المتاحة مثل الكاميرا/المعرض/الملفات.
         const input = document.getElementById('avatarFileInput');
         if (input) {
           input.value = '';
           input.click();
         }
       }
+
+      // توافق مع أي استدعاءات قديمة؛ الاختيار أصبح من منتقي النظام مباشرة.
+      function closeAvatarSourceChooser() {}
+      function chooseAvatarCamera() { openAvatarSourceChooser(); }
+      function chooseAvatarFile() { openAvatarSourceChooser(); }
 
       function markProfileAsChanged() {
         hasUnsavedProfileChanges = true;
@@ -2085,9 +2053,7 @@
         hasUnsavedProfileChanges = false;
         stagedAvatarFile = null;
         stagedAvatarDataUrl = null;
-        const avatarCameraInput = document.getElementById('avatarCameraInput');
         const avatarFileInput = document.getElementById('avatarFileInput');
-        if (avatarCameraInput) avatarCameraInput.value = '';
         if (avatarFileInput) avatarFileInput.value = '';
         resetProfileFields();
         showPage('view-dashboard');
@@ -2097,9 +2063,7 @@
         hasUnsavedProfileChanges = false;
         stagedAvatarFile = null;
         stagedAvatarDataUrl = null;
-        const avatarCameraInput = document.getElementById('avatarCameraInput');
         const avatarFileInput = document.getElementById('avatarFileInput');
-        if (avatarCameraInput) avatarCameraInput.value = '';
         if (avatarFileInput) avatarFileInput.value = '';
         resetProfileFields();
         showPage('view-dashboard');
@@ -2179,9 +2143,7 @@
         hasUnsavedProfileChanges = false;
         stagedAvatarFile = null;
         stagedAvatarDataUrl = null;
-        const avatarCameraInput = document.getElementById('avatarCameraInput');
         const avatarFileInput = document.getElementById('avatarFileInput');
-        if (avatarCameraInput) avatarCameraInput.value = '';
         if (avatarFileInput) avatarFileInput.value = '';
         const msgEl = document.getElementById('profileMsg');
         if (msgEl) msgEl.innerText = '';
@@ -2236,9 +2198,7 @@
           baseUserAvatarSrc = savedPhoto;
           stagedAvatarFile = null;
           stagedAvatarDataUrl = null;
-          const avatarCameraInput = document.getElementById('avatarCameraInput');
           const avatarFileInput = document.getElementById('avatarFileInput');
-          if (avatarCameraInput) avatarCameraInput.value = '';
           if (avatarFileInput) avatarFileInput.value = '';
 
           ['profile-page-avatar','dash-avatar','userPhoto'].forEach(id => {
