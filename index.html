@@ -1717,13 +1717,32 @@
         <div style="position: relative; width: 90px; height: 90px; margin: 0 auto 0.75rem auto; display: inline-block;">
           <img id="profile-page-avatar" src="" alt="Avatar" style="width: 90px; height: 90px; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); display: block;">
 
-          <button type="button" onclick="document.getElementById('avatarUploadInput').click()" style="position: absolute; bottom: 2px; right: 2px; width: 30px; height: 30px; border-radius: 50%; background: #0284c7; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.6); z-index: 5;" title="تغيير الصورة">
+          <button type="button" onclick="openAvatarSourceChooser()" style="position: absolute; bottom: 2px; right: 2px; width: 30px; height: 30px; border-radius: 50%; background: #0284c7; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.6); z-index: 5;" title="تغيير الصورة" aria-label="تغيير الصورة">
             <svg viewBox="0 0 24 24" style="width: 15px; height: 15px; fill: #fff;"><path d="M4 4h3l2-2h6l2 2h3c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm8 3c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/></svg>
           </button>
-
-          <input type="file" id="avatarUploadInput" accept="image/*" capture="environment" style="display: none;" onchange="stageAvatarChange(event)">
         </div>
-          <input type="file" id="avatarUploadInput" accept="image/*" style="display: none;" onchange="stageAvatarChange(event)">
+
+        <!-- اختيار مصدر صورة البروفايل: الكاميرا أو ملفات الهاتف -->
+        <input type="file" id="avatarCameraInput" accept="image/*" capture="environment" style="display: none;" onchange="stageAvatarChange(event)">
+        <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="stageAvatarChange(event)">
+
+        <div id="avatarSourceModal" class="hidden" style="position: fixed; inset: 0; z-index: 50000; background: rgba(0,0,0,0.72); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 1rem;" onclick="if(event.target === this) closeAvatarSourceChooser()">
+          <div style="width: 100%; max-width: 360px; background: var(--card-bg); border: 1px solid rgba(56,189,248,0.5); border-radius: 1.4rem; padding: 1.2rem; box-shadow: 0 20px 50px rgba(0,0,0,0.7); text-align: center;">
+            <div style="font-size: 1rem; font-weight: 800; color: var(--text); margin-bottom: 0.35rem;" data-ar="اختيار صورة البروفايل" data-en="Choose Profile Picture">اختيار صورة البروفايل</div>
+            <div style="font-size: 0.75rem; color: var(--muted); margin-bottom: 1rem;" data-ar="اختر مصدر الصورة" data-en="Choose the image source">اختر مصدر الصورة</div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem;">
+              <button type="button" onclick="chooseAvatarCamera()" style="margin: 0; padding: 0.8rem 0.5rem; border-radius: 1rem;">
+                📷 <span data-ar="الكاميرا" data-en="Camera">الكاميرا</span>
+              </button>
+              <button type="button" onclick="chooseAvatarFile()" style="margin: 0; padding: 0.8rem 0.5rem; border-radius: 1rem;">
+                📁 <span data-ar="ملفات الهاتف" data-en="Phone Files">ملفات الهاتف</span>
+              </button>
+            </div>
+
+            <button type="button" onclick="closeAvatarSourceChooser()" style="margin-top: 0.7rem; background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); color: var(--muted); box-shadow: none;" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
+          </div>
+        </div>
 
         <h3 id="profile-page-name" style="margin: 0.5rem 0 0.2rem 0; font-size: 1.1rem; color: var(--text);">--</h3>
         <p id="profile-page-job" style="margin: 0 0 0.75rem 0; font-size: 0.85rem; color: #38bdf8; font-weight: 700;">--</p>
@@ -1936,6 +1955,34 @@
           });
       }
 
+      function openAvatarSourceChooser() {
+        const modal = document.getElementById('avatarSourceModal');
+        if (modal) modal.classList.remove('hidden');
+      }
+
+      function closeAvatarSourceChooser() {
+        const modal = document.getElementById('avatarSourceModal');
+        if (modal) modal.classList.add('hidden');
+      }
+
+      function chooseAvatarCamera() {
+        closeAvatarSourceChooser();
+        const input = document.getElementById('avatarCameraInput');
+        if (input) {
+          input.value = '';
+          input.click();
+        }
+      }
+
+      function chooseAvatarFile() {
+        closeAvatarSourceChooser();
+        const input = document.getElementById('avatarFileInput');
+        if (input) {
+          input.value = '';
+          input.click();
+        }
+      }
+
       function markProfileAsChanged() {
         hasUnsavedProfileChanges = true;
       }
@@ -2038,8 +2085,10 @@
         hasUnsavedProfileChanges = false;
         stagedAvatarFile = null;
         stagedAvatarDataUrl = null;
-        const avatarInput = document.getElementById('avatarUploadInput');
-        if (avatarInput) avatarInput.value = '';
+        const avatarCameraInput = document.getElementById('avatarCameraInput');
+        const avatarFileInput = document.getElementById('avatarFileInput');
+        if (avatarCameraInput) avatarCameraInput.value = '';
+        if (avatarFileInput) avatarFileInput.value = '';
         resetProfileFields();
         showPage('view-dashboard');
       }
@@ -2048,8 +2097,10 @@
         hasUnsavedProfileChanges = false;
         stagedAvatarFile = null;
         stagedAvatarDataUrl = null;
-        const avatarInput = document.getElementById('avatarUploadInput');
-        if (avatarInput) avatarInput.value = '';
+        const avatarCameraInput = document.getElementById('avatarCameraInput');
+        const avatarFileInput = document.getElementById('avatarFileInput');
+        if (avatarCameraInput) avatarCameraInput.value = '';
+        if (avatarFileInput) avatarFileInput.value = '';
         resetProfileFields();
         showPage('view-dashboard');
       }
@@ -2128,8 +2179,10 @@
         hasUnsavedProfileChanges = false;
         stagedAvatarFile = null;
         stagedAvatarDataUrl = null;
-        const avatarInput = document.getElementById('avatarUploadInput');
-        if (avatarInput) avatarInput.value = '';
+        const avatarCameraInput = document.getElementById('avatarCameraInput');
+        const avatarFileInput = document.getElementById('avatarFileInput');
+        if (avatarCameraInput) avatarCameraInput.value = '';
+        if (avatarFileInput) avatarFileInput.value = '';
         const msgEl = document.getElementById('profileMsg');
         if (msgEl) msgEl.innerText = '';
         syncProfileLanguageAndPlaceholders();
@@ -2183,8 +2236,10 @@
           baseUserAvatarSrc = savedPhoto;
           stagedAvatarFile = null;
           stagedAvatarDataUrl = null;
-          const avatarInput = document.getElementById('avatarUploadInput');
-          if (avatarInput) avatarInput.value = '';
+          const avatarCameraInput = document.getElementById('avatarCameraInput');
+          const avatarFileInput = document.getElementById('avatarFileInput');
+          if (avatarCameraInput) avatarCameraInput.value = '';
+          if (avatarFileInput) avatarFileInput.value = '';
 
           ['profile-page-avatar','dash-avatar','userPhoto'].forEach(id => {
             const el = document.getElementById(id);
