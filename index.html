@@ -1082,23 +1082,29 @@
         <button class="back-btn" onclick="showPage('view-dashboard')"><span data-ar="← رجوع" data-en="← Back">← رجوع</span></button>
         <span data-ar="الكارت الرقمي" data-en="Digital ID Card" style="font-weight: 700; font-size: 0.9rem;">الكارت الرقمي</span>
       </div>
-      <div class="id-card" id="myCardToDownload" style="border-radius: 0 0 24px 24px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1rem;">
-          <span style="font-weight: 800; font-size: 0.85rem; color: #38bdf8;">LACTO MISR S.A.E</span>
-          <span style="font-size: 0.65rem; background: rgba(56, 189, 248, 0.4); border: 1px solid #38bdf8; color: #38bdf8; padding: 0.15rem 0.5rem; border-radius: 0.5rem; font-weight: 600;">VERIFIED</span>
-        </div>
-        <img id="userPhoto" class="profile-img" crossorigin="anonymous" src="" alt="User">
-        <h3 id="userName" style="margin:0 0 0.2rem 0; font-size: 1.1rem;">--</h3>
-        <p id="userJob" style="color: #38bdf8; font-size: 0.85rem; margin:0 0 0.85rem 0;">--</p>
-
-        <div class="info-grid">
-          <div><div class="info-label" data-ar="الإدارة" data-en="Department">الإدارة</div><div id="userDept" class="info-val">--</div></div>
-          <div><div class="info-label" data-ar="كود الموظف" data-en="Employee Code">كود الموظف</div><div id="userCodeVal" class="info-val">--</div></div>
-          <div style="grid-column: span 2;"><div class="info-label" data-ar="الرقم القومي" data-en="National ID">الرقم القومي</div><div id="userNID" class="info-val">--</div></div>
-        </div>
-        <div class="qr-container"><div id="qrcode"></div></div>
+      <style>
+        .lm-business-card{position:relative;direction:ltr;overflow:hidden;border-radius:20px;background:#f9fdff;color:#174778;box-shadow:0 12px 30px #0005;aspect-ratio:1.78;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;font-family:Arial,sans-serif}
+        .lm-business-card::before{content:"";position:absolute;width:55%;height:95px;right:-15%;top:-52px;background:#208bd1;border-radius:0 0 50% 60%;z-index:0}
+        .lm-business-card>*{position:relative;z-index:1}
+        .lm-business-card .lm-name{font-size:clamp(15px,4.1vw,23px);font-weight:800;line-height:1.2;margin:0;color:#235d9d}
+        .lm-business-card .lm-role{font-size:clamp(11px,3vw,16px);font-weight:700;margin:4px 0 0;color:#3573ad}
+        .lm-business-card .lm-contact{font-size:clamp(9px,2.5vw,12px);line-height:1.6;word-break:break-word}
+        .lm-business-card .lm-bottom{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+        .lm-business-card .lm-qr{background:white;padding:5px;border-radius:6px;flex-shrink:0}
+        .lm-business-card .lm-qr img,.lm-business-card .lm-qr canvas{width:74px!important;height:74px!important}
+        .lm-back{background:#eaf5fc;padding:0;justify-content:initial}
+        .lm-back img{width:100%;height:72%;object-fit:cover}
+        .lm-back .lm-company{padding:7px 12px;font-size:clamp(9px,2.5vw,12px);font-weight:700;text-align:center;line-height:1.4}
+        .lm-card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+        .lm-card-actions button{flex:1;min-width:125px;background:#167cc0;border:0;border-radius:12px;color:white;padding:12px 8px;font-weight:700;cursor:pointer}
+      </style>
+      <div id="myCardToDownload" class="lm-business-card" aria-label="Employee digital business card">
+        <div><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-weight:800;font-size:12px">LACTO MISR S.A.E</span><img src="logo.png" alt="Lacto Misr" style="width:54px;height:54px;object-fit:contain" onerror="this.style.display='none'"></div><h3 class="lm-name" id="userName">--</h3><p class="lm-role" id="userJob">--</p></div>
+        <div class="lm-bottom"><div class="lm-contact"><div>☎ <span id="cardPhone">—</span></div><div>✉ <span id="cardEmail">—</span></div><div>⌖ Industrial Zone H6 No. 131, 10th of Ramadan</div></div><div class="lm-qr" id="qrcode"></div></div>
       </div>
-      <button data-ar="حفظ الكارت كصورة" data-en="Save ID Card as Image" onclick="downloadCard()" class="btn-success" style="margin-top:1rem;">حفظ الكارت كصورة</button>
+      <div id="lmCardBack" class="lm-business-card lm-back hidden"><img src="factory_reference.jpg" alt="Lacto Misr factory reference photograph"><div class="lm-company"><strong>LACTO MISR</strong> · www.lactomisr.com<br>Tel: (+2055) 44 11 776 - 777 · Fax: (+2055) 44 11 774</div></div>
+      <div class="lm-card-actions"><button type="button" onclick="lmFlipCard()" data-ar="🔄 قلب الكارت" data-en="🔄 Flip card">🔄 قلب الكارت</button><button type="button" onclick="lmDownloadCard()" data-ar="⬇️ تحميل صورة" data-en="⬇️ Download PNG">⬇️ تحميل صورة</button><button type="button" onclick="lmSaveContact()" data-ar="📱 حفظ جهة اتصال" data-en="📱 Save contact">📱 حفظ جهة اتصال</button></div>
+      <p style="font-size:11px;color:#9ca3af;text-align:center" data-ar="رابط QR يعرض فقط بيانات التواصل المنشورة بموافقة الشركة" data-en="QR shows only company-approved public contact details">رابط QR يعرض فقط بيانات التواصل المنشورة بموافقة الشركة</p>
     </div>
 
     <!-- 4. Services View -->
@@ -3113,51 +3119,41 @@
       return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
     }
 
-    function verifyLocationAndCheckIn() {
-      const statusText = document.getElementById('t-checkinStatusText'); const valIn = document.getElementById('valInTime');
-      const valOut = document.getElementById('valOutTime'); const valWorking = document.getElementById('valWorkingHours');
-      const ledGreen = document.getElementById('ledGreen'); const ledRed = document.getElementById('ledRed');
-      statusText.innerText = currentLang === 'ar' ? "جاري تحديد الموقع والتحقق من المأموريات..." : "Checking location & approved missions...";
-      if (!navigator.geolocation) { statusText.innerText = currentLang === 'ar' ? "متصفحك لا يدعم الـ GPS." : "Geolocation not supported."; return; }
-      const now = new Date(); const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); const todayStr = essLocalDate(now);
-      if (!currentEmpCode) return;
-      db.ref('mission_requests/' + currentEmpCode).once('value').then(snap => {
-        let hasApprovedMission = false;
-        if (snap.exists()) {
-          const missions = snap.val();
-          for (let k in missions) { if (missions[k].date === todayStr && (missions[k].status === 'Approved' || missions[k].hrApproved === true)) { hasApprovedMission = true; break; } }
-        }
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const userLat = position.coords.latitude; const userLng = position.coords.longitude;
-            const distance = calculateDistance(userLat, userLng, COMPANY_LAT, COMPANY_LNG); const googleMapsUrl = `https://maps.google.com/?q=${userLat},${userLng}`;
-            if (hasApprovedMission || distance <= ALLOWED_RADIUS_METERS) {
-              const refPath = db.ref('attendance/' + currentEmpCode + '/' + todayStr);
-              refPath.transaction(existing => {
-                const attData = existing || {};
-                if (!attData.inTimestamp) {
-                  return { inTime: timeStr, inTimestamp: now.getTime(), inLocation: { lat: userLat, lng: userLng, mapUrl: googleMapsUrl, isMission: hasApprovedMission } };
-                }
-                if (attData.outTimestamp || now.getTime() <= attData.inTimestamp) return; // Never overwrite an existing checkout.
-                const totalMins = Math.floor((now.getTime() - attData.inTimestamp) / 60000);
-                return { ...attData, outTime: timeStr, outTimestamp: now.getTime(), outLocation: { lat: userLat, lng: userLng, mapUrl: googleMapsUrl, isMission: hasApprovedMission }, workingHours: `${String(Math.floor(totalMins / 60)).padStart(2, '0')}:${String(totalMins % 60).padStart(2, '0')}` };
-              }, undefined, false).then(result => {
-                if (!result.committed) {
-                  statusText.innerText = currentLang === 'ar' ? '⚠️ تم تسجيل الحضور والانصراف بالفعل لهذا اليوم.' : '⚠️ Attendance already completed for today.';
-                  return;
-                }
-                const d = result.snapshot.val();
-                statusText.innerText = currentLang === 'ar' ? '✅ تم حفظ الحركة في Firebase' : '✅ Attendance saved in Firebase';
-                if (d.inTime) { valIn.innerText = d.inTime; ledGreen.classList.add('active'); }
-                if (d.outTime) { valOut.innerText = d.outTime; ledRed.classList.add('active'); ledGreen.classList.remove('active'); }
-                if (d.workingHours) valWorking.innerText = d.workingHours;
-              }).catch(err => { statusText.innerText = currentLang === 'ar' ? '❌ فشل حفظ الحضور في Firebase' : '❌ Attendance save failed'; console.error(err); });
-            } else { statusText.innerText = currentLang === 'ar' ? `❌ خارج نطاق الشركة (${Math.round(distance)} متر) وليس لديك مأمورية معتمدة اليوم!` : `❌ Outside company radius (${Math.round(distance)}m) with no approved mission!`; }
-          },
-          () => { statusText.innerText = currentLang === 'ar' ? "تعذر الحصول على موقعك. تأكد من تفعيل الـ GPS." : "Unable to retrieve location."; },
-          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-        );
-      });
+    async function verifyLocationAndCheckIn() {
+      const statusText = document.getElementById('t-checkinStatusText');
+      if (!currentEmpCode || !auth.currentUser) { statusText.textContent='يرجى تسجيل الدخول أولاً';return; }
+      if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {statusText.textContent='الكاميرا تتطلب HTTPS ومتصفحًا يدعم الكاميرا';return;}
+      let stream;
+      try {
+        statusText.textContent='جاري طلب إذن الكاميرا...';
+        stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});
+        const video=document.createElement('video');video.autoplay=true;video.muted=true;video.playsInline=true;
+        video.srcObject=stream; await video.play();
+        const confirmed=await new Promise(resolve=>{
+          const overlay=document.createElement('div');overlay.style.cssText='position:fixed;inset:0;z-index:999999;background:#061122ee;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;padding:24px;color:white';
+          video.style.cssText='width:min(90vw,390px);max-height:60vh;border-radius:20px;object-fit:cover';
+          const yes=document.createElement('button');yes.textContent='📸 التقاط صورة وإرسال طلب حضور للمراجعة';yes.style.cssText='background:#0784bf;color:white;padding:14px;border-radius:12px';
+          const no=document.createElement('button');no.textContent='إلغاء';no.style.cssText='background:#334155;color:white;padding:12px;border-radius:12px';
+          overlay.append(video,yes,no);document.body.append(overlay);
+          yes.onclick=()=>{const canvas=document.createElement('canvas');canvas.width=video.videoWidth||320;canvas.height=video.videoHeight||240;canvas.getContext('2d').drawImage(video,0,0,canvas.width,canvas.height);canvas.width=0;canvas.height=0;overlay.remove();resolve(true)};no.onclick=()=>{overlay.remove();resolve(false)};
+        });
+        if(!confirmed){statusText.textContent='تم إلغاء طلب الحضور';return;}
+        // Camera preview is a capture gate only; no face matching is claimed or performed.
+        statusText.textContent='جاري تحديد الموقع...';
+        if(!navigator.geolocation) throw Error('GPS غير مدعوم');
+        const position=await new Promise((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:true,timeout:15000,maximumAge:0}));
+        const lat=position.coords.latitude,lng=position.coords.longitude;
+        const distance=calculateDistance(lat,lng,COMPANY_LAT,COMPANY_LNG);
+        let mission=false;
+        try {const ms=await db.ref('mission_requests/'+currentEmpCode).once('value');const today=essLocalDate(new Date());mission=Object.values(ms.val()||{}).some(m=>m.date===today&&(m.status==='Approved'||m.hrApproved===true));}catch(e){console.warn('Mission read',e)}
+        if(!mission && distance>ALLOWED_RADIUS_METERS){statusText.textContent='❌ خارج نطاق الشركة ('+Math.round(distance)+' متر)';return;}
+        statusText.textContent='جاري إرسال طلب الحضور للمراجعة...';
+        const now=new Date();
+        const payload={type:'GPS_ATTENDANCE_REQUEST',code:String(currentEmpCode),clientDate:essLocalDate(now),clientTime:now.toLocaleTimeString('en-GB'),location:{lat,lng,isMission:mission},cameraCaptured:true,faceMatchVerified:false,verificationStatus:'PENDING_REVIEW',createdAt:firebase.database.ServerValue.TIMESTAMP};
+        await db.ref('attendance_requests/'+currentEmpCode).push(payload);
+        statusText.textContent='✅ تم إرسال طلب الحضور للمراجعة؛ لم يُعتمد كحضور رسمي بعد';
+      } catch(err) { console.error('Attendance request:',err);statusText.textContent='❌ تعذر إرسال طلب الحضور: '+(err.code||err.message||'خطأ'); }
+      finally {if(stream)stream.getTracks().forEach(t=>t.stop());}
     }
 
     function resetLeaveForm() {
@@ -3414,9 +3410,9 @@ async function login() {
           document.getElementById('dash-name').innerText = user.name || "--"; document.getElementById('dash-code-val').innerText = code;
           const userPhotoUrl = user.photo || (code === 'amgad' || (user.name && user.name.includes('أمجد')) ? 'amgad.jpg' : 'https://i.pravatar.cc/150?img=12');
           document.getElementById('dash-avatar').src = userPhotoUrl; document.getElementById('userName').innerText = user.name || "--";
-          document.getElementById('userJob').innerText = user.job || "--"; document.getElementById('userDept').innerText = user.dept || "--";
-          document.getElementById('userCodeVal').innerText = code; document.getElementById('userNID').innerText = user.nationalId || "--";
-          document.getElementById('userPhoto').src = userPhotoUrl;
+          document.getElementById('userJob').innerText = user.job || "--";
+          document.getElementById('cardPhone').textContent = user.phone || user.mobile || '—'; document.getElementById('cardEmail').textContent = user.email || user.workEmail || '—';
+          
 
           // تعبئة بيانات البروفايل المتقدمة
           document.getElementById('profile-page-name').innerText = user.name || "--";
@@ -3455,7 +3451,7 @@ async function login() {
           document.getElementById('profileEmergencyPhoneInput').value = user.emergencyPhone || "";
 
           document.getElementById('qrcode').innerHTML = "";
-          new QRCode(document.getElementById("qrcode"), { text: window.location.origin + window.location.pathname + "?emp=" + code, width: 85, height: 85 });
+          new QRCode(document.getElementById("qrcode"), { text: new URL("card.html?code=" + encodeURIComponent(code), window.location.href).href, width: 85, height: 85 });
           showPage('view-dashboard');
 
           db.ref('attendance/' + code + '/' + essLocalDate(new Date())).once('value').then(attSnap => {
@@ -3611,6 +3607,37 @@ async function login() {
         }, 1500);
       });
     }
+</script>
+<script>
+function lmFlipCard(){document.getElementById('myCardToDownload').classList.toggle('hidden');document.getElementById('lmCardBack').classList.toggle('hidden')}
+async function lmDownloadCard(){
+  const el=document.getElementById('myCardToDownload').classList.contains('hidden')?document.getElementById('lmCardBack'):document.getElementById('myCardToDownload');
+  try{if(typeof html2canvas!=='function')throw Error('Image library unavailable');
+  const canvas=await html2canvas(el,{backgroundColor:'#ffffff',scale:3,useCORS:true});const a=document.createElement('a');a.download='Lacto_Misr_Card_'+(typeof currentEmpCode!=='undefined'?currentEmpCode:'employee')+'.png';a.href=canvas.toDataURL('image/png');a.click();}
+  catch(e){alert('تعذر حفظ الصورة. تأكد من الاتصال بالإنترنت وإتاحة الصور. / Could not export card: '+e.message)}
+}
+function lmSaveContact(){const name=document.getElementById('userName').textContent;const job=document.getElementById('userJob').textContent;const phone=document.getElementById('cardPhone').textContent;const email=document.getElementById('cardEmail').textContent;const esc=v=>String(v||'').split('\\').join('\\\\').split(',').join('\\,').split(';').join('\\;').split(String.fromCharCode(10)).join('\\n');const v=['BEGIN:VCARD','VERSION:3.0','FN:'+esc(name),'ORG:Lacto Misr','TITLE:'+esc(job),'TEL;TYPE=WORK:'+esc(phone),'EMAIL;TYPE=WORK:'+esc(email),'URL:https://www.lactomisr.com','ADR;TYPE=WORK:;;Industrial Zone H6 No. 131;10th of Ramadan;;;Egypt','END:VCARD'].join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([v],{type:'text/vcard;charset=utf-8'}));a.download='Lacto_Misr_Contact.vcf';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+</script>
+
+<script>
+(function(){
+ let listener=null,ref=null;
+ function bind(){
+  if(ref&&listener){ref.off('value',listener);ref=null;listener=null;}
+  if(typeof auth==='undefined'||!auth.currentUser||typeof currentEmpCode==='undefined'||!currentEmpCode)return;
+  ref=db.ref('notifications/'+currentEmpCode).limitToLast(30);
+  listener=snap=>{
+   const values=Object.values(snap.val()||{}).reverse();
+   const box=document.querySelector('.notification-popup-desc');if(!box)return;
+   box.replaceChildren();
+   if(!values.length){box.textContent='لا توجد إشعارات جديدة';return;}
+   values.forEach(n=>{const el=document.createElement('div');el.style.cssText='border-bottom:1px solid #445;padding:10px 0;white-space:pre-wrap';const strong=document.createElement('strong');strong.textContent=n.title||'إشعار';const p=document.createElement('p');p.textContent=n.body||'';el.append(strong,p);box.append(el);});
+  };ref.on('value',listener,e=>console.warn('Notifications:',e));
+ }
+ if(typeof auth!=='undefined')auth.onAuthStateChanged(()=>setTimeout(bind,500));
+ const orig=window.showPage;if(typeof orig==='function')window.showPage=function(){const r=orig.apply(this,arguments);setTimeout(bind,0);return r};
+ setInterval(()=>{if(typeof auth!=='undefined'&&auth.currentUser&&typeof currentEmpCode!=='undefined'&&currentEmpCode&&!ref)bind()},3000);
+})();
 </script>
 </body>
 </html>
