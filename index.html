@@ -19,6 +19,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
  <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&family=Share+Tech+Mono&display=swap');
@@ -2621,41 +2622,23 @@
       }
     }
 
-    function updatePassword() {
-      const oldPass = document.getElementById('oldPasswordInput').value.trim();
-      const newPass = document.getElementById('newPasswordInput').value.trim();
+    async function updatePassword() {
+      const oldPass = document.getElementById('oldPasswordInput').value;
+      const newPass = document.getElementById('newPasswordInput').value;
       const msgEl = document.getElementById('passwordChangeMsg');
-
-      if (!oldPass || !newPass) {
+      try {
+        if (!auth.currentUser || !oldPass || newPass.length < 8) throw new Error('invalid');
+        const credential = firebase.auth.EmailAuthProvider.credential(auth.currentUser.email, oldPass);
+        await auth.currentUser.reauthenticateWithCredential(credential);
+        await auth.currentUser.updatePassword(newPass);
+        document.getElementById('oldPasswordInput').value = '';
+        document.getElementById('newPasswordInput').value = '';
+        msgEl.style.color = '#38bdf8';
+        msgEl.innerText = currentLang === 'ar' ? '✅ تم تحديث كلمة المرور' : '✅ Password updated';
+      } catch (err) {
         msgEl.style.color = '#ef4444';
-        msgEl.innerText = currentLang === 'ar' ? '⚠️ يرجى إدخال كلمة المرور الحالية والجديدة!' : '⚠️ Please enter current and new passwords!';
-        return;
+        msgEl.innerText = currentLang === 'ar' ? '❌ تعذر التحديث؛ راجع كلمة المرور الحالية (الجديدة 8 أحرف على الأقل)' : '❌ Update failed; check current password (new password 8+ characters)';
       }
-
-      db.ref('users/' + currentEmpCode).once('value').then(snapshot => {
-        if (snapshot.exists()) {
-          const userData = snapshot.val();
-          if (userData.password !== oldPass) {
-            msgEl.style.color = '#ef4444';
-            msgEl.innerText = currentLang === 'ar' ? '❌ كلمة المرور الحالية غير صحيحة!' : '❌ Current password is incorrect!';
-            return;
-          }
-
-          db.ref('users/' + currentEmpCode).update({ password: newPass }).then(() => {
-            msgEl.style.color = '#38bdf8';
-            msgEl.innerText = currentLang === 'ar' ? '✅ تم تغيير كلمة المرور بنجاح!' : '✅ Password updated successfully!';
-            document.getElementById('oldPasswordInput').value = '';
-            document.getElementById('newPasswordInput').value = '';
-
-            if (localStorage.getItem('lacto_saved_code')) {
-              localStorage.setItem('lacto_saved_pass', newPass);
-            }
-          });
-        }
-      }).catch(err => {
-        msgEl.style.color = '#ef4444';
-        msgEl.innerText = currentLang === 'ar' ? '❌ حدث خطأ، حاول مرة أخرى.' : '❌ Error occurred, try again.';
-      });
     }
 
     function togglePasswordVisibility() {
@@ -2724,7 +2707,7 @@
       const msg = document.getElementById('payslipMsg');
       if (!dest) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? '⚠️ يرجى تحديد الجهة الموجه إليها الخطاب!' : '⚠️ Please specify the destination entity!'; return; }
       if (!chkPrint && !chkDigital) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? '⚠️ يرجى اختيار طريقة استلام واحدة على الأقل!' : '⚠️ Please choose at least one delivery method!'; return; }
-      msg.style.color = '#38bdf8'; msg.innerText = currentLang === 'ar' ? '✅ تم إرسال طلب مفردات المرتب بنجاح للـ HR!' : '✅ Payslip request submitted to HR!';
+      msg.style.color = '#38bdf8'; msg.innerText = currentLang === 'ar' ? 'ℹ️ طلب مفردات المرتب غير مفعّل في النسخة التجريبية.' : 'ℹ️ Payslip requests are not enabled in this demo.';
       setTimeout(() => showPage('view-dashboard'), 1800);
     }
 
@@ -2738,7 +2721,16 @@
       appId: "1:671259800401:web:905e1a36adba52ba2d1970"
     };
     firebase.initializeApp(firebaseConfig);
+    const essLocalDate = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     const db = firebase.database();
+    const auth = firebase.auth();
+    // DEMO ONLY: fixed mapping for two test accounts. Replace with server-side lookup before production.
+    const ESS_TEST_EMAILS = Object.freeze({
+      '102': 'hr.naseemalakhwa@gmail.com',
+      '2': 'mostafa.mohamed21@gmail.com'
+    });
+    const essEmail = code => ESS_TEST_EMAILS[String(code)] || null;
+    localStorage.removeItem('lacto_saved_pass');
     let currentUserData = null;
     let currentEmpCode = "";
     let currentLang = localStorage.getItem('lacto_lang') || 'ar';
@@ -3127,7 +3119,7 @@
       const ledGreen = document.getElementById('ledGreen'); const ledRed = document.getElementById('ledRed');
       statusText.innerText = currentLang === 'ar' ? "جاري تحديد الموقع والتحقق من المأموريات..." : "Checking location & approved missions...";
       if (!navigator.geolocation) { statusText.innerText = currentLang === 'ar' ? "متصفحك لا يدعم الـ GPS." : "Geolocation not supported."; return; }
-      const now = new Date(); const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); const todayStr = now.toISOString().split('T')[0];
+      const now = new Date(); const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); const todayStr = essLocalDate(now);
       if (!currentEmpCode) return;
       db.ref('mission_requests/' + currentEmpCode).once('value').then(snap => {
         let hasApprovedMission = false;
@@ -3141,22 +3133,25 @@
             const distance = calculateDistance(userLat, userLng, COMPANY_LAT, COMPANY_LNG); const googleMapsUrl = `https://maps.google.com/?q=${userLat},${userLng}`;
             if (hasApprovedMission || distance <= ALLOWED_RADIUS_METERS) {
               const refPath = db.ref('attendance/' + currentEmpCode + '/' + todayStr);
-              refPath.once('value').then(snapshot => {
-                let attData = snapshot.val() || {}; let currentTimeMs = now.getTime();
-                if (!attData.inTime) {
-                  attData.inTime = timeStr; attData.inTimestamp = currentTimeMs; attData.inLocation = { lat: userLat, lng: userLng, mapUrl: googleMapsUrl, isMission: hasApprovedMission };
-                  statusText.innerText = hasApprovedMission ? (currentLang === 'ar' ? `📍 تم تسجيل حضور المأمورية الساعة ${timeStr}` : `📍 Mission Check-In at ${timeStr}`) : (currentLang === 'ar' ? `✅ تم تسجيل الحضور الساعة ${timeStr}` : `✅ Check-In saved at ${timeStr}`);
-                  ledGreen.classList.add('active'); ledRed.classList.remove('active');
-                } else {
-                  attData.outTime = timeStr; attData.outTimestamp = currentTimeMs; attData.outLocation = { lat: userLat, lng: userLng, mapUrl: googleMapsUrl, isMission: hasApprovedMission };
-                  const diffMs = attData.outTimestamp - attData.inTimestamp; const totalMins = Math.floor(diffMs / 60000);
-                  attData.workingHours = `${String(Math.floor(totalMins / 60)).padStart(2, '0')}:${String(totalMins % 60).padStart(2, '0')}`;
-                  statusText.innerText = hasApprovedMission ? (currentLang === 'ar' ? `📍 تم تسجيل انصراف المأمورية الساعة ${timeStr}` : `📍 Mission Check-Out at ${timeStr}`) : (currentLang === 'ar' ? `✅ تم تسجيل الانصراف الساعة ${timeStr}` : `✅ Check-Out recorded at ${timeStr}`);
-                  ledRed.classList.add('active'); ledGreen.classList.remove('active');
+              refPath.transaction(existing => {
+                const attData = existing || {};
+                if (!attData.inTimestamp) {
+                  return { inTime: timeStr, inTimestamp: now.getTime(), inLocation: { lat: userLat, lng: userLng, mapUrl: googleMapsUrl, isMission: hasApprovedMission } };
                 }
-                refPath.set(attData);
-                if (attData.inTime) valIn.innerText = attData.inTime; if (attData.outTime) valOut.innerText = attData.outTime; if (attData.workingHours) valWorking.innerText = attData.workingHours;
-              });
+                if (attData.outTimestamp || now.getTime() <= attData.inTimestamp) return; // Never overwrite an existing checkout.
+                const totalMins = Math.floor((now.getTime() - attData.inTimestamp) / 60000);
+                return { ...attData, outTime: timeStr, outTimestamp: now.getTime(), outLocation: { lat: userLat, lng: userLng, mapUrl: googleMapsUrl, isMission: hasApprovedMission }, workingHours: `${String(Math.floor(totalMins / 60)).padStart(2, '0')}:${String(totalMins % 60).padStart(2, '0')}` };
+              }, undefined, false).then(result => {
+                if (!result.committed) {
+                  statusText.innerText = currentLang === 'ar' ? '⚠️ تم تسجيل الحضور والانصراف بالفعل لهذا اليوم.' : '⚠️ Attendance already completed for today.';
+                  return;
+                }
+                const d = result.snapshot.val();
+                statusText.innerText = currentLang === 'ar' ? '✅ تم حفظ الحركة في Firebase' : '✅ Attendance saved in Firebase';
+                if (d.inTime) { valIn.innerText = d.inTime; ledGreen.classList.add('active'); }
+                if (d.outTime) { valOut.innerText = d.outTime; ledRed.classList.add('active'); ledGreen.classList.remove('active'); }
+                if (d.workingHours) valWorking.innerText = d.workingHours;
+              }).catch(err => { statusText.innerText = currentLang === 'ar' ? '❌ فشل حفظ الحضور في Firebase' : '❌ Attendance save failed'; console.error(err); });
             } else { statusText.innerText = currentLang === 'ar' ? `❌ خارج نطاق الشركة (${Math.round(distance)} متر) وليس لديك مأمورية معتمدة اليوم!` : `❌ Outside company radius (${Math.round(distance)}m) with no approved mission!`; }
           },
           () => { statusText.innerText = currentLang === 'ar' ? "تعذر الحصول على موقعك. تأكد من تفعيل الـ GPS." : "Unable to retrieve location."; },
@@ -3391,18 +3386,31 @@
         msg.innerText = currentLang === 'ar' ? "❌ حدث خطأ في الاتصال، حاول مرة أخرى." : "❌ Error occurred, try again."; 
       });
     }
-function login() {
-      const code = document.getElementById('empCode').value.trim(); const pass = document.getElementById('empPass').value.trim();
-      const rememberMe = document.getElementById('rememberMe').checked; const errorEl = document.getElementById('error');
-      if (!code) { errorEl.innerText = currentLang === 'ar' ? "يرجى إدخال كود الموظف" : "Please enter employee code"; return; }
-      db.ref('users/' + code).once('value').then((snapshot) => {
-        if (snapshot.exists()) {
-          const user = snapshot.val();
-          if (user.password !== pass) { errorEl.innerText = currentLang === 'ar' ? "كلمة السر غير صحيحة!" : "Incorrect password!"; return; }
-          currentUserData = user; currentEmpCode = code; errorEl.innerText = "";
-          if (rememberMe) { localStorage.setItem('lacto_saved_code', code); localStorage.setItem('lacto_saved_pass', pass); } 
-          else { localStorage.removeItem('lacto_saved_code'); localStorage.removeItem('lacto_saved_pass'); }
-
+async function login() {
+      const code = document.getElementById('empCode').value.trim();
+      const pass = document.getElementById('empPass').value;
+      const rememberMe = document.getElementById('rememberMe').checked;
+      const errorEl = document.getElementById('error');
+      errorEl.innerText = '';
+      if (!/^[0-9]+$/.test(code) || !pass) {
+        errorEl.innerText = currentLang === 'ar' ? 'أدخل كود الموظف وكلمة المرور' : 'Enter employee code and password'; return;
+      }
+      if (!essEmail(code)) {
+        errorEl.innerText = currentLang === 'ar' ? 'هذا الحساب غير متاح في النسخة التجريبية.' : 'This account is not enabled in the demo.';
+        return;
+      }
+      try {
+        await auth.setPersistence(rememberMe ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION);
+        const credential = await auth.signInWithEmailAndPassword(essEmail(code), pass);
+        const snapshot = await db.ref('users/' + code).once('value');
+        if (!snapshot.exists()) throw new Error('profile-missing');
+        const user = snapshot.val();
+        if (user.authUid !== credential.user.uid || user.status !== 'Active') throw new Error('inactive');
+        currentUserData = user; currentEmpCode = code;
+        if (rememberMe) localStorage.setItem('lacto_saved_code', code);
+        else localStorage.removeItem('lacto_saved_code');
+        localStorage.removeItem('lacto_saved_pass');
+        document.getElementById('empPass').value = '';
           document.getElementById('dash-name').innerText = user.name || "--"; document.getElementById('dash-code-val').innerText = code;
           const userPhotoUrl = user.photo || (code === 'amgad' || (user.name && user.name.includes('أمجد')) ? 'amgad.jpg' : 'https://i.pravatar.cc/150?img=12');
           document.getElementById('dash-avatar').src = userPhotoUrl; document.getElementById('userName').innerText = user.name || "--";
@@ -3450,7 +3458,7 @@ function login() {
           new QRCode(document.getElementById("qrcode"), { text: window.location.origin + window.location.pathname + "?emp=" + code, width: 85, height: 85 });
           showPage('view-dashboard');
 
-          db.ref('attendance/' + code + '/' + new Date().toISOString().split('T')[0]).once('value').then(attSnap => {
+          db.ref('attendance/' + code + '/' + essLocalDate(new Date())).once('value').then(attSnap => {
             if (attSnap.exists()) {
               const d = attSnap.val();
               if (d.inTime) { document.getElementById('valInTime').innerText = d.inTime; document.getElementById('ledGreen').classList.add('active'); }
@@ -3458,27 +3466,27 @@ function login() {
               if (d.workingHours) document.getElementById('valWorkingHours').innerText = d.workingHours;
             }
           });
-        } else { errorEl.innerText = currentLang === 'ar' ? "كود الموظف غير مسجل!" : "Employee code not found!"; }
-      });
-    }
-    function logout() { 
-      const rememberMe = document.getElementById('rememberMe').checked;
-      if (!rememberMe) {
-        localStorage.removeItem('lacto_saved_code'); 
-        localStorage.removeItem('lacto_saved_pass');
-        document.getElementById('empCode').value = '';
-        document.getElementById('empPass').value = '';
+      } catch (err) {
+        await auth.signOut().catch(() => {});
+        currentUserData = null; currentEmpCode = '';
+        errorEl.innerText = currentLang === 'ar' ? 'تعذر تسجيل الدخول. تحقق من الحساب والصلاحيات والاتصال.' : 'Sign-in failed. Check account, permissions and connection.';
+        console.error('ESS login error:', err.code || err.message);
       }
-      window.location.reload(); 
+    }
+    async function logout() {
+      await auth.signOut();
+      currentUserData = null; currentEmpCode = '';
+      localStorage.removeItem('lacto_saved_pass');
+      window.location.reload();
     }
 
     window.addEventListener('DOMContentLoaded', () => {
       populate24HourWheels(); selectLanguage(currentLang); resetSlideTimer();
-      const savedCode = localStorage.getItem('lacto_saved_code'); const savedPass = localStorage.getItem('lacto_saved_pass');
-      if (savedCode && savedPass) { 
-        document.getElementById('empCode').value = savedCode; 
-        document.getElementById('empPass').value = savedPass; 
-        document.getElementById('rememberMe').checked = true; 
+      const savedCode = localStorage.getItem('lacto_saved_code');
+      if (savedCode) {
+        document.getElementById('empCode').value = savedCode;
+        document.getElementById('empPass').value = '';
+        document.getElementById('rememberMe').checked = true;
       } else {
         document.getElementById('empCode').value = '';
         document.getElementById('empPass').value = '';
