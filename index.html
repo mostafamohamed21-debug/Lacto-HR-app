@@ -1098,6 +1098,17 @@
         .lm-card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
         .lm-card-actions button{flex:1;min-width:125px;background:#167cc0;border:0;border-radius:12px;color:white;padding:12px 8px;font-weight:700;cursor:pointer}
       </style>
+<style>
+#myCardToDownload,#lmCardBack{box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-height:245px!important;height:auto!important;aspect-ratio:1.75/1!important;overflow:visible!important;display:flex;flex-direction:column;justify-content:space-between;gap:8px;padding:14px!important}
+#myCardToDownload.hidden,#lmCardBack.hidden{display:none!important}
+#myCardToDownload .lm-bottom{gap:6px;min-width:0;align-items:flex-end}
+#myCardToDownload .lm-contact{min-width:0;flex:1;overflow-wrap:anywhere;font-size:clamp(9px,2.3vw,12px)}
+#myCardToDownload .lm-qr{flex:0 0 78px;max-width:78px}
+#myCardToDownload .lm-name{overflow-wrap:anywhere;font-size:clamp(15px,3.8vw,22px)}
+#lmCardBack{padding:0!important;overflow:hidden!important}
+#lmCardBack img{height:68%;object-fit:cover}
+@media(max-width:390px){#myCardToDownload{min-height:265px!important;padding:10px!important}#myCardToDownload .lm-qr{flex-basis:65px;max-width:65px}#myCardToDownload .lm-qr img,#myCardToDownload .lm-qr canvas{width:58px!important;height:58px!important}}
+</style>
       <div id="myCardToDownload" class="lm-business-card" aria-label="Employee digital business card">
         <div><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-weight:800;font-size:12px">LACTO MISR S.A.E</span><img src="logo.png" alt="Lacto Misr" style="width:54px;height:54px;object-fit:contain" onerror="this.style.display='none'"></div><h3 class="lm-name" id="userName">--</h3><p class="lm-role" id="userJob">--</p></div>
         <div class="lm-bottom"><div class="lm-contact"><div>☎ <span id="cardPhone">—</span></div><div>✉ <span id="cardEmail">—</span></div><div>⌖ Industrial Zone H6 No. 131, 10th of Ramadan</div></div><div class="lm-qr" id="qrcode"></div></div>
@@ -2195,8 +2206,8 @@
         const setValue = (id, value) => { const el = document.getElementById(id); if (el) el.value = value ?? ''; };
         const setText = (id, value) => { const el = document.getElementById(id); if (el) el.innerText = value ?? '--'; };
 
-        setText('profile-page-name', user.name || '--');
-        setText('profile-page-job', user.job || '--');
+        setText('profile-page-name', lmLocalizedUserField(user,'name'));
+        setText('profile-page-job', lmLocalizedUserField(user,'job'));
         setText('profile-page-dept', user.dept || '--');
         setText('profile-page-code', currentEmpCode);
 
@@ -2572,8 +2583,26 @@
       if (langMenu) langMenu.classList.toggle('show');
     }
 
+
+function lmLocalizedUserField(u,kind){
+ if(!u)return '--';
+ const ar=kind==='name'?['nameAr','name_ar','arabicName','nameArabic','name','الاسم','اسم الموظف']:kind==='job'?['jobAr','job_ar','jobTitleAr','job','jobTitle','الوظيفة']:['deptAr','departmentAr','dept','department'];
+ const en=kind==='name'?['nameEn','name_en','englishName','nameEnglish','employeeNameEn','الاسم بالانجليزية']:kind==='job'?['jobEn','job_en','jobTitleEn','jobEnglish','jobTitleEnglish']:['deptEn','departmentEn','departmentEnglish'];
+ const keys=currentLang==='en'?[...en,...ar]:ar;
+ for(const k of keys){if(typeof u[k]==='string'&&u[k].trim())return u[k].trim()}
+ return '--';
+}
+function lmRefreshEmployeeLanguage(){
+ if(!currentUserData)return;
+ const name=lmLocalizedUserField(currentUserData,'name'),job=lmLocalizedUserField(currentUserData,'job'),dept=lmLocalizedUserField(currentUserData,'dept');
+ for(const id of ['dash-name','userName','profile-page-name','slipEmpName','ticketEmpName']){const x=document.getElementById(id);if(x)x.textContent=name}
+ for(const id of ['userJob','profile-page-job']){const x=document.getElementById(id);if(x)x.textContent=job}
+ const d=document.getElementById('profile-page-dept');if(d)d.textContent=dept;
+}
+
     function selectLanguage(lang) {
       currentLang = lang;
+      lmRefreshEmployeeLanguage();
       localStorage.setItem('lacto_lang', lang);
 
       document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
@@ -3150,9 +3179,12 @@
         statusText.textContent='جاري إرسال طلب الحضور للمراجعة...';
         const now=new Date();
         const payload={type:'GPS_ATTENDANCE_REQUEST',code:String(currentEmpCode),clientDate:essLocalDate(now),clientTime:now.toLocaleTimeString('en-GB'),location:{lat,lng,isMission:mission},cameraCaptured:true,faceMatchVerified:false,verificationStatus:'PENDING_REVIEW',createdAt:firebase.database.ServerValue.TIMESTAMP};
+        const userCheck=await db.ref('users/'+currentEmpCode).once('value');
+        const userRecord=userCheck.val()||{};
+        if(userRecord.authUid!==auth.currentUser.uid || userRecord.status!=='Active') throw new Error('ACCOUNT_UID_OR_STATUS_MISMATCH');
         await db.ref('attendance_requests/'+currentEmpCode).push(payload);
         statusText.textContent='✅ تم إرسال طلب الحضور للمراجعة؛ لم يُعتمد كحضور رسمي بعد';
-      } catch(err) { console.error('Attendance request:',err);statusText.textContent='❌ تعذر إرسال طلب الحضور: '+(err.code||err.message||'خطأ'); }
+      } catch(err) { console.error('Attendance request:',err);statusText.textContent=(currentLang==='en'?'Attendance request failed: ':'تعذر إرسال طلب الحضور: ')+(err.code||err.message||'خطأ'); }
       finally {if(stream)stream.getTracks().forEach(t=>t.stop());}
     }
 
@@ -3407,17 +3439,17 @@ async function login() {
         else localStorage.removeItem('lacto_saved_code');
         localStorage.removeItem('lacto_saved_pass');
         document.getElementById('empPass').value = '';
-          document.getElementById('dash-name').innerText = user.name || "--"; document.getElementById('dash-code-val').innerText = code;
+          document.getElementById('dash-name').innerText = lmLocalizedUserField(user,'name'); document.getElementById('dash-code-val').innerText = code;
           const userPhotoUrl = user.photo || (code === 'amgad' || (user.name && user.name.includes('أمجد')) ? 'amgad.jpg' : 'https://i.pravatar.cc/150?img=12');
-          document.getElementById('dash-avatar').src = userPhotoUrl; document.getElementById('userName').innerText = user.name || "--";
-          document.getElementById('userJob').innerText = user.job || "--";
+          document.getElementById('dash-avatar').src = userPhotoUrl; document.getElementById('userName').innerText = lmLocalizedUserField(user,'name');
+          document.getElementById('userJob').innerText = lmLocalizedUserField(user,'job');
           document.getElementById('cardPhone').textContent = user.phone || user.mobile || '—'; document.getElementById('cardEmail').textContent = user.email || user.workEmail || '—';
           
 
           // تعبئة بيانات البروفايل المتقدمة
-          document.getElementById('profile-page-name').innerText = user.name || "--";
-          document.getElementById('profile-page-job').innerText = user.job || "--";
-          document.getElementById('profile-page-dept').innerText = user.dept || "--";
+          document.getElementById('profile-page-name').innerText = lmLocalizedUserField(user,'name');
+          document.getElementById('profile-page-job').innerText = lmLocalizedUserField(user,'job');
+          document.getElementById('profile-page-dept').innerText = lmLocalizedUserField(user,'dept');
           document.getElementById('profile-page-code').innerText = code;
           document.getElementById('profile-page-avatar').src = userPhotoUrl;
 
