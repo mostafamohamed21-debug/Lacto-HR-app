@@ -715,10 +715,11 @@
 
     .checkin-main-content { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0.2rem 0.5rem; }
     .fingerprint-icon-wrap {
-      width: 45px; height: 45px; background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.4);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+      width: 45px; height: 45px; background: transparent; border: 0;
+      border-radius: 0; display: flex; align-items: center; justify-content: center;
+      color: #38bdf8; box-shadow: none;
     }
-    .fingerprint-icon-wrap svg { width: 24px; height: 24px; fill: currentColor; }
+    .fingerprint-icon-wrap svg { width: 43px; height: 43px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.4)); }
     .checkin-status-text { font-size: 0.8rem; font-weight: 700; color: var(--text); }
 
     .announcement-card {
@@ -972,8 +973,21 @@
         </div>
         <div class="checkin-main-content">
           <div id="t-checkinStatusText" data-ar="اضغط هنا لتفعيل بصمة الـ GPS وتسجيل الحضور/الانصراف" data-en="Tap here to activate GPS check-in/out" class="checkin-status-text">اضغط هنا لتفعيل بصمة الـ GPS وتسجيل الحضور/الانصراف</div>
-          <div class="fingerprint-icon-wrap">
-            <svg viewBox="0 0 24 24"><path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 13.9 3 12 3s-3.66.42-5.58 1.41c-.15.08-.33.05-.45-.07-.12-.12-.15-.31-.07-.46C7.94 2.76 9.9 2.25 12 2.25s4.06.51 6.1 1.63c.15.08.21.27.13.43-.05.1-.15.16-.25.16zM12 9c-1.1 0-2 .9-2 2 0 .55.22 1.05.59 1.42l.98.98c.37.37.87.59 1.42.59 1.1 0 2-.9 2-2 0-1.1-.9-2-2-2zm6.75 3.75c-.41 0-.75.34-.75.75 0 2.9-2.35 5.25-5.25 5.25S7.5 16.4 7.5 13.5c0-.41-.34-.75-.75-.75s-.75.34-.75.75c0 3.79 3.09 6.88 6.88 6.88s6.88-3.09 6.88-6.88c0-.41-.34-.75-.75-.75z"/></svg>
+          <div class="fingerprint-icon-wrap" aria-hidden="true">
+            <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 21c0-9 7-16 16-16s16 7 16 16"/>
+              <path d="M12 22c0-7 5-13 12-13s12 6 12 13"/>
+              <path d="M16 23c0-5 3-9 8-9s8 4 8 9v5"/>
+              <path d="M20 24c0-3 1.5-5 4-5s4 2 4 5v7"/>
+              <path d="M24 24v11"/>
+              <path d="M8 27c0 6 1 11 4 15"/>
+              <path d="M12 26c0 8 2 14 6 18"/>
+              <path d="M16 28c0 8 2 12 5 16"/>
+              <path d="M28 36c-.5 4-1.5 7-3 9"/>
+              <path d="M32 32c0 5-1 9-3 12"/>
+              <path d="M36 27c0 8-1 13-4 17"/>
+              <path d="M40 26c0 8-1 13-4 17"/>
+            </svg>
           </div>
         </div>
       </div>
