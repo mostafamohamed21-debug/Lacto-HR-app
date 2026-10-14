@@ -3162,6 +3162,61 @@ function lmRefreshEmployeeLanguage(){
       return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
     }
 
+    // Pending punches are displayed separately from official attendance.
+    // A client request is NEVER interpreted as verified attendance.
+    let attendanceRequestsRef = null;
+    let officialAttendanceRef = null;
+    let attendanceRequestRows = {};
+    let officialAttendanceRow = {};
+    const attendanceClock = v => {
+      if (!v) return '--:--';
+      const str = String(v);
+      const match = str.match(/(\d{1,2}:\d{2})/);
+      return match ? match[1] : '--:--';
+    };
+    function paintAttendanceTime(id, value, state) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = attendanceClock(value);
+      el.style.color = state === 'approved' ? '#10b981' : state === 'pending' || state === 'rejected' ? '#ef4444' : 'var(--text)';
+      el.title = state === 'approved' ? (currentLang === 'en' ? 'Approved attendance' : 'حضور معتمد') :
+        state === 'rejected' ? (currentLang === 'en' ? 'Rejected — contact HR' : 'مرفوض — تواصل مع الموارد البشرية') :
+        state === 'pending' ? (currentLang === 'en' ? 'Awaiting verification' : 'بانتظار التحقق') : '';
+    }
+    function renderAttendanceClocks() {
+      const date = essLocalDate(new Date());
+      const rows = Object.values(attendanceRequestRows || {}).filter(r => r && r.clientDate === date);
+      rows.sort((a,b) => (Number(a.createdAt)||0) - (Number(b.createdAt)||0));
+      const isOut = r => r.punchType === 'OUT' || r.direction === 'OUT';
+      const isIn = r => r.punchType === 'IN' || r.direction === 'IN' || (!r.punchType && !r.direction);
+      const pick = fn => rows.filter(fn).slice(-1)[0];
+      const incoming = pick(isIn), outgoing = pick(isOut);
+      const display = (id, req, officialValue) => {
+        if (officialValue) { paintAttendanceTime(id, officialValue, 'approved'); return; }
+        if (!req) { paintAttendanceTime(id, null, 'none'); return; }
+        const status = String(req.verificationStatus || '').toUpperCase();
+        const approved = status === 'APPROVED' || status === 'VERIFIED';
+        const rejected = status === 'REJECTED';
+        paintAttendanceTime(id, req.clientTime, approved ? 'approved' : rejected ? 'rejected' : 'pending');
+      };
+      display('valInTime', incoming, officialAttendanceRow.inTime);
+      display('valOutTime', outgoing, officialAttendanceRow.outTime);
+      if (officialAttendanceRow.workingHours) document.getElementById('valWorkingHours').textContent = officialAttendanceRow.workingHours;
+    }
+    function detachAttendanceListeners() {
+      if (attendanceRequestsRef) attendanceRequestsRef.off('value');
+      if (officialAttendanceRef) officialAttendanceRef.off('value');
+      attendanceRequestsRef = null; officialAttendanceRef = null;
+      attendanceRequestRows = {}; officialAttendanceRow = {};
+    }
+    function watchAttendanceClocks(code) {
+      detachAttendanceListeners();
+      attendanceRequestsRef = db.ref('attendance_requests/' + code);
+      officialAttendanceRef = db.ref('attendance/' + code + '/' + essLocalDate(new Date()));
+      attendanceRequestsRef.on('value', snap => {attendanceRequestRows = snap.val() || {}; renderAttendanceClocks();}, err => console.warn('Attendance requests read:', err.code || err.message));
+      officialAttendanceRef.on('value', snap => {officialAttendanceRow = snap.val() || {}; renderAttendanceClocks();}, err => console.warn('Official attendance read:', err.code || err.message));
+    }
+
     async function verifyLocationAndCheckIn() {
       const statusText = document.getElementById('t-checkinStatusText');
       const tr = (ar, en) => currentLang === 'en' ? en : ar;
@@ -3198,7 +3253,7 @@ function lmRefreshEmployeeLanguage(){
         const userRecord=userCheck.val()||{};
         if(userRecord.authUid!==auth.currentUser.uid || userRecord.status!=='Active') throw new Error('ACCOUNT_UID_OR_STATUS_MISMATCH');
         await db.ref('attendance_requests/'+currentEmpCode).push(payload);
-        statusText.textContent=tr('✅ تم إرسال طلب الحضور للمراجعة؛ لم يُعتمد كحضور رسمي بعد','✅ Attendance request submitted for review; not yet recorded as official attendance');
+        statusText.textContent=tr('✅ تم تسجيل وقت طلب الحضور، وبانتظار التحقق','✅ Check-in request time recorded; awaiting verification');
       } catch(err) { console.error('Attendance request:',err);statusText.textContent=tr('تعذر إرسال طلب الحضور: ','Attendance request failed: ')+(err.code||err.message||tr('خطأ غير معروف','Unknown error')); }
       finally {if(stream)stream.getTracks().forEach(t=>t.stop());}
     }
@@ -3501,14 +3556,7 @@ async function login() {
           new QRCode(document.getElementById("qrcode"), { text: new URL("card.html?code=" + encodeURIComponent(code), window.location.href).href, width: 85, height: 85 });
           showPage('view-dashboard');
 
-          db.ref('attendance/' + code + '/' + essLocalDate(new Date())).once('value').then(attSnap => {
-            if (attSnap.exists()) {
-              const d = attSnap.val();
-              if (d.inTime) { document.getElementById('valInTime').innerText = d.inTime; document.getElementById('ledGreen').classList.add('active'); }
-              if (d.outTime) { document.getElementById('valOutTime').innerText = d.outTime; document.getElementById('ledRed').classList.add('active'); document.getElementById('ledGreen').classList.remove('active'); }
-              if (d.workingHours) document.getElementById('valWorkingHours').innerText = d.workingHours;
-            }
-          });
+          watchAttendanceClocks(code);
       } catch (err) {
         await auth.signOut().catch(() => {});
         currentUserData = null; currentEmpCode = '';
@@ -3517,6 +3565,7 @@ async function login() {
       }
     }
     async function logout() {
+      detachAttendanceListeners();
       await auth.signOut();
       currentUserData = null; currentEmpCode = '';
       localStorage.removeItem('lacto_saved_pass');
