@@ -3788,7 +3788,22 @@ function lmSaveContact(){const name=document.getElementById('userName').textCont
   document.getElementById('essReaderBack').textContent=t('← رجوع للإشعارات','← Back to notifications');
   const ack=document.getElementById('essReaderAck');ack.classList.add('hidden');ack.textContent='';
   if(n.requiresAcknowledgement===true||n.requiresAck===true){
-   ack.classList.remove('hidden');ack.textContent=t('هذه الرسالة تتطلب إقرارًا بالاطلاع. سيتم تفعيل الإقرار بعد اعتماد قواعد الصلاحيات الآمنة.','This message requires acknowledgement. Acknowledgement will be enabled after secure access rules are deployed.');
+   ack.classList.remove('hidden');
+   if(n.acknowledgement){ack.textContent=t('تم تسجيل ردك بالفعل.','Your response has been recorded.');}
+   else {
+    const heading=document.createElement('p');heading.textContent=t('هذه الرسالة تتطلب إقرارًا بالاطلاع.','This message requires acknowledgement.');ack.append(heading);
+    const yes=document.createElement('button');yes.type='button';yes.textContent=t('أقر أنني اطلعت على الرسالة','I have read this message');
+    const issue=document.createElement('button');issue.type='button';issue.textContent=t('تعذر الاطلاع / توجد مشكلة','Unable to read / report an issue');
+    [yes,issue].forEach(b=>{b.style.cssText='display:block;width:100%;margin:12px 0;padding:14px;border-radius:12px;background:#0369a1;color:white;font-weight:800';ack.append(b)});
+    const respond=async(status,reason)=>{
+     if(!auth.currentUser||!currentEmpCode)return;
+     yes.disabled=issue.disabled=true;
+     try{await db.ref('notifications/'+currentEmpCode+'/'+id+'/acknowledgement').set({status,reason,at:firebase.database.ServerValue.TIMESTAMP});ack.textContent=t('تم تسجيل ردك.','Your response has been recorded.');}
+     catch(e){yes.disabled=issue.disabled=false;alert(t('تعذر حفظ الرد. حاول مرة أخرى.','Could not save response. Try again.'));}
+    };
+    yes.onclick=()=>respond('ACKNOWLEDGED','');
+    issue.onclick=()=>{const reason=prompt(t('اكتب سبب المشكلة (مطلوب):','Please describe the issue (required):'));if(reason&&reason.trim())respond('ISSUE',reason.trim().slice(0,500));};
+   }
   }
   document.getElementById('notificationPopup').classList.remove('show');
   document.getElementById('essNotificationReader').classList.remove('hidden');
