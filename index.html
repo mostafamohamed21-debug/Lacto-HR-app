@@ -715,11 +715,10 @@
 
     .checkin-main-content { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0.2rem 0.5rem; }
     .fingerprint-icon-wrap {
-      width: 45px; height: 45px; background: transparent; border: 0;
-      border-radius: 0; display: flex; align-items: center; justify-content: center;
-      color: #38bdf8; box-shadow: none;
+      width: 45px; height: 45px; background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
     }
-    .fingerprint-icon-wrap svg { width: 43px; height: 43px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.4)); }
+    .fingerprint-icon-wrap svg { width: 24px; height: 24px; fill: currentColor; }
     .checkin-status-text { font-size: 0.8rem; font-weight: 700; color: var(--text); }
 
     .announcement-card {
@@ -973,21 +972,8 @@
         </div>
         <div class="checkin-main-content">
           <div id="t-checkinStatusText" data-ar="اضغط هنا لتفعيل بصمة الـ GPS وتسجيل الحضور/الانصراف" data-en="Tap here to activate GPS check-in/out" class="checkin-status-text">اضغط هنا لتفعيل بصمة الـ GPS وتسجيل الحضور/الانصراف</div>
-          <div class="fingerprint-icon-wrap" aria-hidden="true">
-            <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8 21c0-9 7-16 16-16s16 7 16 16"/>
-              <path d="M12 22c0-7 5-13 12-13s12 6 12 13"/>
-              <path d="M16 23c0-5 3-9 8-9s8 4 8 9v5"/>
-              <path d="M20 24c0-3 1.5-5 4-5s4 2 4 5v7"/>
-              <path d="M24 24v11"/>
-              <path d="M8 27c0 6 1 11 4 15"/>
-              <path d="M12 26c0 8 2 14 6 18"/>
-              <path d="M16 28c0 8 2 12 5 16"/>
-              <path d="M28 36c-.5 4-1.5 7-3 9"/>
-              <path d="M32 32c0 5-1 9-3 12"/>
-              <path d="M36 27c0 8-1 13-4 17"/>
-              <path d="M40 26c0 8-1 13-4 17"/>
-            </svg>
+          <div class="fingerprint-icon-wrap">
+            <svg viewBox="0 0 24 24"><path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 13.9 3 12 3s-3.66.42-5.58 1.41c-.15.08-.33.05-.45-.07-.12-.12-.15-.31-.07-.46C7.94 2.76 9.9 2.25 12 2.25s4.06.51 6.1 1.63c.15.08.21.27.13.43-.05.1-.15.16-.25.16zM12 9c-1.1 0-2 .9-2 2 0 .55.22 1.05.59 1.42l.98.98c.37.37.87.59 1.42.59 1.1 0 2-.9 2-2 0-1.1-.9-2-2-2zm6.75 3.75c-.41 0-.75.34-.75.75 0 2.9-2.35 5.25-5.25 5.25S7.5 16.4 7.5 13.5c0-.41-.34-.75-.75-.75s-.75.34-.75.75c0 3.79 3.09 6.88 6.88 6.88s6.88-3.09 6.88-6.88c0-.41-.34-.75-.75-.75z"/></svg>
           </div>
         </div>
       </div>
@@ -3164,41 +3150,42 @@ function lmRefreshEmployeeLanguage(){
 
     async function verifyLocationAndCheckIn() {
       const statusText = document.getElementById('t-checkinStatusText');
-      if (!currentEmpCode || !auth.currentUser) { statusText.textContent='يرجى تسجيل الدخول أولاً';return; }
-      if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {statusText.textContent='الكاميرا تتطلب HTTPS ومتصفحًا يدعم الكاميرا';return;}
+      const tr = (ar, en) => currentLang === 'en' ? en : ar;
+      if (!currentEmpCode || !auth.currentUser) { statusText.textContent=tr('يرجى تسجيل الدخول أولاً','Please sign in first');return; }
+      if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {statusText.textContent=tr('الكاميرا تتطلب HTTPS ومتصفحًا يدعم الكاميرا','Camera access requires HTTPS and a compatible browser');return;}
       let stream;
       try {
-        statusText.textContent='جاري طلب إذن الكاميرا...';
+        statusText.textContent=tr('جاري طلب إذن الكاميرا...','Requesting camera permission...');
         stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});
         const video=document.createElement('video');video.autoplay=true;video.muted=true;video.playsInline=true;
         video.srcObject=stream; await video.play();
         const confirmed=await new Promise(resolve=>{
           const overlay=document.createElement('div');overlay.style.cssText='position:fixed;inset:0;z-index:999999;background:#061122ee;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;padding:24px;color:white';
           video.style.cssText='width:min(90vw,390px);max-height:60vh;border-radius:20px;object-fit:cover';
-          const yes=document.createElement('button');yes.textContent='📸 التقاط صورة وإرسال طلب حضور للمراجعة';yes.style.cssText='background:#0784bf;color:white;padding:14px;border-radius:12px';
-          const no=document.createElement('button');no.textContent='إلغاء';no.style.cssText='background:#334155;color:white;padding:12px;border-radius:12px';
+          const yes=document.createElement('button');yes.textContent=tr('📸 التقاط صورة وإرسال طلب حضور للمراجعة','📸 Capture photo and submit attendance for review');yes.style.cssText='background:#0784bf;color:white;padding:14px;border-radius:12px';
+          const no=document.createElement('button');no.textContent=tr('إلغاء','Cancel');no.style.cssText='background:#334155;color:white;padding:12px;border-radius:12px';
           overlay.append(video,yes,no);document.body.append(overlay);
           yes.onclick=()=>{const canvas=document.createElement('canvas');canvas.width=video.videoWidth||320;canvas.height=video.videoHeight||240;canvas.getContext('2d').drawImage(video,0,0,canvas.width,canvas.height);canvas.width=0;canvas.height=0;overlay.remove();resolve(true)};no.onclick=()=>{overlay.remove();resolve(false)};
         });
-        if(!confirmed){statusText.textContent='تم إلغاء طلب الحضور';return;}
+        if(!confirmed){statusText.textContent=tr('تم إلغاء طلب الحضور','Attendance request cancelled');return;}
         // Camera preview is a capture gate only; no face matching is claimed or performed.
-        statusText.textContent='جاري تحديد الموقع...';
-        if(!navigator.geolocation) throw Error('GPS غير مدعوم');
+        statusText.textContent=tr('جاري تحديد الموقع...','Getting your location...');
+        if(!navigator.geolocation) throw Error(tr('GPS غير مدعوم','GPS is not supported'));
         const position=await new Promise((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:true,timeout:15000,maximumAge:0}));
         const lat=position.coords.latitude,lng=position.coords.longitude;
         const distance=calculateDistance(lat,lng,COMPANY_LAT,COMPANY_LNG);
         let mission=false;
         try {const ms=await db.ref('mission_requests/'+currentEmpCode).once('value');const today=essLocalDate(new Date());mission=Object.values(ms.val()||{}).some(m=>m.date===today&&(m.status==='Approved'||m.hrApproved===true));}catch(e){console.warn('Mission read',e)}
-        if(!mission && distance>ALLOWED_RADIUS_METERS){statusText.textContent='❌ خارج نطاق الشركة ('+Math.round(distance)+' متر)';return;}
-        statusText.textContent='جاري إرسال طلب الحضور للمراجعة...';
+        if(!mission && distance>ALLOWED_RADIUS_METERS){statusText.textContent=tr('❌ خارج نطاق الشركة (','❌ Outside company area (')+Math.round(distance)+tr(' متر)',' meters)');return;}
+        statusText.textContent=tr('جاري إرسال طلب الحضور للمراجعة...','Submitting attendance request for review...');
         const now=new Date();
         const payload={type:'GPS_ATTENDANCE_REQUEST',code:String(currentEmpCode),clientDate:essLocalDate(now),clientTime:now.toLocaleTimeString('en-GB'),location:{lat,lng,isMission:mission},cameraCaptured:true,faceMatchVerified:false,verificationStatus:'PENDING_REVIEW',createdAt:firebase.database.ServerValue.TIMESTAMP};
         const userCheck=await db.ref('users/'+currentEmpCode).once('value');
         const userRecord=userCheck.val()||{};
         if(userRecord.authUid!==auth.currentUser.uid || userRecord.status!=='Active') throw new Error('ACCOUNT_UID_OR_STATUS_MISMATCH');
         await db.ref('attendance_requests/'+currentEmpCode).push(payload);
-        statusText.textContent='✅ تم إرسال طلب الحضور للمراجعة؛ لم يُعتمد كحضور رسمي بعد';
-      } catch(err) { console.error('Attendance request:',err);statusText.textContent=(currentLang==='en'?'Attendance request failed: ':'تعذر إرسال طلب الحضور: ')+(err.code||err.message||'خطأ'); }
+        statusText.textContent=tr('✅ تم إرسال طلب الحضور للمراجعة؛ لم يُعتمد كحضور رسمي بعد','✅ Attendance request submitted for review; not yet recorded as official attendance');
+      } catch(err) { console.error('Attendance request:',err);statusText.textContent=tr('تعذر إرسال طلب الحضور: ','Attendance request failed: ')+(err.code||err.message||tr('خطأ غير معروف','Unknown error')); }
       finally {if(stream)stream.getTracks().forEach(t=>t.stop());}
     }
 
