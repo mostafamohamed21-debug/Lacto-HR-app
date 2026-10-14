@@ -3735,5 +3735,47 @@ function lmSaveContact(){const name=document.getElementById('userName').textCont
  setInterval(()=>{if(typeof auth!=='undefined'&&auth.currentUser&&typeof currentEmpCode!=='undefined'&&currentEmpCode&&!ref)bind()},3000);
 })();
 </script>
+
+<!-- ESS push subscription: permission is requested only after an employee clicks. -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"></script>
+<script>
+(function(){
+  const VAPID_PUBLIC_KEY = 'BNjA-1t2mxQPULJG5YGTiJiE0COHWUemN9QGguGI5rtp-Alm1l8velvUolpDZl7Q7PWbAUDweUAimvxW4m0G-DY';
+  const ar=(a,e)=>typeof currentLang!=='undefined'&&currentLang==='en'?e:a;
+  function pushMessage(s){const el=document.getElementById('essPushStatus');if(el)el.textContent=s;}
+  function ensureButton(){
+    const popup=document.getElementById('notificationPopup');if(!popup||document.getElementById('essPushEnable'))return;
+    const btn=document.createElement('button');btn.id='essPushEnable';btn.type='button';btn.style.cssText='font-size:.76rem;padding:.55rem;margin-top:.7rem;border-radius:.7rem';
+    btn.textContent=ar('تفعيل إشعارات الهاتف','Enable phone notifications');btn.onclick=enablePush;
+    const status=document.createElement('div');status.id='essPushStatus';status.style.cssText='font-size:.72rem;line-height:1.6;margin-top:.4rem;color:var(--muted)';
+    popup.append(btn,status);
+  }
+  async function enablePush(){
+    const btn=document.getElementById('essPushEnable');if(btn)btn.disabled=true;
+    try{
+      if(!auth.currentUser||!currentEmpCode)throw Error(ar('سجّل الدخول أولاً','Please sign in first'));
+      if(!window.isSecureContext||!('serviceWorker'in navigator)||!('Notification'in window)||!firebase.messaging.isSupported())throw Error(ar('المتصفح لا يدعم إشعارات الويب','Web push is not supported on this browser'));
+      if(VAPID_PUBLIC_KEY.startsWith('REPLACE_'))throw Error(ar('يلزم إضافة مفتاح VAPID من Firebase أولاً','Firebase VAPID key must be configured first'));
+      const permission=await Notification.requestPermission();if(permission!=='granted')throw Error(ar('لم يتم منح إذن الإشعارات','Notification permission was not granted'));
+      const registration=await navigator.serviceWorker.register('./firebase-messaging-sw.js',{scope:'./'});
+      const messaging=firebase.messaging();messaging.useServiceWorker(registration);
+      const token=await messaging.getToken({vapidKey:VAPID_PUBLIC_KEY,serviceWorkerRegistration:registration});
+      if(!token)throw Error(ar('لم يتم إصدار رمز الجهاز','No device token returned'));
+      const bytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(token));
+      const id=Array.from(new Uint8Array(bytes)).map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,40);
+      await db.ref('push_subscriptions/'+String(currentEmpCode)+'/'+auth.currentUser.uid+'/'+id).set({token:token,updatedAt:firebase.database.ServerValue.TIMESTAMP,platform:'web'});
+      messaging.onMessage(payload=>{
+        const title=payload.notification?.title||ar('إشعار جديد','New notification');
+        const body=payload.notification?.body||'';
+        pushMessage(title+(body?' — '+body:''));
+      });
+      pushMessage(ar('تم ربط هذا المتصفح لاستقبال الإشعارات','This browser is registered for push notifications'));
+    }catch(err){console.warn('ESS push:',err);pushMessage(err.message||String(err));}
+    finally{if(btn)btn.disabled=false;}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ensureButton);else ensureButton();
+  window.addEventListener('languagechange',()=>{const b=document.getElementById('essPushEnable');if(b)b.textContent=ar('تفعيل إشعارات الهاتف','Enable phone notifications')});
+})();
+</script>
 </body>
 </html>
