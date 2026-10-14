@@ -2982,16 +2982,17 @@ function lmRefreshEmployeeLanguage(){
     function populate24HourWheels() {
       const createWheelItems = (containerId, max, defaultVal) => {
         const box = document.getElementById(containerId); if (!box) return; box.innerHTML = '';
-        const cycles = 25; let middleIndex = 0; let currentIndex = 0;
-        box.innerHTML += `<div class="wheel-item"></div>`; currentIndex++;
+        const cycles = 3; let middleIndex = 0; let currentIndex = 0;
+        let html = '<div class="wheel-item"></div>'; currentIndex++;
         for (let c = 0; c < cycles; c++) {
           for (let i = 0; i < max; i++) {
-            const valStr = String(i).padStart(2, '0'); const isSelected = (c === 12 && valStr === defaultVal);
+            const valStr = String(i).padStart(2, '0'); const isSelected = (c === 1 && valStr === defaultVal);
             if (isSelected) middleIndex = currentIndex;
-            box.innerHTML += `<div class="wheel-item ${isSelected ? 'selected' : ''}">${valStr}</div>`; currentIndex++;
+            html += `<div class="wheel-item ${isSelected ? 'selected' : ''}">${valStr}</div>`; currentIndex++;
           }
         }
-        box.innerHTML += `<div class="wheel-item"></div>`;
+        html += '<div class="wheel-item"></div>';
+        box.innerHTML = html;
         setTimeout(() => {
           isProgrammaticScroll = true;
           box.scrollTop = (middleIndex * 30) - 30;
@@ -3036,27 +3037,31 @@ function lmRefreshEmployeeLanguage(){
     }
 
     const lastWheelIndices = {};
+    const wheelAnimationFrames = {};
     function handleWheelScroll(wheelId, targetInputId) {
-      const wheel = document.getElementById(wheelId); if (!wheel) return;
-      const items = wheel.querySelectorAll('.wheel-item');
-      let selectedIndex = Math.round(wheel.scrollTop / 30) + 1;
-      if (selectedIndex < 1) selectedIndex = 1; if (selectedIndex >= items.length - 1) selectedIndex = items.length - 2;
-
-      if (lastWheelIndices[wheelId] !== selectedIndex) {
+      if (wheelAnimationFrames[wheelId]) return;
+      wheelAnimationFrames[wheelId] = requestAnimationFrame(() => {
+        wheelAnimationFrames[wheelId] = null;
+        const wheel = document.getElementById(wheelId); if (!wheel) return;
+        const items = wheel.children;
+        const selectedIndex = Math.max(1, Math.min(items.length - 2, Math.round(wheel.scrollTop / 30) + 1));
+        const previous = lastWheelIndices[wheelId];
+        if (previous === selectedIndex) return;
         lastWheelIndices[wheelId] = selectedIndex;
-        if (!isProgrammaticScroll) window.playClickSound(); 
-      }
-
-      items.forEach((item, idx) => {
-        const dist = Math.abs(idx - selectedIndex);
-        if (idx === selectedIndex) {
-          item.classList.add('selected'); item.style.transform = 'scale(1.1) rotateX(0deg)'; item.style.opacity = '1'; document.getElementById(targetInputId).value = item.innerText.trim();
-        } else {
-          item.classList.remove('selected'); const angle = (idx - selectedIndex) * 28;
-          item.style.transform = `scale(${Math.max(0.7, 1 - dist * 0.18)}) rotateX(${angle}deg)`; item.style.opacity = `${Math.max(0.25, 1 - dist * 0.35)}`;
+        if (previous !== undefined && !isProgrammaticScroll && typeof window.playClickSound === 'function') window.playClickSound();
+        // Update only the visible neighbours; don't repaint hundreds of hidden items.
+        if (previous !== undefined && items[previous]) items[previous].classList.remove('selected');
+        for (let i = Math.max(1, selectedIndex - 3); i <= Math.min(items.length - 2, selectedIndex + 3); i++) {
+          const item = items[i]; const dist = Math.abs(i - selectedIndex);
+          item.classList.toggle('selected', i === selectedIndex);
+          item.style.transform = `scale(${Math.max(0.7, 1 - dist * 0.18)}) rotateX(${(i - selectedIndex) * 28}deg)`;
+          item.style.opacity = String(Math.max(0.25, 1 - dist * 0.35));
         }
+        const input = document.getElementById(targetInputId);
+        if (input) input.value = items[selectedIndex].textContent.trim();
+        updateAmPmBadges();
+        if (wheelId.startsWith('from') || wheelId.startsWith('to')) calculateRequestedDuration();
       });
-      updateAmPmBadges(); if (wheelId.startsWith('from') || wheelId.startsWith('to')) calculateRequestedDuration();
     }
 
     function calculateRequestedDuration() {
