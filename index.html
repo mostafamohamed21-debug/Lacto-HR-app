@@ -346,7 +346,7 @@
     .brand-logo {
       width: 36px; height: 36px; object-fit: contain; border-radius: 10px;
       transform-style: preserve-3d; animation: rotateLogo3D 6s linear infinite;
-      filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.7));
+      filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.7)); -webkit-mask-image: radial-gradient(ellipse 72% 72% at center, #000 58%, transparent 100%); mask-image: radial-gradient(ellipse 72% 72% at center, #000 58%, transparent 100%);
     }
     @keyframes rotateLogo3D {
       0% { transform: perspective(500px) rotateY(0deg); }
@@ -882,6 +882,16 @@
     </div>
   </div>
 
+  <!-- Full-screen employee notification reader -->
+  <section id="essNotificationReader" class="hidden" role="dialog" aria-modal="true" aria-labelledby="essReaderTitle">
+    <div class="ess-reader-shell">
+      <button type="button" class="ess-reader-back" onclick="essCloseNotification()" id="essReaderBack">← رجوع للإشعارات</button>
+      <div class="ess-reader-meta" id="essReaderMeta"></div>
+      <h1 id="essReaderTitle"></h1>
+      <article id="essReaderBody"></article>
+      <div id="essReaderAck" class="hidden"></div>
+    </div>
+  </section>
   <!-- App Header & Tools -->
   <div class="app-header">
     <div class="brand-container">
@@ -1325,7 +1335,7 @@
 
         <div style="background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 1rem; padding: 0.8rem; font-size: 0.78rem; color: #38bdf8; line-height: 1.5; text-align: right;">
           📍 <strong data-ar="تنبيه نظام بصمة المأموريات (GPS):" data-en="GPS Mission Notice:">تنبيه نظام بصمة المأموريات (GPS):</strong><br>
-          <span data-ar="بمجرد موافقة مدير الإدارة وكذلك الـ HR على المأمورية، سيتم منحك كامل الصلاحية لتسجيل الحضور والانصراف من أي مكان، وسيتم إرسال الموقع الإلكتروني للـ HR." data-en="Upon approval from your Department Manager & HR, full authority will be granted to check in/out from any location, and location data will be submitted directly to HR.">بمجرد موافقة مدير الإدارة وكذلك الـ HR على المأمورية، سيتم منحك كامل الصلاحية لتسجيل الحضور والانصراف من أي مكان، وسيتم إرسال الموقع الإلكتروني للـ HR.</span>
+          <span data-ar="بمجرد موافقة مدير الإدارة وكذلك الـ HR على المأمورية، سيتم منحك كامل الصلاحية لتسجيل الحضور والانصراف من أي مكان، وسيتم إرسال الموقع الجغرافي للـ HR." data-en="Upon approval from your Department Manager & HR, full authority will be granted to check in/out from any location, and location data will be submitted directly to HR.">بمجرد موافقة مدير الإدارة وكذلك الـ HR على المأمورية، سيتم منحك كامل الصلاحية لتسجيل الحضور والانصراف من أي مكان، وسيتم إرسال الموقع الجغرافي للـ HR.</span>
         </div>
 
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="تاريخ المأمورية:" data-en="Mission Date:">تاريخ المأمورية:</label>
@@ -3730,23 +3740,57 @@ async function lmDownloadCard(){
 function lmSaveContact(){const name=document.getElementById('userName').textContent;const job=document.getElementById('userJob').textContent;const phone=document.getElementById('cardPhone').textContent;const email=document.getElementById('cardEmail').textContent;const esc=v=>String(v||'').split('\\').join('\\\\').split(',').join('\\,').split(';').join('\\;').split(String.fromCharCode(10)).join('\\n');const v=['BEGIN:VCARD','VERSION:3.0','FN:'+esc(name),'ORG:Lacto Misr','TITLE:'+esc(job),'TEL;TYPE=WORK:'+esc(phone),'EMAIL;TYPE=WORK:'+esc(email),'URL:https://www.lactomisr.com','ADR;TYPE=WORK:;;Industrial Zone H6 No. 131;10th of Ramadan;;;Egypt','END:VCARD'].join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([v],{type:'text/vcard;charset=utf-8'}));a.download='Lacto_Misr_Contact.vcf';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 </script>
 
+<style>
+#essNotificationReader{position:fixed;inset:0;z-index:1000005;overflow-y:auto;background:var(--bg);color:var(--text);padding:calc(env(safe-area-inset-top, 0px) + 22px) 16px 45px}
+#essNotificationReader.hidden{display:none!important}
+.ess-reader-shell{max-width:720px;margin:auto;min-height:80vh;padding:18px 14px;text-align:start}
+.ess-reader-back{width:auto!important;padding:12px 18px!important;margin-bottom:25px!important;border-radius:14px!important;font-size:1rem!important}
+.ess-reader-meta{font-size:.9rem;color:var(--muted);margin:0 0 12px}
+#essReaderTitle{font-size:clamp(1.55rem,6vw,2.3rem);line-height:1.5;color:var(--accent);overflow-wrap:anywhere;margin-bottom:24px}
+#essReaderBody{font-size:clamp(1.2rem,4.8vw,1.55rem);line-height:2;white-space:pre-wrap;overflow-wrap:anywhere}
+.ess-notification-item{display:block;width:100%;text-align:start;cursor:pointer;padding:12px 8px;border:0;border-bottom:1px solid var(--border-color);background:transparent;color:var(--text);box-shadow:none!important}
+.ess-notification-item strong{display:block;font-size:.95rem}.ess-notification-item small{display:block;color:var(--muted);font-size:.75rem}
+#essReaderAck{margin-top:30px;padding:16px;border:1px solid var(--border-color);border-radius:15px}
+</style>
 <script>
 (function(){
- let listener=null,ref=null;
+ let listener=null,ref=null,items=new Map(),active=null;
+ const t=(ar,en)=>document.documentElement.lang==='en'?en:ar;
+ const escTime=v=>{if(typeof v!=='number')return '';try{return new Date(v).toLocaleString(document.documentElement.lang==='en'?'en-GB':'ar-EG')}catch(e){return ''}};
  function bind(){
   if(ref&&listener){ref.off('value',listener);ref=null;listener=null;}
   if(typeof auth==='undefined'||!auth.currentUser||typeof currentEmpCode==='undefined'||!currentEmpCode)return;
-  ref=db.ref('notifications/'+currentEmpCode).limitToLast(30);
+  ref=db.ref('notifications/'+currentEmpCode).limitToLast(50);
   listener=snap=>{
-   const values=Object.values(snap.val()||{}).reverse();
+   items=new Map();const rows=[];snap.forEach(child=>{const n=child.val();if(n&&typeof n==='object'){items.set(child.key,n);rows.push([child.key,n]);}});rows.reverse();
    const box=document.querySelector('.notification-popup-desc');if(!box)return;
    box.replaceChildren();
-   if(!values.length){box.textContent='لا توجد إشعارات جديدة';return;}
-   values.forEach(n=>{const el=document.createElement('div');el.style.cssText='border-bottom:1px solid #445;padding:10px 0;white-space:pre-wrap';const strong=document.createElement('strong');strong.textContent=n.title||'إشعار';const p=document.createElement('p');p.textContent=n.body||'';el.append(strong,p);box.append(el);});
+   if(!rows.length){box.textContent=t('لا توجد إشعارات جديدة','No new notifications');return;}
+   rows.forEach(([id,n])=>{
+    const el=document.createElement('button');el.type='button';el.className='ess-notification-item';
+    const strong=document.createElement('strong');strong.textContent=n.title||t('إشعار','Notification');
+    const small=document.createElement('small');small.textContent=escTime(n.sentAt||n.createdAt||n.timestamp)||t('اضغط لقراءة الرسالة','Tap to read');
+    el.append(strong,small);el.addEventListener('click',()=>window.essOpenNotification(id));box.append(el);
+   });
+   if(active&&!items.has(active))window.essCloseNotification();
   };ref.on('value',listener,e=>console.warn('Notifications:',e));
  }
+ window.essOpenNotification=function(id){
+  const n=items.get(id);if(!n)return;active=id;
+  document.getElementById('essReaderTitle').textContent=n.title||t('إشعار','Notification');
+  document.getElementById('essReaderBody').textContent=n.body||n.message||'';
+  document.getElementById('essReaderMeta').textContent=escTime(n.sentAt||n.createdAt||n.timestamp);
+  document.getElementById('essReaderBack').textContent=t('← رجوع للإشعارات','← Back to notifications');
+  const ack=document.getElementById('essReaderAck');ack.classList.add('hidden');ack.textContent='';
+  if(n.requiresAcknowledgement===true||n.requiresAck===true){
+   ack.classList.remove('hidden');ack.textContent=t('هذه الرسالة تتطلب إقرارًا بالاطلاع. سيتم تفعيل الإقرار بعد اعتماد قواعد الصلاحيات الآمنة.','This message requires acknowledgement. Acknowledgement will be enabled after secure access rules are deployed.');
+  }
+  document.getElementById('notificationPopup').classList.remove('show');
+  document.getElementById('essNotificationReader').classList.remove('hidden');
+  document.body.style.overflow='hidden';
+ };
+ window.essCloseNotification=function(){active=null;document.getElementById('essNotificationReader').classList.add('hidden');document.body.style.overflow='';};
  if(typeof auth!=='undefined')auth.onAuthStateChanged(()=>setTimeout(bind,500));
- const orig=window.showPage;if(typeof orig==='function')window.showPage=function(){const r=orig.apply(this,arguments);setTimeout(bind,0);return r};
  setInterval(()=>{if(typeof auth!=='undefined'&&auth.currentUser&&typeof currentEmpCode!=='undefined'&&currentEmpCode&&!ref)bind()},3000);
 })();
 </script>
