@@ -3191,8 +3191,15 @@ function lmRefreshEmployeeLanguage(){
       // This also supports historical requests without a punchType field.
       const incoming = rows[0] || null;
       const outgoing = rows.length > 1 ? rows[rows.length - 1] : null;
-      document.getElementById('ledGreen')?.classList.toggle('active', !!incoming || !!officialAttendanceRow.inTimestamp || !!officialAttendanceRow.inTime);
-      document.getElementById('ledRed')?.classList.toggle('active', !!outgoing || !!officialAttendanceRow.outTimestamp || !!officialAttendanceRow.outTime);
+      // Exactly ONE indicator represents the most recent punch of the workday.
+      // First punch = IN (green); every subsequent punch = OUT (red).
+      // Official records are a fallback only when there are no request rows.
+      const hasIn = !!(officialAttendanceRow.inTimestamp || officialAttendanceRow.inTime);
+      const hasOut = !!(officialAttendanceRow.outTimestamp || officialAttendanceRow.outTime);
+      const latestIsOut = rows.length > 1 || (rows.length === 0 && hasOut);
+      const latestIsIn = !latestIsOut && (rows.length === 1 || hasIn);
+      document.getElementById('ledGreen')?.classList.toggle('active', latestIsIn);
+      document.getElementById('ledRed')?.classList.toggle('active', latestIsOut);
       const display = (id, req, officialValue) => {
         if (officialValue) { paintAttendanceTime(id, officialValue, 'approved'); return; }
         if (!req) { paintAttendanceTime(id, null, 'none'); return; }
