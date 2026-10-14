@@ -3187,17 +3187,20 @@ function lmRefreshEmployeeLanguage(){
       const date = essLocalDate(new Date());
       const rows = Object.values(attendanceRequestRows || {}).filter(r => r && r.clientDate === date);
       rows.sort((a,b) => (Number(a.createdAt)||0) - (Number(b.createdAt)||0));
-      const isOut = r => r.punchType === 'OUT' || r.direction === 'OUT';
-      const isIn = r => r.punchType === 'IN' || r.direction === 'IN' || (!r.punchType && !r.direction);
-      const pick = fn => rows.filter(fn).slice(-1)[0];
-      const incoming = pick(isIn), outgoing = pick(isOut);
+      // First daily punch is IN; the latest subsequent punch is OUT.
+      // This also supports historical requests without a punchType field.
+      const incoming = rows[0] || null;
+      const outgoing = rows.length > 1 ? rows[rows.length - 1] : null;
+      document.getElementById('ledGreen')?.classList.toggle('active', !!incoming || !!officialAttendanceRow.inTimestamp || !!officialAttendanceRow.inTime);
+      document.getElementById('ledRed')?.classList.toggle('active', !!outgoing || !!officialAttendanceRow.outTimestamp || !!officialAttendanceRow.outTime);
       const display = (id, req, officialValue) => {
         if (officialValue) { paintAttendanceTime(id, officialValue, 'approved'); return; }
         if (!req) { paintAttendanceTime(id, null, 'none'); return; }
         const status = String(req.verificationStatus || '').toUpperCase();
         const approved = status === 'APPROVED' || status === 'VERIFIED';
         const rejected = status === 'REJECTED';
-        paintAttendanceTime(id, req.clientTime, approved ? 'approved' : rejected ? 'rejected' : 'pending');
+        const trustedTime = typeof req.createdAt === 'number' ? new Date(req.createdAt).toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit', timeZone:'Africa/Cairo'}) : req.clientTime;
+        paintAttendanceTime(id, trustedTime, approved ? 'approved' : rejected ? 'rejected' : 'pending');
       };
       display('valInTime', incoming, officialAttendanceRow.inTime);
       display('valOutTime', outgoing, officialAttendanceRow.outTime);
@@ -3246,14 +3249,19 @@ function lmRefreshEmployeeLanguage(){
         let mission=false;
         try {const ms=await db.ref('mission_requests/'+currentEmpCode).once('value');const today=essLocalDate(new Date());mission=Object.values(ms.val()||{}).some(m=>m.date===today&&(m.status==='Approved'||m.hrApproved===true));}catch(e){console.warn('Mission read',e)}
         if(!mission && distance>ALLOWED_RADIUS_METERS){statusText.textContent=tr('❌ خارج نطاق الشركة (','❌ Outside company area (')+Math.round(distance)+tr(' متر)',' meters)');return;}
-        statusText.textContent=tr('جاري إرسال طلب الحضور للمراجعة...','Submitting attendance request for review...');
+        statusText.textContent=tr('جاري إرسال طلب البصمة للمراجعة...','Submitting punch for review...');
         const now=new Date();
-        const payload={type:'GPS_ATTENDANCE_REQUEST',code:String(currentEmpCode),clientDate:essLocalDate(now),clientTime:now.toLocaleTimeString('en-GB'),location:{lat,lng,isMission:mission},cameraCaptured:true,faceMatchVerified:false,verificationStatus:'PENDING_REVIEW',createdAt:firebase.database.ServerValue.TIMESTAMP};
+        // The first successful request today is IN; every later one updates the last OUT.
+        const todayKey = essLocalDate(now);
+        const existingSnap = await db.ref('attendance_requests/'+currentEmpCode).once('value');
+        const existingToday = Object.values(existingSnap.val() || {}).filter(r => r && r.clientDate === todayKey);
+        const punchType = existingToday.length === 0 ? 'IN' : 'OUT';
+        const payload={type:'GPS_ATTENDANCE_REQUEST',punchType,code:String(currentEmpCode),clientDate:essLocalDate(now),clientTime:now.toLocaleTimeString('en-GB'),location:{lat,lng,isMission:mission},cameraCaptured:true,faceMatchVerified:false,verificationStatus:'PENDING_REVIEW',createdAt:firebase.database.ServerValue.TIMESTAMP};
         const userCheck=await db.ref('users/'+currentEmpCode).once('value');
         const userRecord=userCheck.val()||{};
         if(userRecord.authUid!==auth.currentUser.uid || userRecord.status!=='Active') throw new Error('ACCOUNT_UID_OR_STATUS_MISMATCH');
         await db.ref('attendance_requests/'+currentEmpCode).push(payload);
-        statusText.textContent=tr('✅ تم تسجيل وقت طلب الحضور، وبانتظار التحقق','✅ Check-in request time recorded; awaiting verification');
+        statusText.textContent=punchType==='IN' ? tr('تم تسجيل وقت الحضور وبانتظار التحقق','Check-in time saved; awaiting verification') : tr('تم تسجيل وقت الانصراف وبانتظار التحقق','Check-out time saved; awaiting verification');
       } catch(err) { console.error('Attendance request:',err);statusText.textContent=tr('تعذر إرسال طلب الحضور: ','Attendance request failed: ')+(err.code||err.message||tr('خطأ غير معروف','Unknown error')); }
       finally {if(stream)stream.getTracks().forEach(t=>t.stop());}
     }
