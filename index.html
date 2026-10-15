@@ -3228,9 +3228,25 @@ function lmRefreshEmployeeLanguage(){
       display('valOutTime', outgoing, officialAttendanceRow.outTime);
       if (officialAttendanceRow.workingHours) document.getElementById('valWorkingHours').textContent = officialAttendanceRow.workingHours;
     }
+    let approvedAttendanceRef=null, approvedAttendanceRows={};
+    function renderApprovedAttendanceHours(){
+      const today=essLocalDate(new Date());
+      const ev=Object.values(approvedAttendanceRows||{}).filter(r=>r&&r.dayKey===today&&['IN','OUT'].includes(r.punchType)&&Number.isFinite(Number(r.punchTimestamp))).sort((a,b)=>Number(a.punchTimestamp)-Number(b.punchTimestamp));
+      const firstIn=ev.find(r=>r.punchType==='IN');
+      const firstOut=firstIn&&ev.find(r=>r.punchType==='OUT'&&Number(r.punchTimestamp)>Number(firstIn.punchTimestamp));
+      if(firstIn)paintAttendanceTime('valInTime',new Date(Number(firstIn.punchTimestamp)).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Africa/Cairo'}),'approved');
+      if(firstOut)paintAttendanceTime('valOutTime',new Date(Number(firstOut.punchTimestamp)).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Africa/Cairo'}),'approved');
+      const hours=document.getElementById('valWorkingHours');
+      if(hours&&ev.length){
+        if(firstIn&&firstOut){const mins=Math.floor((Number(firstOut.punchTimestamp)-Number(firstIn.punchTimestamp))/60000);hours.textContent=String(Math.floor(mins/60)).padStart(2,'0')+':'+String(mins%60).padStart(2,'0');}
+        else hours.textContent='--:--';
+      }
+    }
     function detachAttendanceListeners() {
       if (attendanceRequestsRef) attendanceRequestsRef.off('value');
       if (officialAttendanceRef) officialAttendanceRef.off('value');
+      if (approvedAttendanceRef) approvedAttendanceRef.off('value');
+      approvedAttendanceRef=null;approvedAttendanceRows={};
       attendanceRequestsRef = null; officialAttendanceRef = null;
       attendanceRequestRows = {}; officialAttendanceRow = {};
     }
@@ -3238,8 +3254,10 @@ function lmRefreshEmployeeLanguage(){
       detachAttendanceListeners();
       attendanceRequestsRef = db.ref('attendance_requests/' + code);
       officialAttendanceRef = db.ref('attendance/' + code + '/' + essLocalDate(new Date()));
-      attendanceRequestsRef.on('value', snap => {attendanceRequestRows = snap.val() || {}; renderAttendanceClocks();}, err => console.warn('Attendance requests read:', err.code || err.message));
-      officialAttendanceRef.on('value', snap => {officialAttendanceRow = snap.val() || {}; renderAttendanceClocks();}, err => console.warn('Official attendance read:', err.code || err.message));
+      approvedAttendanceRef = db.ref('approved_attendance/' + code);
+      approvedAttendanceRef.on('value', snap=>{approvedAttendanceRows=snap.val()||{};renderAttendanceClocks();renderApprovedAttendanceHours()},err=>console.warn('Approved attendance read:',err.code||err.message));
+      attendanceRequestsRef.on('value', snap => {attendanceRequestRows = snap.val() || {}; renderAttendanceClocks();renderApprovedAttendanceHours();}, err => console.warn('Attendance requests read:', err.code || err.message));
+      officialAttendanceRef.on('value', snap => {officialAttendanceRow = snap.val() || {}; renderAttendanceClocks();renderApprovedAttendanceHours();}, err => console.warn('Official attendance read:', err.code || err.message));
     }
 
     // Selection is a UI intent, never an approved attendance record.
@@ -3261,6 +3279,19 @@ function lmRefreshEmployeeLanguage(){
       if(String(currentEmpCode)!=='2'){essPunchBusy=false;statusText.textContent=tr('الاختبار متاح للكود 2 فقط','Pilot is restricted to code 2');return;}
       if(!essSelectedPunch){essPunchBusy=false;statusText.textContent=tr('اختر حضور أو انصراف من اللمبتين أولاً','Select Check In or Check Out first');return;}
       const selectedPunch=essSelectedPunch;
+      // Preflight before requesting camera or GPS; server-side rules remain authoritative.
+      try{
+        const today=essLocalDate(new Date());
+        const pre=await db.ref('attendance_requests/'+currentEmpCode).once('value');
+        const active=Object.values(pre.val()||{}).filter(r=>r&&r.clientDate===today&&r.verificationStatus!=='REJECTED');
+        if(active.some(r=>r.punchType===selectedPunch)){
+          statusText.textContent=selectedPunch==='IN'?tr('تم تسجيل الحضور من قبل اليوم','Check-in was already recorded today'):tr('تم تسجيل الانصراف من قبل اليوم','Check-out was already recorded today');
+          essPunchBusy=false;return;
+        }
+        if(selectedPunch==='OUT'&&!active.some(r=>r.punchType==='IN')){
+          statusText.textContent=tr('سجّل الحضور أولًا قبل الانصراف','Check in before checking out');essPunchBusy=false;return;
+        }
+      }catch(preErr){console.error('Attendance preflight:',preErr);statusText.textContent=tr('تعذر التحقق من البصمات السابقة، حاول مجددًا','Could not verify previous punches; please retry');essPunchBusy=false;return;}
       if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {essPunchBusy=false;statusText.textContent=tr('الكاميرا تتطلب HTTPS ومتصفحًا يدعم الكاميرا','Camera access requires HTTPS and a compatible browser');return;}
       let stream;
       let selfieData=null;
@@ -3303,7 +3334,7 @@ function lmRefreshEmployeeLanguage(){
         await db.ref('attendance_requests/'+currentEmpCode).push(payload);
         essSelectedPunch=null;
         statusText.textContent=punchType==='IN' ? tr('تم تسجيل وقت الحضور وبانتظار التحقق','Check-in time saved; awaiting verification') : tr('تم تسجيل وقت الانصراف وبانتظار التحقق','Check-out time saved; awaiting verification');
-      } catch(err) { console.error('Attendance request:',err);statusText.textContent=tr('تعذر إرسال طلب الحضور: ','Attendance request failed: ')+(err.code||err.message||tr('خطأ غير معروف','Unknown error')); }
+      } catch(err) { console.error('Attendance request:',err);statusText.textContent=err.message==='PUNCH_ALREADY_REQUESTED_TODAY' ? (selectedPunch==='IN'?tr('تم تسجيل الحضور من قبل اليوم','Check-in already recorded today'):tr('تم تسجيل الانصراف من قبل اليوم','Check-out already recorded today')) : err.message==='CHECK_IN_REQUIRED_FIRST'?tr('سجّل الحضور أولًا','Check in first'):tr('تعذر إرسال طلب البصمة، يرجى المحاولة مجددًا أو التواصل مع الموارد البشرية','Could not submit punch; please retry or contact HR'); }
       finally {essPunchBusy=false;if(stream)stream.getTracks().forEach(t=>t.stop());}
     }
 
