@@ -1003,11 +1003,11 @@
       </div>
 
       <div class="external-attendance-bar">
-        <div class="action-btn-item">
+        <div class="action-btn-item" role="button" tabindex="0" onclick="essSelectPunch('OUT')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();essSelectPunch('OUT')}" aria-label="Select check out">
           <div id="ledRed" class="indicator-dot dot-red"></div>
           <span class="glowing-action-text" data-ar="تسجيل انصراف" data-en="Check Out">تسجيل انصراف</span>
         </div>
-        <div class="action-btn-item">
+        <div class="action-btn-item" role="button" tabindex="0" onclick="essSelectPunch('IN')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();essSelectPunch('IN')}" aria-label="Select check in">
           <span class="glowing-action-text" data-ar="تسجيل حضور" data-en="Check In">تسجيل حضور</span>
           <div id="ledGreen" class="indicator-dot dot-green"></div>
         </div>
@@ -3242,12 +3242,29 @@ function lmRefreshEmployeeLanguage(){
       officialAttendanceRef.on('value', snap => {officialAttendanceRow = snap.val() || {}; renderAttendanceClocks();}, err => console.warn('Official attendance read:', err.code || err.message));
     }
 
+    // Selection is a UI intent, never an approved attendance record.
+    let essSelectedPunch = null;
+    function essSelectPunch(type) {
+      essSelectedPunch = type === 'OUT' ? 'OUT' : 'IN';
+      document.getElementById('ledGreen')?.classList.toggle('active',essSelectedPunch==='IN');
+      document.getElementById('ledRed')?.classList.toggle('active',essSelectedPunch==='OUT');
+      const el=document.getElementById('t-checkinStatusText');
+      if(el) el.textContent=(currentLang==='en' ? 'Selected ' + (essSelectedPunch==='IN'?'Check In':'Check Out') + '. Tap the fingerprint button to capture selfie and GPS.' : 'تم اختيار '+(essSelectedPunch==='IN'?'الحضور':'الانصراف')+' — اضغط زر البصمة لتشغيل الكاميرا والموقع.');
+    }
+    let essPunchBusy=false;
     async function verifyLocationAndCheckIn() {
+      if(essPunchBusy)return;
+      essPunchBusy=true;
       const statusText = document.getElementById('t-checkinStatusText');
       const tr = (ar, en) => currentLang === 'en' ? en : ar;
-      if (!currentEmpCode || !auth.currentUser) { statusText.textContent=tr('يرجى تسجيل الدخول أولاً','Please sign in first');return; }
-      if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {statusText.textContent=tr('الكاميرا تتطلب HTTPS ومتصفحًا يدعم الكاميرا','Camera access requires HTTPS and a compatible browser');return;}
+      if (!currentEmpCode || !auth.currentUser) { essPunchBusy=false;statusText.textContent=tr('يرجى تسجيل الدخول أولاً','Please sign in first');return; }
+      if(String(currentEmpCode)!=='2'){essPunchBusy=false;statusText.textContent=tr('الاختبار متاح للكود 2 فقط','Pilot is restricted to code 2');return;}
+      if(!essSelectedPunch){essPunchBusy=false;statusText.textContent=tr('اختر حضور أو انصراف من اللمبتين أولاً','Select Check In or Check Out first');return;}
+      const selectedPunch=essSelectedPunch;
+      if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {essPunchBusy=false;statusText.textContent=tr('الكاميرا تتطلب HTTPS ومتصفحًا يدعم الكاميرا','Camera access requires HTTPS and a compatible browser');return;}
       let stream;
+      let selfieData=null;
+      const attemptStartedAt=Date.now();
       try {
         statusText.textContent=tr('جاري طلب إذن الكاميرا...','Requesting camera permission...');
         stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});
@@ -3259,9 +3276,9 @@ function lmRefreshEmployeeLanguage(){
           const yes=document.createElement('button');yes.textContent=tr('📸 التقاط صورة وإرسال طلب حضور للمراجعة','📸 Capture photo and submit attendance for review');yes.style.cssText='background:#0784bf;color:white;padding:14px;border-radius:12px';
           const no=document.createElement('button');no.textContent=tr('إلغاء','Cancel');no.style.cssText='background:#334155;color:white;padding:12px;border-radius:12px';
           overlay.append(video,yes,no);document.body.append(overlay);
-          yes.onclick=()=>{const canvas=document.createElement('canvas');canvas.width=video.videoWidth||320;canvas.height=video.videoHeight||240;canvas.getContext('2d').drawImage(video,0,0,canvas.width,canvas.height);canvas.width=0;canvas.height=0;overlay.remove();resolve(true)};no.onclick=()=>{overlay.remove();resolve(false)};
+          yes.onclick=()=>{try{const canvas=document.createElement('canvas');const w=video.videoWidth||320,h=video.videoHeight||240;const scale=Math.min(1,320/Math.max(w,h));canvas.width=Math.max(1,Math.round(w*scale));canvas.height=Math.max(1,Math.round(h*scale));canvas.getContext('2d').drawImage(video,0,0,canvas.width,canvas.height);selfieData=canvas.toDataURL('image/jpeg',0.52);canvas.width=0;canvas.height=0;if(selfieData.length>55000)throw Error('SELFIE_TOO_LARGE');overlay.remove();resolve(true)}catch(e){overlay.remove();resolve(false)}};no.onclick=()=>{overlay.remove();resolve(false)};
         });
-        if(!confirmed){statusText.textContent=tr('تم إلغاء طلب الحضور','Attendance request cancelled');return;}
+        if(!confirmed||!selfieData){statusText.textContent=tr('تم إلغاء طلب الحضور','Attendance request cancelled');return;}
         // Camera preview is a capture gate only; no face matching is claimed or performed.
         statusText.textContent=tr('جاري تحديد الموقع...','Getting your location...');
         if(!navigator.geolocation) throw Error(tr('GPS غير مدعوم','GPS is not supported'));
@@ -3273,19 +3290,21 @@ function lmRefreshEmployeeLanguage(){
         if(!mission && distance>ALLOWED_RADIUS_METERS){statusText.textContent=tr('❌ خارج نطاق الشركة (','❌ Outside company area (')+Math.round(distance)+tr(' متر)',' meters)');return;}
         statusText.textContent=tr('جاري إرسال طلب البصمة للمراجعة...','Submitting punch for review...');
         const now=new Date();
-        // The first successful request today is IN; every later one updates the last OUT.
         const todayKey = essLocalDate(now);
         const existingSnap = await db.ref('attendance_requests/'+currentEmpCode).once('value');
-        const existingToday = Object.values(existingSnap.val() || {}).filter(r => r && r.clientDate === todayKey);
-        const punchType = existingToday.length === 0 ? 'IN' : 'OUT';
-        const payload={type:'GPS_ATTENDANCE_REQUEST',punchType,code:String(currentEmpCode),clientDate:essLocalDate(now),clientTime:now.toLocaleTimeString('en-GB'),location:{lat,lng,isMission:mission},cameraCaptured:true,faceMatchVerified:false,verificationStatus:'PENDING_REVIEW',createdAt:firebase.database.ServerValue.TIMESTAMP};
+        const existingToday = Object.values(existingSnap.val() || {}).filter(r => r && r.clientDate === todayKey && r.verificationStatus !== 'REJECTED');
+        const punchType = selectedPunch;
+        if(existingToday.some(r=>r.punchType===punchType)) throw Error('PUNCH_ALREADY_REQUESTED_TODAY');
+        if(punchType==='OUT' && !existingToday.some(r=>r.punchType==='IN')) throw Error('CHECK_IN_REQUIRED_FIRST');
+        const payload={selfieData,attemptStartedAt,type:'GPS_ATTENDANCE_REQUEST',punchType,code:String(currentEmpCode),clientDate:essLocalDate(now),clientTime:now.toLocaleTimeString('en-GB'),location:{lat,lng,isMission:mission},cameraCaptured:true,faceMatchVerified:false,verificationStatus:'PENDING_REVIEW',createdAt:firebase.database.ServerValue.TIMESTAMP};
         const userCheck=await db.ref('users/'+currentEmpCode).once('value');
         const userRecord=userCheck.val()||{};
         if(userRecord.authUid!==auth.currentUser.uid || userRecord.status!=='Active') throw new Error('ACCOUNT_UID_OR_STATUS_MISMATCH');
         await db.ref('attendance_requests/'+currentEmpCode).push(payload);
+        essSelectedPunch=null;
         statusText.textContent=punchType==='IN' ? tr('تم تسجيل وقت الحضور وبانتظار التحقق','Check-in time saved; awaiting verification') : tr('تم تسجيل وقت الانصراف وبانتظار التحقق','Check-out time saved; awaiting verification');
       } catch(err) { console.error('Attendance request:',err);statusText.textContent=tr('تعذر إرسال طلب الحضور: ','Attendance request failed: ')+(err.code||err.message||tr('خطأ غير معروف','Unknown error')); }
-      finally {if(stream)stream.getTracks().forEach(t=>t.stop());}
+      finally {essPunchBusy=false;if(stream)stream.getTracks().forEach(t=>t.stop());}
     }
 
     function resetLeaveForm() {
