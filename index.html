@@ -3228,6 +3228,44 @@ function lmRefreshEmployeeLanguage(){
       display('valOutTime', outgoing, officialAttendanceRow.outTime);
       if (officialAttendanceRow.workingHours) document.getElementById('valWorkingHours').textContent = officialAttendanceRow.workingHours;
     }
+    // RAAD1: status is derived from live request AND its finalized ledger entry.
+    // Never announce verification solely because verificationStatus says APPROVED.
+    function renderLivePunchVerificationStatus(){
+      const el=document.getElementById('t-checkinStatusText');
+      if(!el || !currentEmpCode || String(currentEmpCode)!=='2')return;
+      const today=essLocalDate(new Date());
+      const rows=Object.entries(attendanceRequestRows||{})
+        .filter(([id,r])=>r && r.clientDate===today && (r.punchType==='IN'||r.punchType==='OUT'))
+        .sort((a,b)=>Number(b[1].createdAt||0)-Number(a[1].createdAt||0));
+      if(!rows.length)return;
+      const [id,r]=rows[0];
+      const isIn=r.punchType==='IN';
+      const status=String(r.verificationStatus||'').toUpperCase();
+      const ledger=approvedAttendanceRows?.[id];
+      const finalized=status==='APPROVED' && ledger && ledger.requestId===id &&
+        ledger.code===String(currentEmpCode) && ledger.punchType===r.punchType &&
+        Number(ledger.punchTimestamp)===Number(r.createdAt);
+      let ar,en;
+      if(finalized){
+        ar=isIn?'تم تسجيل الحضور وتم التحقق بنجاح':'تم تسجيل الانصراف وتم التحقق بنجاح';
+        en=isIn?'Check-in recorded and verified successfully':'Check-out recorded and verified successfully';
+      }else if(status==='REJECTED'){
+        ar=isIn?'تم رفض بصمة الحضور — راجع الموارد البشرية':'تم رفض بصمة الانصراف — راجع الموارد البشرية';
+        en=isIn?'Check-in rejected — contact HR':'Check-out rejected — contact HR';
+      }else if(status==='HELD'){
+        ar=isIn?'بصمة الحضور معلقة للمراجعة':'بصمة الانصراف معلقة للمراجعة';
+        en=isIn?'Check-in on hold for review':'Check-out on hold for review';
+      }else if(status==='APPROVED'){
+        ar='تم الاعتماد، وجارٍ استكمال تسجيل البصمة';
+        en='Approved; finalizing attendance record';
+      }else{
+        ar=isIn?'تم تسجيل الحضور وبانتظار التحقق':'تم تسجيل الانصراف وبانتظار التحقق';
+        en=isIn?'Check-in recorded; awaiting verification':'Check-out recorded; awaiting verification';
+      }
+      el.setAttribute('data-ar',ar);
+      el.setAttribute('data-en',en);
+      el.textContent=currentLang==='en'?en:ar;
+    }
     let approvedAttendanceRef=null, approvedAttendanceRows={};
     function renderApprovedAttendanceHours(){
       const today=essLocalDate(new Date());
@@ -3255,9 +3293,9 @@ function lmRefreshEmployeeLanguage(){
       attendanceRequestsRef = db.ref('attendance_requests/' + code);
       officialAttendanceRef = db.ref('attendance/' + code + '/' + essLocalDate(new Date()));
       approvedAttendanceRef = db.ref('approved_attendance/' + code);
-      approvedAttendanceRef.on('value', snap=>{approvedAttendanceRows=snap.val()||{};renderAttendanceClocks();renderApprovedAttendanceHours()},err=>console.warn('Approved attendance read:',err.code||err.message));
-      attendanceRequestsRef.on('value', snap => {attendanceRequestRows = snap.val() || {}; renderAttendanceClocks();renderApprovedAttendanceHours();}, err => console.warn('Attendance requests read:', err.code || err.message));
-      officialAttendanceRef.on('value', snap => {officialAttendanceRow = snap.val() || {}; renderAttendanceClocks();renderApprovedAttendanceHours();}, err => console.warn('Official attendance read:', err.code || err.message));
+      approvedAttendanceRef.on('value', snap=>{approvedAttendanceRows=snap.val()||{};renderAttendanceClocks();renderApprovedAttendanceHours();renderLivePunchVerificationStatus()},err=>console.warn('Approved attendance read:',err.code||err.message));
+      attendanceRequestsRef.on('value', snap => {attendanceRequestRows = snap.val() || {}; renderAttendanceClocks();renderApprovedAttendanceHours();renderLivePunchVerificationStatus();}, err => console.warn('Attendance requests read:', err.code || err.message));
+      officialAttendanceRef.on('value', snap => {officialAttendanceRow = snap.val() || {}; renderAttendanceClocks();renderApprovedAttendanceHours();renderLivePunchVerificationStatus();}, err => console.warn('Official attendance read:', err.code || err.message));
     }
 
     // Selection is a UI intent, never an approved attendance record.
