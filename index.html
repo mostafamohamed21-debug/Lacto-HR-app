@@ -1052,18 +1052,18 @@
 
       <div class="summaries-grid">
         <div class="summary-card clickable-card" onclick="showPage('view-leave-request')">
-          <div class="summary-title"><span data-ar="رصيد الإجازات" data-en="Leave Balance">رصيد الإجازات</span><span style="font-size:0.75rem; color: #38bdf8;" data-ar="46% مستهلك" data-en="46% Consumed">46% مستهلك</span></div>
-          <div class="summary-value" data-ar="21 يوم" data-en="21 Days">21 يوم</div>
-          <div class="progress-bar-container"><div class="progress-bar-fill" id="leavesProgressBar" style="width: 46.6%;"></div></div>
+          <div class="summary-title"><span data-ar="رصيد الإجازات" data-en="Leave Balance">رصيد الإجازات</span><span style="font-size:0.75rem; color: #38bdf8;" id="leaveConsumptionLabel" data-ar="غير متاح" data-en="Unavailable">غير متاح</span></div>
+          <div class="summary-value" id="dashLeaveBalance" data-ar="غير متاح" data-en="Unavailable">غير متاح</div>
+          <div class="progress-bar-container"><div class="progress-bar-fill" id="leavesProgressBar" style="width: 0%;"></div></div>
         </div>
 
         <div class="summary-card clickable-card" onclick="showPage('view-permission-request')">
-          <div class="summary-title"><span data-ar="الأذونات المتاحة" data-en="Available Permissions">الأذونات المتاحة</span><span style="font-size:0.75rem; color: #38bdf8;" id="permRatioText" data-ar="100% متاح" data-en="100% Available">100% متاح</span></div>
+          <div class="summary-title"><span data-ar="الأذونات المتاحة" data-en="Available Permissions">الأذونات المتاحة</span><span style="font-size:0.75rem; color: #38bdf8;" id="permRatioText" data-ar="غير متاح" data-en="Unavailable">غير متاح</span></div>
 
           <div class="flip-clock-display compact" style="margin: 0.6rem 0 0.3rem 0;">
             <div class="flip-unit-box">
               <div class="flip-card-digit">
-                <span class="digit-val-glow" id="dashCntHours">04</span>
+                <span class="digit-val-glow" id="dashCntHours">—</span>
               </div>
               <span class="digit-sub-text" data-ar="ساعة" data-en="Hours">ساعة</span>
             </div>
@@ -1196,7 +1196,7 @@
 
       <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 1rem; padding: 0.75rem 1rem; margin-bottom: 1rem;">
         <span style="font-size: 0.8rem; color: var(--muted);" data-ar="رصيد الإجازات المتاح:" data-en="Available Leave Balance:">رصيد الإجازات المتاح:</span>
-        <span style="font-size: 0.95rem; font-weight: 800; color: #38bdf8;" id="leaveBalanceVal" data-ar="21 يوم" data-en="21 Days">21 يوم</span>
+        <span style="font-size: 0.95rem; font-weight: 800; color: #38bdf8;" id="leaveBalanceVal" data-ar="غير متاح" data-en="Unavailable">غير متاح</span>
       </div>
 
       <div style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;" id="leaveFormWrapper">
@@ -1435,18 +1435,18 @@
         <div class="payslip-breakdown-container">
           <div>
             <div class="payslip-col-title earnings" data-ar="➕ الاستحقاقات" data-en="➕ Earnings">➕ الاستحقاقات</div>
-            <div class="payslip-item"><span class="payslip-item-label" data-ar="أجر شامل:" data-en="Gross Salary:">أجر شامل:</span><span class="payslip-item-val">18,500</span></div>
-            <div class="payslip-item"><span class="payslip-item-label" data-ar="بدلات مستحقة:" data-en="Allowances:">بدلات مستحقة:</span><span class="payslip-item-val">2,500</span></div>
-            <div class="payslip-item" style="border-top:1px dashed var(--border-color); padding-top:0.3rem; margin-top:0.3rem;"><strong style="color:#38bdf8;" data-ar="الإجمالي:" data-en="Total:">الإجمالي:</strong><strong style="color:#38bdf8;">21,000</strong></div>
+            <div class="payslip-item"><span class="payslip-item-label" data-ar="أجر شامل:" data-en="Gross Salary:">أجر شامل:</span><span class="payslip-item-val">—</span></div>
+            <div class="payslip-item"><span class="payslip-item-label" data-ar="بدلات مستحقة:" data-en="Allowances:">بدلات مستحقة:</span><span class="payslip-item-val">—</span></div>
+            <div class="payslip-item" style="border-top:1px dashed var(--border-color); padding-top:0.3rem; margin-top:0.3rem;"><strong style="color:#38bdf8;" data-ar="الإجمالي:" data-en="Total:">الإجمالي:</strong><strong style="color:#38bdf8;">—</strong></div>
           </div>
           <div>
             <div class="payslip-col-title deductions" data-ar="➖ الاستقطاعات" data-en="➖ Deductions">➖ الاستقطاعات</div>
-            <div class="payslip-item"><span class="payslip-item-label" data-ar="جزاءات:" data-en="Penalties:">جزاءات:</span><span class="payslip-item-val">300</span></div>
-            <div class="payslip-item"><span class="payslip-item-label" data-ar="خصومات التأخيرات:" data-en="Late Deductions:">خصومات التأخيرات:</span><span class="payslip-item-val">150</span></div>
-            <div class="payslip-item"><span class="payslip-item-label" data-ar="تأمينات الموظف (11%):" data-en="Insurance (11%):">تأمينات الموظف (11%):</span><span class="payslip-item-val">1,573</span></div>
-            <div class="payslip-item"><span class="payslip-item-label" data-ar="ضريبة الدخل:" data-en="Income Tax:">ضريبة الدخل:</span><span class="payslip-item-val">1,850</span></div>
-            <div class="payslip-item"><span class="payslip-item-label" data-ar="أقساط سلفة:" data-en="Loan Installment:">أقساط سلفة:</span><span class="payslip-item-val">850</span></div>
-            <div class="payslip-item" style="border-top:1px dashed var(--border-color); padding-top:0.3rem; margin-top:0.3rem;"><strong style="color:#ef4444;" data-ar="الإجمالي:" data-en="Total:">الإجمالي:</strong><strong style="color:#ef4444;">4,723</strong></div>
+            <div class="payslip-item"><span class="payslip-item-label" data-ar="جزاءات:" data-en="Penalties:">جزاءات:</span><span class="payslip-item-val">—</span></div>
+            <div class="payslip-item"><span class="payslip-item-label" data-ar="خصومات التأخيرات:" data-en="Late Deductions:">خصومات التأخيرات:</span><span class="payslip-item-val">—</span></div>
+            <div class="payslip-item"><span class="payslip-item-label" data-ar="تأمينات الموظف (11%):" data-en="Insurance (11%):">تأمينات الموظف (11%):</span><span class="payslip-item-val">—</span></div>
+            <div class="payslip-item"><span class="payslip-item-label" data-ar="ضريبة الدخل:" data-en="Income Tax:">ضريبة الدخل:</span><span class="payslip-item-val">—</span></div>
+            <div class="payslip-item"><span class="payslip-item-label" data-ar="أقساط سلفة:" data-en="Loan Installment:">أقساط سلفة:</span><span class="payslip-item-val">—</span></div>
+            <div class="payslip-item" style="border-top:1px dashed var(--border-color); padding-top:0.3rem; margin-top:0.3rem;"><strong style="color:#ef4444;" data-ar="الإجمالي:" data-en="Total:">الإجمالي:</strong><strong style="color:#ef4444;">—</strong></div>
           </div>
         </div>
       </div>
@@ -2822,7 +2822,7 @@ function lmRefreshEmployeeLanguage(){
         deptEn: portalField(raw,'department'),
         phone: portalField(raw,'phone'),
         photo: portalField(raw,'photoUrl'),
-        annualLeaveBalance: Number(portalField(raw,'annual leave balance','رصيد الاجازات')) || 0
+        annualLeaveBalance: portalField(raw,'annual leave balance','رصيد الاجازات','رصيد الإجازات')
       };
     }
     localStorage.removeItem('lacto_saved_pass');
@@ -3712,6 +3712,20 @@ async function login() {
           document.getElementById('profilePhoneInput').value = user.phone || "";
           document.getElementById('profileEmergencyPhoneInput').value = user.emergencyPhone || "";
 
+          // Show only the live balance from the authenticated employee record.
+          const balanceRaw = user.annualLeaveBalance;
+          const balanceValid = balanceRaw !== '' && balanceRaw !== null && balanceRaw !== undefined && Number.isFinite(Number(balanceRaw));
+          const balanceNumber = balanceValid ? Number(balanceRaw) : null;
+          const balanceAr = balanceValid ? `${balanceNumber} يوم` : 'غير متاح';
+          const balanceEn = balanceValid ? `${balanceNumber} Days` : 'Unavailable';
+          for (const id of ['dashLeaveBalance', 'leaveBalanceVal']) {
+            const el = document.getElementById(id);
+            if (el) { el.setAttribute('data-ar', balanceAr); el.setAttribute('data-en', balanceEn); el.textContent = currentLang === 'en' ? balanceEn : balanceAr; }
+          }
+          const consumption = document.getElementById('leaveConsumptionLabel');
+          if (consumption) { consumption.setAttribute('data-ar','نسبة الاستهلاك غير متاحة'); consumption.setAttribute('data-en','Usage rate unavailable'); consumption.textContent = currentLang === 'en' ? 'Usage rate unavailable' : 'نسبة الاستهلاك غير متاحة'; }
+          const progress = document.getElementById('leavesProgressBar');
+          if (progress) progress.style.width = '0%';
           r2ResetQR();
           showPage('view-dashboard');
 
