@@ -2994,6 +2994,21 @@ function lmRefreshEmployeeLanguage(){
       }
     }
 
+    let essPermissionBalanceRef = null;
+    function watchApprovedPermissionBalance(code) {
+      if (essPermissionBalanceRef) essPermissionBalanceRef.off();
+      essPermissionBalanceRef = db.ref('permission_requests/' + code);
+      essPermissionBalanceRef.on('value', snap => {
+        const month = essLocalDate(new Date()).slice(0, 7);
+        const approvedSeconds = Object.values(snap.val() || {}).reduce((sum, req) => {
+          if (!req || String(req.date || '').slice(0, 7) !== month) return sum;
+          if (!(req.status === 'Approved' || req.hrApproved === true)) return sum;
+          return sum + Math.max(0, Number(req.durationMins) || 0) * 60;
+        }, 0);
+        totalPermBalanceSeconds = Math.max(0, 14400 - approvedSeconds);
+        updateDigitalClockDisplay(totalPermBalanceSeconds);
+      }, err => console.warn('Permission balance:', err.code || err.message));
+    }
     function updateDigitalClockDisplay(seconds) {
       let h = Math.floor(seconds / 3600); let m = Math.floor((seconds % 3600) / 60); let s = seconds % 60;
       const strH = String(h).padStart(2, '0'); const strM = String(m).padStart(2, '0'); const strS = String(s).padStart(2, '0');
@@ -3111,15 +3126,14 @@ function lmRefreshEmployeeLanguage(){
     }
 
     function submitPermissionRequest() {
-      alert(currentLang === "ar" ? "طلبات الاختبار متوقفة لحين اعتماد قواعد Firebase ومسار الموافقات." : "Request submission is disabled until Firebase rules and approvals are validated.");
-      return;
+      // Pilot: requests are submitted as Pending; HR approval is handled separately.
       const diffMins = calculateRequestedDuration(); const msg = document.getElementById('permMsg'); const date = document.getElementById('permissionDate').value;
       if (diffMins <= 0 || !date) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? 'يرجى اختيار التاريخ وضبط أوقات الإذن!' : 'Please select date and set permission times!'; return; }
       let reqSecs = diffMins * 60;
       if (reqSecs > totalPermBalanceSeconds) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? '❌ مدة الإذن تتجاوز رصيدك المتبقي الشهرى!' : '❌ Duration exceeds your remaining monthly balance!'; return; }
       const permData = { code: currentEmpCode, name: (currentUserData && currentUserData.name) || 'Unknown', type: document.getElementById('permTypeVal').value, date: date, durationMins: diffMins, notes: document.getElementById('permissionNotes').value.trim(), status: 'Pending', timestamp: Date.now() };
       db.ref('permission_requests/' + currentEmpCode).push(permData).then(() => {
-        totalPermBalanceSeconds -= reqSecs; updateDigitalClockDisplay(totalPermBalanceSeconds); msg.style.color = '#38bdf8';
+        msg.style.color = '#38bdf8';
         msg.innerText = currentLang === 'ar' ? '✅ تم تقديم طلب الإذن الشخصي بنجاح!' : '✅ Permission request submitted successfully!';
         setTimeout(() => { showPage('view-dashboard'); }, 1800);
       }).catch(() => { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? '❌ حدث خطأ، حاول مرة أخرى.' : '❌ Error occurred, try again.'; });
@@ -3404,7 +3418,7 @@ function lmRefreshEmployeeLanguage(){
         if(existingToday.some(r=>r.punchType===punchType)) throw Error('PUNCH_ALREADY_REQUESTED_TODAY');
         if(punchType==='OUT' && !existingToday.some(r=>r.punchType==='IN')) throw Error('CHECK_IN_REQUIRED_FIRST');
         const payload={selfieData,attemptStartedAt,type:'GPS_ATTENDANCE_REQUEST',punchType,code:String(currentEmpCode),clientDate:essLocalDate(now),clientTime:now.toLocaleTimeString('en-GB'),location:{lat,lng,isMission:mission},cameraCaptured:true,faceMatchVerified:false,verificationStatus:'PENDING_REVIEW',createdAt:firebase.database.ServerValue.TIMESTAMP};
-        const userCheck=await db.ref('users/'+currentEmpCode).once('value');
+        const userCheck=await db.ref(accountPath(currentEmpCode)).once('value');
         const userRecord=userCheck.val()||{};
         if(userRecord.authUid!==auth.currentUser.uid || userRecord.status!=='Active') throw new Error('ACCOUNT_UID_OR_STATUS_MISMATCH');
         await db.ref('attendance_requests/'+currentEmpCode).push(payload);
@@ -3506,8 +3520,7 @@ function lmRefreshEmployeeLanguage(){
     }
 
     function submitLeaveRequest() {
-      alert(currentLang === "ar" ? "طلبات الاختبار متوقفة لحين اعتماد قواعد Firebase ومسار الموافقات." : "Request submission is disabled until Firebase rules and approvals are validated.");
-      return;
+      // Pilot: requests are submitted as Pending; HR approval is handled separately.
       const leaveType = document.getElementById('leaveType').value; const startDate = document.getElementById('leaveStartDate').value;
       const endDate = document.getElementById('leaveEndDate').value; const notes = document.getElementById('leaveNotes').value.trim(); const msg = document.getElementById('leaveMsg');
       if (!startDate || !endDate) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? "يرجى تحديد تاريخ البداية والنهاية!" : "Please select start and end dates!"; return; }
@@ -3730,6 +3743,7 @@ async function login() {
           showPage('view-dashboard');
 
           watchAttendanceClocks(code);
+          watchApprovedPermissionBalance(code);
       } catch (err) {
         await auth.signOut().catch(() => {});
         currentUserData = null; currentEmpCode = '';
