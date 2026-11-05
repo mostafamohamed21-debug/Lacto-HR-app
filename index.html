@@ -3740,7 +3740,8 @@ async function login() {
           if (consumption) { consumption.setAttribute('data-ar','نسبة الاستهلاك غير متاحة'); consumption.setAttribute('data-en','Usage rate unavailable'); consumption.textContent = currentLang === 'en' ? 'Usage rate unavailable' : 'نسبة الاستهلاك غير متاحة'; }
           const progress = document.getElementById('leavesProgressBar');
           if (progress) progress.style.width = '0%';
-          r2ResetQR();
+          // QR is optional UI: a QR rendering error must never invalidate Firebase login.
+          try { r2ResetQR(); } catch (qrErr) { console.warn('Card QR rendering:', qrErr); }
           showPage('view-dashboard');
           essWatchEmployeeProfile(code);
 
@@ -3750,7 +3751,7 @@ async function login() {
         await auth.signOut().catch(() => {});
         currentUserData = null; currentEmpCode = '';
         errorEl.innerText = currentLang === 'ar' ? 'تعذر تسجيل الدخول. تحقق من الحساب والصلاحيات والاتصال.' : 'Sign-in failed. Check account, permissions and connection.';
-        console.error('ESS login error:', err.code || err.message);
+        console.error('ESS login error:', err.code || err.message, err);
       }
     }
     let essLiveEmployeeRef=null;
@@ -3768,7 +3769,7 @@ async function login() {
         const cardPhone=document.getElementById('cardPhone'),cardEmail=document.getElementById('cardEmail');
         if(cardPhone)cardPhone.textContent=user.phone||user.mobile||'—';
         if(cardEmail)cardEmail.textContent=user.email||user.workEmail||'—';
-        r2UpdateCard(user,photo);r2ResetQR();
+        r2UpdateCard(user,photo);try{r2ResetQR()}catch(qrErr){console.warn('Card QR rendering:',qrErr)}
         // Never overwrite a form while the employee is editing it.
         const profileAvatar=document.getElementById('profile-page-avatar');if(profileAvatar&&!hasUnsavedProfileChanges)profileAvatar.src=photo;
         const raw=user.annualLeaveBalance;
@@ -3937,7 +3938,7 @@ function r2ResetQR(){
  const name=lmLocalizedUserField(user,'name'),job=lmLocalizedUserField(user,'job');
  const phone=String(user.phone||user.mobile||'').trim(),email=String(user.email||user.workEmail||'').trim();
  const contact=['BEGIN:VCARD','VERSION:3.0','FN:'+esc(name),'ORG:Lacto Misr','TITLE:'+esc(job),...(phone?['TEL;TYPE=CELL:'+esc(phone)]:[]),...(email?['EMAIL:'+esc(email)]:[]),'END:VCARD'].join('\r\n');
- if(q&&typeof QRCode!=='undefined')new QRCode(q,{text:contact,width:108,height:108,colorDark:'#153f72',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.L});
+ if(q&&typeof QRCode!=='undefined'){try{new QRCode(q,{text:contact,width:108,height:108,colorDark:'#153f72',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.L})}catch(err){console.warn('QR vCard too long or unavailable:',err);q.replaceChildren();try{new QRCode(q,{text:'Lacto Misr | '+String(currentEmpCode),width:108,height:108,colorDark:'#153f72',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.L})}catch(e){q.textContent='QR unavailable'}}}
  else if(q)q.textContent=currentLang==='en'?'QR unavailable':'الكود غير متاح';
 }
 async function lmDownloadCard(){
