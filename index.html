@@ -2128,6 +2128,27 @@
           }
       }
 
+      function normalizeProfileChoice(type, raw) {
+        const value = String(raw ?? '').trim().toLowerCase();
+        if (!value) return '';
+        const variants = type === 'marital' ? {
+          single: ['single','أعزب','اعزب','غير متزوج'],
+          married: ['married','متزوج','متزوجة'],
+          divorced: ['divorced','مطلق','مطلقة'],
+          widowed: ['widowed','أرمل','ارمل','أرملة']
+        } : {
+          completed: ['completed','أدى الخدمة','ادي الخدمة'],
+          exempted: ['exempted','معافى نهائي','معفى','معافى'],
+          postponed: ['postponed','مؤجل'],
+          unfit: ['unfit','غير لائق طبياً','غير لائق طبيا'],
+          sole: ['sole','عائل أسرة / كبير عيلة','عائل أسرة']
+        };
+        for (const [key, names] of Object.entries(variants)) {
+          if (names.some(name => name.toLowerCase() === value)) return key;
+        }
+        return value;
+      }
+
       // اختيار العنصر وإغلاق القائمة فوراً دون الحاجة لإعادة النقر
       function selectProfileOption(type, valueKey, element, markChanged = true) {
           if (typeof event !== 'undefined' && event) event.stopPropagation();
@@ -2275,8 +2296,8 @@
           nidDateInput.style.cursor = 'pointer';
         }
 
-        selectProfileOption('military', user.military || '', null, false);
-        selectProfileOption('marital', user.marital || '', null, false);
+        selectProfileOption('military', normalizeProfileChoice('military', user.military), null, false);
+        selectProfileOption('marital', normalizeProfileChoice('marital', user.marital), null, false);
         hasUnsavedProfileChanges = false;
         stagedAvatarFile = null;
         stagedAvatarDataUrl = null;
@@ -2315,7 +2336,8 @@
           return;
         }
 
-        const updatedData = {
+        // Only write fields actually changed; do not overwrite existing Portal values.
+        const proposed = {
           phone: document.getElementById('profilePhoneInput').value.trim(),
           emergencyPhone: document.getElementById('profileEmergencyPhoneInput').value.trim(),
           address: document.getElementById('profileAddressInput').value.trim(),
@@ -2323,10 +2345,21 @@
           military: document.getElementById('profileMilitaryVal').value,
           marital: document.getElementById('profileMaritalVal').value
         };
-        if (!nidInput.readOnly && nidInput.value.trim() !== '') updatedData.nationalId = nidInput.value.trim();
+        if (!nidInput.readOnly && nidInput.value.trim() !== '') proposed.nationalId = nidInput.value.trim();
         const nidDateInput = document.getElementById('profileNIDDateInput');
-        if (!currentUserData.nationalIdDate && nidDateInput.value.trim() !== '') updatedData.nationalIdDate = nidDateInput.value.trim();
-        if (stagedAvatarDataUrl) updatedData.photo = stagedAvatarDataUrl;
+        if (!currentUserData.nationalIdDate && nidDateInput.value.trim() !== '') proposed.nationalIdDate = nidDateInput.value.trim();
+        if (stagedAvatarDataUrl) proposed.photo = stagedAvatarDataUrl;
+        const updatedData = {};
+        for (const [key, value] of Object.entries(proposed)) {
+          if (String(value ?? '') !== String(currentUserData[key] ?? '')) updatedData[key] = value;
+        }
+        if (!Object.keys(updatedData).length) {
+          hasUnsavedProfileChanges = false;
+          msgEl.style.color = '#22c55e';
+          msgEl.innerText = isEn ? 'No changes to save.' : 'لا توجد تعديلات جديدة للحفظ.';
+          if (exitAfterSave) showPage('view-dashboard');
+          return;
+        }
 
         msgEl.style.color = '#38bdf8';
         msgEl.innerText = isEn ? '⏳ Saving changes...' : '⏳ جاري حفظ التعديلات...';
@@ -2371,7 +2404,7 @@
         }).catch(err => {
           console.error('Profile save failed:', err);
           msgEl.style.color = '#ef4444';
-          msgEl.innerText = isEn ? '❌ Failed to save changes. Please try again.' : '❌ حدث خطأ أثناء حفظ التعديلات. حاول مرة أخرى.';
+          msgEl.innerText = err && err.code === 'PERMISSION_DENIED' ? (isEn ? '❌ Firebase denied this change. Publish the accompanying rules first.' : '❌ Firebase رفض الحفظ. تأكد من نشر ملف القواعد المرفق أولاً.') : (isEn ? '❌ Save failed: ' + (err.code || err.message || 'unknown') : '❌ تعذر الحفظ: ' + (err.code || err.message || 'خطأ غير معروف'));
         });
       }
 
@@ -3725,8 +3758,8 @@ async function login() {
             nidDateInput.style.cursor = "pointer";
           }
 
-          if (user.military) selectProfileOption('military', user.military);
-          if (user.marital) selectProfileOption('marital', user.marital);
+          if (user.military) selectProfileOption('military', normalizeProfileChoice('military', user.military), null, false);
+          if (user.marital) selectProfileOption('marital', normalizeProfileChoice('marital', user.marital), null, false);
           document.getElementById('profileDependentsInput').value = user.dependents || "";
           document.getElementById('profileAddressInput').value = user.address || "";
           document.getElementById('profilePhoneInput').value = user.phone || "";
