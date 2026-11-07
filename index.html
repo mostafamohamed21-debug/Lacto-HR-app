@@ -1380,7 +1380,7 @@
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="الغرض من المأمورية:" data-en="Mission Purpose:">الغرض من المأمورية:</label>
         <textarea id="missionPurpose" rows="3" data-ar-placeholder="اشرح الهدف من المأمورية والمهام المطلوبة..." data-en-placeholder="Explain purpose and tasks..." placeholder="اشرح الهدف من المأمورية والمهام المطلوبة..." style="resize: none;"></textarea>
 
-        <button onclick="submitMissionRequest()" class="btn-success" data-ar="إرسال طلب المأمورية وتوليد التصريح" data-en="Submit Mission & Generate Permit" style="margin-top:0.5rem;">إرسال طلب المأمورية وتوليد التصريح</button>
+        <button onclick="submitMissionRequest()" class="btn-success" data-ar="إرسال طلب المأمورية للمراجعة" data-en="Submit Mission for Review" style="margin-top:0.5rem;">إرسال طلب المأمورية للمراجعة</button>
         <p id="missionMsg" style="font-size: 0.85rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
 
         <div id="missionSlipModal" class="hidden">
@@ -3185,15 +3185,25 @@ function lmRefreshEmployeeLanguage(){
       else { timesWrapper.style.opacity = '1'; timesWrapper.style.pointerEvents = 'auto'; }
     }
 
-    function submitMissionRequest() {
-      const mDate = document.getElementById('missionDate').value; const destination = document.getElementById('missionDestination').value.trim();
-      const purpose = document.getElementById('missionPurpose').value.trim(); const msg = document.getElementById('missionMsg');
-      if (!mDate || !destination || !purpose) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? '⚠️ يرجى استكمال جميع الخانات (التاريخ، الجهة، والغرض)!' : '⚠️ Please complete all required fields!'; return; }
-      document.getElementById('slipEmpName').innerText = (currentUserData && currentUserData.name) ? currentUserData.name : "مصطفى السيد";
-      document.getElementById('slipEmpCode').innerText = currentEmpCode || "10024"; document.getElementById('slipDate').innerText = mDate; document.getElementById('slipDest').innerText = destination;
-      const qrContainer = document.getElementById('missionQR'); qrContainer.innerHTML = ''; new QRCode(qrContainer, { text: `LACTO-MISSION|${currentEmpCode}|${mDate}`, width: 50, height: 50 });
-      document.getElementById('missionSlipModal').classList.remove('hidden'); msg.style.color = '#38bdf8';
-      msg.innerText = currentLang === 'ar' ? '✅ تم توليد تصريح المأمورية الإلكتروني بنجاح!' : '✅ Mission permit generated successfully!';
+    async function submitMissionRequest() {
+      const mDate=document.getElementById('missionDate').value;
+      const destination=document.getElementById('missionDestination').value.trim();
+      const purpose=document.getElementById('missionPurpose').value.trim();
+      const msg=document.getElementById('missionMsg');
+      if(!mDate||!destination||!purpose){msg.style.color='#ef4444';msg.textContent=currentLang==='ar'?'يرجى استكمال تاريخ المأمورية والوجهة والغرض':'Please complete date, destination and purpose';return;}
+      const fullDay=document.getElementById('chkFullDayMission').checked;
+      const clock=(prefix)=>{let h=Number(document.getElementById(prefix+'HourVal').value)%12;const minute=Number(document.getElementById(prefix+'MinVal').value);const badge=document.getElementById(prefix+'AmPmBadge').textContent;const pm=/مساء|PM/i.test(badge);return String(h+(pm?12:0)).padStart(2,'0')+':'+String(minute).padStart(2,'0');};
+      const startTime=fullDay?'':clock('mFrom'),endTime=fullDay?'':clock('mTo');
+      if(!fullDay&&endTime<=startTime){msg.style.color='#ef4444';msg.textContent=currentLang==='ar'?'وقت النهاية يجب أن يكون بعد البداية':'End time must be after start time';return;}
+      if(!auth.currentUser||!currentEmpCode){msg.textContent=currentLang==='ar'?'يرجى تسجيل الدخول أولًا':'Please sign in';return;}
+      const button=document.querySelector('#view-mission-request button[onclick="submitMissionRequest()"]');if(button)button.disabled=true;
+      try{
+        const record={code:String(currentEmpCode),name:currentUserData?.name||'',date:mDate,destination,purpose,fullDay,startTime,endTime,status:'Pending',hrApproved:false,createdAt:firebase.database.ServerValue.TIMESTAMP};
+        const ref=await db.ref('mission_requests/'+currentEmpCode).push(record);
+        document.getElementById('missionSlipModal').classList.add('hidden');
+        msg.style.color='#22c55e';msg.textContent=(currentLang==='ar'?'تم إرسال طلب المأمورية للمراجعة، ولم يصدر تصريح بعد. رقم الطلب: ':'Mission submitted for review; no permit issued yet. ID: ')+ref.key;
+      }catch(err){msg.style.color='#ef4444';msg.textContent=(currentLang==='ar'?'تعذر إرسال المأمورية: ':'Mission submission failed: ')+(err.code||err.message);}
+      finally{if(button)button.disabled=false;}
     }
 
     function downloadMissionPDF() { const element = document.getElementById('missionPrintSlip'); html2pdf().set({ margin: 0.5, filename: 'Mission_Permit_' + currentEmpCode + '.pdf', html2canvas: { scale: 2 } }).from(element).save(); }
@@ -3447,7 +3457,7 @@ function lmRefreshEmployeeLanguage(){
         const lat=position.coords.latitude,lng=position.coords.longitude;
         const distance=calculateDistance(lat,lng,COMPANY_LAT,COMPANY_LNG);
         let mission=false;
-        try {const ms=await db.ref('mission_requests/'+currentEmpCode).once('value');const today=essLocalDate(new Date());mission=Object.values(ms.val()||{}).some(m=>m.date===today&&(m.status==='Approved'||m.hrApproved===true));}catch(e){console.warn('Mission read',e)}
+        try {const ms=await db.ref('mission_requests/'+currentEmpCode).once('value');const today=essLocalDate(new Date());mission=Object.values(ms.val()||{}).some(m=>{if(m.date!==today||m.status!=='Approved'||m.hrApproved!==true)return false;const hhmm=new Date().toTimeString().slice(0,5);return m.fullDay===true||(m.startTime&&m.endTime&&hhmm>=m.startTime&&hhmm<=m.endTime);});}catch(e){console.warn('Mission read',e)}
         if(!mission && distance>ALLOWED_RADIUS_METERS){statusText.textContent=tr('❌ خارج نطاق الشركة (','❌ Outside company area (')+Math.round(distance)+tr(' متر)',' meters)');return;}
         statusText.textContent=tr('جاري إرسال طلب البصمة للمراجعة...','Submitting punch for review...');
         const now=new Date();
