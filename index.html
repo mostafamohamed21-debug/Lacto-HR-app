@@ -3456,8 +3456,19 @@ function lmRefreshEmployeeLanguage(){
         const position=await new Promise((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:true,timeout:15000,maximumAge:0}));
         const lat=position.coords.latitude,lng=position.coords.longitude;
         const distance=calculateDistance(lat,lng,COMPANY_LAT,COMPANY_LNG);
-        let mission=false;
-        try {const ms=await db.ref('mission_requests/'+currentEmpCode).once('value');const today=essLocalDate(new Date());mission=Object.values(ms.val()||{}).some(m=>{if(m.date!==today||m.status!=='Approved'||m.hrApproved!==true)return false;const hhmm=new Date().toTimeString().slice(0,5);return m.fullDay===true||(m.startTime&&m.endTime&&hhmm>=m.startTime&&hhmm<=m.endTime);});}catch(e){console.warn('Mission read',e)}
+        let mission=false, missionId=null, missionRecord=null;
+        try {
+          const ms=await db.ref('mission_requests/'+currentEmpCode).once('value');
+          const today=essLocalDate(new Date()),hhmm=new Date().toTimeString().slice(0,5);
+          const eligible=Object.entries(ms.val()||{}).filter(([id,m])=>m&&m.date===today&&m.status==='Approved'&&m.hrApproved===true&&(m.fullDay===true||(m.startTime&&m.endTime&&hhmm>=m.startTime&&hhmm<=m.endTime)));
+          // Use the mission of the already recorded IN for its OUT, when possible.
+          const attendanceSnap=await db.ref('attendance_requests/'+currentEmpCode).once('value');
+          const punches=Object.values(attendanceSnap.val()||{});
+          const priorIn=punches.find(r=>r&&r.clientDate===today&&r.punchType==='IN'&&r.missionId&&r.verificationStatus!=='REJECTED');
+          const match=selectedPunch==='OUT'&&priorIn?eligible.find(([id])=>id===priorIn.missionId):eligible[0];
+          if(match){mission=true;missionId=match[0];missionRecord=match[1];}
+          if(selectedPunch==='OUT'&&priorIn&&!match)throw Error('MISSION_NOT_AUTHORIZED_FOR_OUT');
+        }catch(e){if(e.message==='MISSION_NOT_AUTHORIZED_FOR_OUT')throw e;console.warn('Mission read',e);if(distance>ALLOWED_RADIUS_METERS)throw Error('MISSION_AUTH_CHECK_FAILED');}
         if(!mission && distance>ALLOWED_RADIUS_METERS){statusText.textContent=tr('❌ خارج نطاق الشركة (','❌ Outside company area (')+Math.round(distance)+tr(' متر)',' meters)');return;}
         statusText.textContent=tr('جاري إرسال طلب البصمة للمراجعة...','Submitting punch for review...');
         const now=new Date();
@@ -3467,14 +3478,15 @@ function lmRefreshEmployeeLanguage(){
         const punchType = selectedPunch;
         if(existingToday.some(r=>r.punchType===punchType)) throw Error('PUNCH_ALREADY_REQUESTED_TODAY');
         if(punchType==='OUT' && !existingToday.some(r=>r.punchType==='IN')) throw Error('CHECK_IN_REQUIRED_FIRST');
-        const payload={selfieData,attemptStartedAt,type:'GPS_ATTENDANCE_REQUEST',punchType,code:String(currentEmpCode),clientDate:essLocalDate(now),clientTime:now.toLocaleTimeString('en-GB'),location:{lat,lng,isMission:mission},cameraCaptured:true,faceMatchVerified:false,verificationStatus:'PENDING_REVIEW',createdAt:firebase.database.ServerValue.TIMESTAMP};
+        const payload={selfieData,attemptStartedAt,type:'GPS_ATTENDANCE_REQUEST',punchType,code:String(currentEmpCode),clientDate:essLocalDate(now),clientTime:now.toLocaleTimeString('en-GB'),location:{lat,lng,isMission:mission,accuracyMeters:Math.round(position.coords.accuracy||0)},cameraCaptured:true,faceMatchVerified:false,verificationStatus:'PENDING_REVIEW',createdAt:firebase.database.ServerValue.TIMESTAMP};
+        if(missionId){payload.missionId=missionId;payload.missionDestination=missionRecord.destination||'';}
         const userCheck=await db.ref(accountPath(currentEmpCode)).once('value');
         const userRecord=userCheck.val()||{};
         if(userRecord.authUid!==auth.currentUser.uid || userRecord.status!=='Active') throw new Error('ACCOUNT_UID_OR_STATUS_MISMATCH');
         await db.ref('attendance_requests/'+currentEmpCode).push(payload);
         essSelectedPunch=null;
         statusText.textContent=punchType==='IN' ? tr('تم تسجيل وقت الحضور وبانتظار التحقق','Check-in time saved; awaiting verification') : tr('تم تسجيل وقت الانصراف وبانتظار التحقق','Check-out time saved; awaiting verification');
-      } catch(err) { console.error('Attendance request:',err);statusText.textContent=err.message==='PUNCH_ALREADY_REQUESTED_TODAY' ? (selectedPunch==='IN'?tr('تم تسجيل الحضور من قبل اليوم','Check-in already recorded today'):tr('تم تسجيل الانصراف من قبل اليوم','Check-out already recorded today')) : err.message==='CHECK_IN_REQUIRED_FIRST'?tr('سجّل الحضور أولًا','Check in first'):tr('تعذر إرسال طلب البصمة، يرجى المحاولة مجددًا أو التواصل مع الموارد البشرية','Could not submit punch; please retry or contact HR'); }
+      } catch(err) { console.error('Attendance request:',err);statusText.textContent=err.message==='PUNCH_ALREADY_REQUESTED_TODAY' ? (selectedPunch==='IN'?tr('تم تسجيل الحضور من قبل اليوم','Check-in already recorded today'):tr('تم تسجيل الانصراف من قبل اليوم','Check-out already recorded today')) : err.message==='CHECK_IN_REQUIRED_FIRST'?tr('سجّل الحضور أولًا','Check in first'):err.message==='MISSION_NOT_AUTHORIZED_FOR_OUT'?tr('لا توجد مأمورية معتمدة مطابقة لبصمة الحضور','No approved mission matches the check-in'):err.message==='MISSION_AUTH_CHECK_FAILED'?tr('تعذر التحقق من اعتماد المأمورية','Could not verify mission approval'):tr('تعذر إرسال طلب البصمة، يرجى المحاولة مجددًا أو التواصل مع الموارد البشرية','Could not submit punch; please retry or contact HR'); }
       finally {essPunchBusy=false;if(stream)stream.getTracks().forEach(t=>t.stop());}
     }
 
