@@ -3787,24 +3787,12 @@ async function login() {
           document.getElementById('profilePhoneInput').value = user.phone || "";
           document.getElementById('profileEmergencyPhoneInput').value = user.emergencyPhone || "";
 
-          // Show only the live balance from the authenticated employee record.
-          const balanceRaw = user.annualLeaveBalance;
-          const balanceValid = balanceRaw !== '' && balanceRaw !== null && balanceRaw !== undefined && Number.isFinite(Number(balanceRaw));
-          const balanceNumber = balanceValid ? Number(balanceRaw) : null;
-          const balanceAr = balanceValid ? `${balanceNumber} يوم` : 'غير متاح';
-          const balanceEn = balanceValid ? `${balanceNumber} Days` : 'Unavailable';
-          for (const id of ['dashLeaveBalance', 'leaveBalanceVal']) {
-            const el = document.getElementById(id);
-            if (el) { el.setAttribute('data-ar', balanceAr); el.setAttribute('data-en', balanceEn); el.textContent = currentLang === 'en' ? balanceEn : balanceAr; }
-          }
-          const consumption = document.getElementById('leaveConsumptionLabel');
-          if (consumption) { consumption.setAttribute('data-ar','نسبة الاستهلاك غير متاحة'); consumption.setAttribute('data-en','Usage rate unavailable'); consumption.textContent = currentLang === 'en' ? 'Usage rate unavailable' : 'نسبة الاستهلاك غير متاحة'; }
-          const progress = document.getElementById('leavesProgressBar');
-          if (progress) progress.style.width = '0%';
+          essRefreshPilotLeaveBalance();
           // QR is optional UI: a QR rendering error must never invalidate Firebase login.
           try { r2ResetQR(); } catch (qrErr) { console.warn('Card QR rendering:', qrErr); }
           showPage('view-dashboard');
           essWatchEmployeeProfile(code);
+          essWatchPilotLeaves(code);
 
           watchAttendanceClocks(code);
           watchApprovedPermissionBalance(code);
@@ -3834,16 +3822,35 @@ async function login() {
         // Never overwrite a form while the employee is editing it.
         const profileAvatar=document.getElementById('profile-page-avatar');if(profileAvatar&&!hasUnsavedProfileChanges)profileAvatar.src=photo;
         if(!hasUnsavedProfileChanges && !document.getElementById('view-profile').classList.contains('hidden')) loadProfileData();
-        const raw=user.annualLeaveBalance;
-        const valid=raw!==''&&raw!==null&&raw!==undefined&&Number.isFinite(Number(raw));
-        const ar=valid?Number(raw)+' يوم':'غير متاح',en=valid?Number(raw)+' Days':'Unavailable';
-        for(const id of ['dashLeaveBalance','leaveBalanceVal']){
-          const el=document.getElementById(id);if(el){el.dataset.ar=ar;el.dataset.en=en;el.textContent=currentLang==='en'?en:ar}
-        }
+        essRefreshPilotLeaveBalance();
       },err=>console.warn('ESS employee live profile read failed:',err.code||err.message));
+    }
+    // Live read-only leave ledger. The stored balance is the 2025+2026 opening remainder.
+    // Each approved request is counted once by its Firebase request ID.
+    let essPilotLeaveRef=null,essPilotLeaveRows={};
+    function essRefreshPilotLeaveBalance(){
+      const raw=currentUserData?.annualLeaveBalance;
+      const valid=raw!==''&&raw!==null&&raw!==undefined&&Number.isFinite(Number(raw));
+      const opening=valid?Number(raw):null;
+      const approved=Object.values(essPilotLeaveRows||{}).filter(r=>r&&r.status==='Approved');
+      let used=0;
+      for(const r of approved){const a=Date.parse(String(r.startDate||'')+'T00:00:00Z'),b=Date.parse(String(r.endDate||'')+'T00:00:00Z');if(Number.isFinite(a)&&Number.isFinite(b)&&b>=a)used+=Math.round((b-a)/86400000)+1;}
+      const remaining=opening===null?null:Math.round((opening-used)*100)/100;
+      const ar=remaining===null?'غير متاح':remaining+' يوم',en=remaining===null?'Unavailable':remaining+' Days';
+      for(const id of ['dashLeaveBalance','leaveBalanceVal']){const el=document.getElementById(id);if(el){el.dataset.ar=ar;el.dataset.en=en;el.textContent=currentLang==='en'?en:ar;}}
+      const percent=opening!==null&&opening>0?Math.max(0,Math.min(100,100*used/opening)):0;
+      const progress=document.getElementById('leavesProgressBar');if(progress){progress.style.width=percent.toFixed(1)+'%';progress.setAttribute('role','progressbar');progress.setAttribute('aria-valuenow',String(Math.round(percent)));progress.setAttribute('aria-valuemin','0');progress.setAttribute('aria-valuemax','100');}
+      const label=document.getElementById('leaveConsumptionLabel');if(label){const a=remaining===null?'نسبة الاستهلاك غير متاحة':`المستهلك ${used} من أصل ${opening} يوم (${percent.toFixed(1)}%)`,e=remaining===null?'Usage rate unavailable':`Used ${used} of ${opening} days (${percent.toFixed(1)}%)`;label.dataset.ar=a;label.dataset.en=e;label.textContent=currentLang==='en'?e:a;}
+    }
+    function essWatchPilotLeaves(code){
+      if(essPilotLeaveRef){essPilotLeaveRef.off();essPilotLeaveRef=null;}
+      essPilotLeaveRows={};essRefreshPilotLeaveBalance();
+      essPilotLeaveRef=db.ref('leave_requests/'+String(code));
+      essPilotLeaveRef.on('value',snap=>{if(String(currentEmpCode)!==String(code))return;essPilotLeaveRows=snap.val()||{};essRefreshPilotLeaveBalance();},err=>console.warn('ESS leave ledger read:',err.code||err.message));
     }
     async function logout() {
       essStopEmployeeProfile();
+      if(essPilotLeaveRef){essPilotLeaveRef.off();essPilotLeaveRef=null;}essPilotLeaveRows={};
       detachAttendanceListeners();
       await auth.signOut();
       currentUserData = null; currentEmpCode = '';
