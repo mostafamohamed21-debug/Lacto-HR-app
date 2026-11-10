@@ -20,7 +20,6 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="attendance-day.js"></script>
 
  <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&family=Share+Tech+Mono&display=swap');
@@ -3252,13 +3251,13 @@ function lmRefreshEmployeeLanguage(){
         state === 'pending' ? (currentLang === 'en' ? 'Awaiting verification' : 'بانتظار التحقق') : '';
     }
     function renderAttendanceClocks() {
-      const date = LactoAttendanceDay.dayKey(Date.now());
-      const rows = LactoAttendanceDay.events(attendanceRequestRows,date);
+      const date = essLocalDate(new Date());
+      const rows = Object.values(attendanceRequestRows || {}).filter(r => r && r.clientDate === date);
+      rows.sort((a,b) => (Number(a.createdAt)||0) - (Number(b.createdAt)||0));
       // First daily punch is IN; the latest subsequent punch is OUT.
       // This also supports historical requests without a punchType field.
-      const summary = LactoAttendanceDay.summary(attendanceRequestRows,date);
-      const incoming = summary.firstIn;
-      const outgoing = summary.lastOut || summary.provisionalOut;
+      const incoming = rows[0] || null;
+      const outgoing = rows.length > 1 ? rows[rows.length - 1] : null;
       // Exactly ONE indicator represents the most recent punch of the workday.
       // First punch = IN (green); every subsequent punch = OUT (red).
       // Official records are a fallback only when there are no request rows.
@@ -3286,9 +3285,9 @@ function lmRefreshEmployeeLanguage(){
     function renderLivePunchVerificationStatus(){
       const el=document.getElementById('t-checkinStatusText');
       if(!el || !currentEmpCode || String(currentEmpCode)!=='2')return;
-      const today=LactoAttendanceDay.dayKey(Date.now());
+      const today=essLocalDate(new Date());
       const rows=Object.entries(attendanceRequestRows||{})
-        .filter(([id,r])=>r && Number.isFinite(LactoAttendanceDay.timestamp(r)) && LactoAttendanceDay.dayKey(LactoAttendanceDay.timestamp(r))===today && (r.punchType==='IN'||r.punchType==='OUT'))
+        .filter(([id,r])=>r && r.clientDate===today && (r.punchType==='IN'||r.punchType==='OUT'))
         .sort((a,b)=>Number(b[1].createdAt||0)-Number(a[1].createdAt||0));
       if(!rows.length)return;
       const [id,r]=rows[0];
@@ -3321,10 +3320,10 @@ function lmRefreshEmployeeLanguage(){
     }
     let approvedAttendanceRef=null, approvedAttendanceRows={};
     function renderApprovedAttendanceHours(){
-      const today=LactoAttendanceDay.dayKey(Date.now());
-      const ev=Object.values(approvedAttendanceRows||{}).filter(r=>r&&Number.isFinite(Number(r.punchTimestamp))&&LactoAttendanceDay.dayKey(r.punchTimestamp)===today&&['IN','OUT'].includes(r.punchType)).sort((a,b)=>Number(a.punchTimestamp)-Number(b.punchTimestamp));
+      const today=essLocalDate(new Date());
+      const ev=Object.values(approvedAttendanceRows||{}).filter(r=>r&&r.dayKey===today&&['IN','OUT'].includes(r.punchType)&&Number.isFinite(Number(r.punchTimestamp))).sort((a,b)=>Number(a.punchTimestamp)-Number(b.punchTimestamp));
       const firstIn=ev.find(r=>r.punchType==='IN');
-      const firstOut=firstIn&&ev.filter(r=>r.punchType==='OUT'&&Number(r.punchTimestamp)>Number(firstIn.punchTimestamp)).at(-1);
+      const firstOut=firstIn&&ev.find(r=>r.punchType==='OUT'&&Number(r.punchTimestamp)>Number(firstIn.punchTimestamp));
       if(firstIn)paintAttendanceTime('valInTime',new Date(Number(firstIn.punchTimestamp)).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Africa/Cairo'}),'approved');
       if(firstOut)paintAttendanceTime('valOutTime',new Date(Number(firstOut.punchTimestamp)).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Africa/Cairo'}),'approved');
       const hours=document.getElementById('valWorkingHours');
@@ -3372,7 +3371,7 @@ function lmRefreshEmployeeLanguage(){
       const selectedPunch=essSelectedPunch;
       // Preflight before requesting camera or GPS; server-side rules remain authoritative.
       try{
-        const today=LactoAttendanceDay.dayKey(Date.now());
+        const today=essLocalDate(new Date());
         const pre=await db.ref('attendance_requests/'+currentEmpCode).once('value');
         const active=Object.values(pre.val()||{}).filter(r=>r&&r.clientDate===today&&r.verificationStatus!=='REJECTED');
         if(active.some(r=>r.punchType===selectedPunch)){
@@ -3412,12 +3411,13 @@ function lmRefreshEmployeeLanguage(){
         if(!mission && distance>ALLOWED_RADIUS_METERS){statusText.textContent=tr('❌ خارج نطاق الشركة (','❌ Outside company area (')+Math.round(distance)+tr(' متر)',' meters)');return;}
         statusText.textContent=tr('جاري إرسال طلب البصمة للمراجعة...','Submitting punch for review...');
         const now=new Date();
-        const todayKey = LactoAttendanceDay.dayKey(now.getTime());
+        const todayKey = essLocalDate(now);
         const existingSnap = await db.ref('attendance_requests/'+currentEmpCode).once('value');
-        const existingToday = LactoAttendanceDay.events(existingSnap.val() || {},todayKey);
+        const existingToday = Object.values(existingSnap.val() || {}).filter(r => r && r.clientDate === todayKey && r.verificationStatus !== 'REJECTED');
         const punchType = selectedPunch;
-        if(punchType==='OUT' && !LactoAttendanceDay.canSubmit(existingToday,todayKey,'OUT')) throw Error('CHECK_IN_REQUIRED_FIRST');
-        const payload={selfieData,attemptStartedAt,type:'GPS_ATTENDANCE_REQUEST',punchType,code:String(currentEmpCode),clientDate:essLocalDate(now),operationalDay:todayKey,clientTime:now.toLocaleTimeString('en-GB'),location:{lat,lng,isMission:mission},cameraCaptured:true,faceMatchVerified:false,verificationStatus:'PENDING_REVIEW',createdAt:firebase.database.ServerValue.TIMESTAMP};
+        if(existingToday.some(r=>r.punchType===punchType)) throw Error('PUNCH_ALREADY_REQUESTED_TODAY');
+        if(punchType==='OUT' && !existingToday.some(r=>r.punchType==='IN')) throw Error('CHECK_IN_REQUIRED_FIRST');
+        const payload={selfieData,attemptStartedAt,type:'GPS_ATTENDANCE_REQUEST',punchType,code:String(currentEmpCode),clientDate:essLocalDate(now),clientTime:now.toLocaleTimeString('en-GB'),location:{lat,lng,isMission:mission},cameraCaptured:true,faceMatchVerified:false,verificationStatus:'PENDING_REVIEW',createdAt:firebase.database.ServerValue.TIMESTAMP};
         const userCheck=await db.ref(accountPath(currentEmpCode)).once('value');
         const userRecord=userCheck.val()||{};
         if(userRecord.authUid!==auth.currentUser.uid || userRecord.status!=='Active') throw new Error('ACCOUNT_UID_OR_STATUS_MISMATCH');
@@ -4062,40 +4062,5 @@ function lmSaveContact(){const name=document.getElementById('userName').textCont
 
 })();
 </script>
-<script>
-// PHASE 2: employee response to an attendance exception. No direct edits to attendance.
-(function(){
- let ref=null,handler=null,code=null;
- const t=(ar,en)=>document.documentElement.lang==='en'?en:ar;
- function mount(){
-  if(typeof auth==='undefined'||!auth.currentUser||typeof currentEmpCode==='undefined'||String(currentEmpCode)!=='2')return;
-  const host=document.getElementById('notificationPopup')?.parentElement||document.body;
-  if(!document.getElementById('ess-exception-review')){
-   const section=document.createElement('section');section.id='ess-exception-review';section.style.cssText='padding:12px;margin:12px 0;border:1px solid #64748b;border-radius:12px;background:#15243a;color:#fff;max-height:320px;overflow:auto';
-   const heading=document.createElement('strong');heading.textContent=t('مراجعة بصمات الحضور','Attendance punch review');section.append(heading);
-   const content=document.createElement('div');content.id='ess-exception-items';section.append(content);host.append(section);
-  }
-  if(!ref){code=String(currentEmpCode);ref=db.ref('attendance_exceptions/'+code);handler=snap=>render(snap.val()||{});ref.on('value',handler,e=>console.warn('Exception review:',e));}
- }
- function render(items){
-  const box=document.getElementById('ess-exception-items');if(!box)return;box.replaceChildren();
-  const pending=Object.entries(items).filter(([,c])=>c.status==='AWAITING_EMPLOYEE'&&!c.employeeResponse);
-  if(!pending.length){box.textContent=t('لا توجد استفسارات معلقة','No pending clarifications');return;}
-  for(const [id,c] of pending){
-   const wrap=document.createElement('div');wrap.style.cssText='padding:10px 0;border-bottom:1px solid #475569';
-   const desc=document.createElement('p');desc.textContent=`${c.operationalDay||''}: ${c.firstPunch||''} → ${c.lastPunch||''} | ${c.shiftLabel||''}`;wrap.append(desc);
-   const note=document.createElement('textarea');note.maxLength=500;note.placeholder=t('تفاصيل توضيحية','Additional details');note.style.cssText='width:100%;padding:8px;border-radius:8px;color:#111;background:#fff';wrap.append(note);
-   for(const [answer,label] of [['LEFT_EARLY',t('انصرفت بالفعل','I left at that time')],['MISSED_CHECKOUT',t('كنت موجودًا ونسيت الانصراف','I was present; forgot checkout')]]){
-    const btn=document.createElement('button');btn.type='button';btn.textContent=label;btn.style.cssText='display:block;margin:6px 0;padding:9px;border-radius:8px;background:#0369a1;color:white;width:100%';
-    btn.onclick=async()=>{btn.disabled=true;try{await db.ref('attendance_exceptions/'+code+'/'+id+'/employeeResponse').set({answer,note:note.value.trim(),at:firebase.database.ServerValue.TIMESTAMP,authUid:auth.currentUser.uid});}catch(e){btn.disabled=false;alert(t('تعذر إرسال الرد','Failed to submit response')+': '+e.message)}};
-    wrap.append(btn);
-   }
-   box.append(wrap);
-  }
- }
- setInterval(()=>{if(typeof auth==='undefined'||!auth.currentUser||String(typeof currentEmpCode!=='undefined'?currentEmpCode:'')!=='2'){if(ref){ref.off('value',handler);ref=null;handler=null;}return;}mount();},2500);
-})();
-</script>
-<script src="payroll-slip-pilot.js"></script>
 </body>
 </html>
