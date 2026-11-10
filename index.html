@@ -20,6 +20,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="attendance-day.js"></script>
 
  <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;800&family=Great+Vibes&family=Share+Tech+Mono&display=swap');
@@ -895,7 +896,7 @@
   <!-- App Header & Tools -->
   <div class="app-header">
     <div class="brand-container">
-      <img src="logo (1).png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
+      <img src="logo.png" alt="LM HR Logo" class="brand-logo" onerror="this.style.display='none'">
       <div class="brand-title">LM HR</div>
     </div>
 
@@ -1107,41 +1108,41 @@
         <span data-ar="الكارت الرقمي" data-en="Digital ID Card" style="font-weight: 700; font-size: 0.9rem;">الكارت الرقمي</span>
       </div>
 <style id="raad2-card-style">
-#view-id-card .r2-stack{display:grid;gap:9px;margin-top:8px;direction:ltr}
-#view-id-card .r2-face{box-sizing:border-box!important;min-height:0!important;height:auto!important;aspect-ratio:auto!important;overflow:hidden!important;border-radius:14px!important;background:linear-gradient(135deg,#fff,#eaf4ff)!important;color:#153f72!important;box-shadow:0 12px 32px #0005;display:block!important;padding:0!important;position:relative}
-#view-id-card .r2-front{padding:11px 12px!important}
+#view-id-card .r2-stack{display:grid;gap:16px;margin-top:12px;direction:ltr}
+#view-id-card .r2-face{box-sizing:border-box!important;min-height:0!important;height:auto!important;aspect-ratio:auto!important;overflow:hidden!important;border-radius:22px!important;background:linear-gradient(135deg,#fff,#eaf4ff)!important;color:#153f72!important;box-shadow:0 12px 32px #0005;display:block!important;padding:0!important;position:relative}
+#view-id-card .r2-front{padding:18px!important}
 #view-id-card .r2-head{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;font-weight:900;color:#14518e}
-#view-id-card .r2-logo{width:49px;height:39px;object-fit:contain}
-#view-id-card .r2-profile{display:flex;align-items:center;gap:10px;margin:7px 0 9px}
-#view-id-card .r2-avatar{width:70px;height:80px;border-radius:15px;object-fit:cover;background:#d8e9f8;flex-shrink:0}
+#view-id-card .r2-logo{width:65px;height:56px;object-fit:contain}
+#view-id-card .r2-profile{display:flex;align-items:center;gap:14px;margin:14px 0 18px}
+#view-id-card .r2-avatar{width:95px;height:115px;border-radius:15px;object-fit:cover;background:#d8e9f8;flex-shrink:0}
 #view-id-card .r2-profile-info{min-width:0;flex:1}
-#view-id-card .r2-profile-info h3{font-family:Cairo,Arial,sans-serif;font-size:clamp(13px,3.8vw,18px);line-height:1.4;color:#153c73;margin:0;overflow-wrap:anywhere}
-#view-id-card .r2-profile-info p{font-family:Cairo,Arial,sans-serif;font-size:clamp(10px,3vw,13px);color:#486d93;margin:6px 0 0}
-#view-id-card .r2-front-bottom{display:grid;grid-template-columns:minmax(0,1fr) 78px;gap:7px;align-items:center;border-top:1px solid #cbdff1;padding-top:7px}
-#view-id-card .r2-contacts{display:grid;gap:4px;font-size:clamp(10px,2.7vw,12px);overflow-wrap:anywhere;min-width:0}
+#view-id-card .r2-profile-info h3{font-family:Cairo,Arial,sans-serif;font-size:clamp(15px,4.4vw,22px);line-height:1.4;color:#153c73;margin:0;overflow-wrap:anywhere}
+#view-id-card .r2-profile-info p{font-family:Cairo,Arial,sans-serif;font-size:clamp(11px,3.3vw,15px);color:#486d93;margin:6px 0 0}
+#view-id-card .r2-contacts{border-top:1px solid #cbdff1;padding-top:12px;display:grid;gap:8px;font-size:clamp(12px,3.3vw,15px);overflow-wrap:anywhere}
 #view-id-card .r2-contacts a{color:#15549a;text-decoration:none}
-#view-id-card .r2-factory{height:clamp(95px,28vw,150px);width:100%;object-fit:cover;object-position:center 27%;display:block}
-#view-id-card .r2-back-info{padding:10px 13px 12px;display:grid;gap:5px;font-size:clamp(11px,3.1vw,14px);line-height:1.55;overflow-wrap:anywhere}
-#view-id-card .r2-back-info strong{color:#14518e;font-size:14px}
+#view-id-card .r2-factory{height:clamp(145px,44vw,235px);width:100%;object-fit:cover;object-position:center 27%;display:block}
+#view-id-card .r2-back-info{padding:16px 18px 20px;display:grid;gap:9px;font-size:clamp(11px,3.1vw,14px);line-height:1.55;overflow-wrap:anywhere}
+#view-id-card .r2-back-info strong{color:#14518e;font-size:17px}
 #view-id-card .r2-back-info a{color:#15549a}
 #view-id-card .r2-actions{display:grid;gap:10px;margin-top:18px}
 #view-id-card .r2-actions button{width:100%;border:0;border-radius:15px;background:linear-gradient(125deg,#1459ad,#3194ed);color:white;padding:15px 10px;font-size:16px;font-weight:800;cursor:pointer}
 #view-id-card .r2-actions .r2-save{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 #view-id-card .r2-actions .r2-save button{font-size:13px;background:#1a426f}
-#view-id-card #r2-qr-panel{display:flex;flex-direction:column;align-items:center;text-align:center;background:#fff;color:#153f72;border-radius:10px;padding:4px;min-width:0;align-self:center;box-shadow:0 4px 15px #0c325b18}
-#view-id-card #r2-qr-panel.r2-open{display:flex}
-#view-id-card #qrcode{display:flex;justify-content:center;margin:2px auto}
-#view-id-card #qrcode img,#view-id-card #qrcode canvas{width:70px!important;height:70px!important;max-width:100%}
+#view-id-card #r2-qr-panel{display:none;text-align:center;background:#f5faff;color:#153f72;border-radius:17px;padding:15px}
+#view-id-card #r2-qr-panel.r2-open{display:block}
+#view-id-card #qrcode{display:flex;justify-content:center;margin:12px auto}
+#view-id-card #qrcode img,#view-id-card #qrcode canvas{width:190px!important;height:190px!important;max-width:100%}
 @media(max-width:380px){#view-id-card .r2-avatar{width:78px;height:100px}#view-id-card .r2-profile{gap:9px}#view-id-card .r2-actions .r2-save{grid-template-columns:1fr}}
 </style>
       <div class="r2-stack" id="r2-card-capture">
         <section id="myCardToDownload" class="r2-face r2-front" aria-label="Card front">
-          <div class="r2-head"><span>LACTO MISR S.A.E</span><img class="r2-logo" src="logo (1).png" alt="Lacto Misr" onerror="this.style.display='none'"></div>
-          <div class="r2-profile"><img id="r2EmployeePhoto" class="r2-avatar" src="logo (1).png" alt="Employee portrait"><div class="r2-profile-info"><h3 id="userName">—</h3><p id="userJob">—</p></div></div>
-          <div class="r2-front-bottom"><div class="r2-contacts"><div>☎ <a id="r2PhoneLink" href="#"><span id="cardPhone">—</span></a></div><div>✉ <a id="r2EmailLink" href="#"><span id="cardEmail">—</span></a></div></div><div id="r2-qr-panel"><div id="qrcode" aria-label="Contact QR"></div></div></div>
+          <div class="r2-head"><span>LACTO MISR S.A.E</span><img class="r2-logo" src="logo.png" alt="Lacto Misr" onerror="this.style.display='none'"></div>
+          <div class="r2-profile"><img id="r2EmployeePhoto" class="r2-avatar" src="logo.png" alt="Employee portrait"><div class="r2-profile-info"><h3 id="userName">—</h3><p id="userJob">—</p></div></div>
+          <div class="r2-contacts"><div>☎ <a id="r2PhoneLink" href="#"><span id="cardPhone">—</span></a></div><div>✉ <a id="r2EmailLink" href="#"><span id="cardEmail">—</span></a></div></div>
         </section>
         <section id="lmCardBack" class="r2-face" aria-label="Card back"><img class="r2-factory" src="factory_reference.jpg" alt="Lacto Misr factory"><div class="r2-back-info"><strong>LACTO MISR S.A.E</strong><div>🌐 <a href="https://www.lactomisr.com" target="_blank" rel="noopener">www.lactomisr.com</a></div><div>📍 Industrial Zone H6 No. 131, 10th of Ramadan, Egypt</div><div>☎ Tel: (+2055) 44 11 776 - 777</div><div>📠 Fax: (+2055) 44 11 774</div></div></section>
       </div>
+      <div class="r2-actions"><button type="button" id="r2QRBtn" onclick="r2ToggleQR()" aria-expanded="false" aria-controls="r2-qr-panel" data-ar="▦ عرض QR كود" data-en="▦ Show QR Code">▦ عرض QR كود</button><div id="r2-qr-panel"><strong data-ar="امسح الكود لعرض نفس البطاقة" data-en="Scan to view this card">امسح الكود لعرض نفس البطاقة</strong><div id="qrcode"></div><small data-ar="تظهر بيانات التواصل المنشورة فقط" data-en="Only published contact details are shown">تظهر بيانات التواصل المنشورة فقط</small></div><div class="r2-save"><button type="button" onclick="lmDownloadCard()" data-ar="⬇ حفظ الكارت كصورة" data-en="⬇ Save Card Image">⬇ حفظ الكارت كصورة</button><button type="button" onclick="lmSaveContact()" data-ar="📱 حفظ جهة اتصال" data-en="📱 Save Contact">📱 حفظ جهة اتصال</button></div></div>
       <p style="font-size:11px;color:#9ca3af;text-align:center" data-ar="بطاقة تواصل عامة وليست إثبات هوية رسميًا" data-en="Public contact card, not an official identity document">بطاقة تواصل عامة وليست إثبات هوية رسميًا</p>
     </div>
 
@@ -1380,7 +1381,7 @@
         <label style="font-size: 0.75rem; color: var(--muted);" data-ar="الغرض من المأمورية:" data-en="Mission Purpose:">الغرض من المأمورية:</label>
         <textarea id="missionPurpose" rows="3" data-ar-placeholder="اشرح الهدف من المأمورية والمهام المطلوبة..." data-en-placeholder="Explain purpose and tasks..." placeholder="اشرح الهدف من المأمورية والمهام المطلوبة..." style="resize: none;"></textarea>
 
-        <button onclick="submitMissionRequest()" class="btn-success" data-ar="إرسال طلب المأمورية للمراجعة" data-en="Submit Mission for Review" style="margin-top:0.5rem;">إرسال طلب المأمورية للمراجعة</button>
+        <button onclick="submitMissionRequest()" class="btn-success" data-ar="إرسال طلب المأمورية وتوليد التصريح" data-en="Submit Mission & Generate Permit" style="margin-top:0.5rem;">إرسال طلب المأمورية وتوليد التصريح</button>
         <p id="missionMsg" style="font-size: 0.85rem; margin-top: 0.5rem; text-align: center; font-weight: bold;"></p>
 
         <div id="missionSlipModal" class="hidden">
@@ -2128,27 +2129,6 @@
           }
       }
 
-      function normalizeProfileChoice(type, raw) {
-        const value = String(raw ?? '').trim().toLowerCase();
-        if (!value) return '';
-        const variants = type === 'marital' ? {
-          single: ['single','أعزب','اعزب','غير متزوج'],
-          married: ['married','متزوج','متزوجة'],
-          divorced: ['divorced','مطلق','مطلقة'],
-          widowed: ['widowed','أرمل','ارمل','أرملة']
-        } : {
-          completed: ['completed','أدى الخدمة','ادي الخدمة'],
-          exempted: ['exempted','معافى نهائي','معفى','معافى'],
-          postponed: ['postponed','مؤجل'],
-          unfit: ['unfit','غير لائق طبياً','غير لائق طبيا'],
-          sole: ['sole','عائل أسرة / كبير عيلة','عائل أسرة']
-        };
-        for (const [key, names] of Object.entries(variants)) {
-          if (names.some(name => name.toLowerCase() === value)) return key;
-        }
-        return value;
-      }
-
       // اختيار العنصر وإغلاق القائمة فوراً دون الحاجة لإعادة النقر
       function selectProfileOption(type, valueKey, element, markChanged = true) {
           if (typeof event !== 'undefined' && event) event.stopPropagation();
@@ -2296,8 +2276,8 @@
           nidDateInput.style.cursor = 'pointer';
         }
 
-        selectProfileOption('military', normalizeProfileChoice('military', user.military), null, false);
-        selectProfileOption('marital', normalizeProfileChoice('marital', user.marital), null, false);
+        selectProfileOption('military', user.military || '', null, false);
+        selectProfileOption('marital', user.marital || '', null, false);
         hasUnsavedProfileChanges = false;
         stagedAvatarFile = null;
         stagedAvatarDataUrl = null;
@@ -2336,8 +2316,7 @@
           return;
         }
 
-        // Only write fields actually changed; do not overwrite existing Portal values.
-        const proposed = {
+        const updatedData = {
           phone: document.getElementById('profilePhoneInput').value.trim(),
           emergencyPhone: document.getElementById('profileEmergencyPhoneInput').value.trim(),
           address: document.getElementById('profileAddressInput').value.trim(),
@@ -2345,26 +2324,15 @@
           military: document.getElementById('profileMilitaryVal').value,
           marital: document.getElementById('profileMaritalVal').value
         };
-        if (!nidInput.readOnly && nidInput.value.trim() !== '') proposed.nationalId = nidInput.value.trim();
+        if (!nidInput.readOnly && nidInput.value.trim() !== '') updatedData.nationalId = nidInput.value.trim();
         const nidDateInput = document.getElementById('profileNIDDateInput');
-        if (!currentUserData.nationalIdDate && nidDateInput.value.trim() !== '') proposed.nationalIdDate = nidDateInput.value.trim();
-        if (stagedAvatarDataUrl) proposed.photo = stagedAvatarDataUrl;
-        const updatedData = {};
-        for (const [key, value] of Object.entries(proposed)) {
-          if (String(value ?? '') !== String(currentUserData[key] ?? '')) updatedData[key] = value;
-        }
-        if (!Object.keys(updatedData).length) {
-          hasUnsavedProfileChanges = false;
-          msgEl.style.color = '#22c55e';
-          msgEl.innerText = isEn ? 'No changes to save.' : 'لا توجد تعديلات جديدة للحفظ.';
-          if (exitAfterSave) showPage('view-dashboard');
-          return;
-        }
+        if (!currentUserData.nationalIdDate && nidDateInput.value.trim() !== '') updatedData.nationalIdDate = nidDateInput.value.trim();
+        if (stagedAvatarDataUrl) updatedData.photo = stagedAvatarDataUrl;
 
         msgEl.style.color = '#38bdf8';
         msgEl.innerText = isEn ? '⏳ Saving changes...' : '⏳ جاري حفظ التعديلات...';
 
-        db.ref(employeePath(currentEmpCode)).update(updatedData).then(() => {
+        db.ref('users/' + currentEmpCode).update(updatedData).then(() => {
           Object.assign(currentUserData, updatedData);
           const savedPhoto = currentUserData.photo || baseUserAvatarSrc || permanentDefaultAvatar;
           baseUserAvatarSrc = savedPhoto;
@@ -2404,7 +2372,7 @@
         }).catch(err => {
           console.error('Profile save failed:', err);
           msgEl.style.color = '#ef4444';
-          msgEl.innerText = err && err.code === 'PERMISSION_DENIED' ? (isEn ? '❌ Firebase denied this change. Publish the accompanying rules first.' : '❌ Firebase رفض الحفظ. تأكد من نشر ملف القواعد المرفق أولاً.') : (isEn ? '❌ Save failed: ' + (err.code || err.message || 'unknown') : '❌ تعذر الحفظ: ' + (err.code || err.message || 'خطأ غير معروف'));
+          msgEl.innerText = isEn ? '❌ Failed to save changes. Please try again.' : '❌ حدث خطأ أثناء حفظ التعديلات. حاول مرة أخرى.';
         });
       }
 
@@ -2853,14 +2821,7 @@ function lmRefreshEmployeeLanguage(){
         jobEn: portalField(raw,'job title'),
         dept: portalField(raw,'الإدارة'),
         deptEn: portalField(raw,'department'),
-        phone: portalField(raw,'phone','رقم الهاتف','رقم التليفون','رقم المحمول','الموبايل','mobile','phone number'),
-        emergencyPhone: portalField(raw,'emergencyPhone','emergency phone','هاتف الطوارئ','رقم الطوارئ','تليفون الطوارئ'),
-        address: portalField(raw,'address','العنوان','عنوان السكن','عنوان الإقامة'),
-        dependents: portalField(raw,'dependents','عدد المعالين','عدد الأبناء','عدد افراد الاسرة'),
-        military: portalField(raw,'military','military status','الموقف من التجنيد','الموقف التجنيدي'),
-        marital: portalField(raw,'marital','marital status','الحالة الاجتماعية','الحالة الإجتماعية'),
-        nationalId: String(portalField(raw,'nationalId','national id','national id number','national_id','الرقم القومي','الرقم القومى','رقم البطاقة','رقم قومي') || ''),
-        nationalIdDate: String(portalField(raw,'nationalIdDate','national id date','national id issue date','id issue date','تاريخ اصدار البطاقة','تاريخ إصدار البطاقة','تاريخ إصدار الرقم القومي') || ''),
+        phone: portalField(raw,'phone'),
         photo: portalField(raw,'photoUrl'),
         annualLeaveBalance: portalField(raw,'annual leave balance','رصيد الاجازات','رصيد الإجازات')
       };
@@ -3185,25 +3146,15 @@ function lmRefreshEmployeeLanguage(){
       else { timesWrapper.style.opacity = '1'; timesWrapper.style.pointerEvents = 'auto'; }
     }
 
-    async function submitMissionRequest() {
-      const mDate=document.getElementById('missionDate').value;
-      const destination=document.getElementById('missionDestination').value.trim();
-      const purpose=document.getElementById('missionPurpose').value.trim();
-      const msg=document.getElementById('missionMsg');
-      if(!mDate||!destination||!purpose){msg.style.color='#ef4444';msg.textContent=currentLang==='ar'?'يرجى استكمال تاريخ المأمورية والوجهة والغرض':'Please complete date, destination and purpose';return;}
-      const fullDay=document.getElementById('chkFullDayMission').checked;
-      const clock=(prefix)=>{let h=Number(document.getElementById(prefix+'HourVal').value)%12;const minute=Number(document.getElementById(prefix+'MinVal').value);const badge=document.getElementById(prefix+'AmPmBadge').textContent;const pm=/مساء|PM/i.test(badge);return String(h+(pm?12:0)).padStart(2,'0')+':'+String(minute).padStart(2,'0');};
-      const startTime=fullDay?'':clock('mFrom'),endTime=fullDay?'':clock('mTo');
-      if(!fullDay&&endTime<=startTime){msg.style.color='#ef4444';msg.textContent=currentLang==='ar'?'وقت النهاية يجب أن يكون بعد البداية':'End time must be after start time';return;}
-      if(!auth.currentUser||!currentEmpCode){msg.textContent=currentLang==='ar'?'يرجى تسجيل الدخول أولًا':'Please sign in';return;}
-      const button=document.querySelector('#view-mission-request button[onclick="submitMissionRequest()"]');if(button)button.disabled=true;
-      try{
-        const record={code:String(currentEmpCode),name:currentUserData?.name||'',date:mDate,destination,purpose,fullDay,startTime,endTime,status:'Pending',hrApproved:false,createdAt:firebase.database.ServerValue.TIMESTAMP};
-        const ref=await db.ref('mission_requests/'+currentEmpCode).push(record);
-        document.getElementById('missionSlipModal').classList.add('hidden');
-        msg.style.color='#22c55e';msg.textContent=(currentLang==='ar'?'تم إرسال طلب المأمورية للمراجعة، ولم يصدر تصريح بعد. رقم الطلب: ':'Mission submitted for review; no permit issued yet. ID: ')+ref.key;
-      }catch(err){msg.style.color='#ef4444';msg.textContent=(currentLang==='ar'?'تعذر إرسال المأمورية: ':'Mission submission failed: ')+(err.code||err.message);}
-      finally{if(button)button.disabled=false;}
+    function submitMissionRequest() {
+      const mDate = document.getElementById('missionDate').value; const destination = document.getElementById('missionDestination').value.trim();
+      const purpose = document.getElementById('missionPurpose').value.trim(); const msg = document.getElementById('missionMsg');
+      if (!mDate || !destination || !purpose) { msg.style.color = '#ef4444'; msg.innerText = currentLang === 'ar' ? '⚠️ يرجى استكمال جميع الخانات (التاريخ، الجهة، والغرض)!' : '⚠️ Please complete all required fields!'; return; }
+      document.getElementById('slipEmpName').innerText = (currentUserData && currentUserData.name) ? currentUserData.name : "مصطفى السيد";
+      document.getElementById('slipEmpCode').innerText = currentEmpCode || "10024"; document.getElementById('slipDate').innerText = mDate; document.getElementById('slipDest').innerText = destination;
+      const qrContainer = document.getElementById('missionQR'); qrContainer.innerHTML = ''; new QRCode(qrContainer, { text: `LACTO-MISSION|${currentEmpCode}|${mDate}`, width: 50, height: 50 });
+      document.getElementById('missionSlipModal').classList.remove('hidden'); msg.style.color = '#38bdf8';
+      msg.innerText = currentLang === 'ar' ? '✅ تم توليد تصريح المأمورية الإلكتروني بنجاح!' : '✅ Mission permit generated successfully!';
     }
 
     function downloadMissionPDF() { const element = document.getElementById('missionPrintSlip'); html2pdf().set({ margin: 0.5, filename: 'Mission_Permit_' + currentEmpCode + '.pdf', html2canvas: { scale: 2 } }).from(element).save(); }
@@ -3301,13 +3252,13 @@ function lmRefreshEmployeeLanguage(){
         state === 'pending' ? (currentLang === 'en' ? 'Awaiting verification' : 'بانتظار التحقق') : '';
     }
     function renderAttendanceClocks() {
-      const date = essLocalDate(new Date());
-      const rows = Object.values(attendanceRequestRows || {}).filter(r => r && r.clientDate === date);
-      rows.sort((a,b) => (Number(a.createdAt)||0) - (Number(b.createdAt)||0));
+      const date = LactoAttendanceDay.dayKey(Date.now());
+      const rows = LactoAttendanceDay.events(attendanceRequestRows,date);
       // First daily punch is IN; the latest subsequent punch is OUT.
       // This also supports historical requests without a punchType field.
-      const incoming = rows[0] || null;
-      const outgoing = rows.length > 1 ? rows[rows.length - 1] : null;
+      const summary = LactoAttendanceDay.summary(attendanceRequestRows,date);
+      const incoming = summary.firstIn;
+      const outgoing = summary.lastOut || summary.provisionalOut;
       // Exactly ONE indicator represents the most recent punch of the workday.
       // First punch = IN (green); every subsequent punch = OUT (red).
       // Official records are a fallback only when there are no request rows.
@@ -3335,9 +3286,9 @@ function lmRefreshEmployeeLanguage(){
     function renderLivePunchVerificationStatus(){
       const el=document.getElementById('t-checkinStatusText');
       if(!el || !currentEmpCode || String(currentEmpCode)!=='2')return;
-      const today=essLocalDate(new Date());
+      const today=LactoAttendanceDay.dayKey(Date.now());
       const rows=Object.entries(attendanceRequestRows||{})
-        .filter(([id,r])=>r && r.clientDate===today && (r.punchType==='IN'||r.punchType==='OUT'))
+        .filter(([id,r])=>r && Number.isFinite(LactoAttendanceDay.timestamp(r)) && LactoAttendanceDay.dayKey(LactoAttendanceDay.timestamp(r))===today && (r.punchType==='IN'||r.punchType==='OUT'))
         .sort((a,b)=>Number(b[1].createdAt||0)-Number(a[1].createdAt||0));
       if(!rows.length)return;
       const [id,r]=rows[0];
@@ -3370,10 +3321,10 @@ function lmRefreshEmployeeLanguage(){
     }
     let approvedAttendanceRef=null, approvedAttendanceRows={};
     function renderApprovedAttendanceHours(){
-      const today=essLocalDate(new Date());
-      const ev=Object.values(approvedAttendanceRows||{}).filter(r=>r&&r.dayKey===today&&['IN','OUT'].includes(r.punchType)&&Number.isFinite(Number(r.punchTimestamp))).sort((a,b)=>Number(a.punchTimestamp)-Number(b.punchTimestamp));
+      const today=LactoAttendanceDay.dayKey(Date.now());
+      const ev=Object.values(approvedAttendanceRows||{}).filter(r=>r&&Number.isFinite(Number(r.punchTimestamp))&&LactoAttendanceDay.dayKey(r.punchTimestamp)===today&&['IN','OUT'].includes(r.punchType)).sort((a,b)=>Number(a.punchTimestamp)-Number(b.punchTimestamp));
       const firstIn=ev.find(r=>r.punchType==='IN');
-      const firstOut=firstIn&&ev.find(r=>r.punchType==='OUT'&&Number(r.punchTimestamp)>Number(firstIn.punchTimestamp));
+      const firstOut=firstIn&&ev.filter(r=>r.punchType==='OUT'&&Number(r.punchTimestamp)>Number(firstIn.punchTimestamp)).at(-1);
       if(firstIn)paintAttendanceTime('valInTime',new Date(Number(firstIn.punchTimestamp)).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Africa/Cairo'}),'approved');
       if(firstOut)paintAttendanceTime('valOutTime',new Date(Number(firstOut.punchTimestamp)).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Africa/Cairo'}),'approved');
       const hours=document.getElementById('valWorkingHours');
@@ -3421,7 +3372,7 @@ function lmRefreshEmployeeLanguage(){
       const selectedPunch=essSelectedPunch;
       // Preflight before requesting camera or GPS; server-side rules remain authoritative.
       try{
-        const today=essLocalDate(new Date());
+        const today=LactoAttendanceDay.dayKey(Date.now());
         const pre=await db.ref('attendance_requests/'+currentEmpCode).once('value');
         const active=Object.values(pre.val()||{}).filter(r=>r&&r.clientDate===today&&r.verificationStatus!=='REJECTED');
         if(active.some(r=>r.punchType===selectedPunch)){
@@ -3456,37 +3407,24 @@ function lmRefreshEmployeeLanguage(){
         const position=await new Promise((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:true,timeout:15000,maximumAge:0}));
         const lat=position.coords.latitude,lng=position.coords.longitude;
         const distance=calculateDistance(lat,lng,COMPANY_LAT,COMPANY_LNG);
-        let mission=false, missionId=null, missionRecord=null;
-        try {
-          const ms=await db.ref('mission_requests/'+currentEmpCode).once('value');
-          const today=essLocalDate(new Date()),hhmm=new Date().toTimeString().slice(0,5);
-          const eligible=Object.entries(ms.val()||{}).filter(([id,m])=>m&&m.date===today&&m.status==='Approved'&&m.hrApproved===true&&(m.fullDay===true||(m.startTime&&m.endTime&&hhmm>=m.startTime&&hhmm<=m.endTime)));
-          // Use the mission of the already recorded IN for its OUT, when possible.
-          const attendanceSnap=await db.ref('attendance_requests/'+currentEmpCode).once('value');
-          const punches=Object.values(attendanceSnap.val()||{});
-          const priorIn=punches.find(r=>r&&r.clientDate===today&&r.punchType==='IN'&&r.missionId&&r.verificationStatus!=='REJECTED');
-          const match=selectedPunch==='OUT'&&priorIn?eligible.find(([id])=>id===priorIn.missionId):eligible[0];
-          if(match){mission=true;missionId=match[0];missionRecord=match[1];}
-          if(selectedPunch==='OUT'&&priorIn&&!match)throw Error('MISSION_NOT_AUTHORIZED_FOR_OUT');
-        }catch(e){if(e.message==='MISSION_NOT_AUTHORIZED_FOR_OUT')throw e;console.warn('Mission read',e);if(distance>ALLOWED_RADIUS_METERS)throw Error('MISSION_AUTH_CHECK_FAILED');}
+        let mission=false;
+        try {const ms=await db.ref('mission_requests/'+currentEmpCode).once('value');const today=essLocalDate(new Date());mission=Object.values(ms.val()||{}).some(m=>m.date===today&&(m.status==='Approved'||m.hrApproved===true));}catch(e){console.warn('Mission read',e)}
         if(!mission && distance>ALLOWED_RADIUS_METERS){statusText.textContent=tr('❌ خارج نطاق الشركة (','❌ Outside company area (')+Math.round(distance)+tr(' متر)',' meters)');return;}
         statusText.textContent=tr('جاري إرسال طلب البصمة للمراجعة...','Submitting punch for review...');
         const now=new Date();
-        const todayKey = essLocalDate(now);
+        const todayKey = LactoAttendanceDay.dayKey(now.getTime());
         const existingSnap = await db.ref('attendance_requests/'+currentEmpCode).once('value');
-        const existingToday = Object.values(existingSnap.val() || {}).filter(r => r && r.clientDate === todayKey && r.verificationStatus !== 'REJECTED');
+        const existingToday = LactoAttendanceDay.events(existingSnap.val() || {},todayKey);
         const punchType = selectedPunch;
-        if(existingToday.some(r=>r.punchType===punchType)) throw Error('PUNCH_ALREADY_REQUESTED_TODAY');
-        if(punchType==='OUT' && !existingToday.some(r=>r.punchType==='IN')) throw Error('CHECK_IN_REQUIRED_FIRST');
-        const payload={selfieData,attemptStartedAt,type:'GPS_ATTENDANCE_REQUEST',punchType,code:String(currentEmpCode),clientDate:essLocalDate(now),clientTime:now.toLocaleTimeString('en-GB'),location:{lat,lng,isMission:mission,accuracyMeters:Math.round(position.coords.accuracy||0)},cameraCaptured:true,faceMatchVerified:false,verificationStatus:'PENDING_REVIEW',createdAt:firebase.database.ServerValue.TIMESTAMP};
-        if(missionId){payload.missionId=missionId;payload.missionDestination=missionRecord.destination||'';}
+        if(punchType==='OUT' && !LactoAttendanceDay.canSubmit(existingToday,todayKey,'OUT')) throw Error('CHECK_IN_REQUIRED_FIRST');
+        const payload={selfieData,attemptStartedAt,type:'GPS_ATTENDANCE_REQUEST',punchType,code:String(currentEmpCode),clientDate:essLocalDate(now),operationalDay:todayKey,clientTime:now.toLocaleTimeString('en-GB'),location:{lat,lng,isMission:mission},cameraCaptured:true,faceMatchVerified:false,verificationStatus:'PENDING_REVIEW',createdAt:firebase.database.ServerValue.TIMESTAMP};
         const userCheck=await db.ref(accountPath(currentEmpCode)).once('value');
         const userRecord=userCheck.val()||{};
         if(userRecord.authUid!==auth.currentUser.uid || userRecord.status!=='Active') throw new Error('ACCOUNT_UID_OR_STATUS_MISMATCH');
         await db.ref('attendance_requests/'+currentEmpCode).push(payload);
         essSelectedPunch=null;
         statusText.textContent=punchType==='IN' ? tr('تم تسجيل وقت الحضور وبانتظار التحقق','Check-in time saved; awaiting verification') : tr('تم تسجيل وقت الانصراف وبانتظار التحقق','Check-out time saved; awaiting verification');
-      } catch(err) { console.error('Attendance request:',err);statusText.textContent=err.message==='PUNCH_ALREADY_REQUESTED_TODAY' ? (selectedPunch==='IN'?tr('تم تسجيل الحضور من قبل اليوم','Check-in already recorded today'):tr('تم تسجيل الانصراف من قبل اليوم','Check-out already recorded today')) : err.message==='CHECK_IN_REQUIRED_FIRST'?tr('سجّل الحضور أولًا','Check in first'):err.message==='MISSION_NOT_AUTHORIZED_FOR_OUT'?tr('لا توجد مأمورية معتمدة مطابقة لبصمة الحضور','No approved mission matches the check-in'):err.message==='MISSION_AUTH_CHECK_FAILED'?tr('تعذر التحقق من اعتماد المأمورية','Could not verify mission approval'):tr('تعذر إرسال طلب البصمة، يرجى المحاولة مجددًا أو التواصل مع الموارد البشرية','Could not submit punch; please retry or contact HR'); }
+      } catch(err) { console.error('Attendance request:',err);statusText.textContent=err.message==='PUNCH_ALREADY_REQUESTED_TODAY' ? (selectedPunch==='IN'?tr('تم تسجيل الحضور من قبل اليوم','Check-in already recorded today'):tr('تم تسجيل الانصراف من قبل اليوم','Check-out already recorded today')) : err.message==='CHECK_IN_REQUIRED_FIRST'?tr('سجّل الحضور أولًا','Check in first'):tr('تعذر إرسال طلب البصمة، يرجى المحاولة مجددًا أو التواصل مع الموارد البشرية','Could not submit punch; please retry or contact HR'); }
       finally {essPunchBusy=false;if(stream)stream.getTracks().forEach(t=>t.stop());}
     }
 
@@ -3780,19 +3718,29 @@ async function login() {
             nidDateInput.style.cursor = "pointer";
           }
 
-          if (user.military) selectProfileOption('military', normalizeProfileChoice('military', user.military), null, false);
-          if (user.marital) selectProfileOption('marital', normalizeProfileChoice('marital', user.marital), null, false);
+          if (user.military) selectProfileOption('military', user.military);
+          if (user.marital) selectProfileOption('marital', user.marital);
           document.getElementById('profileDependentsInput').value = user.dependents || "";
           document.getElementById('profileAddressInput').value = user.address || "";
           document.getElementById('profilePhoneInput').value = user.phone || "";
           document.getElementById('profileEmergencyPhoneInput').value = user.emergencyPhone || "";
 
-          essRefreshPilotLeaveBalance();
-          // QR is optional UI: a QR rendering error must never invalidate Firebase login.
-          try { r2ResetQR(); } catch (qrErr) { console.warn('Card QR rendering:', qrErr); }
+          // Show only the live balance from the authenticated employee record.
+          const balanceRaw = user.annualLeaveBalance;
+          const balanceValid = balanceRaw !== '' && balanceRaw !== null && balanceRaw !== undefined && Number.isFinite(Number(balanceRaw));
+          const balanceNumber = balanceValid ? Number(balanceRaw) : null;
+          const balanceAr = balanceValid ? `${balanceNumber} يوم` : 'غير متاح';
+          const balanceEn = balanceValid ? `${balanceNumber} Days` : 'Unavailable';
+          for (const id of ['dashLeaveBalance', 'leaveBalanceVal']) {
+            const el = document.getElementById(id);
+            if (el) { el.setAttribute('data-ar', balanceAr); el.setAttribute('data-en', balanceEn); el.textContent = currentLang === 'en' ? balanceEn : balanceAr; }
+          }
+          const consumption = document.getElementById('leaveConsumptionLabel');
+          if (consumption) { consumption.setAttribute('data-ar','نسبة الاستهلاك غير متاحة'); consumption.setAttribute('data-en','Usage rate unavailable'); consumption.textContent = currentLang === 'en' ? 'Usage rate unavailable' : 'نسبة الاستهلاك غير متاحة'; }
+          const progress = document.getElementById('leavesProgressBar');
+          if (progress) progress.style.width = '0%';
+          r2ResetQR();
           showPage('view-dashboard');
-          essWatchEmployeeProfile(code);
-          essWatchPilotLeaves(code);
 
           watchAttendanceClocks(code);
           watchApprovedPermissionBalance(code);
@@ -3800,57 +3748,10 @@ async function login() {
         await auth.signOut().catch(() => {});
         currentUserData = null; currentEmpCode = '';
         errorEl.innerText = currentLang === 'ar' ? 'تعذر تسجيل الدخول. تحقق من الحساب والصلاحيات والاتصال.' : 'Sign-in failed. Check account, permissions and connection.';
-        console.error('ESS login error:', err.code || err.message, err);
+        console.error('ESS login error:', err.code || err.message);
       }
     }
-    let essLiveEmployeeRef=null;
-    function essStopEmployeeProfile(){if(essLiveEmployeeRef){essLiveEmployeeRef.off('value');essLiveEmployeeRef=null}}
-    function essWatchEmployeeProfile(code){
-      essStopEmployeeProfile();
-      essLiveEmployeeRef=db.ref(employeePath(code));
-      essLiveEmployeeRef.on('value',snap=>{
-        if(currentEmpCode!==String(code)||!snap.exists())return;
-        const user=portalEmployeeAdapter(snap.val(),code);
-        currentUserData=user;
-        lmRefreshEmployeeLanguage();
-        const photo=user.photo||'logo (1).png';
-        const avatar=document.getElementById('dash-avatar');if(avatar)avatar.src=photo;
-        const cardPhone=document.getElementById('cardPhone'),cardEmail=document.getElementById('cardEmail');
-        if(cardPhone)cardPhone.textContent=user.phone||user.mobile||'—';
-        if(cardEmail)cardEmail.textContent=user.email||user.workEmail||'—';
-        r2UpdateCard(user,photo);try{r2ResetQR()}catch(qrErr){console.warn('Card QR rendering:',qrErr)}
-        // Never overwrite a form while the employee is editing it.
-        const profileAvatar=document.getElementById('profile-page-avatar');if(profileAvatar&&!hasUnsavedProfileChanges)profileAvatar.src=photo;
-        if(!hasUnsavedProfileChanges && !document.getElementById('view-profile').classList.contains('hidden')) loadProfileData();
-        essRefreshPilotLeaveBalance();
-      },err=>console.warn('ESS employee live profile read failed:',err.code||err.message));
-    }
-    // Live read-only leave ledger. The stored balance is the 2025+2026 opening remainder.
-    // Each approved request is counted once by its Firebase request ID.
-    let essPilotLeaveRef=null,essPilotLeaveRows={};
-    function essRefreshPilotLeaveBalance(){
-      const raw=currentUserData?.annualLeaveBalance;
-      const valid=raw!==''&&raw!==null&&raw!==undefined&&Number.isFinite(Number(raw));
-      const opening=valid?Number(raw):null;
-      const approved=Object.values(essPilotLeaveRows||{}).filter(r=>r&&r.status==='Approved');
-      let used=0;
-      for(const r of approved){const a=Date.parse(String(r.startDate||'')+'T00:00:00Z'),b=Date.parse(String(r.endDate||'')+'T00:00:00Z');if(Number.isFinite(a)&&Number.isFinite(b)&&b>=a)used+=Math.round((b-a)/86400000)+1;}
-      const remaining=opening===null?null:Math.round((opening-used)*100)/100;
-      const ar=remaining===null?'غير متاح':remaining+' يوم',en=remaining===null?'Unavailable':remaining+' Days';
-      for(const id of ['dashLeaveBalance','leaveBalanceVal']){const el=document.getElementById(id);if(el){el.dataset.ar=ar;el.dataset.en=en;el.textContent=currentLang==='en'?en:ar;}}
-      const percent=opening!==null&&opening>0?Math.max(0,Math.min(100,100*remaining/opening)):0;
-      const progress=document.getElementById('leavesProgressBar');if(progress){progress.style.width=percent.toFixed(1)+'%';progress.setAttribute('role','progressbar');progress.setAttribute('aria-valuenow',String(Math.round(percent)));progress.setAttribute('aria-valuemin','0');progress.setAttribute('aria-valuemax','100');}
-      const label=document.getElementById('leaveConsumptionLabel');if(label){const a=remaining===null?'نسبة الرصيد المتبقي غير متاحة':`المتبقي ${remaining} من أصل ${opening} يوم (${percent.toFixed(1)}%)`,e=remaining===null?'Remaining balance rate unavailable':`Remaining ${remaining} of ${opening} days (${percent.toFixed(1)}%)`;label.dataset.ar=a;label.dataset.en=e;label.textContent=currentLang==='en'?e:a;}
-    }
-    function essWatchPilotLeaves(code){
-      if(essPilotLeaveRef){essPilotLeaveRef.off();essPilotLeaveRef=null;}
-      essPilotLeaveRows={};essRefreshPilotLeaveBalance();
-      essPilotLeaveRef=db.ref('leave_requests/'+String(code));
-      essPilotLeaveRef.on('value',snap=>{if(String(currentEmpCode)!==String(code))return;essPilotLeaveRows=snap.val()||{};essRefreshPilotLeaveBalance();},err=>console.warn('ESS leave ledger read:',err.code||err.message));
-    }
     async function logout() {
-      essStopEmployeeProfile();
-      if(essPilotLeaveRef){essPilotLeaveRef.off();essPilotLeaveRef=null;}essPilotLeaveRows={};
       detachAttendanceListeners();
       await auth.signOut();
       currentUserData = null; currentEmpCode = '';
@@ -3993,22 +3894,20 @@ async function login() {
 <script>
 function r2UpdateCard(user,photo){
   const img=document.getElementById('r2EmployeePhoto');
-  if(img){img.onerror=()=>{img.onerror=null;img.src='logo (1).png'};img.src=photo||'logo (1).png'}
+  if(img){img.onerror=()=>{img.onerror=null;img.src='logo.png'};img.src=photo||'logo.png'}
   const phone=String(user.phone||user.mobile||'').trim(),email=String(user.email||user.workEmail||'').trim();
   const p=document.getElementById('r2PhoneLink'),e=document.getElementById('r2EmailLink');
   if(p)p.href=phone?'tel:'+phone.replace(/[^\d+]/g,''):'#';
   if(e)e.href=email?'mailto:'+email:'#';
 }
-function r2ResetQR(){
- const q=document.getElementById('qrcode');if(q)q.replaceChildren();
- if(!currentEmpCode)return;
- const user=currentUserData||{};
- const esc=v=>String(v||'').replace(/\\/g,'\\\\').replace(/,/g,'\\,').replace(/;/g,'\\;').replace(/\r?\n/g,'\\n');
- const name=lmLocalizedUserField(user,'name'),job=lmLocalizedUserField(user,'job');
- const phone=String(user.phone||user.mobile||'').trim(),email=String(user.email||user.workEmail||'').trim();
- const contact=['BEGIN:VCARD','VERSION:3.0','FN:'+esc(name),'ORG:Lacto Misr','TITLE:'+esc(job),...(phone?['TEL;TYPE=CELL:'+esc(phone)]:[]),...(email?['EMAIL:'+esc(email)]:[]),'END:VCARD'].join('\r\n');
- if(q&&typeof QRCode!=='undefined'){try{new QRCode(q,{text:contact,width:70,height:70,colorDark:'#153f72',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.L})}catch(err){console.warn('QR vCard too long or unavailable:',err);q.replaceChildren();try{new QRCode(q,{text:'Lacto Misr | '+String(currentEmpCode),width:70,height:70,colorDark:'#153f72',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.L})}catch(e){q.textContent='QR unavailable'}}}
- else if(q)q.textContent=currentLang==='en'?'QR unavailable':'الكود غير متاح';
+function r2ResetQR(){const q=document.getElementById('qrcode');if(q)q.replaceChildren();const panel=document.getElementById('r2-qr-panel');if(panel)panel.classList.remove('r2-open');const b=document.getElementById('r2QRBtn');if(b)b.setAttribute('aria-expanded','false')}
+function r2ToggleQR(){
+ const panel=document.getElementById('r2-qr-panel'),btn=document.getElementById('r2QRBtn');if(!panel)return;
+ const open=!panel.classList.contains('r2-open');panel.classList.toggle('r2-open',open);btn.setAttribute('aria-expanded',String(open));
+ if(open){const q=document.getElementById('qrcode');if(q&&!q.hasChildNodes()){
+  if(typeof QRCode==='undefined'){q.textContent=currentLang==='ar'?'مكتبة QR غير متاحة':'QR library unavailable';return}
+  new QRCode(q,{text:new URL('card.html?code='+encodeURIComponent(currentEmpCode),location.href).href,width:190,height:190,colorDark:'#153f72',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+ }}
 }
 async function lmDownloadCard(){
  try{if(typeof html2canvas!=='function')throw Error('Image library unavailable');
@@ -4163,5 +4062,40 @@ function lmSaveContact(){const name=document.getElementById('userName').textCont
 
 })();
 </script>
+<script>
+// PHASE 2: employee response to an attendance exception. No direct edits to attendance.
+(function(){
+ let ref=null,handler=null,code=null;
+ const t=(ar,en)=>document.documentElement.lang==='en'?en:ar;
+ function mount(){
+  if(typeof auth==='undefined'||!auth.currentUser||typeof currentEmpCode==='undefined'||String(currentEmpCode)!=='2')return;
+  const host=document.getElementById('notificationPopup')?.parentElement||document.body;
+  if(!document.getElementById('ess-exception-review')){
+   const section=document.createElement('section');section.id='ess-exception-review';section.style.cssText='padding:12px;margin:12px 0;border:1px solid #64748b;border-radius:12px;background:#15243a;color:#fff;max-height:320px;overflow:auto';
+   const heading=document.createElement('strong');heading.textContent=t('مراجعة بصمات الحضور','Attendance punch review');section.append(heading);
+   const content=document.createElement('div');content.id='ess-exception-items';section.append(content);host.append(section);
+  }
+  if(!ref){code=String(currentEmpCode);ref=db.ref('attendance_exceptions/'+code);handler=snap=>render(snap.val()||{});ref.on('value',handler,e=>console.warn('Exception review:',e));}
+ }
+ function render(items){
+  const box=document.getElementById('ess-exception-items');if(!box)return;box.replaceChildren();
+  const pending=Object.entries(items).filter(([,c])=>c.status==='AWAITING_EMPLOYEE'&&!c.employeeResponse);
+  if(!pending.length){box.textContent=t('لا توجد استفسارات معلقة','No pending clarifications');return;}
+  for(const [id,c] of pending){
+   const wrap=document.createElement('div');wrap.style.cssText='padding:10px 0;border-bottom:1px solid #475569';
+   const desc=document.createElement('p');desc.textContent=`${c.operationalDay||''}: ${c.firstPunch||''} → ${c.lastPunch||''} | ${c.shiftLabel||''}`;wrap.append(desc);
+   const note=document.createElement('textarea');note.maxLength=500;note.placeholder=t('تفاصيل توضيحية','Additional details');note.style.cssText='width:100%;padding:8px;border-radius:8px;color:#111;background:#fff';wrap.append(note);
+   for(const [answer,label] of [['LEFT_EARLY',t('انصرفت بالفعل','I left at that time')],['MISSED_CHECKOUT',t('كنت موجودًا ونسيت الانصراف','I was present; forgot checkout')]]){
+    const btn=document.createElement('button');btn.type='button';btn.textContent=label;btn.style.cssText='display:block;margin:6px 0;padding:9px;border-radius:8px;background:#0369a1;color:white;width:100%';
+    btn.onclick=async()=>{btn.disabled=true;try{await db.ref('attendance_exceptions/'+code+'/'+id+'/employeeResponse').set({answer,note:note.value.trim(),at:firebase.database.ServerValue.TIMESTAMP,authUid:auth.currentUser.uid});}catch(e){btn.disabled=false;alert(t('تعذر إرسال الرد','Failed to submit response')+': '+e.message)}};
+    wrap.append(btn);
+   }
+   box.append(wrap);
+  }
+ }
+ setInterval(()=>{if(typeof auth==='undefined'||!auth.currentUser||String(typeof currentEmpCode!=='undefined'?currentEmpCode:'')!=='2'){if(ref){ref.off('value',handler);ref=null;handler=null;}return;}mount();},2500);
+})();
+</script>
+<script src="payroll-slip-pilot.js"></script>
 </body>
 </html>
